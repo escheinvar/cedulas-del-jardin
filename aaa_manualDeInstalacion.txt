@@ -1,0 +1,212 @@
+#### https://www.skynat-s.com/blog/how-to-install-and-configure-laravel-with-nginx-on-ubuntu-24-04/
+
+#################################################################################
+###################################################### Instalar sistema operativo
+### Descargar sistema operativo ubuntu 24.04 en formato iso
+### Generar usb booteable con iso
+### Preparar bios para iniciar desde usb
+### Incertar usb y reiniciar equipo
+### Instalar ubuntu siguiendo las instrucciones. Una vez esté instalado el sistema operativo:
+
+############ Agregar Nuevo usuario de ubuntu para el sistema
+adduser jardin
+sudo adduser jardin sudo
+
+###############################################################################
+###################################################### Instalar PHP y librerías
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+sudo apt install php8.4 php8.4-fpm php8.4-cli php8.4-common php8.4-curl php8.4-mbstring php8.4-xml php8.4-zip php8.4-gd php8.4-imagick php8.4-imap php8.4-intl php8.4-pgsql  -y
+sudo apt install  php8.4-xsl  php-zip php-xml php-gd
+
+#########################################################################
+###################################################### Instalar nginx
+sudo apt install nginx -y
+
+############ configuro nginx para php
+sudo nano /etc/nginx/sites-available/default
+location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;  ## verificar ruta de fpm-sock
+}
+
+############ inicio php con nginix
+sudo systemctl restart php8.4-fpm
+sudo systemctl realpath_rootstart nginx
+sudo systemctl enable nginx
+sudo systemctl enable php8.4-fpm
+
+######### Verificar que ya jala php con nginx
+sudo nano '<?php  phpinfo(); ?>' > /var/Www/html/info.php
+######### ver html y luego borrar info.php
+sudo rm /var/www/html/info.php
+
+#########################################################################
+###################################################### Instalo Postgresql
+### agrego repositorio
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+### agrego key de repositorio
+curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
+### actualizo listado
+sudo apt update
+### instalo postgres
+sudo apt install postgresql
+### inicio servicio postgres
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+
+
+#################### Configuro Postgres
+### permito conecciones remotas a postgres ### modifico las siguientes líneas:
+#sudo nano /etc/postgresql/18/main/postgresql.conf
+sudo nano /etc/postgresql/17/main/postgresql.conf
+### modificar:
+listen_addresses = '*'
+#password_encryption = md5
+password_encryption = scram-sha-256
+
+### editar  y agregar al final:
+#sudo nano /etc/postgresql/18/main/pg_hba.conf
+sudo nano /etc/postgresql/17/main/pg_hba.conf
+#host    all    all    0.0.0.0/0    md5
+host    all    all    0.0.0.0/0    scram-sha-256
+
+### ingreso a postgres y pongo password a usuario
+#sudo -u postgres psql
+#ALTER USER postgres PASSWORD 'VeryStronGPassWord@1137';
+#exit;
+
+### Reinicio postgres
+sudo systemctl restart postgresql
+
+### permito postgres en firewall
+sudo ufw allow 5432/tcp
+
+
+
+#########################################################################
+################################################ Instalo composer/laravel
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+composer --version
+
+###################################################### Creo proyecto laravel
+cd /var/www/html
+git clone https://git....
+composer install
+### copiar archivo .env
+### Crear bd y usuario de bd.
+php artisan key:generate
+php artisan migrate --seed
+
+##### doy permisos
+cd myproject
+sudo chown -R www-data:www-data /var/www/html/myproject
+sudo chmod -R 775 /var/www/html/myproject/storage /var/www/html/myproject/bootstrap/cache
+
+### o en su caso, cambio owner:
+#sudo nano /etc/nginx/nginx.conf
+
+###################################################### Configuro nginx para laravel:
+sudo nano /etc/nginx/sites-available/myproject
+server {
+    listen 80;
+    server_name mydomain.com;
+    root /var/www/html/myproject/public; #replace with your document root
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.php;
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            #### With php-fpm (or other unix sockets): #### verificar la ruta de socket correcta
+            fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+            #### With php-cgi (or other tcp sockets):
+            #fastcgi_pass 127.0.0.1:9000;
+    }
+
+
+    location ~ ^/index\.php(/|$) {
+        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_hide_header X-Powered-By;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+### Creo liga simbólica
+sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled/
+### reinicio
+sudo nginx -t
+sudo systemctl restart nginx
+
+###################################################### Si genero + de 1 archivo nginx (con diferente server_name y root o diferente listen 80 listen 8001):
+sudo nano /etc/nginx/nginx.conf
+## descomentar:
+http {
+    server_names_hash_bucket_size 64;
+}
+sudo nginx -t
+sudo systemctl restart nginx
+
+###################################################### Configuro nombre de host:
+sudo nano /etc/hosts
+### agregar linea:
+45.90.223.160  jardinoaxaca.org   www.jardinoaxaca.org
+
+
+####################################################################################
+###################################################### CREAR E INSTALAR CERTIIFICADO
+### https://www.digicert.com/kb/csr-ssl-installation/nginx-openssl.htm
+### https://support.hostinger.com/en/articles/6865487-how-to-install-ssl-on-vps-using-certbot
+
+### instalo
+sudo apt install python3 python3-venv libaugeas0
+###instalo certbot
+sudo python3 -m venv /opt/certbot/
+sudo /opt/certbot/bin/pip install --upgrade pip
+sudo /opt/certbot/bin/pip install certbot certbot-nginx
+### creo liga simbólica
+sudo ln -s /opt/certbot/bin/certbot /usr/bin/certbot
+### instalo certificado y lo activo  ######################### ACTUALIZAR CERTIFICADO
+sudo certbot --nginx
+
+####lo meto a cron pa que se actualice (dura 90 dias)
+echo "0 0,12 * * * root /opt/certbot/bin/python -c 'import random; import time; time.sleep(random.random() * 3600)' && sudo certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
+
+
+#### para ver certificados:
+sudo certbot certificates
+#### para borrar certificados:
+#sudo certbot delete
+
+
+############################################ Configurar php pa tamaño ojo:
+#### En phpinfo() ver: configuration file, upload_max_filesize y post_max_size.
+### En archivo /etc/php/8.4/apache1, .../8.4/cli  .../8.4/fpm
+upload_max_filesize= 256M
+post_max_size = 256M
+
+
+###########################################
+### Cambiar en /config/livewire:
+'temporary_file_upload' => [
+        'max_file_size'=> 128,   ### máximo: 128 MB
+
+php artisan view:clear
+php artisan cache:clear

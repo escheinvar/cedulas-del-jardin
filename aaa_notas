@@ -1,0 +1,63 @@
+
+ATENCIÓN: COMO SUBÍ EL MÓDULO DE CÉDULAS A PRODUCCIÓN, TUVE QUE:
+EN ROLLBACK: SE SILENCIÓ EL ROLLBACK (EL DROP DE TABLE) DE TABLAS:
+USERS, ROLES, WEB_EVENTOS
+SP_URL, SP_URLCEDULA, SP_CEDULAS, SP_FOTOS
+SIST_BUZON
+CAT_INSTITUCIONES, CAT_ROLES, CAT_FOTOPLANTASLABEL, CAT_JARDINES, CAT_CAMPUS,CAT_CAMELLONES,
+
+extensiones:
+
+
+1.- composer require livewire/livewire
+
+    El proyecto iniciò como laravel 10 y lo actualicè a 11: cambiè composer.json y luego ejecuté: composer update
+
+    composer require maatwebsite/excel
+
+    apt install php8.3-gd php8.3-intl php8.3-xsl
+
+1a.- En carpeta /storage/app generé liga: ln -s ../../public aPublic
+
+2a.- Base de datos kew: hay que copiar manualmente la BD de kew en la tabla kew_plantsoftheworld
+    para eso hay que descargar la BD de taxonomía de kew (https://powo.science.kew.org/) y sustituir todos los corchetes y paréntesis. Luego hay que copiar la BD en cat_kew_plantsoftheworld
+    (Actualmente hay copia en: BD_Wcvp_taxon.kew.csv)
+2b.- En el migration de cat_kew_plantsoftheworld, silencié el rollback.
+
+3a.- Base de datos de clavos:
+    archivo BD_pl_clavos_categorias_241102.csv             sube a tabla pl_clavos_categorias;
+    archivo BD_pl_clavos_colectas_copy1_241102.csv         sube a tabla pl_clavos_colectas;
+    archivo BD_pl_clavos_georeferencia_copy1_241102.csv    sube a tabla pl_clavos_georeferencia_copy1;
+    archivo BD_pl_clavos_tratamiento_transporte_241102.csv sube a tabla pl_clavos_tratamiento_transporte;
+
+3b.- En el migration de , pl_clavos_categorias, pl_clavos_colectas, pl_clavos_georeferencia_copy1,
+    pl_clavos_tratamiento_transporte silencié el rollback.
+
+
+4   ------------------------------------------------------------
+    ---------------------HAY QUE ARREGLAR ERROR DE CARGA DE IMG
+    --------------------- (NO CARGA ARCHIVOS GRANDES (DE 10 MB O MAS))
+    aumentar en php.ini (etc/php/7.4/apache2/php.ini)
+    upload_max_filesize = 10MB
+    post_max_size = 20MB
+    y luego sudo service apache2 restart
+
+
+
+
+------------------------------ Notas de carpetas:
+/storage/app/aPublic : liga simbólica a /public/ para file uploads.
+
+/public/audio: con audios de traducción de módulo web (una carpeta por audio).
+/public/avata: imágenes de avatar de usuarios y de jardines (módulo de usuarios).
+/public/cargaMasiva: fotos de plantas que están en proceso de carga (módulo de importación  masiva).
+/public/favicon: íconos de sistema web.
+/fotosKobo: carpeta temporal  con fotos de módulo de mapa (--- TEMPORAL A BORRAR -----).
+/public/iconos: carpeta con imágnes para uso de íconos en el sistema.
+/public/imagenes: carpeta con imágenes utilizadas en el módulo de sitio web.
+/public/owlcarousel: código javascript de carrusel de fotos.
+/public/wow: código javascript de imágenes wow.
+
+
+
+

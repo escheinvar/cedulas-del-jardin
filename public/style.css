@@ -1,0 +1,1828 @@
+* {
+    margin: 0;
+}
+
+/*GENERALES*/
+
+/*Para párrafos introductorios
+ o para la primera sección de cada página*/
+.texto-principal {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    line-height: 2;
+}
+
+/*Para el resto de los párrafos*/
+.texto-secundario {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 2;
+}
+
+/*títulos de cada sección*/
+h3.subtitulo,
+h2.subtitulo {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 40px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    border-bottom: solid 1px #CDC6B9;
+    margin-bottom: 25px;
+}
+
+h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    padding-top: 5px;
+}
+
+a {
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+/*Estilo de las citas*/
+
+h2.cita,
+h3.cita {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 40px;
+    line-height: 1.5;
+    padding-bottom: 20px;
+    border-bottom: solid 1px #CDC6B9;
+}
+
+h4.autor-cita {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    color: #87796dbe;
+
+}
+
+p.autor-cita {
+    font-size: 12px;
+    color: #87796dbe;
+}
+
+
+
+/**********ELEMENTOS HEADER**********/
+
+/******NAVBAR******/
+
+/*enlaces*/
+.fondo-nav {
+    background-color: #efebe8 !important;
+}
+
+.texto-nav a {
+    color: #202d2d !important;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 18px;
+}
+
+a.nav-link {
+    padding: 0 20px !important;
+}
+
+.nav-link.active {
+    color: #919C1B !important;
+}
+
+.nav-link:hover {
+    color: #919C1B !important;
+}
+
+.dropdown-item {
+    font-size: 18px !important;
+}
+
+/*boton dropdown*/
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown-item.active {
+    margin: 0 !important;
+    background-color: #efebe8;
+    color: #919C1B !important;
+}
+
+/*menú desplegado */
+.offcanvas.show:not(.hiding) {
+    background-color: #efebe8 !important;
+}
+
+.dropdown-menu.show {
+    background-color: #efebe8 !important;
+}
+
+.offcanvas-header {
+    padding: 25px 40px;
+}
+
+.dropdown-item:hover {
+    color: #919C1B !important;
+    background-color: #efebe8 !important;
+}
+
+.offcanvas-body {
+    text-align: center;
+}
+
+.offcanvas-body a {
+    font-size: 20px;
+}
+
+.iconos-nav {
+    padding: 30px;
+    text-align: center;
+}
+
+/**********ESTO APLICA A TODOS LOS BANNERS**********/
+
+.banner-index,
+.banner-recorridos,
+.banner-mapa,
+.banner-historia,
+.banner-servicios,
+.banner-directorio,
+.banner-colaboradores,
+.banner-educacion,
+.banner-actividades {
+    background-color: #efebe8;
+}
+
+/*El número de renglones determina el padding superior*/
+/*títulos de 3 renglones*/
+.banner-index h1 {
+    padding: 425px 30px 55px 0;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 68px;
+    color: #efebe8;
+    margin: 0px;
+}
+
+/*títulos de 2 renglones*/
+.banner-recorridos h1 {
+    padding: 507px 30px 55px 0;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 68px;
+    color: #efebe8;
+    margin: 0px;
+}
+
+/*títulos de 1 renglon*/
+.banner-mapa h1,
+.banner-historia h1,
+.banner-servicios h1,
+.banner-directorio h1,
+.banner-colaboradores h1,
+.banner-educacion h1,
+.banner-actividades h1 {
+    padding: 588px 30px 55px 0;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 68px;
+    color: #efebe8;
+    margin: 0px;
+}
+
+/*redes sociales*/
+.redes-header {
+    display: inline;
+}
+
+.iconos {
+    padding: 5px 30px;
+}
+
+.iconos img {
+    position: relative;
+    transition: all 0.2s linear;
+}
+
+.iconos img:hover {
+    transform: translate3d(0, 4px, 0);
+}
+
+/*boton scroll down*/
+
+.button-scroll-down p {
+    color: #87796d !important;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 16px;
+    margin: -28px -6px;
+}
+
+.button-scroll-down {
+    position: relative;
+    padding: 5px;
+    margin: -35px auto;
+    background: #64383E;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    transition: all 0.2s linear;
+}
+
+.button-scroll-down:hover {
+    transform: translate3d(0, 10px, 0);
+}
+
+.button-scroll-down::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    z-index: 11;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid #efebe8;
+    border-left: 2px solid #efebe8;
+}
+
+.button-scroll-down::after {
+    top: 10px;
+    transform: rotate(225deg);
+}
+
+
+/**********ELEMENTOS FOOTER**********/
+footer {
+    background-color: #202d2d;
+    color: #CDC6B9;
+}
+
+footer h5 {
+    font-size: 18px;
+    color: #87796d;
+}
+
+footer p {
+    font-size: 14px;
+}
+
+.botones {
+    text-align: center;
+}
+
+footer .logo {
+    margin: 20px 0;
+    width: 100px;
+}
+
+/*botón recorridos*/
+.recorridos-2 {
+    background-color: #64383E;
+    padding: 15px 38px;
+    color: #efebe8;
+    font-size: 18px;
+}
+
+.recorridos-2:hover {
+    background-color: #CDC6B9;
+    color: #64383E;
+}
+
+/*botón subir*/
+.button-scroll-up p {
+    color: #CDC6B9 !important;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 16px;
+    margin: 48px -3px;
+}
+
+.button-scroll-up {
+    position: relative;
+    padding: 5px;
+    margin: -35px auto;
+    background: #87796d;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    transition: all 0.2s linear;
+}
+
+.button-scroll-up:hover {
+    transform: translate3d(0, -10px, 0);
+}
+
+.button-scroll-up::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    z-index: 11;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid #efebe8;
+    border-left: 2px solid #efebe8;
+}
+
+.button-scroll-up::after {
+    top: 15px;
+    transform: rotate(45deg);
+}
+
+/********** AQUÍ INICIA INDEX **********/
+
+/*BANNER INDEX*/
+.banner-index .inicio {
+    background-image: url(/imagenes/banners/fondo-inicio.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0 30px;
+}
+
+/*S1 PRESENTACION*/
+
+.presentacion {
+    background-color: #efebe8;
+}
+
+/*S2 ENTERATE*/
+
+.enterate {
+    background-color: #efebe8;
+}
+
+.wrapper h3 {
+    margin: 0;
+    font-size: 36px;
+}
+
+.actividades-menu h3,
+.educacion-menu h3 {
+    margin-top: auto;
+}
+
+.wrapper p {
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.wrapper {
+    width: 90%;
+    max-width: 700px;
+    background-color: #efebe8;
+}
+
+.home-hero {
+    display: grid;
+    grid-gap: 15px;
+    grid-auto-rows: minmax(160px, auto);
+}
+
+.home-hero>* {
+    padding: 15px 20px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #efebe8;
+    color: #efebe8;
+}
+
+.recorridos-menu {
+    background-image: url(/imagenes/boton-recorridos.jpg);
+}
+
+.recorridos-menu:hover {
+    background-image: none;
+    background-color: #64383E;
+}
+
+.mapa-menu {
+    background-image: url(/imagenes/boton-mapa.jpg);
+    display: flex;
+    flex-direction: column;
+}
+
+.mapa-menu:hover {
+    background-image: none;
+    background-color: #202d2d;
+}
+
+.actividades-menu {
+    background-image: url(/imagenes/boton-actividades.jpg);
+    display: flex;
+    flex-direction: column;
+}
+
+.actividades-menu:hover {
+    background-image: none;
+    background-color: #CD7B34;
+}
+
+.educacion-menu {
+    background-image: url(/imagenes/boton-educacion.jpg);
+    display: flex;
+    flex-direction: column;
+}
+
+.educacion-menu:hover {
+    background-image: none;
+    background-color: #919C1B;
+}
+
+/*S3 GALERIA*/
+
+.galeria-inicio {
+    background-color: #87796d;
+}
+
+.galeria-inicio h2 {
+    font-family: 'Noto Serif JP', serif;
+    color: #efebe8;
+    font-size: 22px;
+    padding: 20px 0;
+    border-bottom: none;
+}
+
+/*pie de imagen*/
+.galeria-inicio h3 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    background-color: #202d2d;
+    color: #CDC6B9;
+    font-size: 12px;
+    padding: 12px;
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+}
+
+.owl-theme .owl-dots .owl-dot span {
+    width: 10px;
+    height: 10px;
+    margin: 5px 7px;
+    background: #CDC6B9;
+}
+
+.owl-theme .owl-dots .owl-dot.active span,
+.owl-theme .owl-dots .owl-dot:hover span {
+    background: #202d2d;
+}
+
+
+/********** AQUÍ INICIA RECORRIDOS **********/
+
+/*BANNER RECORRIDOS*/
+.banner-recorridos .inicio {
+    background-image: url(/imagenes/banners/fondo-recorridos.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0 30px;
+}
+
+/*S1 VISITAS*/
+
+.visitas {
+    background-color: #efebe8;
+}
+
+.visitas p {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    line-height: 2;
+}
+
+/*botones*/
+.horarios {
+    background-color: #64383E;
+    padding: 15px 54px;
+    color: #efebe8;
+    font-size: 18px;
+}
+
+.escolares {
+    background-color: #64383E;
+    padding: 15px 20px;
+    color: #efebe8;
+    font-size: 18px;
+}
+
+.horarios:hover,
+.escolares:hover {
+    background-color: #CDC6B9;
+    color: #64383E;
+}
+
+/*pie de imagen*/
+
+.galeria-recorridos h3 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    background-color: #CDC6B9;
+    color: #202d2d;
+    font-size: 12px;
+    padding: 12px;
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+}
+
+/*S2 RECORRIDOS*/
+
+.recorridos {
+    background-color: #efebe8;
+}
+
+.recorridos h2 {
+    margin-bottom: 0;
+}
+
+.recorridos h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    padding-top: 5px;
+}
+
+.recorridos h4 {
+    font-family: 'Roboto', sans-serif;
+    color: #CD7B34;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.recorridos p {
+    font-family: 'Roboto', sans-serif;
+}
+
+.info-preguntas h3 {
+    margin-bottom: 30px;
+}
+
+/*boton acordeón*/
+
+.accordion {
+    --bs-accordion-border-color: #CDC6B9;
+    --bs-accordion-bg: #efebe8;
+    border-top: solid 1px #CDC6B9;
+}
+
+.accordion-flush-recorridos .accordion-item-recorridos .accordion-button,
+.accordion-flush-recorridos .accordion-item-recorridos .accordion-button.collapsed {
+    font-family: 'Roboto', sans-serif;
+    border-bottom: solid 1px #CDC6B9;
+
+}
+
+.accordion-button {
+    background-color: #efebe8;
+    color: #87796d;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #64383E;
+    background-color: #CDC6B9;
+}
+
+
+/*S3 RECORRIDOS-ESCOLARES*/
+
+.recorridos-escolares {
+    background-color: #87796d;
+    color: #efebe8;
+}
+
+.recorridos-escolares h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    padding-top: 5px;
+
+}
+
+.recorridos-escolares h4 {
+    font-family: 'Roboto', sans-serif;
+    color: #202d2d;
+    font-size: 18px;
+}
+
+.recorridos-escolares p {
+    font-family: 'Roboto', sans-serif;
+}
+
+/*pie de imagen*/
+.galeria-escuelas h3 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    background-color: #CDC6B9;
+    color: #202d2d;
+    font-size: 12px;
+    padding: 12px;
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+}
+
+/********** AQUÍ INICIA MAPA **********/
+
+/*BANNER MAPA*/
+.banner-mapa .inicio {
+    background-image: url(/imagenes/banners/fondo-mapa.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0 30px;
+}
+
+/*S1 MAPA*/
+.mapa-jardin {
+    background-color: #efebe8;
+}
+
+.mapa-jardin ol {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.mapa-jardin {
+    padding-bottom: 5px;
+}
+
+/*boton acordeón*/
+
+.accordion-flush-mapa .accordion-item-mapa .accordion-button,
+.accordion-flush-mapa .accordion-item-mapa .accordion-button.collapsed {
+    font-size: 22px;
+    font-family: 'Noto Serif JP', serif;
+    --bs-accordion-border-color: #CDC6B9;
+    --bs-accordion-bg: #efebe8;
+    border-bottom: solid 1px #CDC6B9;
+}
+
+.mapa-jardin h3 {
+    padding-bottom: 15px;
+}
+
+/*S2 LUGARES-SOBRESALIENTES*/
+
+.lugares-sobresalientes {
+    background-color: #797b70;
+}
+
+.lugares-sobresalientes h2 {
+    color: #efebe8;
+    margin-bottom: 50px;
+}
+
+.lugares {
+    position: relative;
+}
+
+.lugares .slide-container .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px 9%;
+    padding-bottom: 70px;
+}
+
+.lugares .slide-container .slide .content {
+    flex: 1 1 350px;
+    ;
+}
+
+.lugares .slide-container .slide .image {
+    flex: 1 1 500px;
+}
+
+.lugares .slide-container .slide .image img {
+    width: 100%;
+}
+
+.lugares .slide-container .slide .content h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    color: #efebe8
+}
+
+.lugares .slide-container .slide .content p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #efebe8;
+    padding: 10px 0;
+}
+
+.lugares .slide-container {
+    display: none;
+}
+
+.lugares .slide-container.active {
+    display: block;
+}
+
+.lugares .slide-container:nth-child(1) .slide {
+    background-color: #797b70;
+}
+
+.lugares .slide-container:nth-child(2) .slide {
+    background-color: #797b70;
+}
+
+.lugares .slide-container:nth-child(3) .slide {
+    background-color: #797b70;
+}
+
+/*flechas (Estos afectan también al slider de servicios-educativos)*/
+
+.button-next,
+.button-prev {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #CDC6B9;
+    background: #202d2d;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+}
+
+.button-next:hover,
+.button-prev:hover {
+    background: #CDC6B9;
+    color: #202d2d;
+}
+
+.button-prev {
+    left: 10px;
+}
+
+.button-next {
+    right: 10px;
+}
+
+.button-next::after {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+}
+
+.button-next::after {
+    margin: 12px 10px;
+    transform: rotate(135deg);
+}
+
+.button-prev::after {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+}
+
+.button-prev::after {
+    margin: 12px 15px;
+    transform: rotate(315deg);
+}
+
+/*pie de imagen*/
+.lugares-sobresalientes .image h4 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    background-color: #202d2d;
+    color: #CDC6B9;
+    font-size: 12px;
+    padding: 12px;
+    bottom: 0;
+    margin: 0;
+}
+
+/********** AQUÍ INICIA HISTORIA **********/
+
+/*S1* PRESENTACIÓN*/
+
+.banner-historia .inicio {
+    background-image: url(/imagenes/banners/fondo-historia.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0 30px
+}
+
+.count-digit {
+    font-family: 'Noto Serif JP', serif;
+    color: #202d2d;
+    font-size: 68px;
+}
+
+.count-title {
+    font-family: 'Roboto', sans-serif;
+    color: #202d2d;
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.count-description {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+/*S2* HISTORIA*/
+
+.historia {
+    background-color: #efebe8;
+}
+
+/*S3 GALERIA-HISTORIA*/
+
+.galeria-historia {
+    background-color: #87796d;
+}
+
+.galeria-historia h2 {
+    font-family: 'Noto Serif JP', serif;
+    color: #efebe8;
+    font-size: 22px;
+    padding: 20px 0;
+    border-bottom: none;
+}
+
+/*pie de imagen*/
+.galeria-historia h3 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    background-color: #202d2d;
+    color: #efebe8;
+    font-size: 12px;
+    padding: 12px;
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+}
+
+.galeria-historia .owl-theme .owl-dots .owl-dot span {
+    background: #CDC6B9;
+}
+
+.galeria-historia .owl-theme .owl-dots .owl-dot.active span,
+.galeria-historia .owl-theme .owl-dots .owl-dot:hover span {
+    background: #202d2d;
+}
+
+/**********AQUÍ INICIA SERVICIOS**********/
+
+/*BANNER-SERVICIOS*/
+
+.banner-servicios .inicio {
+    background-image: url(/imagenes/banners/fondo-servicios.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0 30px;
+}
+
+/*S1 SERVICIOS*/
+.servicios {
+    background-color: #efebe8;
+}
+
+/*GALERIA-SERVICIOS*/
+
+.galeria-servicios {
+    background-color: #87796d;
+}
+
+.galeria-servicios h2 {
+    font-family: 'Noto Serif JP', serif;
+    color: #efebe8;
+    font-size: 22px;
+    padding: 20px 0;
+    border-bottom: none;
+}
+
+/*pie de imagen*/
+.galeria-servicios h3 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    background-color: #202d2d;
+    color: #CDC6B9;
+    font-size: 12px;
+    padding: 12px;
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+}
+
+/**********AQUÍ INICIA DIRECTORIO**********/
+
+/*BANNER-DIRECTORIO*/
+
+.banner-directorio .inicio {
+    background-image: url(/imagenes/banners/fondo-directorio.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0 30px;
+}
+
+/*S1 DIRECTORIO*/
+
+.directorio {
+    background-color: #efebe8;
+}
+
+.directorio ul {
+    font-family: 'Roboto', sans-serif;
+    list-style: none;
+    padding: 0;
+    line-height: 2;
+}
+
+.directorio h4 {
+    font-size: 18px;
+    color: #64383E;
+}
+
+/**********AQUÍ INICIA COLABORADORES**********/
+
+.banner-colaboradores .inicio {
+    background-image: url(/imagenes/banners/fondo-colaboradores.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0 30px;
+}
+
+.colaboradores {
+    background-color: #efebe8;
+}
+
+.colaboradores ul {
+    list-style: none;
+}
+
+.colaboradores a {
+    text-decoration: none;
+    color: #202d2d;
+    font-size: 18px;
+    line-height: 2;
+}
+
+.colaboradores a:hover {
+    color: #919C1B !important;
+}
+
+/**********AQUÍ INICIA EDUCACION**********/
+
+/*BANNER EDUCACIÓN*/
+.banner-educacion .inicio {
+    background-image: url(/imagenes/banners/fondo-educacion.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0 30px;
+}
+
+/*S2 SERICIOS-EDUCATIVOS*/
+
+.servicios-educativos {
+    background-color: #87796d;
+}
+
+.servicios-educativos h2 {
+    color: #efebe8;
+}
+
+.servicios-educativos h4.duracion {
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.espacios {
+    position: relative;
+}
+
+.espacios .slide-container .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px 9%;
+    padding-bottom: 70px;
+}
+
+.espacios .slide-container .slide .content {
+    flex: 1 1 350px;
+    ;
+}
+
+.espacios .slide-container .slide .image {
+    flex: 1 1 500px;
+}
+
+.espacios .slide-container .slide .image img {
+    width: 100%;
+}
+
+.espacios .slide-container .slide .content h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    color: #efebe8
+}
+
+.espacios .slide-container .slide .content p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #efebe8;
+    padding: 10px 0;
+}
+
+.espacios .slide-container {
+    display: none;
+}
+
+.espacios .slide-container.active {
+    display: block;
+}
+
+.espacios .slide-container:nth-child(1) .slide {
+    background-color: #87796d;
+}
+
+.espacios .slide-container:nth-child(2) .slide {
+    background-color: #87796d;
+}
+
+.espacios.slide-container:nth-child(3) .slide {
+    background-color: #87796d;
+}
+
+/*pie de imagen*/
+.servicios-educativos .image h4 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    background-color: #202d2d;
+    color: #CDC6B9;
+    font-size: 12px;
+    padding: 12px;
+    bottom: 0;
+    margin: 0;
+}
+
+
+/**********AQUÍ INICIA ACTIVIDADES**********/
+
+/*BANNER ACTIVIDADES*/
+.banner-actividades .inicio {
+    background-image: url(/imagenes/banners/fondo-actividades.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0 30px;
+}
+
+/*S1 PROXIMOS EVENTOS
+S2 EVENTOS ANTERIORES*/
+.proximamente,
+.eventos-anteriores {
+    background-color: #efebe8;
+}
+
+.proximamente h2,
+.eventos-anteriores h2 {
+    margin-bottom: 50px;
+}
+
+.evento {
+    background-color: #CDC6B9;
+    margin-bottom: 40px;
+}
+
+.evento h3 {
+    font-size: 24px;
+    padding-bottom: 20px;
+}
+
+.evento h5 {
+    padding: 0;
+    padding-top: 15px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    color: #64383E;
+}
+
+.evento p {
+    font-size: 16px;
+}
+
+.datos-evento p {
+    font-size: 14px;
+    display: inline;
+}
+
+.datos-evento img {
+    vertical-align: middle;
+    max-width: 30px;
+}
+
+.tags {
+    position: relative;
+    margin: 0 10px 10px 0;
+    display: inline-block;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 14px;
+    list-style: none;
+    line-height: 5px;
+    padding: 0;
+}
+
+.tags li {
+    float: left;
+}
+
+.tag-Recorrido {                         /* enrique */
+    background-color: #919C1B;
+    color: #efebe8;
+    border-radius: .5rem;
+    padding: 12px 28px;
+}
+
+.tag-Conferencia, .tag-Presentación {                      /* enrique */
+    background-color: #CD7B34;
+    color: #efebe8;
+    border-radius: .5rem;
+    padding: 12px 20px;
+}
+
+.tag-Taller, .tag-Cultural  {                   /* enrique */
+    background-color: #B1153F;
+    color: #efebe8;
+    border-radius: .5rem;
+    padding: 12px 38px;
+}
+
+.tag-Comunicado {
+    background-color: #64383E;
+    color: #efebe8;
+    border-radius: .5rem;
+    padding: 12px 19px;
+}
+
+
+/*****AQUÍ INICIAN LAS MEDIA QUERIES******/
+
+/*GENERALES*/
+
+
+@media (max-width: 575px) {
+
+    /*pie de imagen- botones corousel*/
+    .owl-theme .owl-dots .owl-dot span {
+        width: 8px;
+        height: 8px;
+        margin: 4px 6px;
+    }
+}
+
+@media (max-width: 767px) {
+
+    /*títulos de cada sección*/
+    h2.subtitulo,
+    h3.subtitulo {
+        font-size: 38px;
+    }
+
+    /*citas*/
+    h2.cita,
+    h3.cita {
+        font-size: 28px;
+    }
+
+
+    h4.autor-cita {
+        font-size: 10px;
+    }
+
+    p.autor-cita {
+        font-size: 10px;
+    }
+
+}
+
+
+@media (min-width: 768px) and (max-width: 1199.98px) {
+
+    /*citas*/
+    h2.cita,
+    h3.cita {
+        font-size: 30px;
+    }
+
+    h4.autor-cita {
+        font-size: 11px;
+    }
+
+    p.autor-cita {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 1199.98px) {
+
+    /*párrafos*/
+    .texto-principal {
+        font-size: 16px;
+    }
+
+}
+
+/**********ESTO APLICA A LA NAV***********/
+@media only screen and (max-width: 991px) {
+
+    .nav-item,
+    .nav-item .dropdown {
+        padding-bottom: 25px;
+    }
+
+    .dropdown-item {
+        text-align: center;
+    }
+
+    .offcanvas-body {
+        padding: 20px 40px;
+    }
+}
+
+/**********ESTO APLICA A TODOS LOS BANNERS**********/
+
+/*redes sociales*/
+
+@media only screen and (max-width: 575px) {
+    .redes-header .iconos {
+        display: none;
+    }
+
+    a .button-scroll-down {
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (min-width: 991px) {
+    .iconos-nav {
+        display: none;
+    }
+}
+
+/*Imagenes del banner small*/
+
+@media (max-width: 449px) {
+
+    .banner-index .inicio {
+        background-image: url(/imagenes/banners/fondo-inicio-vertical.jpg);
+    }
+
+    .banner-recorridos .inicio {
+        background-image: url(/imagenes/banners/fondo-recorridos-vertical.jpg);
+    }
+
+    .banner-mapa .inicio {
+        background-image: url(/imagenes/banners/fondo-mapa-vertical.jpg);
+    }
+
+    .banner-historia .inicio {
+        background-image: url(/imagenes/banners/fondo-historia-vertical.jpg);
+    }
+
+    .banner-servicios .inicio {
+        background-image: url(/imagenes/banners/fondo-servicios-vertical.jpg);
+    }
+
+    .banner-colaboradores .inicio {
+        background-image: url(/imagenes/banners/fondo-colaboradores-vertical.jpg);
+    }
+
+    .banner-directorio .inicio {
+        background-image: url(/imagenes/banners/fondo-directorio-vertical.jpg);
+    }
+
+    .banner-educacion .inicio {
+        background-image: url(/imagenes/banners/fondo-educacion-vertical.jpg);
+    }
+
+    .banner-actividades .inicio {
+        background-image: url(/imagenes/banners/fondo-actividades-vertical.jpg);
+    }
+}
+
+@media (max-width: 575px) {
+
+    .banner-index h1,
+    .banner-recorridos h1,
+    .banner-mapa h1,
+    .banner-historia h1,
+    .banner-servicios h1,
+    .banner-directorio h1,
+    .banner-colaboradores h1,
+    .banner-educacion h1,
+    .banner-actividades h1 {
+        font-size: 45px;
+        padding-right: 10px;
+    }
+
+    /*títulos de 3 renglones*/
+    .banner-index h1 {
+        padding-top: 420px;
+        padding-bottom: 85px;
+    }
+
+    /*títulos de 2 renglones*/
+    .banner-recorridos h1 {
+        padding-top: 476px;
+        padding-bottom: 85px;
+    }
+
+    /*títulos de 1 renglón*/
+    .banner-mapa h1,
+    .banner-historia h1,
+    .banner-servicios h1,
+    .banner-directorio h1,
+    .banner-colaboradores h1,
+    .banner-educacion h1,
+    .banner-actividades h1 {
+        padding-top: 531px;
+        padding-bottom: 85px;
+    }
+}
+
+@media (min-width: 450px) and (max-width: 991px) {
+    .banner-index .inicio {
+        background-image: url(/imagenes/banners/fondo-inicio-medium.jpg);
+    }
+
+    .banner-recorridos .inicio {
+        background-image: url(/imagenes/banners/fondo-recorridos-medium.jpg);
+    }
+
+    .banner-mapa .inicio {
+        background-image: url(/imagenes/banners/fondo-mapa-medium.jpg);
+    }
+
+    .banner-historia .inicio {
+        background-image: url(/imagenes/banners/fondo-historia-medium.jpg);
+    }
+
+    .banner-servicios .inicio {
+        background-image: url(/imagenes/banners/fondo-servicios-medium.jpg);
+    }
+
+    .banner-colaboradores .inicio {
+        background-image: url(/imagenes/banners/fondo-colaboradores-medium.jpg);
+    }
+
+    .banner-directorio .inicio {
+        background-image: url(/imagenes/banners/fondo-directorio-medium.jpg);
+    }
+
+    .banner-educacion .inicio {
+        background-image: url(/imagenes/banners/fondo-educacion-medium.jpg);
+    }
+
+    .banner-actividades .inicio {
+        background-image: url(/imagenes/banners/fondo-actividades-medium.jpg);
+    }
+
+}
+
+
+@media (min-width: 576px) and (max-width: 1199px) {
+
+    .banner-index h1,
+    .banner-recorridos h1,
+    .banner-mapa h1,
+    .banner-historia h1,
+    .banner-servicios h1,
+    .banner-directorio h1,
+    .banner-colaboradores h1,
+    .banner-educacion h1,
+    .banner-actividades h1 {
+        font-size: 56px;
+    }
+
+    /*títulos de 3 renglones*/
+    .banner-index h1 {
+        padding-top: 360px;
+    }
+
+    /*títulos de 2 renglones*/
+    .banner-recorridos h1 {
+        padding-top: 428px;
+    }
+
+    /*títulos de 1 renglón*/
+    .banner-mapa h1,
+    .banner-historia h1,
+    .banner-servicios h1,
+    .banner-directorio h1,
+    .banner-colaboradores h1,
+    .banner-educacion h1,
+    .banner-actividades h1 {
+        padding-top: 495px;
+        padding-bottom: 55px;
+    }
+
+}
+
+/********** AQUÍ INICIA INDEX **********/
+
+/*S2 ENTERATE*/
+
+@media (min-width: 575px) {
+
+    .home-hero {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: minmax(180px, auto) minmax(180px, auto);
+        grid-auto-rows: minmax(200px, auto);
+    }
+
+    .recorridos-menu {
+        grid-column: 1 / 3;
+        grid-row: 1 / 3;
+    }
+
+    .mapa-menu {
+        grid-column: 1;
+        grid-row: 3 / 6;
+    }
+
+    .actividades-menu {
+        grid-column: 1;
+        grid-row: 3 / 6;
+    }
+
+    .educacion-menu {
+        grid-column: 1;
+        grid-row: 6;
+    }
+}
+
+@media (min-width: 576px) {
+
+    .home-hero {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: minmax(140px, auto) minmax(140px, auto);
+        grid-auto-rows: minmax(100px, auto);
+    }
+
+    .recorridos-menu {
+        grid-column: 1;
+        grid-row: 1 / 4;
+    }
+
+    .mapa-menu {
+        grid-column: 1;
+        grid-row: 4 / 5;
+    }
+
+    .actividades-menu {
+        grid-column: 2;
+        grid-row: 1 / 3;
+    }
+
+    .educacion-menu {
+        grid-column: 2;
+        grid-row: 3 / 5;
+    }
+}
+
+@media (max-width: 767px) {
+
+    .wrapper h3 {
+        font-size: 28px;
+    }
+
+    .wrapper p {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 768px) {
+    .home-hero {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: minmax(140px, auto) minmax(140px, auto);
+        grid-auto-rows: minmax(100px, auto);
+    }
+
+    .recorridos-menu {
+        grid-column: 1;
+        grid-row: 1 / 5;
+    }
+
+    .mapa-menu {
+        grid-column: 1;
+        grid-row: 5 / 6;
+    }
+
+    .actividades-menu {
+        grid-column: 2;
+        grid-row: 1 / 4;
+    }
+
+    .educacion-menu {
+        grid-column: 2;
+        grid-row: 4 / 6;
+    }
+}
+
+/*S3 GALERIA-INICIO*/
+
+@media (max-width: 575px) {
+
+    .galeria-inicio h2 {
+        font-size: 18px;
+    }
+
+    /*pie de imagen*/
+
+    .galeria-inicio h3 {
+        font-size: 8px;
+        padding: 4px 2px;
+    }
+}
+
+
+/********** AQUÍ INICIA RECORRIDOS **********/
+
+/*S1 VISITAS*/
+@media (max-width: 991px) {
+    .visitas p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 575px) {
+
+    .recorridos h3 {
+        font-size: 20px;
+    }
+
+    /*pie de imagen*/
+
+    .galeria-recorridos h3 {
+        font-size: 8px;
+        padding: 4px 2px;
+    }
+}
+
+/*S3 RECORRIDOS ESCOLARES*/
+
+@media (min-width: 1200px) {
+    .galeria-escuelas {
+        margin-top: 30px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .recorridos-escolares h2 {
+        margin-top: 80px;
+    }
+}
+
+@media (max-width: 575px) {
+
+    /*pie de imagen*/
+    .galeria-escuelas h3 {
+        font-size: 8px;
+        padding: 4px 2px;
+    }
+}
+
+/********** AQUÍ INICIA MAPA **********/
+
+/* S1 MAPA-JARDÍN*/
+
+@media (max-width: 575px) {
+
+    .accordion-flush-mapa .accordion-item-mapa .accordion-button,
+    .accordion-flush-mapa .accordion-item-mapa .accordion-button.collapsed {
+        font-size: 20px;
+    }
+}
+
+/*S2 LUGARES-SOBRESALIENTES*/
+
+@media (max-width: 575px) {
+
+    /*flechas (afecta también al slider de servicios-educativos)*/
+    .button-next,
+    .button-prev {
+        height: 38px;
+        width: 38px;
+    }
+
+    .button-next::after {
+        margin: 10px 9px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .button-prev::after {
+        margin: 10px 12px;
+        width: 16px;
+        height: 16px;
+    }
+
+    /*pie de imagen*/
+    .lugares-sobresalientes .image h4 {
+        font-size: 8px;
+        padding: 4px 2px;
+    }
+
+}
+
+@media (min-width: 576px) {
+
+    /*flechas (afecta también al slider de servicios-educativos)*/
+    .button-prev {
+        left: -15px;
+    }
+
+    .button-next {
+        right: -15px;
+    }
+}
+
+
+@media (min-width: 991px) {
+    .lugares .slide-container .slide {
+        padding: 20px 15%;
+    }
+
+    /*flechas (afecta también al slider de servicios-educativos)*/
+    .button-prev {
+        left: 50px;
+    }
+
+    .button-next {
+        right: 50px;
+    }
+}
+
+
+@media (min-width: 1200px) {
+    .lugares .slide-container .slide {
+        gap: 60px;
+    }
+
+    .lugares .slide-container .slide {
+        padding: 20px 7%;
+    }
+
+    /*flechas (afecta también al slider de servicios-educativos)*/
+    .button-prev {
+        left: 10px;
+    }
+
+    .button-next {
+        right: 10px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .lugares .slide-container .slide {
+        gap: 130px;
+    }
+}
+
+
+/********** AQUÍ INICIA HISTORIA **********/
+
+@media (max-width: 991px) {
+
+    .count-digit {
+        font-size: 64px;
+    }
+
+    .count-title {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .count-description {
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+}
+
+/*S3 GALERÍA-HISTORIA*/
+
+@media (max-width: 575px) {
+    .galeria-historia h2 {
+        font-size: 18px;
+    }
+
+    /*pie de imagen*/
+    .galeria-historia h3 {
+        font-size: 8px;
+        padding: 4px 2px;
+    }
+
+}
+
+/********** AQUÍ INICIA SERVICIOS **********/
+
+/*S2 GALERIA-SERVICIOS*/
+@media (max-width: 575px) {
+
+    .galeria-servicios h2 {
+        font-size: 18px;
+    }
+
+    /*pie de imagen*/
+
+    .galeria-servicios h3 {
+        font-size: 8px;
+        padding: 4px 2px;
+    }
+}
+
+/********** AQUÍ INICIA COLABORADORES **********/
+
+@media (max-width: 575px) {
+    .colaboradores a {
+        font-size: 16px;
+    }
+}
+
+
+/********** AQUÍ INICIA EDUCACION **********/
+
+/*S2 LUGARES-SOBRESALIENTES*/
+
+@media (max-width: 575px) {
+
+    /*pie de imagen*/
+    .servicios-educativos .image h4 {
+        font-size: 8px;
+        padding: 4px 2px;
+    }
+}
+
+
+@media (min-width: 991px) {
+    .espacios .slide-container .slide {
+        padding: 20px 15%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .espacios .slide-container .slide {
+        gap: 60px;
+    }
+
+    .espacios .slide-container .slide {
+        padding: 20px 7%;
+    }
+}
+
+@media (min-width: 1400px) {
+    .espacios .slide-container .slide {
+        gap: 130px;
+    }
+}
+
+/**********AQUÍ INICIA ACTIVIDADES**********/
+
+/*S1 PRÓXIMOS EVENTOS*/
+
+
+@media (max-width: 575px) {
+
+    .evento h3 {
+        font-size: 22px;
+        padding: 20px 0;
+    }
+
+    .evento p {
+        font-size: 14px;
+    }
+}

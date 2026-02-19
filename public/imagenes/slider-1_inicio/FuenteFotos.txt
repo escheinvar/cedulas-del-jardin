@@ -1,0 +1,13 @@
+img-01.jpg: Interior del Jardín Etnobiológico de Oaxaca | Foto: Ernesto de los Santos Reyes
+img-02.jpg: Interior del Jardín Etnobiológico de Oaxaca | Foto: Ernesto de los Santos Reyes
+img-03.jpg: Interior del Jardín Etnobiológico de Oaxaca | Foto: Ernesto de los Santos Reyes
+img-04.jpg: Interior del Jardín Etnobiológico de Oaxaca | Foto: Ernesto de los Santos Reyes
+
+img-05.webp:  (Foto obtenida de página web previa sin autor conocido)
+img-06.webp:  (Foto obtenida de página web previa sin autor conocido)
+img-07.webp:  (Foto obtenida de página web previa sin autor conocido)
+img-08.webp:  (Foto obtenida de página web previa sin autor conocido)
+img-09.webp:  (Foto obtenida de página web previa sin autor conocido)
+img-10.webp:  (Foto obtenida de página web previa sin autor conocido)
+
+

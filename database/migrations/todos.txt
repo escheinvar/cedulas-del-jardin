@@ -1,0 +1,1633 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_instituciones')){
+            Schema::create('cat_instituciones', function (Blueprint $table) {
+                $table->id('cins_id');
+                $table->string('cins_institucion');
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        ##### No se puede tirar porque está asociado a tabla en producción (cédulas) que no se puede borrar
+        // Schema::dropIfExists('cat_instituciones');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('users')){
+            Schema::create('users', function (Blueprint $table) {
+                $table->id();
+                $table->string('email')->unique();
+                $table->enum('act',['0','1'])->default('1');
+                $table->string('usrname')->unique();
+                $table->string('nombre');
+                $table->string('apellido');
+                $table->date('nace')->nullable();  ## Año, mes y dia de nacimiento
+                // $table->string('cinsid')->nullable(); ## Organización a la que pertenece ó número id de cat_instituciones
+                $table->foreignId('cinsid')->constrained('cat_instituciones','cins_id');
+                $table->string('avatar')->nullable()->default('/avatar/usr.png');
+
+                $table->timestamp('email_verified_at')->nullable();
+                $table->string('password');
+                $table->rememberToken();
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // --------------- En producción (cédulas: no borrar, pues tiene datos de usuarios en producción)
+        // Schema::dropIfExists('users');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('password_reset_tokens');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('failed_jobs', function (Blueprint $table) {
+            $table->id();
+            $table->string('uuid')->unique();
+            $table->text('connection');
+            $table->text('queue');
+            $table->longText('payload');
+            $table->longText('exception');
+            $table->timestamp('failed_at')->useCurrent();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('failed_jobs');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('personal_access_tokens', function (Blueprint $table) {
+            $table->id();
+            $table->morphs('tokenable');
+            $table->string('name');
+            $table->string('token', 64)->unique();
+            $table->text('abilities')->nullable();
+            $table->timestamp('last_used_at')->nullable();
+            $table->timestamp('expires_at')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('personal_access_tokens');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('usr_tokens', function (Blueprint $table) {
+            $table->id('tok_id');
+            $table->enum('tok_act',['0','1'])->default('1');
+            $table->string('tok_mail');
+            $table->string('tok_token');
+            $table->dateTime('tok_ini')->nullable();
+            $table->dateTime('tok_fin')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('usr_tokens');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_roles')){
+            Schema::create('cat_roles', function (Blueprint $table) {
+                $table->id('crol_id');
+                $table->string('crol_mod')->default('base');     ### nombre del módulo al que pertenece el rol
+                $table->string('crol_rol')->unique()->key();     ### nombre del rol
+                $table->string('crol_describe')->nullable(); ### texto descriptivo modulo:rol
+                $table->string('crol_notas')->nullable(); ### notas sobre el rol
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        ##### No borrar porque se utiliza en las tablas de usuario en producción.
+        // Schema::dropIfExists('cat_roles');
+    }
+};
+<?php
+
+use App\Models\User;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // --------------- En producción
+        if(!Schema::hasTable('usr_roles')){
+            Schema::create('usr_roles', function (Blueprint $table) {
+                $table->id('rol_id');
+                $table->enum('rol_act',['0','1'])->default('1');  ##### Binario de borrado lógico
+                $table->foreignId('rol_usrid')->constrained('users','id'); #### número id del usuario (de table users)
+
+                $table->string('rol_crolrol')->default('usr');
+                $table->foreign('rol_crolrol')->references('crol_rol')->on('cat_roles')->onDelete('cascade')->constrained('cat_roles','crol_rol');
+
+                $table->string('rol_tipo1')->nullable();  ##### En caso de requerirse, descriptor del rol (x ej, con admin-jardin: "JebOax")
+                $table->string('rol_tipo2')->nullable();  ##### En caso de requerirse, descriptor del rol (x ej, con admin-jardin: "animales")
+                $table->string('rol_describe')->nullable()->default('Usuario de sistema');
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // --------------- En producción. No borrar porque ya tiene datos de usuarios en producción.
+        // Schema::dropIfExists('usr_roles');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if (!Schema::hasTable('cat_kew_plantsoftheworld')) {
+            Schema::create('cat_kew_plantsoftheworld', function (Blueprint $table) {
+                $table->id('ckew_taxonid');
+                $table->string('ckew_family')->nullable();
+                $table->string('ckew_genus')->nullable();
+                $table->string('ckew_specificepithet')->nullable();
+                $table->string('ckew_infraspecificepithet')->nullable();
+                $table->string('ckew_scientfiicname')->nullable();
+                $table->string('ckew_scientfiicnameauthorship')->nullable();
+                $table->string('ckew_taxonrank')->nullable();
+                $table->string('ckew_taxonomicstatus')->nullable();
+                $table->string('ckew_acceptednameusageid')->nullable();
+                $table->string('ckew_parentnameusageid')->nullable();
+                $table->string('ckew_originalnameusageid')->nullable();
+                $table->string('ckew_namepublishedin')->nullable();
+                $table->string('ckew_nomenclaturalstatus')->nullable();
+                $table->string('ckew_taxonremarks')->nullable();
+                $table->string('ckew_scientificnameid')->nullable();
+                $table->string('ckew_dynamicproperties')->nullable();
+                $table->string('ckew_reference')->nullable();
+                $table->string('ckew_references')->nullable();
+                //$table->string('Version')->default('Kew_2024-06-12');
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // --- no borrar, porque cuesta mucho levantarla (está muy grande) y se carga desde archivo
+        // Schema::dropIfExists('cat_kew_plantsoftheworld');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_fotoplantaslabel')){
+            Schema::create('cat_fotoplantaslabel', function (Blueprint $table) {
+                $table->id('cimg_id');
+                $table->string('cimg_gral')->default('planta'); ##### Módulo sobre el cual se ejecutan las etiquetas
+                $table->string('cimg_tipo');  ##### Tipo de etiquieta para foto (ejemplar, especie, uso, proceso)
+                $table->string('cimg_name')->unique()->key();  ##### Nombre de la etiqueta ()
+                $table->string('cimg_descripcion')->nullable(); ##### descripción de la etiqueta
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void    {
+        ##### No se puede tirar porque lo requieren  las posiciones de imágenes que se usan en las cédulas en producción.
+        // Schema::dropIfExists('cat_fotoplantaslabel');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_jardines')){
+            Schema::create('cat_jardines', function (Blueprint $table) {
+                $table->id('cjar_id');
+                $table->string('cjar_name');    ##### nombre corto del jardín (ej. Etnobotánico de Oaxaca)
+                $table->string('cjar_nombre');  ##### nombre completo del jardín (ej. Jardín Etnobotánico de Oaxaca)
+                $table->string('cjar_siglas')->unique();  ##### siglas del jardín (ej. JebOax)
+                $table->string('cjar_tipo')->nullable();    ##### tipo de jardín (ej. Etnobiológico)
+                $table->string('cjar_direccion')->nullable();##### Dirección del jardín
+                $table->string('cjar_tel')->nullable();     ###### Teléfono del jardín
+                $table->string('cjar_mail')->nullable();    ###### Correo electrónico del jardín
+                $table->string('cjar_edo')->nullable();     ##### Estado de la república en el que está el jardín
+                $table->string('cjar_logo')->nullable();     ##### Ubicación del archivo con el logo del jardín
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        ##### No tirar porque está asociado a tabla en producción (requiere el registro del JebOax)
+        // Schema::dropIfExists('cat_jardines');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_campus')){
+            Schema::create('cat_campus', function (Blueprint $table) {
+                $table->id('ccam_id');
+                $table->enum('ccam_act',['0','1'])->default('1');  ##### borrado lógico
+                $table->foreignId('ccam_cjarid')->constrained('cat_jardines','cjar_id'); ##### Id del jardín al que  pertenece
+                $table->string('ccam_name');  ##### Nombre corto del campus (ej: Jardín ó Canteras)
+                $table->string('ccam_nombre');  ##### Nombre completo del campus (ej: Jardín Etnobotánico ó Parque de Canteras en Archivo)
+                $table->string('ccam_direccion')->nullable();  ##### Dirección del jardín
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('cat_campus');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_camellones')){
+            Schema::create('cat_camellones', function (Blueprint $table) {
+                $table->id('cam_id');
+                $table->foreignId('cam_ccamid')->constrained('cat_campus','ccam_id');
+                $table->string('cam_camellon')->unique(); ### Nombre corto del camellón
+                $table->string('cam_zona')->nullable(); ### zona en la que está el camellòn
+                $table->string('cam_zonaname')->nullable();; ### Nombre de la zona en la que está
+                $table->string('cam_camellonname')->nullable();; ### Nombre largo del camellón en la que está
+                $table->string('cam_color')->nullable();;   #### Color del camellòn
+                $table->string('cam_notas')->nullable();     ### notas sobre la zona
+                $table->json('cam_mapa')->nullable();     #### Json del polígono del camellón
+                $table->decimal('cam_ctrox',13,10)->nullable()->default('-96.72211246391984'); ### Coordenadas X del centro del polígono (para visualizar en leaflet)
+                $table->decimal('cam_ctroy',13,10)->nullable()->default('17.06588524915741'); ### Coordenadas Y del centro del polígono (para visualizar en leaflet)
+                $table->integer('cam_zoom')->nullable()->default('20'); ### Zoom inicial del mapa (para visualizar en leaflet)
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('cat_camellones');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_lenguas')){
+            Schema::create('cat_lenguas', function (Blueprint $table) {
+                $table->id('clen_id');
+                $table->string('clen_lengua'); ##### Nombre de la lengua en español
+                $table->string('clen_code')->unique()->key();  ##### Código usado por el sistema para identificar la lengua
+                $table->longText('clen_localidad')->nullable();  ##### Nombre de localidad de referencia
+                $table->string('clen_usuarios')->nullable();   ##### Número de usuarios que lo hablan
+                $table->string('clen_status')->nullable();   ##### Status sensu etnolog
+                $table->string('clen_altnames')->nullable(); ##### Nombres alternativos
+                $table->string('clen_autonimias')->nullable(); ##### Nombre,de la lengua según la propia lengua
+                $table->string('clen_clasifica')->nullable();
+                $table->integer('clen_originario');    ##### Indica si es 1 o no 0 lengua de pueblo originario
+
+                #$table->string('clen_alias')->nullable();  #### arreglo de alias separados por punto y coma
+                #$table->string('clen_region')->nullable(); ##### Texto con la región geogràfica en la que se habla la lengua
+                #$table->string('clen_observa')->nullable();  ##### En caso de haber, observaciones a la lengua
+                #$table->string('clen_audio')->nullable(); ##### ubicación del archivo con el audio de la lengua
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('cat_lenguas CASCADE');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_lenguas_inali')){
+            Schema::create('cat_lenguas_inali', function (Blueprint $table) {
+                $table->id('clen2_id');
+                $table->string('clen2_lengua'); ##### Nombre de la lengua, variante en español sensu inali, 2008
+                $table->string('clen2_autonimia')->nullable(); ##### Nombre,de la lengua según la propia lengua,
+                $table->longText('clen2_localidad')->nullable();  ##### Nombre de localidad de referencia
+                $table->string('clen2_usuarios')->nullable();   ##### Número de comunidades en el mapa de conabio según inali
+                #$table->string('clen2_status')->nullable();   ##### Status sensu etnolog
+                #$table->string('clen2_altnames')->nullable(); ##### Nombres alternativos
+                #$table->string('clen2_clasifica')->nullable();
+                #$table->integer('clen2_originario');    ##### Indica si es 1 o no 0 lengua de pueblo originario
+                $table->string('clen2_code')->nullable();  ##### Código de ethnologue de la lengua (ninguno, uno o más)
+                $table->integer('clen2_fam')->nullable();  ###### Código de la familia de ethnologue (https://www.ethnologue.com/subgroup/#/)
+                $table->integer('clen2_rama')->nullable(); ###### Código de la rama de ethnologue (https://www.ethnologue.com/subgroup/#/)
+                $table->integer('clen2_subgroup')->nullable(); ###### Código del subgrupo más cercano sensu ethnologue (https://www.ethnologue.com/subgroup/#/)
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('cat_lenguas_inali CASCADE');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // Schema::create('reporte_boletos_view', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->timestamps();
+        // });
+        if(!Schema::hasTable('lenguas_view')){
+            DB::statement("
+                CREATE VIEW lenguas_view AS (
+                    SELECT
+                    'ethnologue' as clen_base,   clen_id as clen_id,   clen_lengua as clen_lengua, clen_code as clen_code, clen_localidad as clen_localidad, clen_altnames as clen_nombres, clen_autonimias as clen_autonimia
+                    FROM cat_lenguas
+
+                    UNION
+
+                    SELECT
+                    'Inali' as clen_base, clen2_id as clen_id, clen2_lengua as clen_lengua, clen2_code as clen_code, clen2_localidad as clen_localidad, clen2_lengua as clen_nombres, clen2_autonimia as clen_autonimia
+                    FROM cat_lenguas_inali
+                )
+            ");
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // Schema::dropIfExists('reporte_boletos_view');
+        DB::statement('DROP VIEW IF EXISTS lenguas_view CASCADE');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('pl_clavos_colectas_copy1')){
+            Schema::create('pl_clavos_colectas_copy1', function (Blueprint $table) {
+                $table->id('cl_idcolectas');
+                $table->integer('cl_numero_clavo');
+                $table->string('cl_letra')->nullable();
+                $table->string('cl_comentarios')->nullable();
+                $table->string('cl_recolector')->nullable();
+                $table->date('cl_fecha')->nullable();
+                $table->string('cl_datos_etnobotanicos')->nullable();
+                $table->integer('cl_plantas_idplantas')->nullable();
+                $table->string('cl_nombre_comun')->nullable();
+                $table->string('cl_genero')->nullable();
+                $table->string('cl_especie')->nullable();
+                $table->string('cl_familia')->nullable();
+                $table->string('cl_protegida')->nullable();
+                $table->integer('cl_numero_salida')->nullable();
+                $table->string('cl_caracteristica_raiz')->nullable();
+                $table->string('cl_altura_planta')->nullable();
+                $table->string('cl_dap')->nullable();
+                $table->decimal('cl_diametro_tronco',8,2)->nullable();
+                $table->integer('cl_diametro_raiz')->nullable();
+                $table->decimal('cl_cobertura',8,2)->nullable();
+                $table->decimal('cl_diametro_cepellon',8,2)->nullable();
+                $table->decimal('cl_altura_cepellon',8,2)->nullable();
+                $table->string('cl_estado')->nullable();
+                $table->string('cl_forma_biologica')->nullable();
+                $table->string('cl_conformacion_cepellon')->nullable();
+                $table->string('cl_estado_fenologico')->nullable();
+                $table->string('cl_ciclo_vida')->nullable();
+                $table->string('cl_comentarios_de_registro')->nullable();
+                $table->string('cl_tipo_raiz')->nullable();
+                $table->string('cl_forma_colecta')->nullable();
+                $table->string('cl_revision')->nullable();
+                $table->string('cl_link')->nullable();
+                $table->string('cl_usuarios_idusuarios')->nullable();
+                $table->string('cl_username')->nullable();
+                $table->string('cl_active')->nullable();
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        ##### nO BORRAR PORQUE CUESTA UN HUEVO CARGARLA DE NUEVO (DESDE ARCHIVO)
+        // Schema::dropIfExists('pl_clavos_colectas_copy1');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('pl_clavos_georeferencia_copy1')){
+            Schema::create('pl_clavos_georeferencia_copy1', function (Blueprint $table) {
+                $table->id('cl_id2');
+                $table->foreignId('cl_colectas_idcolectas')->constrained('pl_clavos_colectas_copy1','cl_idcolectas');
+                $table->integer('cl_altitud')->nullable();
+                $table->decimal('cl_latitud',12,9)->nullable();
+
+                // $table->decimal('cl_longitud',12,8)->nullable();
+                $table->string('cl_longitud')->nullable();
+
+                $table->string('cl_procedencia')->nullable();
+                $table->string('cl_municipio')->nullable();
+                $table->string('cl_distritos')->nullable();
+                $table->string('cl_nombre_region')->nullable();
+                $table->string('cl_nombre_estado')->nullable();
+                $table->string('cl_provincia_fisografica')->nullable();
+                $table->string('cl_area_protegida')->nullable();
+                $table->string('cl_iluminacion')->nullable();
+                $table->string('cl_topografia')->nullable();
+                $table->string('cl_exposicion')->nullable();
+                $table->string('cl_suelo')->nullable();
+                $table->string('cl_clima_zona')->nullable();
+                $table->decimal('cl_ph',2,1)->nullable();
+                $table->string('cl_temperatura')->nullable();
+                $table->string('cl_textura')->nullable();
+                $table->string('cl_color')->nullable();
+                $table->string('cl_pedregosidad')->nullable();
+                $table->string('cl_abundancia_zona')->nullable();
+                $table->string('cl_vegetacion_zona')->nullable();
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // Schema::dropIfExists('pl_clavos_georeferencia_copy1');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('pl_clavos_tratamiento_transporte')){
+            Schema::create('pl_clavos_tratamiento_transporte', function (Blueprint $table) {
+                $table->id('cl_id3');
+                $table->foreignId('cl_colectas_copy1_idcolectas')->constrained('pl_clavos_colectas_copy1','cl_idcolectas');
+                $table->string('cl_personas_recolectar')->nullable();
+                $table->date('cl_fecha_inicio')->nullable();
+                $table->date('cl_fecha_corte')->nullable();
+                $table->date('cl_fecha_tratamiento')->nullable();
+                $table->date('cl_fecha_embalaje')->nullable();
+                $table->date('cl_fecha_extraccion')->nullable();
+                $table->string('cl_tipo_extraccion')->nullable();
+                $table->date('cl_fecha_carga_envio')->nullable();
+                $table->string('cl_tipo_vehiculo')->nullable();
+                $table->date('cl_fecha_llegada')->nullable();
+                $table->date('cl_fecha_descarga')->nullable();
+                $table->longText('cl_observaciones')->nullable();
+                $table->string('cl_nombre_responsable_tecnico')->nullable();
+                $table->string('cl_nombre_responsable_operativo')->nullable();
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // Schema::dropIfExists('pl_clavos_tratamiento_transporte');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('pl_clavos_categorias')){
+            Schema::create('pl_clavos_categorias', function (Blueprint $table) {
+                $table->id('cl_id4');
+                $table->string('cl_nombre_campo');
+                $table->string('cl_dato');
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('pl_clavos_categorias');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // --------------- En producción
+        if(!Schema::hasTable('www_eventos')){
+            Schema::create('www_eventos', function (Blueprint $table) {
+                $table->id('wwevs_id');
+                $table->enum('wwevs_act',['0','1'])->default('1');  ##### borrado lógico
+                $table->string('wwevs_titulo');                 ##### Título del evento
+                $table->string('wwevs_descrip')->nullable();    ##### Breve descripción del evento
+                $table->string('wwevs_descrip2')->nullable();    ##### Breve descripción del evento
+                $table->string('wwevs_label')->nullable();      ##### Etiquetas [Recorrido, Presentación, Cultural, Comunicado, Taller] de tipo de evento (separados por coma) Ej: Recorrido, Conferencia, Taller, Comunicado
+                $table->string('wwevs_lugar')->nullable();      ##### Lugar en el que se realiza el evento (ej: Jardín Etnobotánico de Oaxaca)
+                $table->date('wwevs_dateini');                  ##### Fecha de inicio del evento
+                $table->date('wwevs_datefin');      ##### Fecha de finalización del evento
+                $table->time('wwevs_timeini', precision: 0);    ##### Hora de inicio del evento
+                $table->time('wwevs_timefin', precision: 0)->nullable();##### Hora de finalización del evento
+                $table->string('wwevs_costo')->nullable();      ##### Texto del costo (ej: Actividad gratuita, Costo: $50 por persona)
+                $table->string('wwevs_img')->default('/imagenes/eventos/evento.png');
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // --------------- En producción. No borrar porque hay eventos en producción.
+        // Schema::dropIfExists('www_eventos');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_iconos')){
+            Schema::create('cat_iconos', function (Blueprint $table) {
+                $table->id('icon_id');
+                $table->string('icon_name');
+                $table->string('icon_nombre');
+                $table->string('icon_coleccion')->default('web'); ##### colección a la que pertenece (planta, web, etcc)
+                $table->string('icon_file');
+                $table->string('icon_sizex')->nullable();
+                $table->string('icon_sizey')->nullable();
+                $table->string('icon_col1')->nullable();
+                $table->string('icon_col2')->nullable();
+                $table->string('icon_descripcion')->nullable();
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('cat_iconos');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('pl_plantas')){
+            Schema::create('pl_plantas', function (Blueprint $table) {
+                $table->id('pl_id');                        ##### Número base del ejemplar
+                $table->string('pl_idcolecta')->nullable(); ##### En caso de existir, id pre-existente de colecta del ejemplar (x ej. no. de clavo)
+                $table->string('pl_idjardin')->nullable();  ##### En caso de existir, id pre-existente de ejemplar de jardìn
+                $table->string('pl_idherbario')->nullable();##### En caso de existir, id pre-existente de número de registro
+
+                $table->enum('pl_act',['0','1'])->default('1'); ##### Borrado lógico$
+                $table->enum('pl_coleccion',['0','1'])->default('0'); ##### Indica si pertenece a la colección (1) o es accesorio (0)
+                $table->enum('pl_plantula',['0','1'])->default('1'); ##### Indica si el registro (en la fecha de ingreso, es una plántula o no)
+                $table->enum('pl_fin',['0','1'])->default('0'); ##### Indica si el ejemplar deja de existir en la colección (1) o sigue existiendo (0)
+                $table->string('pl_fintype')->nullable();  ##### En caso de que pl_fin=1, indica la razón por la que ya no está el ejemplar.
+                $table->date('pl_findate')->nullable();  ##### En caso de que pl_fin=1, indica la fecha de fin.
+                $table->string('pl_label')->nullable();  ##### En caso de requerirse, etiquetar planta separado por punto y coma (x ej. proyecto conacyth001; salida 45;)
+                $table->string('pl_obs')->nullable();   ##### En caso de habrlas, observaciones sobre el ejemplar
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('pl_plantas');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('pl_jardinsig')){
+            Schema::create('pl_jardinsig', function (Blueprint $table) {
+                $table->id('sig_id');
+                $table->foreignId('sig_plid')->constrained('pl_plantas','pl_id');  ##### ID de tabla pl_plantas
+                $table->enum('sig_act',['0','1'])->default('1'); ##### Borrado lógico
+                $table->foreignId('sig_camid')->constrained('cat_camellones','cam_id');  ##### ID del camellón en el que está el ejemplar
+                $table->string('sig_campus');  ##### Texto del campus en el que está el ejempar (copiado de ccam_name)
+                $table->decimal('sig_x',13,10); ###### Longitud. Ubicación del ejemplar en el jardín
+                $table->decimal('sig_y',13,10); ###### Latitud. Ubicación del ejemplar en el jardín
+
+                $table->string('sig_identificador')->nullable(); ##### En caso de haberlo, identificador de campo (ej: clavo fìsico?)
+                #$table->string('sig_iconoforma')->nullable();
+                $table->foreignId('sig_iconid')->constrained('cat_iconos','icon_id')->nullable(); ##### Ìcono del elemento
+                $table->string('sig_color1')->nullable(); ##### Color principal del ícono
+                $table->string('sig_color2')->nullable(); ##### Color secundario del ícono
+                $table->string('sig_notas')->nullable(); ##### En caso de haberlas, notas de su ubicación
+
+                $table->enum('sig_flag1',['0','1'])->default('0')->nullable(); ##### Bandera para los usuarios (para marcar el ejemplar)
+                $table->enum('sig_flag2',['0','1'])->default('0')->nullable(); ##### Bandera para los usuarios (para marcar el ejemplar)
+                $table->enum('sig_flag3',['0','1'])->default('0')->nullable(); ##### Bandera para los usuarios (para marcar el ejemplar)
+                $table->enum('sig_flag4',['0','1'])->default('0')->nullable(); ##### Bandera para los usuarios (para marcar el ejemplar)
+                $table->enum('sig_flag5',['0','1'])->default('0')->nullable(); ##### Bandera para los usuarios (para marcar el ejemplar)
+
+                $table->foreignId('sig_usr')->constrained('users','id');  ##### usuario que georeferenció el ejemplar
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('pl_jardinsig');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('pl_scinames')){
+            Schema::create('pl_scinames', function (Blueprint $table) {
+                $table->id('scn_id');
+                $table->foreignId('scn_plid')->constrained('pl_plantas','pl_id');  ##### ID de tabla pl_plantas
+                $table->enum('scn_act',['0','1'])->default('1'); ##### Borrado lógico
+                $table->foreignId('scn_ckewtaxonid')->nullable()->constrained('cat_kew_plantsoftheworld','ckew_taxonid');  ##### ID de tabla de nombre científico de kew if =0, tons no kew
+                $table->integer('scn_tipo')->default('0');  ##### Tipo de nombre: 0=campo, 1=kew, 2=tecnico-jardín, 3=herbario, 4-autoridad1, 5 autoridad2;
+
+                $table->string('scn_fam')->nullable();  ##### Texto de la familia
+                $table->string('scn_gen')->nullable();  ##### Texto del género
+                $table->string('scn_sp')->nullable();  ##### Texto de la especie
+                $table->string('scn_ssp')->nullable();  ##### Texto de categoría sub especìfica
+                $table->string('scn_nombre')->nullable();   ##### Texto del nombre científico completo
+
+                $table->foreignId('scn_usr')->constrained('users','id');  ##### usuario que ingresó la informaciòn
+                $table->string('scn_autoridad')->nullable(); ##### Texto del nombre de la autoridad que determió el nombre
+                $table->date('scn_autoridaddate')->nullable();  ###### Fecha en la que la autoridad determinó el nombre
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('pl_scinames');
+    }
+};
+<?php
+
+use App\Models\CatLenguasModel;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('pl_comnames')){
+            Schema::create('pl_comnames', function (Blueprint $table) {
+                $table->id('comn_id');
+                $table->foreignId('comn_plid')->constrained('pl_plantas','pl_id');  ##### ID de tabla pl_plantas
+                $table->enum('comn_act',['0','1'])->default('1'); ##### Borrado lógico
+
+                $table->string('comn_nombre'); ##### Texto con el nombre
+
+                $table->string('comn_clencode');
+                ###### ojo, tuve que silenciar el foreign porque en la vista, clen_code no es key (se repiten base inali y base ethnologue)
+                // $table->foreign('comn_clencode')->references('clen_code')->on('cat_lenguas')->onDelete('cascade')->constrained('clen_code','cat_lenguas');
+
+                $table->string('comn_regiones')->nullable(); ##### Array separado por punto y coma de las zonas o regiones geográficas en las que se reconoce el nombre
+                $table->integer('comn_tipo')->default('0'); ##### Número indicador de proceso de curación: 0= dato de campo, 1=corregido por técnico; 2=corregido por autoridad;
+
+                $table->string('comn_audio1')->nullable(); ##### Texto con ubicación del archivo de audio con la pronunciación del nombre
+                $table->string('comn_audio2')->nullable(); ##### Texto con ubicación del archivo de audio con la pronunciación del nombre
+                $table->string('comn_video1')->nullable(); ##### Texto con ubicación del archivo de video con la pronunciación del nombre
+                $table->string('comn_video2')->nullable(); ##### Texto con ubicación del archivo de video con la pronunciación del nombre
+
+                $table->foreignId('comn_usr')->constrained('users','id');  ##### usuario que ingresó la información
+                $table->string('comn_autoridad')->nullable(); ##### Texto del nombre de la autoridad que determinó el nombre
+                $table->date('comn_autoriddadate')->nullable();  ###### Fecha en la que la autoridad determinó el nombre
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('pl_comnames');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('pl_fotos')){
+            Schema::create('pl_fotos', function (Blueprint $table) {
+                $table->id('img_id');
+                $table->foreignId('img_plid')->constrained('pl_plantas','pl_id');  ##### ID de tabla pl_plantas
+                $table->enum('img_act',['0','1'])->default('1'); ##### Borrado lógico
+
+                $table->string('img_file');  ##### Texto con la ubicación del archivo de imágen
+                $table->foreignId('img_label')->constrained('cat_fotoplantaslabel','cimg_id');  ##### ID del label de la foto
+                $table->string('img_autor')->nullable(); ##### Texto con el nombre del autor de la imagen
+                $table->string('img_titulo')->nullable(); ##### Texto con el nombre del tìtulo de la imagen
+                $table->date('img_date')->nullable(); ##### Fecha de la imagen
+                $table->string('img_descrip')->nullable(); ##### Breve texto con descripción de la imagen
+                $table->string('img_metadata')->nullable(); ##### Array con punto y coma de metadatos de la foto.
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('pl_fotos');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('pl_import')){
+            Schema::create('pl_import', function (Blueprint $table) {
+                $table->id('imp_id');
+                $table->enum('imp_act',['0','1'])->default('1');
+                $table->string('imp_label');    ##### Identificador del ejemplar (número de colecta o nùmero de clavo)
+                $table->string('imp_camellon'); ##### Texto del nombre del camellón
+                $table->decimal('imp_x',13,10); ##### Coordenadas X del ejemplar dentro del camellòn
+                $table->decimal('imp_y',13,10); ##### Coordenadas Y del ejemplar dentro del camellòn
+
+                $table->integer('imp_comunidad')->default('1')->nullable(); ##### indicador del número de especies a registrar con la misma ficha (si >1 tons poner nombres separados por coma)
+                $table->string('imp_ramet')->default('1')->nullable(); ##### En caso de ser clonal, número de individuos que lo conforman; si multiple>1, separar por comas
+
+                $table->string('imp_sciname')->nullable(); ##### Texto del nombre científico
+                $table->string('imp_comname')->nullable(); ##### Texto del nombre común
+                $table->string('imp_obsejemplar')->nullable(); ##### Texto de observaciones del ejemplar
+                $table->string('imp_obsubica')->nullable(); ##### Texto de observaciones sobre la ubicación del ejemplar
+                $table->string('imp_obscaptura')->nullable(); ##### Texto de observaciones sobre la captura de datos del ejemplar
+                $table->string('imp_fotolugar')->nullable(); ##### Texto de ubicación de la foto de ubicaciòn del ejemplar
+
+                $table->integer('imp_fotolabellugar')->nullable();  ##### Texto de la etiqueta de lugar
+                $table->integer('imp_fotolabel1')->nullable();  ##### Texto de la etiqueta de la planta
+                $table->integer('imp_fotolabel2')->nullable();  ##### Texto de la etiqueta de la planta
+                $table->integer('imp_fotolabel3')->nullable();  ##### Texto de la etiqueta de la planta
+                $table->integer('imp_fotolabel4')->nullable();  ##### Texto de la etiqueta de la planta
+                $table->integer('imp_fotolabel5')->nullable();  ##### Texto de la etiqueta de la planta
+
+                $table->string('imp_foto1')->nullable(); ##### Texto de ubicación de la foto del ejemplar
+                $table->string('imp_foto2')->nullable(); ##### Texto de ubicación de la foto del ejemplar
+                $table->string('imp_foto3')->nullable(); ##### Texto de ubicación de la foto del ejemplar
+                $table->string('imp_foto4')->nullable(); ##### Texto de ubicación de la foto del ejemplar
+                $table->string('imp_foto5')->nullable(); ##### Texto de ubicación de la foto del ejemplar
+                $table->date('imp_date')->nullable(); ##### Fecha de captura de informaciòn
+                $table->integer('imp_flag1')->nullable(); ###### Flag opcional para el usuario
+                $table->integer('imp_flag2')->nullable(); ###### Flag opcional para el usuario
+                $table->integer('imp_flag3')->nullable(); ###### Flag opcional para el usuario
+                $table->integer('imp_flag4')->nullable(); ###### Flag opcional para el usuario
+                $table->integer('imp_flag5')->nullable(); ###### Flag opcional para el usuario
+
+                $table->string('imp_kew')->nullable(); ##### Número id de kew (en caso de haberse determinado el nombre con kew)
+                $table->integer('imp_iconid')->nullable(); ##### Referencia al ícono seleccionado
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('pl_import');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_entidades_inegi')){
+            Schema::create('cat_entidades_inegi', function (Blueprint $table) {
+                $table->id('cedo_id');
+                $table->string('cedo_nombre');
+                $table->string('cedo_abrevia');
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('cat_entidades_inegi');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('cat_municipios_inegi')){
+            Schema::create('cat_municipios_inegi', function (Blueprint $table) {
+                $table->id('cmun_id');
+                #$table->foreignId('cmun_cedoid')->constrained('cat_entidades_inegi','cedo_id');  ##### ID de tabla pl_plantas
+                $table->integer('cmun_cedoid');
+                $table->string('cmun_edoname');
+                $table->integer('cmun_mpioid');
+                $table->string('cmun_mpioname');
+                $table->integer('cmun_cabeceraid');
+                $table->string('cmun_cabeceraname');
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // No borrar, porque el archivo de municipios se carga desde archivo.
+        // Schema::dropIfExists('cat_municipios_inegi');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // --------------- En producción
+        if(!Schema::hasTable('sp_url')){
+            Schema::create('sp_url', function (Blueprint $table) {
+                $table->id('url_id');
+                $table->enum('url_act',['0','1'])->default('1');
+                $table->string('url_url')->unique()->key();  ###### Nombre de URL (sin espacios, ñ ni acentos)
+                $table->string('url_nombre')->nullable();
+                $table->enum('url_reino',['pl','an','fu','pr','mo','ar','lu','pr','us','le','none'])->default('pl');  ##### Indica el reino: plantae, animalia, fungi, protista, monera, arquea, ninguno (para áreas o temas) Lu=Lugar, po=Proceso, us=uso, Le=lengua
+                $table->integer('url_sp')->nullable(); ##### Id del taxon de la cédula (según reino, plantae=kew_taxonid)
+                $table->longText('url_nombrecomun')->nullable(); ##### Array con nombres comunes separados por punto y coma
+                $table->string('url_sciname')->nullable(); ##### Nombre científico (para mostrar al público)
+                $table->string('url_palabras')->nullable(); ###### array separado por ; de palabras clave.
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // --------------- En producción. No borrar porque hay cédulas en producción
+        // Schema::dropIfExists('sp_url');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // --------------- En producción
+        if(!Schema::hasTable('sp_urlcedula')){
+            Schema::create('sp_urlcedula', function (Blueprint $table) {
+                $table->id('ced_id');
+                $table->enum('ced_act',['0','1'])->default('1');
+                $table->integer('ced_edo')->default('0'); ##### Estado de la cédula: 0=en construcción, 1=en revisión,  2=aprobado1, 3=en edicion, 4=en revisión, 5=público )
+
+                $table->string('ced_urlurl');   ###### URL de la especie
+                $table->foreign('ced_urlurl')->references('url_url')->on('sp_url')->onDelete('cascade')->constrained('sp_url','url_url');
+
+                $table->string('ced_clencode'); ##### lengua
+                ###### ojo, tuve que silenciar el foreign porque en la vista, clen_code no es key (se repiten base inali y base ethnologue)
+                #$table->foreign('ced_clencode')->references('clen_code')->on('cat_lenguas')->onDelete('cascade')->constrained('cat_lenguas','clen_code');
+
+
+                $table->string('ced_cjarsiglas'); ##### Jardín
+                $table->foreign('ced_cjarsiglas')->references('cjar_siglas')->on('cat_jardines')->onDelete('cascade')->constrained('cat_jardines','cjar_siglas');
+
+
+
+                $table->decimal('ced_version',5,2)->default('1.00'); ##### Versión de la cédula
+                $table->date('ced_versiondate')->default(date('Y-m-d'));  ##### Fecha de la última versión
+
+                $table->longText('ced_cita')->nullable(); ###### Texto de la cita de la ficha: Scheinvar GE y Gámez T, 2003. Algo....
+                $table->text('ced_doi')->nullable();  ##### número doi
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // --------------- En producción.  No borrar porque hay cédulas en producción
+        // Schema::dropIfExists('sp_urlcedula');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // --------------- En producción
+        if(!Schema::hasTable('sp_cedulas')){
+            Schema::create('sp_cedulas', function (Blueprint $table) {
+                $table->id('txt_id');
+
+                $table->foreignId('txt_cedid')->constrained('sp_urlcedula','ced_id'); ##### texto de la url
+                $table->enum('txt_act',['0','1'])->default('1'); ##### Borrado lógico
+                $table->enum('txt_titulo',['0','1'])->default('0'); ##### Indica si es título (h4) ò solo es código
+                $table->decimal('txt_order',6,2)->default('0.0');  ##### Número de orden del párrafo
+                $table->longText('txt_codigo')->nullable(); ##### Código html del párrafo
+                $table->string('txt_autor')->nullable();     ##### id del autor del párrafo
+                $table->string('txt_version')->nullable()->default('0.01');   ##### Versión del párrafo
+
+                $table->string('txt_audio')->nullable();    ##### nombre del archivo de audio
+                $table->string('txt_video')->nullable(); ### video asociada al párrafo
+                $table->string('txt_img1')->nullable();  ### imagen asociada al párrafo
+                $table->string('txt_img2')->nullable();  ### imagen asociada al párrafo
+                $table->string('txt_img3')->nullable();  ### imagen asociada al párrafo
+                $table->foreignId('txt_resp')->constrained('users','id'); ##### Id del responsable de subir a BD
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // --------------- En producción. No borrar porque hay cédulas en producción
+        // Schema::dropIfExists('sp_cedulas');
+
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // --------------- En producción
+        if(!Schema::hasTable('sp_fotos')){
+            Schema::create('sp_fotos', function (Blueprint $table) {
+                $table->id('imgsp_id');
+
+                $table->string('imgsp_urlurl'); ##### URL de la especie a la que pertenece la imagen
+                $table->foreign('imgsp_urlurl')->references('url_url')->on('sp_url')->onDelete('cascade')->constrained('sp_url','url_url');  ##### ID de tabla pl_plantas
+
+                $table->string('imgsp_cjarsiglas'); ##### URL de la especie a la que pertenece la imagen
+                $table->foreign('imgsp_cjarsiglas')->references('cjar_siglas')->on('cat_jardines')->onDelete('cascade')->constrained('cat_jardines','cjar_siglas');  ##### ID de tabla pl_plantas
+
+                $table->enum('imgsp_act',['0','1'])->default('1'); ##### Borrado lógico
+                $table->string('imgsp_file')->nullable();  ##### Texto con la ubicación del archivo de imágen con resolucion normal
+                $table->string('imgsp_filelow')->nullable();  ##### Texto con la ubicación del archivo de imágen con resolución baja
+
+                $table->string('imgsp_cimgname');   ##### texto de tabla catálogo de imagenes con nombre de label (posición de la foto)
+                $table->foreign('imgsp_cimgname')->references('cimg_name')->on('cat_fotoplantaslabel')->onDelete('cascade')->constrained('cimg_name','cat_fotoplantaslabel');
+
+                $table->string('imgsp_autor')->nullable(); ##### Texto con el nombre del autor de la imagen
+                $table->string('imgsp_titulo')->nullable(); ##### Texto con el nombre del tìtulo de la imagen
+                $table->string('imgsp_pie')->nullable(); ##### Texto de pie de figura de la imágen
+                $table->date('imgsp_date')->nullable(); ##### Fecha de la imagen
+                $table->string('imgsp_descrip')->nullable(); ##### Breve texto con descripción de la imagen
+                $table->string('imgsp_metadata')->nullable(); ##### Array con punto y coma de metadatos de la foto.
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // --------------- En producción. No borrar porque tiene imágenes en producción.
+        // Schema::dropIfExists('sp_fotos');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // --------------- En producción
+        if(!Schema::hasTable('sist_buzon_mensajes')){
+            Schema::create('sist_buzon_mensajes', function (Blueprint $table) {
+                $table->id('buz_id');
+                $table->enum('buz_act',['0','1'])->default('1');  ##### borrado lógico
+                $table->enum('buz_leido',['0','1'])->default('0'); ##### flag de mensaje leído
+                $table->string('buz_modulo');   ##### Módulo al que pertenece el mensaje (cédulas, plantas, sistema, usuarios)
+
+                $table->integer('buz_usr_origen');  #### Número id del usuario que genera el mensaje
+                $table->integer('buz_destino_usr')->nullable(); #####
+                $table->string('buz_destino_rol')->nullable();
+                $table->longText('buz_notas')->nullable();
+                $table->string('buz_asunto');
+                $table->string('buz_mensaje');
+                $table->dateTime('buz_date_origen');
+                $table->dateTime('buz_date_leido')->nullable();
+                $table->dateTime('buz_date_borrado')->nullable();
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // --------------- En producción, no borrar porque tiene mensajes en producción
+        // Schema::dropIfExists('sist_buzon_mensajes');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('sp_aporte_usrs')){
+            Schema::create('sp_aporte_usrs', function (Blueprint $table) {
+                $table->id('msg_id');
+                $table->enum('msg_act',['0','1'])->default('1');
+                $table->integer('msg_edo')->default('0'); ##0:enviado x usr 1:pausado x admin, 2:canceladox admin, 3:publico
+                $table->integer('msg_cedid');   #### Idde cedula a la que pertenece la aportación
+                $table->integer('msg_usr'); #### ID del usuario que envía la aportación
+                $table->string('msg_usuario'); #### username de quien envía la aportación
+                $table->string('msg_origen')->nullable(); #### dato ingresado por quien envía "soy originario de2.."
+                $table->string('msg_edad')->nullable(); #### dato ingresado por quien envía "Edad"
+                $table->longText('msg_mensaje')->nullable(); ##### Texto del mensaje
+                $table->date('msg_date');
+
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('sp_aporte_usrs');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        if(!Schema::hasTable('sp_urlcedula_versiones')){
+            Schema::create('sp_urlcedula_versiones', function (Blueprint $table) {
+                $table->id('cedv_id');
+                $table->integer('cedv_cedid');
+                $table->decimal('cedv_cedversion',5,2); ##### Versión de la cédula
+                $table->integer('cedv_usr');
+                $table->longText('cedv_pdf');
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('sp_urlcedula_versiones');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('sist_visitas', function (Blueprint $table) {
+            $table->id('vis_id');
+            $table->enum('vis_unique',['1','0'])->default('0');
+            $table->string('vis_ip')->nullable()    ;
+            $table->string('vis_url')->nullable();
+            $table->string('vis_url2')->nullable();
+            $table->string('vis_url3')->nullable();
+            $table->string('vis_locale')->nullable();
+            $table->string('vis_locale2')->nullable();
+            $table->string('vis_tocken')->nullable();
+            $table->string('vis_pais')->nullable();
+            $table->string('vis_regionname')->nullable();
+            $table->string('vis_ciudad')->nullable();
+            $table->decimal('vis_x',10,7)->nullable();
+            $table->decimal('vis_y',10,7)->nullable();
+
+            $table->string('vis_usr')->nullable();
+            $table->string('vis_rol')->nullable();
+            $table->timestamps();
+
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('sist_visitas');
+    }
+};
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        #####  DOF 14/11/2019.
+        #####  MODIFICACIÓN del Anexo Normativo III, Lista de especies en riesgo de la Norma Oficial Mexicana NOM-059-SEMARNAT-2010, Protección ambiental-Especies nativas de México de flora y fauna silvestres-Categorías de riesgo y especificaciones para su inclusión, exclusión o cambio-Lista de especies en riesgo, publicada el 30 de diciembre de 2010.
+        Schema::create('nom054semarnat', function (Blueprint $table) {
+            $table->id('nom_id');
+            $table->string('nom_grupo');
+            $table->string('nom_subgrupo');
+            $table->string('nom_familia');
+            $table->string('nom_genero');
+            $table->string('nom_especie');
+            $table->string('nom_catinfrasp')->nullable();
+            $table->string('nom_infrasp')->nullable();
+            $table->string('nom_autor')->nullable();
+            $table->mediumText('nom_sinonimia')->nullable();
+            $table->mediumText('nom_comunname')->nullable();
+            $table->string('nom_distri')->nullable();
+            $table->string('nom_cat');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('nom054semarnat');
+    }
+};

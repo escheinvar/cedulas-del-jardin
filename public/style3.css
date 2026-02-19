@@ -1,0 +1,231 @@
+* {
+    margin: 0;
+}
+
+/*GENERALES*/
+
+/*Para párrafos introductorios
+ o para la primera sección de cada página*/
+.texto-principal {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    line-height: 2;
+}
+
+/*Para el resto de los párrafos*/
+.texto-secundario {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 2;
+}
+
+/*títulos de cada sección*/
+h3.subtitulo,
+h2.subtitulo {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 40px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    border-bottom: solid 1px #CDC6B9;
+    margin-bottom: 25px;
+}
+
+h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    padding-top: 5px;
+}
+
+a {
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+/*Estilo de las citas*/
+
+h2.cita,
+h3.cita {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 40px;
+    line-height: 1.5;
+    padding-bottom: 20px;
+    border-bottom: solid 1px #CDC6B9;
+}
+
+h4.autor-cita {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    color: #87796dbe;
+
+}
+
+p.autor-cita {
+    font-size: 12px;
+    color: #87796dbe;
+}
+
+
+
+/**********ELEMENTOS HEADER**********/
+
+/******NAVBAR******/
+
+/*enlaces*/
+.fondo-nav {
+    background-color: #efebe8 !important;
+}
+
+.texto-nav a {
+    color: #202d2d !important;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 18px;
+}
+
+a.nav-link {
+    padding: 0 20px !important;
+}
+
+.nav-link.active {
+    color: #919C1B !important;
+}
+
+.nav-link:hover {
+    color: #919C1B !important;
+}
+
+.dropdown-item {
+    font-size: 18px !important;
+}
+
+/*boton dropdown*/
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown-item.active {
+    margin: 0 !important;
+    background-color: #efebe8;
+    color: #919C1B !important;
+}
+
+/*menú desplegado */
+.offcanvas.show:not(.hiding) {
+    background-color: #efebe8 !important;
+}
+
+.dropdown-menu.show {
+    background-color: #efebe8 !important;
+}
+
+.offcanvas-header {
+    padding: 25px 40px;
+}
+
+.dropdown-item:hover {
+    color: #919C1B !important;
+    background-color: #efebe8 !important;
+}
+
+.offcanvas-body {
+    text-align: center;
+}
+
+.offcanvas-body a {
+    font-size: 20px;
+}
+
+.iconos-nav {
+    padding: 30px;
+    text-align: center;
+}
+
+/**********ESTO APLICA A TODOS LOS BANNERS**********/
+
+.banner-index,
+.banner-recorridos,
+.banner-mapa,
+.banner-historia,
+.banner-servicios,
+.banner-directorio,
+.banner-colaboradores,
+.banner-educacion,
+.banner-actividades {
+    background-color: #efebe8;
+}
+
+/*El número de renglones determina el padding superior*/
+/*títulos de 3 renglones*/
+.banner-index h1 {
+    padding: 425px 30px 55px 0;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 68px;
+    color: #efebe8;
+    margin: 0px;
+}
+
+/*títulos de 2 renglones*/
+.banner-recorridos h1 {
+    padding: 507px 30px 55px 0;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 68px;
+    color: #efebe8;
+    margin: 0px;
+}
+
+/*títulos de 1 renglon*/
+.banner-mapa h1,
+.banner-historia h1,
+.banner-servicios h1,
+.banner-directorio h1,
+.banner-colaboradores h1,
+.banner-educacion h1,
+.banner-actividades h1 {
+    padding: 588px 30px 55px 0;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 68px;
+    color: #efebe8;
+    margin: 0px;
+}
+
+/*redes sociales*/
+.redes-header {
+    display: inline;
+}
+
+.iconos {
+    padding: 5px 30px;
+}
+
+.iconos img {
+    position: relative;
+    transition: all 0.2s linear;
+}
+
+.iconos img:hover {
+    transform: translate3d(0, 4px, 0);
+}
+
+/*boton scroll down*/
+
+.button-scroll-down p {
+    color: #87796d !important;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 16px;
+    margin: -28px -6px;
+}
+
+.button-scroll-down {
+    position: relative;
+    padding: 5px;
+    margin: -35px auto;
+    background: #64383E;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    transition: all 0.2s linear;
+}

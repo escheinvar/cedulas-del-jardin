@@ -1,0 +1,8 @@
+- Módulo de búsqueda de cédulas. Que al iniciar, se vea tabla de temas con traducciones y buscador por tema (incluyendo todos los nombres en lengua dentro de la búsqueda)
+- Administrador y editor de temas
+- Cambiar la tabla de adminsitrador de cédulas por una tabla con estados que no se tenga que abrir
+- Agregar un perfil de revisor de cédulas (acceso a una cédula en particular)
+- Modificar estados: que el traductor primero solicite editar y que el administrador autorice iniciar edición.
+- Módulo de administración de perfiles de traductor
+- Módulo de visualización de perfiles de traductor
+- Que al guardar nueva versión, se genere el pdf y ése sea consultado (no al vuelo)
