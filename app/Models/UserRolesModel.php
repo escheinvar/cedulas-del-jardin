@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class UserRolesModel extends Model
 {
@@ -16,12 +17,19 @@ class UserRolesModel extends Model
 
     protected $fillable = [
         'rol_act',
+        'rol_del',
         'rol_usrid',
-        #'rol_crolid',
+        'rol_cjarsiglas',
         'rol_crolrol',
         'rol_tipo1',
         'rol_tipo2',
-
         'rol_describe',
     ];
+
+    public function rol():HasOne {
+        return $this->hasOne(CatRolesModel::class,'crol_rol', 'rol_crolrol');
+    }
+    // public function rol():BelongsTo{
+    //     return $this->belongsTo()
+    // }
 }

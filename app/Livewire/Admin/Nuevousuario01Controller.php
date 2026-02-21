@@ -53,7 +53,7 @@ class Nuevousuario01Controller extends Component
             'apellido'=>$this->apellido,
             'nace'=>$this->nace,
             'cinsid'=>$this->org,
-            'avatar'=>'default.png',
+            'avatar'=>'/avatar/default.png',
             'password'=>Hash::make($this->contrasenia),
 
         ]);

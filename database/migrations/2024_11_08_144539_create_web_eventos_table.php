@@ -39,6 +39,6 @@ return new class extends Migration
     public function down(): void
     {
         // --------------- En producción. No borrar porque hay eventos en producción.
-        // Schema::dropIfExists('www_eventos');
+        Schema::dropIfExists('www_eventos');
     }
 };

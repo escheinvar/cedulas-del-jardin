@@ -40,6 +40,6 @@ return new class extends Migration
     public function down(): void
     {
         // --------------- En producción, no borrar porque tiene mensajes en producción
-        // Schema::dropIfExists('sist_buzon_mensajes');
+        Schema::dropIfExists('sist_buzon_mensajes');
     }
 };

@@ -42,7 +42,7 @@ return new class extends Migration
     public function down(): void
     {
         // --------------- En producción. No borrar porque hay cédulas en producción
-        // Schema::dropIfExists('sp_cedulas');
+        Schema::dropIfExists('sp_cedulas');
 
     }
 };

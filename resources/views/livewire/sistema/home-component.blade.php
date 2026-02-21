@@ -1,32 +1,71 @@
-@section('title')
-    Inicio
-@endsection
-@section('cintillo')
-    &nbsp; Home &nbsp; &nbsp;
-@endsection
+@section('title') Home SiCeJar @endsection
+@section('meta-description') Home de usuario del sistema de cédulas del jardín @endsection
+@section('cintillo-ubica') &nbsp; @endsection
+@section('cintillo') &nbsp; @endsection
+@section('MenuPublico')  @endsection
+@section('MenuPrivado') x @endsection
 
 
 <div>
 
-    <!-- -- DATOS DEL USUARIO -->
-    <div class="my-4">
-        Hola <b>{{auth()->user()->usrname}}</b><BR>
-        <b>Usuario</b>: {{auth()->user()->email}}<BR>
+    <!-- ------------------------------------------- -->
+    <!--  ----- Inicia Caja de usuario y roles ----- -->
+    <div class="row">
+        <div class="col-sm-12 col-md-3 col-lg-5">
+            <h2>Home</h2>
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-6">
+            <div style="background-color:#CDC6B9;padding:10px; color:#64383E">
+                <div style="width:86%;display:inline-block;">
+                    <!-- muestra usuario -->
+                    <div>
+                        <div style="display:inline-block; width:70px; font-weight:bold">Usuario:</div>
+                        <div style="display:inline-block;"> {{ Auth::user()->usrname }} ({{ Auth::user()->id }})</span></div>
+                        <a href="/homeConfig" class="nolink" style="padding:5px;">
+                            <i class="bi bi-gear-fill" style="font-size:120%;"></i>
+                        </a>
+                    </div>
+                    <!-- muestra correo -->
+                    <div>
+                        <div style="display:inline-block; width:70px; font-weight:bold">Correo:</div>
+                        <div style="display:inline-block;">  {{ Auth::user()->email  }}</div>
+                    </div>
+                    <!-- muestra roles -->
+                    <div>
+                        <div style="display:inline-block; width:70px; font-weight:bold">Rol(es):</div>
+                        @foreach ($roles as $i)
+                            {{ $i->rol_crolrol.'@'.$i->rol_cjarsiglas }}, &nbsp; &nbsp; &nbsp;
+                        @endforeach
 
-        <!-- ----------------------- Ver Roles ----------------------- -->
-        <b>Tus roles</b>:
-        @foreach (array_unique(session('rol')) as $i)
-            {{$i}},
-        @endforeach
+
+                    </div>
+                </div>
+                <div style="width:13%; display:inline-block; vertical-align:top; text-align:right;padding:5px;" class="d-none d-sm-inline-block">
+                    @if(Auth::user()->avatar == '')
+
+                        <a href="/config" class="nolink" style="">
+                            <img src="/avatar/usr.png" class="avatar" style="display: inline;">a
+                        </a>
+                    @else
+                        <a href="/config" class="nolink" style="">
+                            <img src="{{ Auth::user()->avatar }}" class="avatar">
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  ----- Termina Caja de usuario y roles ----- -->
+    <!-- ------------------------------------------- -->
+
+    <!-- -- TABLA DE APORTES DEL USUARIO -->
+    <div class="my-4">
         @if($MisAportes=='0')<br>
         <button wire:click="VerNoverAportes()" class="btn btn-primary">
             Ver mis aportes
-            {{-- <img src="/cedulas/BotonAportar.png" style="width:90px;border:2px solid rgb(61, 41, 33);border-radius:15px;"> --}}
         </button>
         @endif
     </div>
-
-
     <!-- ---------- Módulo de  aportes --------------->
     <div class="m-4">
         @if($MisAportes=='1')

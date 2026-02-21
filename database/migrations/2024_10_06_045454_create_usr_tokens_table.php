@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('usr_tokens', function (Blueprint $table) {
-            $table->id('tok_id');
-            $table->enum('tok_act',['0','1'])->default('1');
-            $table->string('tok_mail');
-            $table->string('tok_token');
-            $table->dateTime('tok_ini')->nullable();
-            $table->dateTime('tok_fin')->nullable();
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('usr_tokens')){
+            Schema::create('usr_tokens', function (Blueprint $table) {
+                $table->id('tok_id');
+                $table->enum('tok_act',['0','1'])->default('1');
+                $table->string('tok_mail');
+                $table->string('tok_token');
+                $table->dateTime('tok_ini')->nullable();
+                $table->dateTime('tok_fin')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

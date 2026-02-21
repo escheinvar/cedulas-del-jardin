@@ -16,18 +16,28 @@ class userSeeder extends Seeder
     {
         ##### En producción
         if(User::count()=='0'){
-            User::firstOrCreate(['email'=>'admin@mail.com'],[
+            User::create([
                 'id'=>'1',
                 'email'=>'admin@mail.com',
+                'nombre'=>'Enrique',
+                'apellido'=>'Scheinvar',
+                'usrname'=>'admin',
+                'nace'=>'1977-07-22',
+                'cinsid'=>'1',
+                'password'=>Hash::make('admin'),
+                'avatar'=>'/avatar/usr2.png'
+            ]);
+            User::create([
+                'id'=>'2',
+                'email'=>'escheinvar@gmail.com',
                 'nombre'=>'Enrique',
                 'apellido'=>'Scheinvar',
                 'usrname'=>'escheinvar',
                 'nace'=>'1977-07-22',
                 'cinsid'=>'1',
-                'avatar'=>null,
                 'password'=>Hash::make('admin'),
                 'avatar'=>'/avatar/usr2.png'
-            ]);
+                ]);
         }
     }
 }

@@ -17,6 +17,8 @@ return new class extends Migration
                 $table->string('cjar_name');    ##### nombre corto del jardín (ej. Etnobotánico de Oaxaca)
                 $table->string('cjar_nombre');  ##### nombre completo del jardín (ej. Jardín Etnobotánico de Oaxaca)
                 $table->string('cjar_siglas')->unique();  ##### siglas del jardín (ej. JebOax)
+                $table->enum('cjar_act',['0','1'])->default('1');  ##### borrado lógico
+                $table->enum('cjar_del',['0','1'])->default('0');  ##### borrado lógico
                 $table->string('cjar_tipo')->nullable();    ##### tipo de jardín (ej. Etnobiológico)
                 $table->string('cjar_direccion')->nullable();##### Dirección del jardín
                 $table->string('cjar_tel')->nullable();     ###### Teléfono del jardín
@@ -34,6 +36,6 @@ return new class extends Migration
     public function down(): void
     {
         ##### No tirar porque está asociado a tabla en producción (requiere el registro del JebOax)
-        // Schema::dropIfExists('cat_jardines');
+        Schema::dropIfExists('cat_jardines');
     }
 };

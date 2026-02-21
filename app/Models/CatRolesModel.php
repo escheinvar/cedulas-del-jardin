@@ -17,6 +17,7 @@ class CatRolesModel extends Model
     protected $fillable = [
         'crol_rol',
         'crol_mod',
+        'crol_gps',
         'crol_describe',
         'crol_notas',
     ];

@@ -32,6 +32,6 @@ return new class extends Migration
     public function down(): void
     {
         // No borrar, porque el archivo de municipios se carga desde archivo.
-        // Schema::dropIfExists('cat_municipios_inegi');
+        Schema::dropIfExists('cat_municipios_inegi');
     }
 };

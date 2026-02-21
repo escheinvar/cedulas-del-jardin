@@ -1,3 +1,9 @@
+@section('title') Buzón del SiCeJar @endsection
+@section('meta-description') Buzón de usuario del sistema de cédulas del Jardín @endsection
+@section('cintillo-ubica') -> {{ request()->path() }} @endsection
+@section('cintillo') &nbsp; @endsection
+@section('MenuPublico')  @endsection
+@section('MenuPrivado') x @endsection
 
 <div>
     <div class="container">

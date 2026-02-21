@@ -16,13 +16,15 @@ return new class extends Migration
                 $table->id();
                 $table->string('email')->unique();
                 $table->enum('act',['0','1'])->default('1');
+                $table->enum('del',['0','1'])->default('0');
                 $table->string('usrname')->unique();
                 $table->string('nombre');
                 $table->string('apellido');
                 $table->date('nace')->nullable();  ## Año, mes y dia de nacimiento
-                // $table->string('cinsid')->nullable(); ## Organización a la que pertenece ó número id de cat_instituciones
-                $table->foreignId('cinsid')->constrained('cat_instituciones','cins_id');
+                $table->string('cinsid');
+                // $table->foreignId('cinsid')->constrained('cat_instituciones','cins_id');
                 $table->string('avatar')->nullable()->default('/avatar/usr.png');
+                $table->string('mensajes')->nullable();
 
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('password');
@@ -38,6 +40,6 @@ return new class extends Migration
     public function down(): void
     {
         // --------------- En producción (cédulas: no borrar, pues tiene datos de usuarios en producción)
-        // Schema::dropIfExists('users');
+        Schema::dropIfExists('users');
     }
 };

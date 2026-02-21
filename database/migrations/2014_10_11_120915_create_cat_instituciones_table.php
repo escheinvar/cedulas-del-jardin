@@ -26,6 +26,6 @@ return new class extends Migration
     public function down(): void
     {
         ##### No se puede tirar porque está asociado a tabla en producción (cédulas) que no se puede borrar
-        // Schema::dropIfExists('cat_instituciones');
+        Schema::dropIfExists('cat_instituciones');
     }
 };

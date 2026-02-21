@@ -18,6 +18,8 @@ class CatJardinesModel extends Model
         'cjar_name',
         'cjar_nombre',
         'cjar_siglas',
+        'cjar_act',
+        'cjar_del',
         'cjar_tipo',
         'cjar_direccion',
         'cjar_tel',

@@ -45,6 +45,6 @@ return new class extends Migration
     public function down(): void
     {
         // --- no borrar, porque cuesta mucho levantarla (está muy grande) y se carga desde archivo
-        // Schema::dropIfExists('cat_kew_plantsoftheworld');
+        Schema::dropIfExists('cat_kew_plantsoftheworld');
     }
 };

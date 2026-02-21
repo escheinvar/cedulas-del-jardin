@@ -17,7 +17,7 @@ extensiones:
 
     apt install php8.3-gd php8.3-intl php8.3-xsl
 
-1a.- En carpeta /storage/app generé liga: ln -s ../../public aPublic
+1a.- En carpeta /storage/app generé liga: ln -s ../../public
 
 2a.- Base de datos kew: hay que copiar manualmente la BD de kew en la tabla kew_plantsoftheworld
     para eso hay que descargar la BD de taxonomía de kew (https://powo.science.kew.org/) y sustituir todos los corchetes y paréntesis. Luego hay que copiar la BD en cat_kew_plantsoftheworld

@@ -16,6 +16,7 @@ class CatCampusModel extends Model
 
     protected $fillable = [
         'ccam_act',
+        'ccam_del',
         'ccam_cjarid',
         'ccam_name',
         'ccam_nombre',

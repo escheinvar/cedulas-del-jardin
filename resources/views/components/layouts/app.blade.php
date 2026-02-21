@@ -1,1 +1,2 @@
-@extends('plantillas.PlantillaWeb')
+@extends('plantillas.basePublico')
+{{-- @extends('plantillas.PlantillaWeb') --}}
