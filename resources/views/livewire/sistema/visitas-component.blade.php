@@ -1,3 +1,5 @@
+@section('MenuPublico')  @endsection
+@section('MenuPrivado') x @endsection
 <div>
     <h1>Visitas</h1>
     <div class="row">

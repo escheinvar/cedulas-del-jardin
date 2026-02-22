@@ -1,22 +1,25 @@
 <?php
 
-namespace App\Livewire\Plantas;
+namespace App\Livewire\Sistema;
 
 use App\Models\CatCampusModel;
 use App\Models\CatEntidadesInegiModel;
 use App\Models\CatJardinesModel;
+use App\Models\UserRolesModel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
-#[Layout('plantillas.PlantillaSistemaBase')]
-class CatalogoJardinesYcampusComponent extends Component
+
+class AdminJardinesController extends Component
 {
 
     use WithFileUploads;
 
+    public $edit, $editjar;
     public $HayJardin,$jar_name,$jar_nombre, $jar_siglas, $jar_tipo, $jar_direccion, $jar_edo, $jar_tel, $jar_mail, $jar_logo, $jar_logoNuevo;
     public $campuses;
     public $HayCampus, $cam_name, $cam_nombre, $cam_direccion;
@@ -54,20 +57,20 @@ class CatalogoJardinesYcampusComponent extends Component
         }
     }
 
-    public function ProcedeCampus($id){
-        if($id > '0'){
-            $this->HayCampus=$id;
-            $datoCampus=CatCampusModel::where('ccam_id',$id)->where('ccam_act','1')->first();
-            $this->cam_name = $datoCampus-> ccam_name;
-            $this->cam_nombre = $datoCampus-> ccam_nombre;
-            $this->cam_direccion = $datoCampus -> ccam_direccion;
-        }else{
-            $this->HayCampus='0';
-            $this->cam_name = '';
-            $this->cam_nombre = '';
-            $this->cam_direccion = '';
-        }
-    }
+    // public function ProcedeCampus($id){
+    //     if($id > '0'){
+    //         $this->HayCampus=$id;
+    //         $datoCampus=CatCampusModel::where('ccam_id',$id)->where('ccam_act','1')->first();
+    //         $this->cam_name = $datoCampus-> ccam_name;
+    //         $this->cam_nombre = $datoCampus-> ccam_nombre;
+    //         $this->cam_direccion = $datoCampus -> ccam_direccion;
+    //     }else{
+    //         $this->HayCampus='0';
+    //         $this->cam_name = '';
+    //         $this->cam_nombre = '';
+    //         $this->cam_direccion = '';
+    //     }
+    // }
 
     public function EditaJardin($id){
         $this->validate([
@@ -105,21 +108,35 @@ class CatalogoJardinesYcampusComponent extends Component
         redirect('/catalogo/campus');
     }
 
-    public function EditaCampus($id){
-        CatCampusModel::updateOrCreate(['ccam_id'=>$id], [
-            'ccam_cjarid'=> $this->HayJardin,
-            'ccam_name'=>$this->cam_name,
-            'ccam_nombre'=>$this->cam_nombre,
-            'ccam_direccion'=>$this->cam_direccion,
-        ]);
-        redirect('/catalogo/campus');
-    }
+    // public function EditaCampus($id){
+    //     CatCampusModel::updateOrCreate(['ccam_id'=>$id], [
+    //         'ccam_cjarid'=> $this->HayJardin,
+    //         'ccam_name'=>$this->cam_name,
+    //         'ccam_nombre'=>$this->cam_nombre,
+    //         'ccam_direccion'=>$this->cam_direccion,
+    //     ]);
+    //     redirect('/catalogo/campus');
+    // }
 
 
     public function render(){
+        ##### Revisa permisos del usuario
+        $auts=['admin'];
+        ##### jardines autorizados al usuario
+        $this->editjar = UserRolesModel::where('rol_usrid',Auth::user()->id)
+            ->whereIn('rol_crolrol',$auts)
+            ->where('rol_act','1')->where('rol_del','0')
+            ->pluck('rol_cjarsiglas')->toArray();
+        if(array_intersect($auts,session('rol')) and in_array('todos',$this->editjar) ){
+            $this->edit='1';
+        }else{
+            $this->edit='0';
+            redirect('/noauth/Solo accede rol '.implode(',',$auts).' con acceso a todos');
+        }
+
         $NumDeCampus = CatCampusModel::where('ccam_act','1')->select('ccam_cjarid', DB::raw('count(ccam_cjarid) as total'))->groupBy('ccam_cjarid')->get();
 
-        return view('livewire.plantas.catalogo-jardines-ycampus-component',[
+        return view('livewire.sistema.admin-jardines-Controller',[
             'jardines'=>CatJardinesModel::orderBy('cjar_id','asc')->get(),
             'NumDeCampus'=>$NumDeCampus,
             'Entidades'=>CatEntidadesInegiModel::all(),

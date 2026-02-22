@@ -4,6 +4,9 @@
 @section('cintillo')
     Administrador de Aportes &nbsp; &nbsp;
 @endsection
+@section('MenuPublico')  @endsection
+@section('MenuPrivado') x @endsection
+
 
 
 <div class="m-4">

@@ -9,7 +9,7 @@ use Livewire\Component;
 
 
 
-#[Layout('components.layouts.SistemaBase')]
+// #[Layout('components.layouts.SistemaBase')]
 class VisitasComponent extends Component
 {
     public $desde, $hasta;

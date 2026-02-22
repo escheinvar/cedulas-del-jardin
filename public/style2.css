@@ -27,14 +27,13 @@ a:link:visited:hover:active.nolink{
     padding: 5px;
     margin: -35px auto;
     background: #CDC6B9;
-    height: 45px;
-    width: 45px;
+    height: 40px;
+    width: 40px;
     border-radius: 7px;
     transition: all 0.2s linear;
+    text-align: center;
 }
-.paginador .boton{
-    /* border-radius: 50%; */
-}
+
 .paginador .boton:hover,
 .paginador .pagina:hover {
     transform: translate3d(0, 5px, 0);

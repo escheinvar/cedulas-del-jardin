@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('components.layouts.SistemaBase')]
+// #[Layout('components.layouts.SistemaBase')]
 class AportesComponent extends Component
 {
 

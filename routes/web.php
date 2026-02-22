@@ -15,7 +15,7 @@ use App\Livewire\Cedulas\EditaCedulasComponent;
 use App\Livewire\Cedulas\EspeciesComponent;
 use App\Livewire\Login\RecuperaPasswd01Controller;
 use App\Livewire\Login\RecuperaPasswdController;
-use App\Livewire\Plantas\CatalogoJardinesYcampusComponent;
+use App\Livewire\Sistema\AdminJardinesController;
 use App\Livewire\Sistema\BuzonController;
 use App\Livewire\Sistema\ErrorComponent;
 use App\Livewire\Sistema\HomeComponent;
@@ -26,6 +26,7 @@ use App\Livewire\Web\AutoresController;
 use App\Livewire\Web\BuscadorCedulasComponent;
 use App\Livewire\Web\InicioController;
 use App\Livewire\Web\JardinesController;
+use App\Livewire\Web\NoauthController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -47,6 +48,8 @@ Route::get('/', InicioController::class)->name('inicio');
 Route::get('/jardines',JardinesController::class)->name('jardines');
 Route::get('/autores',AutoresController::class)->name('autores');
 Route::get('/cedulasdeljardin', BuscadorCedulasComponent::class)->name('cedulas');
+Route::get('/noauth/{msj}', NoauthController::class)->name('cedulas');
+
 
 
 
@@ -69,10 +72,11 @@ Route::middleware([UsuarioLogeadoConRolMiddle::class,Authenticate::class])->grou
     Route::get('/home',HomeComponent::class)->name('home');
     Route::get('/homeConfig', HomeConfigController::class)->name('homeConfig');
     Route::get('/buzon',BuzonController::class)->name('buzon');
-    Route::get('/aportes',AportesComponent::class)->name('aportes');
-    Route::get('/usuarios',UsuariosComponent::class)->name('usuarios');
-    Route::get('/vervisitas',VisitasComponent::class)->name('visitas');
-    Route::get('/catalogo/campus', CatalogoJardinesYcampusComponent::class)->name('CatCampus');
+
+    Route::get('/admin_usuarios',UsuariosComponent::class)->name('usuarios');
+    Route::get('/admin_jardines', AdminJardinesController::class)->name('CatCampus');
+    Route::get('/admin_aportes',AportesComponent::class)->name('aportes');
+    Route::get('/admin_visitas',VisitasComponent::class)->name('visitas');
 
     /* --------------------------- SECCION CÉDULAS -------------------------------- */
     /* ---------------------------------------------------------------------------- */
