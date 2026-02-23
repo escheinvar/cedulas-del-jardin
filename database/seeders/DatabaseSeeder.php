@@ -42,8 +42,8 @@ class DatabaseSeeder extends Seeder
             SpFotosSeeder::class, ##### En producción
 
             #Nom054semarnatSeeder::class,
-
             BuzonSeeder::class,
+            LenguasSeeder::class,
 
         ]);
     }

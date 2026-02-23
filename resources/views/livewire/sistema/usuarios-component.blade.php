@@ -1,5 +1,5 @@
 <div>
-@section('title')  @endsection
+@section('title') Admin Usuarios @endsection
 @section('meta-description') Meta @endsection
 @section('cintillo-ubica') -> {{ request()->path() }} @endsection
 @section('cintillo') &nbsp; @endsection

@@ -25,7 +25,7 @@ class CatJardinesCampusSeeder extends Seeder
                 'cjar_tel'=>' 951 516 5325',
                 'cjar_mail'=>'etnobotanico@infinitummail.com',
                 'cjar_edo'=>'Oaxaca',
-                'cjar_logo'=>'JebOax.png',
+                'cjar_logo'=>'/avatar/jardines/JebOax.png',
             ],[
                 'cjar_id'=>'2',
                 'cjar_name'=>'Matatlan',
@@ -36,7 +36,7 @@ class CatJardinesCampusSeeder extends Seeder
                 'cjar_tel'=>' 951 516 5325',
                 'cjar_mail'=>'etnobotanico@infinitummail.com',
                 'cjar_edo'=>'Oaxaca',
-                'cjar_logo'=>'Matatlan.png',
+                'cjar_logo'=>'/avatar/jardines/Matatlan.png',
             ],[
                 'cjar_id'=>'3',
                 'cjar_name'=>'IxMx en JebOax',
@@ -47,7 +47,7 @@ class CatJardinesCampusSeeder extends Seeder
                 'cjar_tel'=>'5515139080',
                 'cjar_mail'=>'jardinetnobiologicodeoaxaca@gmail.com',
                 'cjar_edo'=>'Oaxaca',
-                'cjar_logo'=>'IxMxJebOax.png',
+                'cjar_logo'=>'/avatar/jardines/IxMxJebOax.png',
             ]
         ];
         if(CatJardinesModel::count()=='0'){

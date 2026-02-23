@@ -25,7 +25,7 @@ class userSeeder extends Seeder
                 'nace'=>'1977-07-22',
                 'cinsid'=>'1',
                 'password'=>Hash::make('admin'),
-                'avatar'=>'/avatar/usr2.png'
+                'avatar'=>''
             ]);
             User::create([
                 'id'=>'2',
@@ -36,7 +36,7 @@ class userSeeder extends Seeder
                 'nace'=>'1977-07-22',
                 'cinsid'=>'1',
                 'password'=>Hash::make('admin'),
-                'avatar'=>'/avatar/usr2.png'
+                'avatar'=>''
                 ]);
         }
     }

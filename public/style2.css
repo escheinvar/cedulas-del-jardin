@@ -554,9 +554,9 @@ div.elemento {
     margin:3px;
 }
 
-/*=======================================*/
-/* Caracteres especiales de texto para
-traductores */
+/*=======================================
+  Inicia Caracteres especiales de texto para
+  traductores */
 .ar{
     border-top: 1px solid black;
 }
@@ -595,3 +595,6 @@ traductores */
   align-items: center;
   margin: 20px auto; /* Centra el círculo en la página */
 }
+/* Termina Caracteres especiales de texto para
+  traductores
+======================================= */
