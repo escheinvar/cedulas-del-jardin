@@ -62,7 +62,9 @@
         @endif
     </div>
     <div>
-        <button wire:click="VerNuevaLengua()" class="btn btn-primary"> <i class="bi bi-plus-square"></i> Agregar lengua</button>
+        @if($edit=='1')
+            <button wire:click="VerNuevaLengua()" class="btn btn-primary"> <i class="bi bi-plus-square"></i> Agregar lengua</button>
+        @endif
     </div>
 
 

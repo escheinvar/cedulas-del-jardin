@@ -189,12 +189,13 @@
                                                 Admin
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item @if(request()->path() == 'usuarios') active @endif" href="/admin_usuarios">Usuarios</a></li>
-                                                <li><a class="dropdown-item @if(request()->path() == 'jardines') active @endif" href="/admin_jardines">Jardines</a></li>
-
-                                                <li><a class="dropdown-item @if(request()->path() == 'lenguas') active @endif" href="/admin_lenguas">Lenguas</a></li>
-                                                <li><a class="dropdown-item @if(request()->path() == 'aportes') active @endif" href="/admin_aportes">Aportes</a></li>
-                                                <li><a class="dropdown-item @if(request()->path() == 'vervisitas') active @endif" href="/admin_visitas">Visitas</a></li>
+                                                <li><a class="dropdown-item @if(request()->path() == 'admin_usuarios') active @endif" href="/admin_usuarios">Usuarios</a></li>
+                                                <li><a class="dropdown-item @if(request()->path() == 'admin_jardines') active @endif" href="/admin_jardines">Jardines</a></li>
+                                                <li><a class="dropdown-item @if(request()->path() == 'admin_lenguas') active @endif" href="/admin_lenguas">Lenguas</a></li>
+                                                <li><a class="dropdown-item @if(request()->path() == 'admin_autores') active @endif" href="/admin_autores">Autores</a></li>
+<hr>
+                                                <li><a class="dropdown-item @if(request()->path() == 'admin_aportes') active @endif" href="/admin_aportes">Aportes</a></li>
+                                                <li><a class="dropdown-item @if(request()->path() == 'admin_vervisitas') active @endif" href="/admin_visitas">Visitas</a></li>
                                             </ul>
                                         </li>
 

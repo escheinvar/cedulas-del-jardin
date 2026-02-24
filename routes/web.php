@@ -16,6 +16,7 @@ use App\Livewire\Cedulas\EspeciesComponent;
 use App\Livewire\Login\RecuperaPasswd01Controller;
 use App\Livewire\Login\RecuperaPasswdController;
 use App\Livewire\Sistema\AdminJardinesController;
+use App\Livewire\Sistema\AutoresComponent;
 use App\Livewire\Sistema\BuzonController;
 use App\Livewire\Sistema\ErrorComponent;
 use App\Livewire\Sistema\HomeComponent;
@@ -28,7 +29,6 @@ use App\Livewire\Web\BuscadorCedulasComponent;
 use App\Livewire\Web\InicioController;
 use App\Livewire\Web\JardinesController;
 use App\Livewire\Web\NoauthController;
-use App\Models\lenguas;
 use Illuminate\Support\Facades\Route;
 
 
@@ -78,6 +78,7 @@ Route::middleware([UsuarioLogeadoConRolMiddle::class,Authenticate::class])->grou
     Route::get('/admin_usuarios',UsuariosComponent::class)->name('usuarios');
     Route::get('/admin_jardines', AdminJardinesController::class)->name('CatCampus');
     Route::get('/admin_lenguas', LenguasComponent::class)->name('AdminLenguas');
+    Route::get('/admin_autores',AutoresComponent::class)->name('AdminAutores');
     Route::get('/admin_aportes',AportesComponent::class)->name('aportes');
     Route::get('/admin_visitas',VisitasComponent::class)->name('visitas');
 

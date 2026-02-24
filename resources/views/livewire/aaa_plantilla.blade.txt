@@ -21,4 +21,61 @@
 </div>
 <!-- ------------ TERMINA CONTENIDO PRINCIPAL ------------------- -->
 <!-- ----------------------------------------------------------- -->
-@section('scripts') @endsection
+@section('scripts') @endsection a
+
+
+#######################################################################
+###################################################### Java scripts
+<scripts>
+Livewire.on('AvisoExito',()=>{
+    alert(event.detail.msj);
+})
+
+Livewire.on('abreModal',()=>{
+    $('#ModalDeAutoridades').modal('show'); // Abre modal
+    // console.log('va1');
+    // @this.set('autId',autId, live=true);
+
+})
+
+Livewire.on('cierraModal',()=>{
+    $('#ModalDeAutoridades').modal('hide');
+    if(event.detail.reload == '1'){
+        window.location.reload();
+    }
+})
+
+
+</scripts>
+
+
+########################################################################
+####################################################### Modales
+{{-- ----   requiere en view:
+    -----   <livewire:coleccion.autoridades-controller>
+    -----   <wire:click="AbrirModalAutoridades(autId)">
+    -----
+    -----   y en controller:
+    -----   public function AbrirModalAutoridades($par1){
+    -----       $data=['autId'=>$par1];
+    -----       $this->dispatch('abreModalDeAutoridades',$data);
+    -----   }
+    XXXXX en el modal:
+    XXXXX   #[On('AbreModalAutores')]
+    XXXXX   public function recibeDatos($data){
+    XXXXX       $this->IdAutor=$data['cautId'];
+    XXXXX   }
+--}}
+
+
+#######################################################################
+###################################################### Funciones Helper
+#### Genera log
+paLog('Mensaje','Modelo-Tabla',Tabla_id);
+
+##### Registra Visita en tabla sist_visitas
+MyRegistraVisita('NombreURl')
+
+##### Envía mensaje a buzón. (comp=Nombre del componente desde el que se genera;
+##### ifReply=msj_id del que se responde o vacío para nuevos; $mail=Array de mails a enviar o vacío)
+EnviaMensajeAbuzon($to,$from,$asunto,$mensaje,$notas,$comp,$ifReply,$mails)

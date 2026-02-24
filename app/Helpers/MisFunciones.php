@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\historial;
 use App\Models\SistVisitasModel;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
+
 
 ##### Ejecutar: composer dump-autoload
 
@@ -75,4 +77,20 @@ if(! function_exists('MyRegistraVisita')){
             'vis_rol'=>$roles,
         ]);
     }
+}
+
+
+if(! function_exists('paLog')){
+    function paLog($mensaje,$tabla,$tablaId){
+        historial::create([
+            'log_log'=>$mensaje,
+            'log_tabla'=>$tabla,
+            'log_tablaid'=>$tablaId,
+
+            'log_usrid'=>Auth::user()->id,
+            'log_fecha'=>date('Y-m-d'),
+            'log_Hora'=>date('H:i:s'),
+        ]);
+    }
+
 }

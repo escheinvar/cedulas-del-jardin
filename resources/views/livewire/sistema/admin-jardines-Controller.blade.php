@@ -18,9 +18,11 @@
     <div class="row">
         <div class="col-12 my-3">
             <div>
-                <button wire:click="AbreModalJardin('0')" type="button" class="btn btn-secondary" style="float: right;">
-                    Nuevo Jardín
-                </button>
+                @if($edit=='1')
+                    <button wire:click="AbreModalJardin('0')" type="button" class="btn btn-secondary" style="float: right;">
+                        Nuevo Jardín
+                    </button>
+                @endif
             </div>
         </div>
         <div class="col-12">
@@ -40,7 +42,7 @@
                 </thead>
                 <tbody>
                     @foreach($jardines as $jar)
-                        <tr wire:click="AbreModalJardin({{ $jar->cjar_id }})" class="PaClick">
+                        <tr wire:click="AbreModalJardin({{ $jar->cjar_id }})" class="@if($edit=='1')PaClick @endif">
                             <td> {{ $jar->cjar_id }} </td>
                             <td><img src="{{ $jar->cjar_logo }}" style="max-width:60px; max-width:60px;"></center></td>
                             <td> <center>{{ $jar->cjar_siglas }}</td>
@@ -53,7 +55,11 @@
                                 @if($jar->cjar_mail != '') | {{ $jar->cjar_mail }}@endif
                                 @if($jar->cjar_edo != '') | {{ $jar->cjar_edo }}@endif
                             </td>
-                            <td> <i class="bi bi-pencil-square PaClick" wire:click="AbreModalJardin({{ $jar->cjar_id }})"></i> </td>
+                            <td>
+                                @if($edit=='1')
+                                    <i class="bi bi-pencil-square PaClick" wire:click="AbreModalJardin({{ $jar->cjar_id }})"></i>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

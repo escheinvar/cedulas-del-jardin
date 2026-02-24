@@ -156,10 +156,8 @@ class UsuariosComponent extends Component
             if($cuentaAdminsTodos == '1'){
                 $this->addError('ErrorAdmin','El sistema no se puede quedar sin admin@todos. Antes de eliminar, asigna otro usuario como admin@todos');
                 return;
-                dd($cuentaAdminsTodos,$RolAeliminar);
             }
         }
-
 
         UserRolesModel::where('rol_id',$rolId)->update([
             'rol_act'=>'0',
@@ -167,6 +165,8 @@ class UsuariosComponent extends Component
         $this->NvoRol='';
         $this->NvoJardin='';
         $this->AbreModal($this->usrId);
+        ##### Genera Log
+        paLog('Se inactivó el rol id '.$rolId, 'UserRolesModel',$rolId);
     }
 
     public function AgregarRol(){
@@ -174,7 +174,7 @@ class UsuariosComponent extends Component
             'NvoRol'=>'required',
             'NvoJardin'=>'required',
         ]);
-        UserRolesModel::create([
+        $bla=UserRolesModel::create([
             'rol_id'=>UserRolesModel::max('rol_id')+1,
             'rol_usrid'=>$this->usrId,
             'rol_cjarsiglas'=>$this->NvoJardin,
@@ -183,6 +183,8 @@ class UsuariosComponent extends Component
         $this->NvoRol='';
         $this->NvoJardin='';
         $this->AbreModal($this->usrId);
+        ##### Genera Log
+        paLog('Se otorga rol '.$this->NvoRol.' en '.$this->NvoJardin.' a usr '.$this->usrId, 'UserRolesModel',$bla->rol_id);
     }
 
     public function GuardaModal(){

@@ -478,20 +478,6 @@ imagen explica{
 
 
 
-/* ######### INICIA BOTÓN DE AGREGAR ####### */
-select.agregar,input.agregar{
-    width:85%;
-    display:inline-block;
-}
-i.agregar{
-    display:inline-block;
-    color:#CDC6B9;
-    margin-left:3px;
-    margin-right: 0px;
-    cursor:pointer;
-}
-/* ######### TERMINA BOTÓN DE AGREGAR ####### */
-
 hr.titulo{
     height:10px;
     background-color:#64383E;
@@ -544,15 +530,30 @@ div.iconoWWW {
     color:inherit;
 }
 
+/* === elemento: Para cuando hay varios elementos dentro de una
+   celda en una tabla, permite distinguir cada uno ===*/
 div.elemento {
-    /*==== Para cuando hay varios elementos dentro de una
-    celda en una tabla, permite distinguir cada uno ===*/
     display:inline-block;
     border:1px dashed #CDC6B9;
     padding:1px;
     border-radius:3px;
     margin:3px;
 }
+
+/* === agregar: integra ícono e input (o select)
+   en un elemento ===*/
+select.agregar,input.agregar{
+    width:85%;
+    display:inline-block;
+}
+i.agregar{
+    display:inline-block;
+    color:#CDC6B9;
+    margin-left:3px;
+    margin-right: 0px;
+    cursor:pointer;
+}
+/* =======================fin */
 
 /*=======================================
   Inicia Caracteres especiales de texto para

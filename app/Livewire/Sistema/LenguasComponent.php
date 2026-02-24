@@ -62,12 +62,15 @@ class LenguasComponent extends Component
         $datos=CatLenguasModel::where('clen_code',$LenCode)->first();
 
         ##### Escribe datos
-        lenguas::create([
+        $nva=lenguas::create([
             'len_code'=>$datos->clen_code,
             'len_lengua'=>$datos->clen_lengua,
             'len_altnames'=>$datos->clen_nombres,
             'len_autonimias'=>$datos->clen_autonimia,
         ]);
+        ##### Genera log
+        paLog('Se agregó la lengua '.$datos->clen_lengua.' al catálogo','lenguas',$nva->clen_id);
+        ##### avisa al usuario
         $this->dispatch('AvisoExitoLengua',msj:'La lengua '.$datos->clen_lengua.' se agregó correctamente al sistema');
     }
 
@@ -83,9 +86,11 @@ class LenguasComponent extends Component
             $this->edit='1';
         }else{
             $this->edit='0';
-            redirect('/noauth/Solo accede rol '.implode(',',$auts).'@todos');
+            // redirect('/noauth/Solo accede rol '.implode(',',$auts).'@todos');
         }
+        if(!array_intersect($auts,session('rol') )) {redirect('/noauth/Solo accede rol '.implode(',',$auts).' con acceso a todos');}
 
+        ##### Carga datos
         $lenguasActivas=lenguas::orderBy($this->orden,$this->sentido)->paginate(20);
 
 

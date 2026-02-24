@@ -37,34 +37,38 @@ class AdminJardinesController extends Component
         ##### La borra en la carpeta
         Storage::delete("/public/avatar/jardines/".$archivo);
         $this->jar_logo='';
+        ##### crea log
+        paLog('Borra logo de jardín','CatJardinesModel',$this->IdJardin);
         // redirect('/admin_jardines');
     }
 
     public function AbreModalJardin($idJar){
-        $this->IdJardin=$idJar;
-        if($idJar > '0'){
-            $datoJardin=CatJardinesModel::where('cjar_id',$idJar)->first();
-            $this->jar_name = $datoJardin->cjar_name;
-            $this->jar_nombre = $datoJardin->cjar_nombre;
-            $this->jar_siglas = $datoJardin->cjar_siglas;
-            $this->jar_tipo = $datoJardin->cjar_tipo;
-            $this->jar_direccion = $datoJardin->cjar_direccion;
-            $this->jar_edo = $datoJardin->cjar_edo;
-            $this->jar_tel = $datoJardin->cjar_tel;
-            $this->jar_mail = $datoJardin->cjar_mail;
-            $this->jar_logo = $datoJardin->cjar_logo;
-        }else{
-            $this->jar_name = '';
-            $this->jar_nombre = '';
-            $this->jar_siglas = '';
-            $this->jar_tipo = '';
-            $this->jar_direccion = '';
-            $this->jar_tel = '';
-            $this->jar_mail = '';
-            $this->jar_logo = '';
+        if($this->edit=='1'){
+            $this->IdJardin=$idJar;
+            if($idJar > '0'){
+                $datoJardin=CatJardinesModel::where('cjar_id',$idJar)->first();
+                $this->jar_name = $datoJardin->cjar_name;
+                $this->jar_nombre = $datoJardin->cjar_nombre;
+                $this->jar_siglas = $datoJardin->cjar_siglas;
+                $this->jar_tipo = $datoJardin->cjar_tipo;
+                $this->jar_direccion = $datoJardin->cjar_direccion;
+                $this->jar_edo = $datoJardin->cjar_edo;
+                $this->jar_tel = $datoJardin->cjar_tel;
+                $this->jar_mail = $datoJardin->cjar_mail;
+                $this->jar_logo = $datoJardin->cjar_logo;
+            }else{
+                $this->jar_name = '';
+                $this->jar_nombre = '';
+                $this->jar_siglas = '';
+                $this->jar_tipo = '';
+                $this->jar_direccion = '';
+                $this->jar_tel = '';
+                $this->jar_mail = '';
+                $this->jar_logo = '';
 
+            }
+            $this->dispatch('AbreModalJardin');
         }
-        $this->dispatch('AbreModalJardin');
     }
 
     public function CierraModalJardin(){
@@ -116,8 +120,12 @@ class AdminJardinesController extends Component
         if($this->IdJardin=='0'){
             $datos['cjar_id']= CatJardinesModel::max('cjar_id')+1;
             CatJardinesModel::create($datos);
+            ##### Genera log
+            paLog('Crea nuevo jardín '.$this->jar_name,'CatJardinesModel',$datos['cjar_id']);
         }else{
             CatJardinesModel::where('cjar_id',$this->IdJardin)->update($datos);
+            #### genera log
+            paLog('Edita datos de jardín '.$this->jar_name,'CatJardinesModel',$this->IdJardin);
         }
         redirect('/admin_jardines');
     }
@@ -133,8 +141,9 @@ class AdminJardinesController extends Component
             $this->edit='1';
         }else{
             $this->edit='0';
-            redirect('/noauth/Solo accede rol '.implode(',',$auts).' con acceso a todos');
         }
+
+        if(!array_intersect($auts,session('rol') )) {redirect('/noauth/Solo accede rol '.implode(',',$auts).' con acceso a todos');}
 
         $NumDeCampus = CatCampusModel::where('ccam_act','1')->select('ccam_cjarid', DB::raw('count(ccam_cjarid) as total'))->groupBy('ccam_cjarid')->get();
 
