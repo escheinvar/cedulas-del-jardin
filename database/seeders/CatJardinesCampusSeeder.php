@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\CatCampusModel;
 use App\Models\CatJardinesModel;
+use App\Models\jardin_url;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -28,9 +29,9 @@ class CatJardinesCampusSeeder extends Seeder
                 'cjar_logo'=>'/avatar/jardines/JebOax.png',
             ],[
                 'cjar_id'=>'2',
-                'cjar_name'=>'Matatlan',
+                'cjar_name'=>'Matatlán',
                 'cjar_nombre'=>'Jardín Comunitario de Matatlán',
-                'cjar_siglas'=>'JM',
+                'cjar_siglas'=>'Matatlán',
                 'cjar_tipo'=>'Etnobotánico',
                 'cjar_direccion'=>'Reforma s/n, Independencia, Centro, Oaxaca de Juárez, Oaxaca. C.P. 68000 ',
                 'cjar_tel'=>' 951 516 5325',
@@ -58,38 +59,32 @@ class CatJardinesCampusSeeder extends Seeder
 
         $events=[
             [
-                'ccam_id'=>'1',
-                'ccam_act'=>'1',
-                'ccam_cjarid'=>'1',
-                'ccam_name'=>'Santo Domingo',
-                'ccam_nombre'=>'Santo Domingo',
-                'ccam_direccion'=>'',
+                'urlj_cjarsiglas'=>'JebOax',
+                'urlj_url'=>'inicio',
+                'urlj_act'=>'0',
+                'urlj_titulo'=>'Jardín Etnobiológico de Oaxaca',
+                'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
+                'urlj_bannertitle'=>'Jardín Etnobiológico de Oaxaca',
             ],[
-                'ccam_id'=>'2',
-                'ccam_act'=>'1',
-                'ccam_cjarid'=>'1',
-                'ccam_name'=>'Canteras',
-                'ccam_nombre'=>'Canteras',
-                'ccam_direccion'=>'',
+                'urlj_cjarsiglas'=>'Matatlán',
+                'urlj_url'=>'inicio',
+                'urlj_act'=>'0',
+                'urlj_titulo'=>'Jardín comunitario de Santiago Matatlán',
+                'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
+                'urlj_bannertitle'=>'Jardín comunitario de Santiago Matatlán',
             ],[
-                'ccam_id'=>'3',
-                'ccam_act'=>'1',
-                'ccam_cjarid'=>'2',
-                'ccam_name'=>'Presa',
-                'ccam_nombre'=>'Presa',
-                'ccam_direccion'=>'',
-            ],[
-                'ccam_id'=>'4',
-                'ccam_act'=>'1',
-                'ccam_cjarid'=>'3',
-                'ccam_name'=>'IxMx JebOax',
-                'ccam_nombre'=>'Investigadores por México en el Jardín Etnobiológico de Oaxaca',
-                'ccam_direccion'=>'S/N',
-            ]
+                'urlj_cjarsiglas'=>'IxMxJebOax',
+                'urlj_url'=>'inicio',
+                'urlj_act'=>'0',
+                'urlj_titulo'=>'Investigadores por México en el JebOax',
+                'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
+                'urlj_bannertitle'=>'Investigadores por México en el JebOax',
+            ],
         ];
-        if(CatCampusModel::count()=='0'){
+
+        if(jardin_url::count()=='0'){
             foreach ($events as $event){
-                CatCampusModel::create($event);
+                jardin_url::create($event);
             }
         }
     }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('caut_correo')->nullable();
             $table->string('caut_institu')->nullable();
             $table->string('caut_usrid')->nullable();
+            $table->string('caut_lenguas')->default('spa;'); ##### texto de array con lenguas separadas por punto y coma
             $table->enum('caut_web',['0','1'])->default('0'); ##### flag de existencia de web
             $table->enum('caut_mailpublic',['0','1'])->default('0'); ##### flag de autorización para publicar datos
             $table->string('caut_orcid')->nullable(); #### Número identificador de autor académico (orcid)

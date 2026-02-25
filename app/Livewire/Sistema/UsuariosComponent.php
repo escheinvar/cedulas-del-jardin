@@ -3,6 +3,8 @@
 namespace App\Livewire\Sistema;
 use App\Models\CatJardinesModel;
 use App\Models\CatRolesModel;
+use App\Models\lenguas;
+use App\Models\SpUrlModel;
 use App\Models\User;
 use App\Models\UserRolesModel;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +38,115 @@ class UsuariosComponent extends Component
             $this->sentido='asc';
         }
         $this->orden=$ord;
+    }
+
+    ###################################################
+    ###################  Iniciamos funciones de modal
+    public function AbreModal($var){
+        ##### Carga variables del usuario
+        $this->usrId=$var;
+        $this->correo=User::where('id',$var)->value('email');
+        $this->usrname=User::where('id',$var)->value('usrname');
+        $this->nombre=User::where('id',$var)->value('nombre');
+        $this->apellido=User::where('id',$var)->value('apellido');
+        $this->nace=User::where('id',$var)->value('nace');
+        $this->avatar=User::where('id',$var)->value('avatar');
+        $act=User::where('id',$var)->value('act');
+        if($act=='1'){$this->Inactiva=FALSE;}else{$this->Inactiva=TRUE;}
+        $men=User::where('id',$var)->value('mensajes');
+        if($men=='1'){$this->mensajes=TRUE;}else{$this->mensajes=FALSE;}
+        $this->rolesUsr=UserRolesModel::where('rol_usrid',$var)
+            ->where('rol_del','0')
+            ->where('rol_act','1')
+            ->orderBy('rol_cjarsiglas')
+            ->get();
+        #### Abre modal
+        $this->dispatch('AbreModal');
+    }
+
+    public function CierraModal(){
+        $this->reset(['usrId','correo','usrname','nombre','apellido','nace','avatar','Inactiva','NvoAvatar','mensajes']);
+        $this->rolesUsr=[];
+        $this->dispatch('CierraModal');
+    }
+
+    public function InactivarRol_Modal($rolId){
+        ###### Verifica que no se quede sin admin@todos
+        ###### revisa el rol a eliminar
+        $RolAeliminar=UserRolesModel::where('rol_id',$rolId)
+            ->value('rol_crolrol');
+
+        ##### si el rol es admin, revisa que no sea el último con "todos" activo
+        if($RolAeliminar == 'admin'){
+            ###### cuenta admin@todos
+            $cuentaAdminsTodos=UserRolesModel::where('rol_crolrol','admin')
+                ->where('rol_cjarsiglas','todos')
+                ->where('rol_act','1')->where('rol_del','0')
+                ->count();
+            if($cuentaAdminsTodos == '1'){
+                $this->addError('ErrorAdmin','El sistema no se puede quedar sin admin@todos. Antes de eliminar, asigna otro usuario como admin@todos');
+                return;
+            }
+        }
+
+        UserRolesModel::where('rol_id',$rolId)->update([
+            'rol_act'=>'0',
+        ]);
+        $this->NvoRol='';
+        $this->NvoJardin='';
+        $this->AbreModal($this->usrId);
+        ##### Genera Log
+        paLog('Se inactivó el rol id '.$rolId, 'UserRolesModel',$rolId);
+    }
+
+    public function AgregarRol_Modal(){
+        $this->validate([
+            'NvoRol'=>'required',
+            'NvoJardin'=>'required',
+        ]);
+        $bla=UserRolesModel::create([
+            'rol_id'=>UserRolesModel::max('rol_id')+1,
+            'rol_usrid'=>$this->usrId,
+            'rol_cjarsiglas'=>$this->NvoJardin,
+            'rol_crolrol'=>$this->NvoRol,
+        ]);
+        $this->NvoRol='';
+        $this->NvoJardin='';
+        $this->AbreModal($this->usrId);
+        ##### Genera Log
+        paLog('Se otorga rol '.$this->NvoRol.' en '.$this->NvoJardin.' a usr '.$this->usrId, 'UserRolesModel',$bla->rol_id);
+    }
+
+    public function GuardaModal(){
+        $this->validate([
+            'nombre'=>'required',
+            'apellido'=>'required',
+            'usrname'=>'required|unique:users,usrname,'.$this->usrId,
+        ]);
+        ##### Si hay rol pendiente de guardar, lo guarda
+        if($this->NvoJardin !='' AND $this->NvoRol != ''){$this->AgregarRol();}
+        ##### convierte variable checkbox
+        if($this->Inactiva==TRUE){$act='0';}else{$act='1';}
+        if($this->mensajes==TRUE){$mens='1';}else{$mens='0';}
+        ##### guarda
+        User::where('id',$this->usrId)->update([
+            'act'=>$act,
+            'usrname'=>$this->usrname,
+            'nombre'=>$this->nombre,
+            'apellido'=>$this->apellido,
+            'nace'=>$this->nace,
+            'mensajes'=>$mens,
+        ]);
+        ##### Si hay nuevo avatar, lo guarda
+        if($this->NvoAvatar != ''){
+            $nombre="usuario_".$this->usrId.".".$this->NvoAvatar->getClientOriginalExtension();
+            $ruta="/avatar/usr/";
+            $this->NvoAvatar->storeAs(path:'/public/'.$ruta, name: $nombre);
+            User::where('id',$this->usrId)->update([
+                'avatar'=>$ruta.$nombre,
+            ]);
+        }
+        $this->CierraModal();
     }
 
     public function render() {
@@ -103,119 +214,8 @@ class UsuariosComponent extends Component
             'usuarios'=>$usuarios,
             'catRoles'=>CatRolesModel::select('crol_rol','crol_describe')->orderBy('crol_rol')->get(),
             'JardsDelUsr'=>$JardsUsr,
+            'lenguas'=>lenguas::get(),
+            // 'urls'=>SpUrlModel::where('url_act','1')->get()
         ]);
-    }
-
-
-
-
-
-    ###################################################
-    ###################  Iniciamos funciones de modal
-    public function AbreModal($var){
-        ##### Carga variables del usuario
-        $this->usrId=$var;
-        $this->correo=User::where('id',$var)->value('email');
-        $this->usrname=User::where('id',$var)->value('usrname');
-        $this->nombre=User::where('id',$var)->value('nombre');
-        $this->apellido=User::where('id',$var)->value('apellido');
-        $this->nace=User::where('id',$var)->value('nace');
-        $this->avatar=User::where('id',$var)->value('avatar');
-        $act=User::where('id',$var)->value('act');
-        if($act=='1'){$this->Inactiva=FALSE;}else{$this->Inactiva=TRUE;}
-        $men=User::where('id',$var)->value('mensajes');
-        if($men=='1'){$this->mensajes=TRUE;}else{$this->mensajes=FALSE;}
-        $this->rolesUsr=UserRolesModel::where('rol_usrid',$var)
-            ->where('rol_del','0')
-            ->where('rol_act','1')
-            ->orderBy('rol_cjarsiglas')
-            ->get();
-        #### Abre modal
-        $this->dispatch('AbreModal');
-    }
-
-    public function CierraModal(){
-        $this->reset(['usrId','correo','usrname','nombre','apellido','nace','avatar','Inactiva','NvoAvatar','mensajes']);
-        $this->rolesUsr=[];
-        $this->dispatch('CierraModal');
-    }
-
-    public function InactivarRol($rolId){
-        ###### Verifica que no se quede sin admin@todos
-        ###### revisa el rol a eliminar
-        $RolAeliminar=UserRolesModel::where('rol_id',$rolId)
-            ->value('rol_crolrol');
-
-        ##### si el rol es admin, revisa que no sea el último con "todos" activo
-        if($RolAeliminar == 'admin'){
-            ###### cuenta admin@todos
-            $cuentaAdminsTodos=UserRolesModel::where('rol_crolrol','admin')
-                ->where('rol_cjarsiglas','todos')
-                ->where('rol_act','1')->where('rol_del','0')
-                ->count();
-            if($cuentaAdminsTodos == '1'){
-                $this->addError('ErrorAdmin','El sistema no se puede quedar sin admin@todos. Antes de eliminar, asigna otro usuario como admin@todos');
-                return;
-            }
-        }
-
-        UserRolesModel::where('rol_id',$rolId)->update([
-            'rol_act'=>'0',
-        ]);
-        $this->NvoRol='';
-        $this->NvoJardin='';
-        $this->AbreModal($this->usrId);
-        ##### Genera Log
-        paLog('Se inactivó el rol id '.$rolId, 'UserRolesModel',$rolId);
-    }
-
-    public function AgregarRol(){
-        $this->validate([
-            'NvoRol'=>'required',
-            'NvoJardin'=>'required',
-        ]);
-        $bla=UserRolesModel::create([
-            'rol_id'=>UserRolesModel::max('rol_id')+1,
-            'rol_usrid'=>$this->usrId,
-            'rol_cjarsiglas'=>$this->NvoJardin,
-            'rol_crolrol'=>$this->NvoRol,
-        ]);
-        $this->NvoRol='';
-        $this->NvoJardin='';
-        $this->AbreModal($this->usrId);
-        ##### Genera Log
-        paLog('Se otorga rol '.$this->NvoRol.' en '.$this->NvoJardin.' a usr '.$this->usrId, 'UserRolesModel',$bla->rol_id);
-    }
-
-    public function GuardaModal(){
-        $this->validate([
-            'nombre'=>'required',
-            'apellido'=>'required',
-            'usrname'=>'required|unique:users,usrname,'.$this->usrId,
-        ]);
-        ##### Si hay rol pendiente de guardar, lo guarda
-        if($this->NvoJardin !='' AND $this->NvoRol != ''){$this->AgregarRol();}
-        ##### convierte variable checkbox
-        if($this->Inactiva==TRUE){$act='0';}else{$act='1';}
-        if($this->mensajes==TRUE){$mens='1';}else{$mens='0';}
-        ##### guarda
-        User::where('id',$this->usrId)->update([
-            'act'=>$act,
-            'usrname'=>$this->usrname,
-            'nombre'=>$this->nombre,
-            'apellido'=>$this->apellido,
-            'nace'=>$this->nace,
-            'mensajes'=>$mens,
-        ]);
-        ##### Si hay nuevo avatar, lo guarda
-        if($this->NvoAvatar != ''){
-            $nombre="usuario_".$this->usrId.".".$this->NvoAvatar->getClientOriginalExtension();
-            $ruta="/avatar/usr/";
-            $this->NvoAvatar->storeAs(path:'/public/'.$ruta, name: $nombre);
-            User::where('id',$this->usrId)->update([
-                'avatar'=>$ruta.$nombre,
-            ]);
-        }
-        $this->CierraModal();
     }
 }

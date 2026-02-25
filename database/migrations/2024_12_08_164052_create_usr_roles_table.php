@@ -20,12 +20,14 @@ return new class extends Migration
                 $table->enum('rol_del',['0','1'])->default('0');  ##### Binario de borrado lógico
                 $table->foreignId('rol_usrid')->constrained('users','id'); #### número id del usuario (de table users)
 
-                $table->string('rol_cjarsiglas');
+                $table->string('rol_cjarsiglas');  ##### Siglas del jardín al que tiene acceso o todos
                 // $table->foreign('rol_cjarsiglas')->references('cjar_siglas')->on('cat_jardines')->constrained('cat_jardines','cjar_siglas');
 
                 $table->string('rol_crolrol')->default('usr');
                 $table->foreign('rol_crolrol')->references('crol_rol')->on('cat_roles')->constrained('cat_roles','crol_rol');
 
+                $table->string('rol_lencode')->default('spa'); ##### lenguas autorizadas a editar (de lenguas len_code) o "todas"
+                $table->string('rol_urlid')->default('todas'); ##### id de url (tema) al que tiene acceso o todos
 
                 $table->string('rol_tipo1')->nullable();  ##### En caso de requerirse, descriptor del rol (x ej, con admin-jardin: "JebOax")
                 $table->string('rol_tipo2')->nullable();  ##### En caso de requerirse, descriptor del rol (x ej, con admin-jardin: "animales")

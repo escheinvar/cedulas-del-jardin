@@ -24,6 +24,7 @@ class cat_autores extends Model
         'caut_correo',
         'caut_institu',
         'caut_usrid',
+        'caut_lenguas',
         'caut_web',
         'caut_mailpublic',
         'caut_orcid',

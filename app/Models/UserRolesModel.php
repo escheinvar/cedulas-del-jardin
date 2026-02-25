@@ -21,6 +21,8 @@ class UserRolesModel extends Model
         'rol_usrid',
         'rol_cjarsiglas',
         'rol_crolrol',
+        'rol_lencode',
+        'rol_urlid',
         'rol_tipo1',
         'rol_tipo2',
         'rol_describe',

@@ -42,9 +42,9 @@
                 </thead>
                 <tbody>
                     @foreach($jardines as $jar)
-                        <tr wire:click="AbreModalJardin({{ $jar->cjar_id }})" class="@if($edit=='1')PaClick @endif">
-                            <td> {{ $jar->cjar_id }} </td>
-                            <td><img src="{{ $jar->cjar_logo }}" style="max-width:60px; max-width:60px;"></center></td>
+                        <tr>
+                            <td wire:click="AbreModalJardin({{ $jar->cjar_id }})" class="@if($edit=='1')PaClick @endif"> {{ $jar->cjar_id }} </td>
+                            <td wire:click="AbreModalJardin({{ $jar->cjar_id }})" class="@if($edit=='1')PaClick @endif"><img src="{{ $jar->cjar_logo }}" style="max-width:60px; max-width:60px;"></center></td>
                             <td> <center>{{ $jar->cjar_siglas }}</td>
                             <td> {{ $jar->cjar_name }} </td>
                             <td> {{ $jar->cjar_nombre }} </td>
@@ -57,8 +57,9 @@
                             </td>
                             <td>
                                 @if($edit=='1')
-                                    <i class="bi bi-pencil-square PaClick" wire:click="AbreModalJardin({{ $jar->cjar_id }})"></i>
+                                    <i wire:click="AbreModalJardin({{ $jar->cjar_id }})" class="bi bi-pencil-square PaClick"></i>
                                 @endif
+
                             </td>
                         </tr>
                     @endforeach
@@ -147,6 +148,7 @@
                         <div class="col-xs-12 col-sm-6 col-md-4 form-group">
                             <label class="form-label">Estado<red>*</red></label>
                             <select wire:model="jar_edo" class="@error('jar_edo') is-invalid @enderror form-select">
+                                <option value="">Indica el estado</option>
                                 @foreach ($Entidades as $edo)
                                     <option value="{{ $edo->cedo_nombre }}"> {{ $edo->cedo_nombre }}</option>
                                 @endforeach

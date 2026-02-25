@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             CatLenguasSeeder::class,
             CatLenguasInaliSeeder::class,
 
-            webEventosSeeder::class, ##### En producción
+            // webEventosSeeder::class, ##### En producción
             CatEntidadesSeeder::class,
 
 

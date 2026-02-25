@@ -45,6 +45,12 @@ Livewire.on('cierraModal',()=>{
     }
 })
 
+/* ### mostrar botón personalizado de input=file
+   (en inputFileId=MiInputFile -que está hidden-
+   muestra button Id=MiBotonPersonalizado) ### */
+document.getElementById('MiBotonPersonalizado').addEventListener('click', function() {
+    document.getElementById('MiInputFile').click();
+});
 
 </scripts>
 

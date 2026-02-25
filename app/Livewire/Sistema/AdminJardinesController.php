@@ -5,6 +5,7 @@ namespace App\Livewire\Sistema;
 use App\Models\CatCampusModel;
 use App\Models\CatEntidadesInegiModel;
 use App\Models\CatJardinesModel;
+use App\Models\jardin_url;
 use App\Models\UserRolesModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -118,10 +119,21 @@ class AdminJardinesController extends Component
 
         ##### Guarda en la base de datos
         if($this->IdJardin=='0'){
-            $datos['cjar_id']= CatJardinesModel::max('cjar_id')+1;
+            $datos['cjar_id']= CatJardinesModel::max('cjar_id') + 1;
             CatJardinesModel::create($datos);
             ##### Genera log
             paLog('Crea nuevo jardín '.$this->jar_name,'CatJardinesModel',$datos['cjar_id']);
+            ##### Genera página url inicio del jardín
+            $ja=jardin_url::create([
+              'urlj_cjarsiglas'  =>$this->jar_siglas,
+              'urlj_url'=>'inicio',
+              'urlj_act'=>'0',
+              'urlj_titulo'=>$this->jar_nombre,
+              'urlj_descrip'=>'Página del '.$this->jar_nombre.' en el Sistema de Cédulas del Jardín en lenguas originarias',
+              'urlj_bannertitle'=>$this->jar_nombre,
+            ]);
+            ##### Genera log
+            paLog('Crea nueva url inicio de'.$this->jar_siglas,'jardin_url',$ja->urlj_id);
         }else{
             CatJardinesModel::where('cjar_id',$this->IdJardin)->update($datos);
             #### genera log
@@ -142,14 +154,12 @@ class AdminJardinesController extends Component
         }else{
             $this->edit='0';
         }
-
         if(!array_intersect($auts,session('rol') )) {redirect('/noauth/Solo accede rol '.implode(',',$auts).' con acceso a todos');}
 
-        $NumDeCampus = CatCampusModel::where('ccam_act','1')->select('ccam_cjarid', DB::raw('count(ccam_cjarid) as total'))->groupBy('ccam_cjarid')->get();
+
 
         return view('livewire.sistema.admin-jardines-Controller',[
             'jardines'=>CatJardinesModel::orderBy('cjar_id','asc')->get(),
-            'NumDeCampus'=>$NumDeCampus,
             'Entidades'=>CatEntidadesInegiModel::all(),
         ]);
     }

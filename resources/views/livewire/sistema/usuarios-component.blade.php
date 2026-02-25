@@ -197,6 +197,8 @@
                                     <tr>
                                         <th>Rol</th>
                                         <th>Jardín</th>
+                                        <th>Lengua</th>
+                                        <th>Url</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -204,11 +206,13 @@
                                     @foreach ($rolesUsr as $r)
                                         <tr>
                                             <td> {{ $r->rol_crolrol }} </td>
-                                            <td > {{ $r->rol_cjarsiglas }} @error('ErrorAdmin')<br><error>{{ $message }}</error>@enderror</td>
+                                            <td> {{ $r->rol_cjarsiglas }} @error('ErrorAdmin')<br><error>{{ $message }}</error>@enderror</td>
+                                            <td> len </td>
+                                            <td> url </td>
                                             <td>
                                                 <!-- botón para borrar rol -->
                                                 @if(in_array($r->rol_cjarsiglas, $editjar) or in_array('todos',$editjar))
-                                                    <button  wire:click="InactivarRol({{ $r->rol_id }})" wire:confirm="Estás por quitarle definitivamente el rol de {{ $r->rol_crolrol }} a este usuario ¿Deseas continuar?" class="btn btn-secondary btn-sm" >
+                                                    <button  wire:click="InactivarRol_Modal({{ $r->rol_id }})" wire:confirm="Estás por quitarle definitivamente el rol de {{ $r->rol_crolrol }} a este usuario ¿Deseas continuar?" class="btn btn-secondary btn-sm" >
                                                         <i class="bi bi-trash"></i>
                                                     </button>
                                                 @endif
@@ -217,8 +221,8 @@
                                     @endforeach
                                     <tr>
 
+                                        <!-- selecciona rol -->
                                         <td>
-                                            <!-- selecciona rol -->
                                             <select wire:model.live="NvoRol" class="@error('NvoRol') is-invalid @enderror form-select" aria-label="Default select example">
                                                 <option value="">Indica un rol</option>
                                                 @foreach($catRoles as $rol)
@@ -227,8 +231,9 @@
                                             </select>
                                             @error('NvoRol')<error>{{ $message }}</error>@enderror
                                         </td>
+
+                                        <!-- selecciona jardín -->
                                         <td>
-                                            <!-- selecciona jardín -->
                                             <select wire:model.live="NvoJardin" class="@error('NvoJardin') is-invalid @enderror form-select" aria-label="Default select example">
                                                 <option value="">Indica un jardín</option>
                                                 @foreach ($JardsDelUsr as $jar)
@@ -240,9 +245,19 @@
                                             </select>
                                             @error('NvoJardin')<error>{{ $message }}</error>@enderror
                                         </td>
+
+                                        <!-- selecciona lengua -->
+                                        <td>
+                                            len
+                                        </td>
+
+                                        <!-- selecciona url -->
+                                        <td>
+                                            url
+                                        </td>
                                         <td>
                                             <!-- botón para agregar rol -->
-                                            <button  wire:click="AgregarRol()" class="btn btn-secondary btn-sm" @if($NvoJardin =='' && $NvoRol == '') disabled @endif>
+                                            <button  wire:click="AgregarRol_Modal()" class="btn btn-secondary btn-sm" @if($NvoJardin =='' && $NvoRol == '') disabled @endif>
                                                 <i class="bi bi-plus"></i>
                                             </button>
                                         </td>

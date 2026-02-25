@@ -171,7 +171,7 @@ class webEventosSeeder extends Seeder
         if(WebEventosModel::count()=='0'){
             foreach ($events as $event){
                 ##### En producción
-                WebEventosModel::create($event);
+                // WebEventosModel::create($event);
             }
         }
     }

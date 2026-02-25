@@ -352,12 +352,14 @@ error, red {
     color:#87796d;
     /* width:100%; */
 }
-
-tr.inact{
+/*=== inact: formato para tablas cuando act=0
+(tacha y pone en gris el texto) ===*/
+tr.inact, td.inact{
     text-decoration: line-through;
     color:gray;
     font-weight: 50;
 }
+/*======*/
 
 img.avatar{
     border-radius:13px;

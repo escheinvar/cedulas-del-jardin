@@ -24,6 +24,7 @@ use App\Livewire\Sistema\HomeConfigController;
 use App\Livewire\Sistema\LenguasComponent;
 use App\Livewire\Sistema\UsuariosComponent;
 use App\Livewire\Sistema\VisitasComponent;
+use App\Livewire\Sistema\WebComponent;
 use App\Livewire\Web\AutoresController;
 use App\Livewire\Web\BuscadorCedulasComponent;
 use App\Livewire\Web\InicioController;
@@ -79,6 +80,7 @@ Route::middleware([UsuarioLogeadoConRolMiddle::class,Authenticate::class])->grou
     Route::get('/admin_jardines', AdminJardinesController::class)->name('CatCampus');
     Route::get('/admin_lenguas', LenguasComponent::class)->name('AdminLenguas');
     Route::get('/admin_autores',AutoresComponent::class)->name('AdminAutores');
+    Route::get('/admin_web',WebComponent::class)->name('AdminWeb');
     Route::get('/admin_aportes',AportesComponent::class)->name('aportes');
     Route::get('/admin_visitas',VisitasComponent::class)->name('visitas');
 
