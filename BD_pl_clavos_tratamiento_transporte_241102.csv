@@ -1,0 +1,353 @@
+'cl_Colectas_copy1_IdColectas','cl_Personas_Recolectar','cl_Fecha_Inicio','cl_Fecha_Corte','cl_Fecha_Tratamiento','cl_Fecha_Embalaje','cl_Fecha_Extraccion','cl_Tipo_Extraccion','cl_Fecha_Carga_Envio','cl_Tipo_vehiculo','cl_Fecha_Llegada','cl_Fecha_Descarga','cl_Observaciones','cl_Nombre_Responsable_Tecnico','cl_Nombre_Responsable_operativo'
+7,,,,,,,,,,,,,,
+622,,,,,,,,,,,,,,
+845,,,,,,,,,,,,,,
+846,,,,,,,,,,,,,,
+847,,,,,,,,,,,,,,
+1194,,,,,,,,,,,,,,
+1211,,,,,,,,,,,,,,
+1244,,,,,,,,,,,,,,
+1353,,,,,,,,,,,,,,
+1363,,,,,,,,,,,,,,
+2150,,,,,,,,,,,,,,
+2151,,,,,,,,,,,,,,
+2154,,,,,,,,,,,,,,
+2162,,,,,,,,,,,,,,
+2163,,,,,,,,,,,,,,
+2183,,,,,,,,,,,,,,
+2184,,,,,,,,,,,,,,
+2185,,,,,,,,,,,,,,
+2186,,,,,,,,,,,,,,
+2187,,,,,,,,,,,,,,
+2390,,,,,,,,,,,,,,
+2503,,,,,,,,,,,,,,
+2511,,,,,,,,,,,,,,
+2817,,,,,,,,,,,,,,
+2834,,,,,,,,,,,,,,
+2835,,,,,,,,,,,,,,
+2836,,,,,,,,,,,,,,
+2837,,,,,,,,,,,,,,
+2838,,,,,,,,,,,,,,
+2839,,,,,,,,,,,,,,
+2840,,,,,,,,,,,,,,
+2841,,,,,,,,,,,,,,
+2842,,,,,,,,,,,,,,
+2843,,,,,,,,,,,,,,
+2895,,,,,,,,,,,,,,
+4316,,,,,,,,,,,,,,
+4317,,,,,,,,,,,,,,
+4318,,,,,,,,,,,,,,
+4479,,,,,,,,,,,,,,
+4582,,,,,,,,,,,,,,
+4734,,,,,,,,,,,,,,
+4775,,,,,,,,,,,,,,
+5340,,,,,,,,,,,,'ejemplo','otras persona de ejemplo ','GEOBANY GUERRA'
+5341,2,,,,'2021-07-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10','Ninguna','Geovanni Mtz','Issis Moreno'
+5342,,,,,,'2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10','Ninguna','Geovanni Mtz','Issis Moreno'
+5343,3,,,,'2021-07-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz','Vianney Hdz'
+5344,2,,,,'2021-02-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz','Issis Moreno'
+5345,2,,,,'2021-07-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz','Vianney Hdz'
+5346,1,,,,'2021-07-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz','Vianney Hdz'
+5347,2,,,,'2021-07-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz','Issis Moreno'
+5348,2,,,,'2021-07-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10','La raíz estaba dentro de rocas','Geovanni Mtz','Vianney Hdz'
+5349,2,,,,'2021-07-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz','Issis Moreno'
+5350,4,,,,'2021-07-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz','Vianney Hdz'
+5352,2,,,,'2021-08-07','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz','Issis Moreno'
+5353,1,,,,'2021-07-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz','Vianney Hdz'
+5354,2,,,,'2021-08-04','2021-08-04','Manual','2021-08-04','Camioneta 3/4 Mitsubishi','2021-08-07','2021-08-07',,'Geovanni Mtz',
+5355,2,,,,'2021-08-04','2021-08-04','Manual','2021-08-04','Camioneta','2021-08-07','2021-08-07',,'Geovanni Mtz',
+5356,2,,,,'2021-08-04','2021-08-04','Manual','2021-08-04','Camioneta','2021-08-07','2021-08-07',,'Geovanni Mtz',
+5357,1,,,,'2021-08-04','2021-08-04','Manual','2021-08-04','Camioneta','2021-08-07','2021-08-07',,'Geovanni Mtz',
+5358,2,,,,'2021-08-05','2021-08-05','Manual','2021-08-05','Camioneta 3/4','2021-08-07','2021-08-07',,'Geovanni Mtz',
+5359,2,,,,'2021-08-05','2021-08-05','Manual','2021-08-05','Camioneta 3/4','2021-08-07','2021-08-07',,'Geovanni Mtz',
+5360,2,,,,'2021-08-05','2021-08-05','Manual','2021-08-05','Camioneta','2021-08-07','2021-08-07',,'Geovanni Mtz',
+5361,2,,,,'2021-08-05','2021-08-05','Manual','2021-08-05','Camioneta 3/4','2021-08-07','2021-08-07',,'Geovanni Mtz',
+5362,2,,,,'2021-08-20','2021-08-20','Manual','2021-08-20','Camioneta 3/4','2021-08-21','2021-08-21',,'Geovanni Mtz',
+5364,2,,,,'2021-08-20','2021-08-20','Manual','2021-08-20','Camioneta 3 ton','2021-08-21','2021-08-21',,'Geovanni Mtz',
+5365,1,,,,'2021-08-20','2021-08-20','Manual','2021-08-20','Camioneta 3 ton','2021-08-21','2021-08-21',,'Geovanni Mtz',
+5366,1,,,,'2021-08-20','2021-08-20','Manual','2021-08-20','Camioneta 3/4','2021-08-21','2021-08-21',,'Geovanni Mtz',
+5367,1,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5368,2,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5369,2,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5370,2,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5371,2,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5372,3,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5373,2,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5374,2,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5375,2,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5376,1,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5377,2,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06',,'Geovanni Mtz',
+5378,2,,,,'2021-11-05','2021-11-05','Manual','2021-11-05','Camioneta 3 ton','2021-11-06','2021-11-06','Planta viene acompañada de piedra','Geovanni Mtz',
+5379,2,,,,'2021-10-08','2021-10-08','Manual','2021-10-08','Camioneta 3/4','2021-10-09','2021-10-09',,'Geovanni Mtz',
+5380,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5479,,,,,,,,,,,,,,
+5503,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5510,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5511,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27','Sobre rocas grandes con abundante materia orgánica','Geovanni Mtz',
+5519,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27','Sobre rocas grandes con abundante materia orgánica','Geovanni Mtz',
+5520,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5521,1,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27','Sobre rocas grandes con abundante materia orgánica','Geovanni Mtz',
+5522,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27','Rescatada sobre rama caida','Geovanni Mtz',
+5523,1,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27','Sobre rocas grandes con abundante materia orgánica','Geovanni Mtz',
+5524,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5525,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5526,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5527,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5528,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5529,4,,,,'2021-11-26','2021-11-26','Manual','2021-11-26','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5530,2,,,,'2021-07-09','2021-07-09','Manual','2021-07-09','Camioneta Mitsubishi 3/4','2021-07-10','2021-07-10',,'Geovanni Mtz',
+5531,1,,,,'2021-10-01','2021-10-01','Manual','2021-10-01','Camioneta 3 Ton','2021-10-02','2021-10-02',,'Geovanni Mtz',
+5532,2,,,,'2022-05-14','2022-05-14','Manual','2022-05-14','Camioneta Mitsubishi',,,,'Geovanni Mtz',
+5533,1,,,,'2021-11-09','2021-11-09','Tijera extensión','2021-11-09','Camioneta 3 Ton','2021-11-13','2021-11-13',,'Geovanni Mtz',
+5534,3,,,,'2021-11-09','2021-11-09','Tijera extensión',,'Camioneta 3 Ton','2021-11-13','2021-11-13',,'Geovanni Mtz',
+5535,2,,,,'2021-11-10','2021-11-10','Manual','2021-11-10','Camioneta 3 Ton','2021-11-13','2021-11-13',,'Geovanni Mtz',
+5536,2,,,,'2021-11-10','2021-11-10','Manual','2021-11-10','Camioneta 3 Ton','2021-11-13','2021-11-13',,'Geovanni Mtz',
+5537,2,,,,'2021-11-10','2021-11-10','Manual/extensión','2021-11-10','Camioneta 3 Ton','2021-11-13','2021-11-13',,'Geovanni Mtz',
+5538,2,,,,'2021-11-10','2021-11-10','Manual','2021-11-10','Camioneta 3 Ton','2021-11-13','2021-11-13',,'Geovanni Mtz',
+5539,2,,,,'2021-11-10','2021-11-10','Manual','2021-11-10','Camioneta 3 Ton','2021-11-13','2021-11-13',,'Geovanni Mtz',
+5540,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5541,2,,,,'2021-11-25','2021-11-25','Manual','2021-11-25','Torton','2021-11-27','2021-11-27','Sobre rocas grandes con abundante materia orgánica','Geovanni Mtz',
+5542,,,,,,,,,,,,'Sin observciones',,
+5543,2,,,,'2021-08-05','2021-08-05','Manual','2021-08-05','Camioneta 3/4',,'2021-08-07',,'Geovanni Mtz',
+5544,2,,,,'2021-08-05','2021-08-05','Manual','2021-08-05','Camioneta 3/4',,'2021-08-07',,'Geovanni Mtz',
+5545,2,,,,'2021-08-05','2021-08-05','Manual','2021-08-05','Camioneta 3/4',,'2021-08-07',,'Geovanni Mtz',
+5546,2,,,,'2021-08-06','2021-08-06','Manual','2021-08-06','Camioneta 3/4 Mitsubishi','2021-08-07','2021-08-07','Sobre roca','Geovanni Mtz',
+5547,2,,,,'2021-08-06','2021-08-06','Manual','2021-08-06','Camioneta 3/4 Mitsubishi','2021-08-07','2021-08-07',,'Geovanni Mtz',
+5548,1,,,,'2021-07-09','2021-07-09','Manual','2021-07-09','Camioneta',,'2021-07-10',,'Geovanni Mtz',
+5549,1,,,,'2021-07-09','2021-07-09','Manual','2021-07-09','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz',
+5552,2,,,,'2021-07-09','2021-07-09','Manual','2021-07-09','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz',
+5553,2,,,,'2021-07-09','2021-07-09','Manual','2021-07-09','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz',
+5554,3,,,,'2021-07-09','2021-07-09','Manual','2021-07-09','Camioneta','2021-07-10','2021-07-10','Se colecto muestra y rama para ejemplar','Geovanni Mtz',
+5558,2,,,,'2021-07-09','2021-07-09','Manual','2021-07-09','Camioneta Mitsubishi','2021-07-10','2021-07-10','Orquídea blanca','Geovanni Mtz','Vianney Hdz'
+5559,2,,,,'2021-07-09','2021-07-09','Manual','2021-07-09','Camioneta Mitsubishi','2021-07-10','2021-07-10',,'Geovanni Mtz','Vianney Hdz'
+5560,2,,,,'2021-07-09','2021-07-09','Manual','2021-07-09','Camioneta Mitsubishi','2021-07-10','2021-07-10',,'Geovanni Mtz','Vianney Hdz'
+5561,2,,,,'2021-07-09','2021-07-09','Manual','2021-07-09','Camioneta Mitsubishi','2021-07-10','2021-07-10','El lugar donde se colectó la planta es un arroyo temporal','Geovanni Mtz',
+5562,2,,,,'2021-07-09','2021-07-09','Manual/pala','2021-07-09','Camioneta Mitsubishi','2021-07-10','2021-07-10',,'Geovanni Mtz',
+5563,1,,,,'2021-07-14','2021-07-14','Manual','2021-07-14','Camioneta 3ton','2021-07-17','2021-07-17','Se colecto ejemplar pequeño','Geovanni Mtz',
+5564,2,,,,'2021-07-15','2021-07-15','Manual/pala','2021-07-15','Camioneta 3/4 Mitsubishi','2021-07-17','2021-07-17',,'Geovanni Mtz',
+5565,2,,,,'2021-07-15','2021-07-15','Manual/barreta','2021-07-15','Camioneta 3/4 Mitsubishi','2021-07-17','2021-07-17','Se colectaron dos ejemplares','Geovanni Mtz',
+5566,2,,,,'2021-07-15','2021-07-15','Manual','2021-07-15','Camioneta 3/4 Mitsubishi','2021-07-17','2021-07-17','Se colecto muestra y ejemplar','Geovanni Mtz',
+5567,2,,,,'2021-07-15','2021-07-15','Manual/pala','2021-07-15','Camioneta 3/4 Mitsubishi','2021-07-17','2021-07-17','Se colecto muestra y ejemplar','Geovanni Mtz',
+5568,1,,,,'2021-07-16','2021-07-16','Mecánico/serrucho','2021-07-16','Camioneta 3/4 Mitsubishi','2021-07-17','2021-07-17',,'Geovanni Mtz',
+5569,2,,,,'2021-07-16','2021-07-16','Mecánica/serrucho','2021-07-16','Camioneta 3/4 Mitsubishi','2021-07-17','2021-07-17',,'Geovanni Mtz',
+5570,2,,,,'2021-07-20','2021-07-20','Manual','2021-07-20','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24',,'Geovanni Mtz',
+5571,2,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24','Herbácea de aprox. 80 cm de altura, hojas color verde, con flores y frutos color rosa intenso.                           Utilizada en Totontepec para lavar ropa y como tinte, se machaca y así se utiliza','Geovanni Mtz',
+5572,2,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24','Arbusto de aprox. 2 m de altura, hojas color verde intenso en el haz y verde claro en el enves, inflorescencia con flores color rosa fiusha','Geovanni Mtz',
+5573,2,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24',,'Geovanni Mtz',
+5576,2,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24','Herbacea de aprox 1 m. de alto con inflorescencia de flores color rosa fuerte','Geovanni Mtz',
+5577,1,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24',,'Geovanni Mtz',
+5578,2,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24',,'Geovanni Mtz',
+5579,2,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24','Herbácea de aprox. 1 m de alto, hojas color verde, coraceas, inflorescencia con flores color lila, aromaticas','Geovanni Mtz',
+5580,2,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24',,'Geovanni Mtz',
+5581,2,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24','Adalberto Jimenez Ambrosio 29 años. Utilizada en tiempo de calor y no hay agua cerca, se mastica el tallo cuando esta tierna','Geovanni Mtz',
+5582,,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24',' Herbacea de aprox. 60cm de alto color verde limon con inflorescecias oscuras.  bajada de un arrollo temporal, pasando Totontepec','Geovanni Mtz',
+5583,2,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta','2021-07-24','2021-07-24','Árbol de aprox, 25 m de altura con frutos de aprox. 10 cm de altura alargados, nombre comun: aguacate chupón, uso comestible pura pulpa nativo del pueblo, nombre en zapoteco: Yeex''ho Duxhe','Geovanni Mtz',
+5584,2,,,,'2021-07-21','2021-07-21','Manual','2021-07-21','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24',,'Geovanni Mtz',
+5585,2,,,,'2021-07-22','2021-07-22','Manual','2021-07-22','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24','Arbusto de aprox. 3m de altura, hojas color verde intenso, pubecente, con inflorecencia en racimo color roja','Geovanni Mtz',
+5586,2,,,,'2021-07-22','2021-07-22','Manual','2021-07-22','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24','Sobre materia orgánica.  Árbol de aprox. 4 m de altura con hojas alargadas, color verde intenso en el haz y verde claro en el envez, inflorescencia color verde claro.  las raices de este árbol son de color rojo a morado, con la punta amarilla la cual esta cubierta por una babita','Geovanni Mtz',
+5587,2,,,,'2021-07-22','2021-07-22','Manual','2021-07-22','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24','Sobre materia orgánica','Geovanni Mtz',
+5588,3,,,,'2021-07-22','2021-07-22','Manual','2021-07-22','Camioneta 3/4 Mitsubishi','2021-07-25','2021-07-25','Suelo es Tepetate amarillo con materia orgánica','Geovanni Mtz',
+5589,1,,,,'2021-07-22','2021-07-22','Manual','2021-07-22','Camioneta 3/4 Mitsubishi','2021-07-25','2021-07-25',,'Geovanni Mtz',
+5590,2,,,,'2021-07-22','2021-07-22','Manual','2021-07-22','Camioneta 3/4 Mitsubishi','2021-07-25','2021-07-25',,'Geovanni Mtz',
+5591,1,,,,'2021-07-22','2021-07-22','Manual','2021-07-22','Camioneta 3/4 Mitsubishi','2021-07-24','2021-07-24',,'Geovanni Mtz',
+5592,2,,,,'2021-07-23','2021-07-23','Manual','2021-07-23','Camioneta 3/4 Mitsubishi','2021-07-26','2021-07-26','Semi-arborescente de aprox. 1 m dealtura, con hojas color verde intenso','Geovanni Mtz',
+5593,,,,,'2021-07-23','2021-07-23','Manual','2021-07-23','Camioneta','2021-07-26','2021-07-26','Rescate, deslave','Geovanni Mtz',
+5594,2,,,,'2021-07-23','2021-07-23','Manual','2021-07-23','Camioneta','2021-07-25','2021-07-25','Rescate','Geovanni Mtz',
+5595,2,,,,'2021-07-23','2021-07-23','Manual','2021-07-23','Camioneta','2021-07-25','2021-07-25','Rescate','Geovanni Mtz',
+5596,2,,,,'2021-07-23','2021-07-23','Manual','2021-07-23','Camioneta 3/4 Mitsubishi','2021-07-25','2021-07-25',,'Geovanni Mtz',
+5597,2,,,,'2021-07-24','2021-07-24','Manual','2021-07-24','Camioneta 3/4 Mitsubishi','2021-07-25','2021-07-25',,'Geovanni Mtz',
+5598,5,,,,'2021-07-28','2021-07-28','Manual','2021-07-28','Camioneta 3ton','2021-07-31','2021-07-31','El tipo de raíz es mixta lateral','Geovanni Mtz',
+5599,5,,,,'2021-07-28','2021-07-28','Manual','2021-07-28','Camioneta 3ton','2021-07-31','2021-07-31','El tipo de raíz es mixta','Geovanni Mtz',
+5600,5,,,,'2021-07-28','2021-07-28','Manual','2021-07-28','Camioneta 3ton','2021-07-31','2021-07-31','El tipo de raíz es mixta','Geovanni Mtz',
+5601,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5602,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Sobre arroyo temporal','Geovanni Mtz',
+5603,2,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Encontrada en zona urbana','Geovanni Mtz',
+5604,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5605,2,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5606,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5607,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5608,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5609,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5610,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5611,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5612,2,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5613,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5614,1,,,,'2021-07-29','2021-07-29','Manual','2021-07-29','Camioneta 3ton','2021-07-31','2021-07-31','Se encontró sobre roca','Geovanni Mtz',
+5615,3,,,,'2021-07-30','2021-07-30','Manual','2021-07-30','Camioneta 3ton','2021-07-31','2021-07-31','Se colectó de un derrumbe con equipo de trepa','Geovanni Mtz',
+5616,2,,,,'2021-08-04','2021-08-04','Manual','2021-08-04','Camioneta 3/4 Mitsubishi','2021-08-07','2021-08-07',,'Geovanni Mtz',
+5618,1,,,,'2021-07-08','2021-07-08','Manual','2021-07-08','Camioneta','2021-07-10','2021-07-10',,'Geovanni Mtz','Vianney Hdz'
+5619,2,,,,'2020-11-09','2020-11-09','Manual','2020-11-09','Camioneta 3/4','2020-11-09','2020-11-09','Abundancia de la planta en temporada de lluvia','Geovanni Mtz','Vianney Hdz'
+5624,2,,,,'2020-12-12','2020-12-12','Manual','2020-12-12','Camioneta 3/4','2020-12-15','2020-12-15','Solo se colectaron semillas','Geovanni Mtz','Vianney Hdz'
+5625,2,,,,'2020-12-12','2020-12-12','Manual','2020-12-12','Camioneta 3/4','2020-12-15','2020-12-15','Flor morada, solo se colectaron semillas','Geovanni Mtz','Vianney Hdz'
+5626,2,,,,'2020-12-13','2020-12-13','Manual','2020-12-13','Camioneta 3/4','2020-12-15','2020-12-15','Solo se colectaron semillas/Flores azules pequeñas','Geovanni Mtz','Vianney Hdz'
+5627,2,,,,'2020-12-13','2020-12-13','Manual','2020-12-13','Camioneta 3/4','2020-12-15','2020-12-15','Solo se colectaron semillas/Flores moradas','Geovanni Mtz','Vianney Hdz'
+5628,2,,,,'2020-12-13','2020-12-13','Manual','2020-12-13','Camioneta 3/4','2020-12-15','2020-12-15','Solo se colectaron semillas/Flores azules','Geovanni Mtz','Vianney Hdz'
+5629,2,,,,'2020-12-14','2020-12-14','Manual','2020-12-14','Camioneta 3/4','2020-12-15','2020-12-15','Solo se colectaron semillas/Flores moradas','Geovanni Mtz','Vianney Hdz'
+5630,2,,,,'2020-12-16','2020-12-16','Manual',,'Camioneta','2020-12-19','2020-12-19','Bitácora dice que está Muerta','Vianney Hdz','Issis Moreno'
+5631,2,,,,'2020-12-23','2020-12-23','Manual','2020-12-23','Camioneta 3/4','2020-12-23','2020-12-23',,'Geovanni Mtz','Vianney Hdz'
+5632,12,,,,'2021-06-03','2021-06-04','Triple con garrucha','2021-06-04','Torton','2021-06-04','2021-06-04',,'Geovanni Mtz','Vianney Hdz'
+5633,2,,,,'2021-01-02','2021-01-02','Manual','2021-01-02','Camioneta 3/4','2021-01-04','2021-01-04','Bitácora dice que está Muerta, sin coordenadas geográficas','Geovanni Mtz','Vianney Hdz'
+5634,2,,,,'2021-01-03','2021-01-03','Manual','2021-01-03','Camioneta 3/4','2021-01-04','2021-01-04',,'Geovanni Mtz','Vianney Hdz'
+5635,2,,,,'2021-01-03','2021-01-03','Manual','2021-01-03','Camioneta 3/4','2021-01-04','2021-01-04','Flores de color melón, llamativas','Geovanni Mtz','Vianney Hdz'
+5636,2,,,,'2021-01-03','2021-01-03','Manual','2021-01-03','Camioneta 3/4','2021-01-04','2021-01-04','Sin coordenadas geográficas','Geovanni Mtz','Vianney Hdz'
+5637,2,,,,'2021-01-03','2021-01-03','Manual','2021-01-03','Camioneta 3/4','2021-01-04','2021-01-04',,'Geovanni Mtz','Vianney Hdz'
+5638,2,,,,'2021-01-09','2021-01-09','Manual','2021-01-09','Camioneta 3/4','2021-01-11','2021-01-11','Flor sora con garganta blanca, hoja redonda con nervaduras principales en color amarillo, verde oscuro, vainas de 25 cm','Geovanni Mtz','Vianney Hdz'
+5639,2,,,,'2021-02-01','2021-02-01','Manual','2021-02-01','Camioneta 3/4','2021-02-06','2021-02-06','Flores rojas muy vistosas','Geovanni Mtz','Vianney Hdz'
+5640,2,,,,'2021-02-01','2021-02-01','Manual','2021-02-01','Camioneta 3/4','2021-02-06','2021-02-06','Se colectó sobre tejado','Geovanni Mtz','Vianney Hdz'
+5641,2,,,,'2021-02-12','2021-02-12','Manual','2021-02-12','Camioneta 3/4','2021-02-13','2021-02-13',,'Geovanni Mtz','Vianney Hdz'
+5642,2,,,,'2021-02-20','2021-02-20','Manual','2021-02-20','Camioneta 3/4','2021-02-20','2021-02-20',,'Geovanni Mtz','Vianney Hdz'
+5643,2,,,,'2021-02-25','2021-02-25','Manual','2021-02-25','Camioneta 3/4','2021-02-27','2021-02-27','Enredadera con hojas margen rojizo. zarcillo rojizo','Geovanni Mtz','Vianney Hdz'
+5645,2,,,,'2021-03-14','2021-03-14','Manual','2021-03-14','Camioneta 3/4','2021-03-15','2021-03-15','Flor blanca con garganta fucsia ','Geovanni Mtz','Vianney Hdz'
+5646,2,,,,'2021-03-14','2021-03-14','Manual','2021-03-14','Camioneta 3/4','2021-03-15','2021-03-15','Colectado en cerco de terreno baldío','Geovanni Mtz','Vianney Hdz'
+5647,2,,,,'2021-03-14','2021-03-14','Manual','2021-03-14','Camioneta 3/4','2021-03-15','2021-03-15',,'Geovanni Mtz','Vianney Hdz'
+5648,2,,,,'2020-12-31','2020-12-31','Manual','2020-12-31','Camioneta 3/4','2021-01-04','2021-01-04',,'Geovanni Mtz','Vianney Hdz'
+5649,2,,,,'2021-03-14','2021-03-14','Manual','2021-03-14','Camioneta 3/4','2021-03-15','2021-03-15',,'Geovanni Mtz','Vianney Hdz'
+5650,2,,,,'2021-03-14','2021-03-14','Manual','2021-03-14','Camioneta 3/4','2021-03-15','2021-03-15','Colectado en cerco de terreno baldío','Geovanni Mtz','Vianney Hdz'
+5651,2,,,,'2021-03-14','2021-03-14','Manual','2021-03-14','Camioneta 3/4','2021-03-15','2021-03-15','Enredadera con flores amarillas vistosas, semillas aladas en racimo','Geovanni Mtz','Vianney Hdz'
+5652,2,,,,'2021-03-14','2021-03-14','Manual','2021-03-14','Camioneta 3/4','2021-03-15','2021-03-15',,'Geovanni Mtz','Vianney Hdz'
+5653,2,,,,'2021-03-14','2021-03-14','Manual','2021-03-14','Camioneta 3/4','2021-03-15','2021-03-15','Passiflora de frutos pubescentes','Geovanni Mtz','Vianney Hdz'
+5654,2,,,,'2021-03-15','2021-03-15','Manual','2021-03-15','Automóvil Versa ','2021-03-15','2021-03-15',,'Vianney Hdz','Issis Moreno'
+5655,2,,,,'2021-03-19','2021-03-19','Manual','2021-03-19','Automóvil','2021-03-19','2021-03-19',,'Geovanni Mtz','Vianney Hdz'
+5656,2,,,,'2021-03-27','2021-03-27','No aplica','2021-03-27','Automóvil','2021-03-27','2021-03-27','La planta ya estaba en bolsa','Geovanni Mtz','Vianney Hdz'
+5657,2,,,,'2021-03-27','2021-03-27','Manual','2021-03-27','Automóvil','2021-03-27','2021-03-27','Textura de suelo rocoso','Geovanni Mtz','Vianney Hdz'
+5658,2,,,,'2021-03-27','2021-03-27','Manual','2021-03-27','Automóvil','2021-03-27','2021-03-27','Solo se colectaron frutos','Geovanni Mtz','Vianney Hdz'
+5659,2,,,,'2021-04-03','2021-04-03','Manual','2021-04-03','Automóvil','2021-04-05','2021-04-05',,'Geovanni Mtz','Vianney Hdz'
+5660,2,,,,'2021-04-03','2021-04-03','Manual','2021-04-03','Automóvil','2021-04-05','2021-04-05','Solo se colectaron semillas','Geovanni Mtz','Vianney Hdz'
+5661,2,,,,'2021-04-03','2021-04-03','Manual','2021-04-03','Automóvil','2021-04-05','2021-04-05','Solo frutos','Geovanni Mtz','Vianney Hdz'
+5663,2,,,,'2021-04-03','2021-04-03','Manual','2021-04-03','Automóvil','2021-04-05','2021-04-05','Solo semillas','Geovanni Mtz','Vianney Hdz'
+5664,2,,,,'2021-04-03','2021-04-03','Manual','2021-04-03','Automóvil','2021-04-05','2021-04-05','Solo semillas','Geovanni Mtz','Vianney Hdz'
+5665,2,,,,'2021-04-03','2021-04-03','Manual','2021-04-03','Automóvil','2021-04-05','2021-04-05',,'Geovanni Mtz','Vianney Hdz'
+5666,2,,,,'2021-04-10','2021-04-10','Manual','2021-04-10','Automóvil','2021-04-12','2021-04-12','No germinó','Geovanni Mtz','Vianney Hdz'
+5667,2,,,,'2021-04-21','2021-04-21','Manual','2021-04-21','Automóvil','2021-04-21','2021-04-21','No tiene altitud y el municipio es San Felipe del agua','Geovanni Mtz','Vianney Hdz'
+5668,2,,,,'2021-06-23','2021-06-23','Manual','2021-06-23','Camioneta','2021-06-26','2021-06-26',,'Geovanni Mtz','Vianney Hdz'
+5669,2,,,,'2021-06-23','2021-06-23','Manual','2021-06-23','Camioneta','2021-06-26','2021-06-26',,'Geovanni Mtz','Issis Moreno'
+5670,2,,,,'2021-06-23','2021-06-23','Manual','2021-06-23','Camioneta','2021-06-26','2021-06-26','Se colecto muestra y ejemplar','Geovanni Mtz','Vianney Hdz'
+5671,2,,,,'2021-07-23','2021-07-23','Manual','2021-07-23','Camioneta','2021-07-25','2021-07-25',,'Geovanni Mtz','Issis Moreno'
+5672,2,,,,'2021-06-23','2021-06-23','Manual','2021-06-23','Camioneta','2021-06-25','2021-06-25','Se colecto muestra y ejemplar','Geovanni Mtz','Vianney Hdz'
+5673,2,,,,'2021-06-30','2021-06-30','Manual, tijera de extensión','2021-06-30','Camioneta','2021-07-03','2021-07-03','Se colectó ejemplar','Geovanni Mtz','Vianney Hdz'
+5674,2,,,,'2021-07-02','2021-07-02','Manual','2021-07-02','Camioneta','2021-07-03','2021-07-03','Se colectaron dos ejemplares, solo había un grupo de orquídeas','Geovanni Mtz','Vianney Hdz'
+5675,2,,,,'2021-07-02','2021-07-02','Manual','2021-07-02','Camioneta','2021-07-03','2021-07-03','Flora gypsicola de Oaxaca','Geovanni Mtz','Vianney Hdz'
+5676,2,,,,'2021-07-02','2021-07-02','Manual','2021-07-02','Camioneta','2021-07-03','2021-07-03',,'Geovanni Mtz','Vianney Hdz'
+5677,2,,,,'2021-07-02','2021-07-02','Manual','2021-07-02','Camioneta','2021-07-03','2021-07-03','Se trajo muestra','Geovanni Mtz','Vianney Hdz'
+5678,1,,,,'2021-07-06','2021-07-06','Manual','2021-07-06','Camioneta Mitsubishi','2021-07-10','2021-07-10',,'Geovanni Mtz','Vianney Hdz'
+5679,2,,,,,'2021-07-06','Manual','2021-07-06','Camioneta Mitsubishi','2021-07-10','2021-07-10','Sobre carretera, suelo arenosa, asociado con cardón, cacalosuchil, retama, mala mujer.  Agave de tamaño pequeño color verde intenso con espinas y márgenes de color cade oscuro.','Geovanni Mtz','Issis Moreno'
+5680,2,,,,'2021-08-13','2021-08-13','Manual','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14','Se colecto muestra y ejemplar','Geovanni Mtz',
+5681,2,,,,'2021-08-13','2021-08-13','Manual','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14',,'Geovanni Mtz',
+5682,4,,,,'2021-08-13','2021-08-13','Manual','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14',,'Geovanni Mtz',
+5683,2,,,,'2021-08-13','2021-08-13','Manual','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14',,'Geovanni Mtz',
+5684,2,,,,'2021-08-13','2021-08-13','Manual','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14',,'Geovanni Mtz',
+5685,2,,,,'2021-08-13','2021-08-13','Manual','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14',,'Geovanni Mtz',
+5686,2,,,,'2021-08-13','2021-08-13','Manual','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14',,'Geovanni Mtz',
+5687,2,,,,'2021-08-13','2021-08-13','Manual','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14',,'Geovanni Mtz',
+5688,1,,,,'2021-08-13','2021-08-13','Manual/pala','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14',,'Geovanni Mtz',
+5689,5,,,,'2021-08-13','2021-08-13','Manual','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14','Se cargó con ayuda de gente de la comunidad y una camioneta/ Guichidoo (madera macisa) la leña la usan para los totopos','Geovanni Mtz',
+5690,2,,,,'2021-08-13','2021-08-13','Manual','2021-08-13','Camioneta 3/4 Mitsubishi','2021-08-14','2021-08-14',,'Geovanni Mtz',
+5691,3,,,,'2021-08-20','2021-08-20','Manual','2021-08-20','Camioneta 3/4 Mitsubishi','2021-08-21','2021-08-21',,'Geovanni Mtz',
+5692,9,'2021-07-29','2021-08-27','2021-08-27','2021-08-27','2021-08-27','Manual','2021-08-27','Camioneta 3ton','2021-08-28','2021-08-28',,'Geovanni Mtz',
+5693,5,,,,'2021-08-27','2021-08-27','Manual','2021-08-27','Camioneta 3ton','2021-08-28','2021-08-28',,'Geovanni Mtz',
+5694,1,,,,'2021-08-27','2021-08-27','Manual','2021-08-27','Camioneta 3/4 Mitsubishi','2021-08-28','2021-08-28',,'Geovanni Mtz',
+5695,2,,,,'2021-08-27','2021-08-27','Manual','2021-08-27','Camioneta 3ton','2021-08-28','2021-08-28',,'Geovanni Mtz',
+5696,1,,,,'2021-08-27','2021-08-27','Manual','2021-08-27','Camioneta 3/4 Mitsubishi','2021-08-28','2021-08-28',,'Geovanni Mtz',
+5697,1,,,,'2021-08-27','2021-08-27','Manual','2021-08-27','Camioneta 3/4 Mitsubishi','2021-08-28','2021-08-28',,'Geovanni Mtz',
+5698,1,,,,'2021-08-27','2021-08-27','Manual','2021-08-27','Camioneta 3/4 Mitsubishi','2021-08-28','2021-08-28',,'Geovanni Mtz',
+5699,1,,,,'2021-08-27','2021-08-27','Manual','2021-08-27','Camioneta 3/4 Mitsubishi','2021-08-28','2021-08-28',,'Geovanni Mtz',
+5700,5,'2021-08-13','2021-08-27','2021-08-27','2021-08-27','2021-08-27','Mecánica','2021-08-27','Camioneta 3ton','2021-08-28','2021-08-28','Nombre común: Guichidoo (madera macisa) la leña la usan para los totopos','Geovanni Mtz',
+5701,2,,,,'2021-09-07','2021-09-07','Manual','2021-09-07','Camioneta 1ton','2021-09-11','2021-09-11',,'Geovanni Mtz',
+5702,1,,,,'2021-09-07','2021-09-07','Manual','2021-09-07','Camioneta 1ton','2021-09-11','2021-09-11',,'Geovanni Mtz',
+5703,1,,,,'2021-09-07','2021-09-07','Manual','2021-09-07','Camioneta 3/4 Mitsubishi','2021-09-11','2021-09-11',,'Geovanni Mtz',
+5704,1,,,,'2021-09-07','2021-09-07','Manual','2021-09-07','Camioneta 3/4 Mitsubishi','2021-09-11','2021-09-11','Se colectó ya en maceta','Geovanni Mtz',
+5705,1,,,,'2021-09-07','2021-09-07','Manual','2021-09-07','Camioneta 3/4 Mitsubishi','2021-09-11','2021-09-11','Orquídea terrestre, ya venía en maceta','Geovanni Mtz',
+5706,2,,,,'2021-09-07','2021-09-07','Manual','2021-09-07','Camioneta 3/4 Mitsubishi','2021-09-11','2021-09-11',,'Geovanni Mtz',
+5707,1,,,,'2021-09-07','2021-09-07','Manual','2021-09-07','Camioneta 3/4 Mitsubishi','2021-09-11','2021-09-11','Ya estaba en bolsa','Geovanni Mtz',
+5708,1,,,,'2021-09-07','2021-09-07','Manual','2021-09-07','Camioneta 3/4 Mitsubishi','2021-09-11','2021-09-11','Bitácora dice la localización Sierra Norte, distrito: Ixtlán','Geovanni Mtz',
+5709,2,,,'2021-09-08','2021-09-08','2021-09-08','Manual','2021-09-08','Camioneta 3/4 Mitsubishi','2021-09-08','2021-09-08',,'Geovanni Mtz',
+5710,3,,,,'2021-09-23','2021-09-23','Manual','2021-09-23','Camioneta 3/4 Mitsubishi','2021-09-25','2021-09-25','sobre un llano con mucha humedad','Geovanni Mtz','Vianney Hdz'
+5711,3,,,,'2021-09-23','2021-09-23','Manual','2021-09-23','Camioneta 3/4 Mitsubishi','2021-09-25','2021-09-25','Flores azules, sobre un llano con mucha humedad','Geovanni Mtz','Vianney Hdz'
+5712,3,,,,'2021-09-23','2021-09-23','Manual','2021-09-23','Camioneta 3/4 Mitsubishi','2021-09-25','2021-09-25',,'Geovanni Mtz','Vianney Hdz'
+5713,1,,,,'2021-09-24','2021-09-24','Manual','2021-09-24','Camioneta 3/4 Mitsubishi','2021-09-25','2021-09-25',,'Geovanni Mtz',
+5714,1,,,,'2021-09-24','2021-09-24','Manual','2021-09-24','Camioneta 3/4 Mitsubishi','2021-09-25','2021-09-25',,'Geovanni Mtz',
+5715,1,'2021-09-29',,,'2021-09-29','2021-10-01','Manual','2021-10-01','Camioneta 3ton','2021-10-02','2021-10-02','Arbusto de flor morada, con hojas grandes de color verde brilloso.','Geovanni Mtz','Vianney Hdz'
+5716,2,'2021-09-29',,'2021-09-29','2021-09-29','2021-10-01','Manual','2021-10-01','Camioneta 3ton','2021-10-02','2021-10-02',,'Geovanni Mtz','Vianney Hdz'
+5717,2,'2021-09-29',,,'2021-09-29','2021-10-01','Manual','2021-10-01','Camioneta 3/4 Mitsubishi','2021-10-02','2021-10-02','Tiene una flor morada','Geovanni Mtz','Vianney Hdz'
+5718,2,'2021-09-29',,,'2021-09-29','2021-10-01','Manual','2021-10-01','Camioneta 3/4 Mitsubishi','2021-10-02','2021-10-02',,'Geovanni Mtz','Vianney Hdz'
+5719,2,,,,'2021-09-29','2021-10-01','Manual','2021-10-01','Camioneta 3ton','2021-10-02','2021-10-02',,'Geovanni Mtz','Vianney Hdz'
+5720,2,,,,'2021-09-29','2021-10-01','Manual','2021-10-01','Camioneta 3/4 Mitsubishi','2021-10-02','2021-10-02','Estancado en agua','Geovanni Mtz','Vianney Hdz'
+5721,2,,,,'2021-09-30','2021-09-30','Manual','2021-09-30','Camioneta 3/4 Mitsubishi','2021-10-02','2021-10-02',,'Geovanni Mtz',
+5722,3,,,,'2021-09-30','2021-09-30','Manual','2021-10-01','Camioneta 3ton','2021-10-02','2021-10-02',,'Geovanni Mtz','Vianney Hdz'
+5723,2,,,,'2021-09-30','2021-09-30','Manual','2021-10-01','Camioneta 3ton','2021-10-02','2021-10-02',,'Geovanni Mtz','Vianney Hdz'
+5724,2,,,,'2021-09-30','2021-09-30','Manual','2021-09-30','Camioneta 3ton','2021-10-02','2021-10-02',,'Geovanni Mtz',
+5725,1,,,,'2021-10-01','2021-10-01','Manual','2021-10-01','Camioneta 3ton','2021-10-02','2021-10-02',,'Geovanni Mtz','Vianney Hdz'
+5726,1,,,,'2021-10-01','2021-10-01','Manual','2021-10-01','Camioneta 3ton','2021-10-02','2021-10-02',,'Geovanni Mtz',
+5727,1,,,,'2021-10-01','2021-10-01','Manual','2021-10-01','Camioneta 3/4 Mitsubishi','2021-10-02','2021-10-02',,'Geovanni Mtz',
+5728,2,,,,'2021-10-01','2021-10-01','Manual','2021-10-01','Camioneta 3/4 Mitsubishi','2021-10-02','2021-10-02','Hoja verde, tallo tierno como caña','Geovanni Mtz',
+5729,1,,,,'2021-10-14','2021-10-14','Manual','2021-10-14','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16',,'Geovanni Mtz',
+5730,4,,,,'2021-10-06','2021-10-06','Manual','2021-10-06','Camioneta 3ton','2021-10-09','2021-10-09',,'Geovanni Mtz',
+5731,2,,,,'2021-10-08','2021-10-08','Manual','2021-10-08','Camioneta 3ton','2021-10-09','2021-10-09',,'Geovanni Mtz',
+5732,2,,,,'2021-10-07','2021-10-07','Manual','2021-10-07','Camioneta 3ton','2021-10-09','2021-10-09','Hoja en forma de corazón alargado, con lineas marcadas de la base a la punta, color verde oscuro, inflorecencia en racimo y petalos color morado','Geovanni Mtz',
+5733,2,,,,'2021-10-07','2021-10-07','Manual','2021-10-07','Camioneta 3/4 Mitsubishi','2021-10-09','2021-10-09',,'Geovanni Mtz',
+5734,1,,,,'2021-10-07','2021-10-07','Manual','2021-10-07','Camioneta 3/4 Mitsubishi','2021-10-09','2021-10-09',,'Geovanni Mtz',
+5735,2,,,,'2021-10-08','2021-10-08','Manual','2021-10-08','Camioneta 3/4 Mitsubishi','2021-10-09','2021-10-09',,'Geovanni Mtz',
+5736,2,,,,'2021-10-08','2021-10-08','Manual','2021-10-08','Camioneta 3/4 Mitsubishi','2021-10-09','2021-10-09',,'Geovanni Mtz',
+5737,1,,,,'2021-01-05','2021-01-05','Manual','2021-01-05','Camioneta 3/4 Mitsubishi','2021-01-09','2021-01-09',,'Geovanni Mtz',
+5738,2,,,,'2021-10-06','2021-10-08','Manual','2021-10-08','Camioneta 3/4 Mitsubishi','2021-10-09','2021-10-09','Flores de color morado con blanco en forma de campana','Geovanni Mtz',
+5739,2,,,,'2021-10-13','2021-10-13','Manual','2021-10-13','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16','Arbusto con base leñosa, hojas asperas aserradas, flores rojas vistosas de aproximada 6 cm de largo.','Geovanni Mtz',
+5740,2,,,,'2021-10-13','2021-10-13','Manual','2021-10-13','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16',,'Geovanni Mtz',
+5741,1,,,,'2021-10-13','2021-10-13','Manual','2021-10-13','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16','Se colectaron semillas','Geovanni Mtz',
+5742,1,,,,'2021-10-14','2021-10-14','Manual','2021-10-14','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16','Flor morada, sobre encino','Geovanni Mtz',
+5744,1,,,,'2021-10-14','2021-10-14','Manual','2021-10-14','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16','Crece sobre árbol','Geovanni Mtz',
+5745,2,,,,'2021-10-14','2021-10-14','Manual','2021-10-14','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16','Crece sobre hojarasca, pasto','Geovanni Mtz',
+5746,3,,,,'2021-10-14','2021-10-14','Manual','2021-10-14','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16','También se encontró en cerro Machin','Geovanni Mtz',
+5747,1,,,,'2021-10-14','2021-10-14','Manual','2021-10-14','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16',,'Geovanni Mtz',
+5748,2,,,,'2021-10-14','2021-10-14','Manual','2021-10-14','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16',,'Geovanni Mtz',
+5749,2,,,,'2021-10-14','2021-10-14','Manual','2021-10-14','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16','Hoja en forma de pata de pato','Geovanni Mtz',
+5750,2,,,,'2021-10-14','2021-10-14','Manual','2021-10-14','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16',,'Geovanni Mtz',
+5751,2,,,,'2021-10-15','2021-10-15','Manual','2021-10-15','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16','Sobre tronco de pino caído','Geovanni Mtz',
+5752,2,,,,'2021-10-15','2021-10-15','Manual','2021-10-15','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16',,'Geovanni Mtz',
+5753,1,,,,'2021-10-15','2021-10-15','Manual','2021-10-15','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16','Sobre roca','Geovanni Mtz',
+5754,3,,,,'2021-10-15','2021-10-15','Manual/Barreta','2021-10-15','Camioneta 3/4 Mitsubishi','2021-10-16','2021-10-16','Rescatadas de rosa y quema','Geovanni Mtz',
+5755,4,,,,'2021-10-20','2021-10-20','Manual/Barreta','2021-10-20','Camioneta 3ton','2021-10-23','2021-10-23','Rescate sobre talud de carretera','Geovanni Mtz',
+5756,3,,,,'2021-10-20','2021-10-20','Manual/Barreta','2021-10-20','Camioneta 3ton','2021-10-23','2021-10-23','Rescate sobre talud de carretera','Geovanni Mtz',
+5757,2,,,,'2021-10-20','2021-10-20','Manual','2021-10-20','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5758,2,,,,'2021-10-20','2021-10-20','Manual','2021-10-20','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5759,1,,,,'2021-10-20','2021-10-20','Manual/Tijera','2021-10-20','Camioneta 3ton','2021-10-23','2021-10-23','Arbusto de flor morada','Geovanni Mtz',
+5760,1,,,,'2021-10-20','2021-10-20','Manual','2021-10-20','Camioneta 3ton','2021-10-23','2021-10-23','Se encontraba sobre una roca','Geovanni Mtz',
+5761,1,,,,'2021-10-20','2021-10-20','Manual','2021-10-20','Camioneta 3ton','2021-10-23','2021-10-23','Rescate de derrumbe en ladera de la carretera','Geovanni Mtz',
+5762,2,,,,'2021-10-20','2021-10-20','Manual','2021-10-20','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5763,2,,,,'2021-10-20','2021-10-20','Manual','2021-10-20','Camioneta 3ton','2021-10-23','2021-10-23','Flor de color crema con rojo','Geovanni Mtz',
+5764,2,,,,'2021-10-21','2021-10-21','Manual','2021-10-21','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5765,2,,,,'2021-10-21','2021-10-21','Manual','2021-10-21','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5766,2,,,,'2021-10-21','2021-10-21','Manual','2021-10-21','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5767,2,,,,'2021-10-21','2021-10-21','Manual','2021-10-21','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5768,2,,,,'2021-10-21','2021-10-21','Manual','2021-10-21','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5769,2,,,,'2021-10-21','2021-10-21','Manual','2021-10-21','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5770,2,,,,'2021-10-21','2021-10-21','Manual','2021-10-21','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5771,2,,,,'2021-10-22','2021-10-22','Manual','2021-10-22','Camioneta 3ton','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5772,4,,,,'2021-10-29','2021-10-29','Manual','2021-10-29','Camioneta 3ton','2021-10-30','2021-10-30','Se rescataron epifitas y troncos muertos de helecho en derrumbe ','Geovanni Mtz',
+5773,2,,,,'2021-10-29','2021-10-29','Manual','2021-10-29','Camioneta 3ton','2021-10-30','2021-10-30','Se recolectó sobre tronco de pinto junto a la carretera','Geovanni Mtz',
+5774,2,,,,'2021-10-29','2021-10-29','Manual','2021-10-29','Camioneta 3ton','2021-10-30','2021-10-30','Se recolectaron troncos de helechos muertos','Geovanni Mtz',
+5775,2,,,,'2021-10-29','2021-10-29','Manual','2021-10-29','Camioneta 3ton','2021-10-30','2021-10-30','Se recolectaron troncos muertos y rescataron orquídeas','Geovanni Mtz',
+5776,2,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30','Se recolectaron epífitas sobre derrumbe en carretera','Geovanni Mtz',
+5777,2,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30','Se rescato en derrumbe en carretera','Geovanni Mtz',
+5778,2,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30','Se rescataron, se está talando el monte','Geovanni Mtz',
+5779,2,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30','Se rescataron, colectado sobre rocas','Geovanni Mtz',
+5780,2,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30',,'Geovanni Mtz',
+5781,3,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30','Rescate de tronco de helecho muerto','Geovanni Mtz',
+5782,2,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30',,'Geovanni Mtz',
+5783,2,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30',,'Geovanni Mtz',
+5784,2,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30',,'Geovanni Mtz',
+5785,2,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30',,'Geovanni Mtz',
+5786,4,,,,'2021-10-28','2021-10-28','Manual','2021-10-28','Camioneta 3ton','2021-10-30','2021-10-30','Rescate de troncos muertos de helechos','Geovanni Mtz',
+5787,2,,,,'2021-11-10','2021-11-10','Manual','2021-11-10','Camioneta 3ton','2021-11-13','2021-11-13',,'Geovanni Mtz',
+5788,2,,,,'2021-11-10','2021-11-10','Manual','2021-11-10','Camioneta 3ton','2021-11-13','2021-11-13',,'Geovanni Mtz',
+5789,2,,,,'2021-11-11','2021-11-11','Manual','2021-11-11','Camioneta 3ton','2021-11-13','2021-11-13','Siembran maíz a un lado','Geovanni Mtz',
+5790,1,,,,'2021-11-11','2021-11-11','Manual','2021-11-11','Camioneta 3ton','2021-11-13','2021-11-13',,'Geovanni Mtz',
+5791,2,,,,'2021-10-22','2021-10-22','Manual','2021-10-22','Camioneta 3/4 Mitsubishi','2021-10-23','2021-10-23',,'Geovanni Mtz',
+5792,1,,,,'2021-04-04','2021-04-04','Manual','2021-04-04','Camioneta 3/4 Mitsubishi','2021-04-05','2021-05-04',,'Geovanni Mtz',
+5793,1,,,,'2021-11-24','2021-11-24','Manual','2021-11-24','Camioneta 3/4 Mitsubishi','2021-11-27','2021-11-27',,'Geovanni Mtz',
+5794,1,,,,'2022-07-11','2022-07-11','Manual','2022-07-11','Automóvil','2022-07-11','2022-07-11',,'Geovanni Mtz',
+5795,1,,,,'2021-09-24','2021-09-24','Manual','2021-09-24','Camioneta 3/4 Mitsubishi','2021-09-25','2021-09-25',,'Geovanni Mtz',
+5797,,,,,,,,,,,,,'Geovanni Mtz','Vianney Hdz'
+5798,,,,,,,,,,'2022-12-16',,'Sobre rocas grandes con abundante materia orgánica','Geovanni Mtz','Issis Moreno8'
+5799,,,,,,,,,,,,'Sobre rocas grandes con abundante materia orgánica','Geovanni Mtz','Issis Moreno3'
+5800,,,,,,,,,,,,,'Geovanni Mtz','Issis Moreno3'
+5801,,,,,,,,,,,,,'Geovanni Mtz','Issis Moreno5'

@@ -1,0 +1,605 @@
+a.nolink{
+    text-decoration:none;
+    color:inherit;
+}
+a:link:visited:hover:active.nolink{
+    text-decoration:none;
+    color:inherit;
+}
+/* ------------  Corta texto a los 380px ------------- */
+.cortaTexto{overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 380px;}
+/* ------------  Corta texto a las 3 líneas ------------- */
+.cortaLineas { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
+
+/* Centra un Div.center dentro de otro div */
+.center {
+    /* margin: auto; */
+    margin-left:auto;
+    margin-right: auto;
+    /* width: 50%; */
+}
+
+
+/* ---------- Paginador ---------- */
+.paginador .boton,
+.paginador .pagina {
+    position: relative;
+    padding: 5px;
+    margin: -35px auto;
+    background: #CDC6B9;
+    height: 40px;
+    width: 40px;
+    border-radius: 7px;
+    transition: all 0.2s linear;
+    text-align: center;
+}
+
+.paginador .boton:hover,
+.paginador .pagina:hover {
+    transform: translate3d(0, 5px, 0);
+}
+.paginador .abajo::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    z-index: 11;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid #efebe8;
+    border-left: 2px solid #efebe8;
+    top: 10px;
+    transform: rotate(225deg);
+}
+.paginador .arriba::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    z-index: 11;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid #efebe8;
+    border-left: 2px solid #efebe8;
+    top: 15px;
+    transform: rotate(45deg);
+}
+.paginador a:link:visited:hover:active{
+    text-decoration:none;
+    color:inherit;
+}
+.paginador  .pagina{
+    color: #64383E !important;
+    text-align: center;
+    vertical-align: middle;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    /* margin: 48px -3px; */
+}
+.paginador  .paginaActiva{
+    background-color: #87796d !important;
+    color: #CDC6B9;
+    text-align: center;
+    vertical-align: middle;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    /* margin: 48px -3px; */
+}
+
+
+
+/* ------------------------------------------*/
+/* ------------ INICIA Formularios ---------*/
+.select2 {
+    /* --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"); */
+    /* display: block; */
+    /* width: 100%; */
+    padding: .375rem 2.25rem .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    /* color: var(--bs-body-color); */
+    color: #64383E !important;
+    font-family: 'Roboto Condensed', sans-serif;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-color: #CDC6B9;
+    background-image: var(--bs-form-select-bg-img),var(--bs-form-select-bg-icon,none);
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.select2-container--default .select2-selection--single{
+    background-color: #CDC6B9;
+    border:1px solid #afa99d ;
+}
+.form-select {
+    --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    /* display: block; */
+    /* width: 100%; */
+    padding: .375rem 2.25rem .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    /* color: var(--bs-body-color); */
+    color: #64383E !important;
+    font-family: 'Roboto Condensed', sans-serif;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* background-color: var(--bs-body-bg); */
+    background-color: #CDC6B9;
+    background-image: var(--bs-form-select-bg-img),var(--bs-form-select-bg-icon,none);
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.form-control, .forma-icon {
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    /* color: var(--bs-body-color); */
+    color: #64383E !important;
+    font-family: 'Roboto Condensed', sans-serif;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #CDC6B9;
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.form-control{
+    display: block;
+    width: 100%;
+}
+.form-text{
+    font-size:90%;
+    color:#87796d;
+    margin:0px;
+    font-weight: lighter;
+}
+.btn-primary {
+    --bs-btn-color:  #efebe8;
+    --bs-btn-bg: #64383E;
+    --bs-btn-border-color: #87796d;
+    --bs-btn-hover-color:  #efebe8;
+    --bs-btn-hover-bg: #87796d;
+    --bs-btn-hover-border-color:#87796d;
+    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-active-color:  #efebe8;
+    --bs-btn-active-bg: #0a58ca;
+    --bs-btn-active-border-color: #0a53be;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color:  #efebe8;
+    --bs-btn-disabled-bg: #64383E;
+    --bs-btn-disabled-border-color: #64383E;
+}
+.form-group label,
+.form-check label{
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    /* color: var(--bs-body-color); */
+    color: #202d2d !important;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bold;
+}
+.form-check label{
+    text-align: left;
+}
+.form-check-input {
+    --bs-form-check-bg: var(--bs-body-bg);
+    flex-shrink: 0;
+    width: 1.5em;
+    height: 1.5em;
+    margin-top: .25em;
+    vertical-align: top;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #CDC6B9;
+    background-image: var(--bs-form-check-bg-image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+}
+.form-check-input:checked {
+    background-color:  #87796d;
+    border-color: #CDC6B9;
+}
+.form-check-input[type="checkbox"] {
+border-radius: .25em;
+}
+.form-check .form-check-input {
+float: left;
+margin-left: -1.5em;
+}
+
+/* para meter ícono dentro de input */
+.form-con-icono{
+    position:relative;
+}
+.form-icon{
+    color: #202d2d;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 85%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size:1rem;
+}
+
+.boton {
+    background-color: #64383E;
+    padding: 15px 20px;
+    color: #efebe8;
+    font-size: 18px;
+    display:inline-block;
+}
+
+.boton:hover {
+    background-color: #CDC6B9;
+    color: #64383E;
+}
+
+.boton2 {
+    background-color: #CD7B34;
+    padding: 15px 20px;
+    color: #efebe8;
+    font-size: 18px;
+    display:inline-block;
+}
+
+.boton2:hover {
+    background-color: #CDC6B9;
+    color: #CD7B34;
+}
+
+.boton3 {
+    background-color: #919C1B;
+    padding: 15px 20px;
+    color: #efebe8;
+    font-size: 18px;
+    display:inline-block;
+}
+
+.boton3:hover {
+    background-color: #CDC6B9;
+    color: #919C1B;
+}
+
+[disabled]{
+    background-color: #efebe8 !important;
+    /* border:0px solid #efebe8; */
+}
+
+/* ------------ TERMINA Formularios ---------*/
+/* ------------------------------------------*/
+
+
+/* ------------ Botón de audio ---------*/
+/* .audio {
+    background-image: url('/iconos/voz.png') !important;
+    background-color:#EFEBE8;
+    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin:0;
+    padding:0;
+    border: none !important;
+    width:  45px;
+    height: 25px;
+    font-size: 15px;
+    color:#212529;
+
+} */
+
+
+error, red {
+    color:#CD7B34;
+    font-size: 1.2rem;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+.error {
+    border: 3px solid #CD7B34;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+.error2{
+    /* background-color: #CD7B34; */
+    border: 2px dashed #CD7B34;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+.etiqueta{
+    font-size:10px;
+    border:1px solid #87796d;
+    display:inline-block;
+    padding:3px;
+    border-radius:4px;
+    background-color:#CDC6B9
+}
+.PaClick{
+    cursor:pointer;
+}
+
+.TipoTabla{
+    display:inline-block;
+}
+
+.ContenedorImg{
+    margin-left:auto;
+    margin-right: auto;
+    position: relative; /* Referencia para los elementos internos */
+    display: inline-block; /* O un div con width y height */
+    margin-top:0px;
+    padding:15px;
+    color:#87796d;
+    /* width:100%; */
+}
+/*=== inact: formato para tablas cuando act=0
+(tacha y pone en gris el texto) ===*/
+tr.inact, td.inact{
+    text-decoration: line-through;
+    color:gray;
+    font-weight: 50;
+}
+/*======*/
+
+img.avatar{
+    border-radius:13px;
+    max-width:80px;
+    max-height:100px;
+    border:1px solid #64383E;
+    text-align:right;
+}
+/* estilo para notas en buzón */
+nota{
+    display:block;
+    margin-left:10px;
+}
+
+.truncar1linea{
+  white-space: nowrap; /* Prevents text from wrapping to the next line */
+  overflow: hidden;    /* Hides any content that overflows the element's box */
+  text-overflow: ellipsis; /* Displays an ellipsis (...) to indicate truncated text */
+  display:inherit;
+  height:15px;
+}
+
+/* ----------- LEAFLET MAPS -------------- --*/
+#map {
+    /* height: 180px; */
+    height:540px;
+    border:1px solid black;
+}
+
+.regresar{
+    padding-bottom:20px;
+    color:#87796d;
+}
+.regresar:hover {
+    color:#919C1B;
+}
+.regresar::before{
+    content: "<--";
+}
+
+/* === imagen: muestra las imágenes en formato con titulo, autor, fecha y datos.
+   <imagen> <img class="imagen"> <titulo> <fecha>
+ Estilos de clase imagen utilizados en plantilla imagenes y en modalImagenController*/
+imagen {
+    border:1px dotted #CDC6B9;
+    /* background-color: #CDC6B9; */
+    display:inline-block;
+    padding:10px;
+    vertical-align: top;
+}
+
+.imagen {
+  display: flex;
+  font-size: 80%;
+  color:gray;
+}
+
+.imagen img {
+  margin: 0px;
+  padding:0px;
+  max-width:100%;
+  height: auto;
+  max-height: 200px;
+}
+
+imagen titulo{
+  margin: 0; /* Elimina el margen predeterminado del párrafo */
+  writing-mode:horizontal-tb;
+  vertical-align: bottom;
+  text-align: left;
+  font-weight:600;
+  width: 100%;
+  padding-left:15px;
+  display:inline-block;
+}
+
+.imagen fecha {
+  margin: 0; /* Elimina el margen predeterminado del párrafo */
+  /* writing-mode:sideways-lr; */
+  transform: rotate(180deg);
+  writing-mode: vertical-lr;
+  vertical-align: bottom;
+  font-weight:400;
+  color:#CDC6B9;
+}
+
+.imagen autor {
+  margin: 0px; /* Elimina el margen predeterminado del párrafo */
+  padding:0px;
+  /* writing-mode:sideways-rl; */
+  transform: rotate(180deg);
+  writing-mode: vertical-lr;
+  vertical-align: top;
+  font-weight:400;
+  color:#CDC6B9;
+}
+
+imagen explica{
+    font-size: 80%;
+    line-height:110%;
+    text-align: justify;
+    font-weight:500;
+    color:gray;
+    margin:0px;
+    /* padding:0px; */
+    margin-left: 15px;
+    margin-right: 20px;
+    margin-top: 7px;
+    display:inline-block;
+
+}
+.truncarTexto{
+    width: 85%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* ######### TERMINA IMAGEN ########## */
+
+hr.titulo{
+    height:10px;
+    background-color:#64383E;
+    border:1px solid #64383E;
+    margin-top: 40px;
+    margin-bottom: 7px;
+}
+
+T{
+    border-top:1px solid black;
+    margin:0;
+    padding:0;
+}
+bajo{
+    border-bottom:1px solid black;
+    margin:0;
+    padding:0;
+}
+
+colores{
+    color: #64383E;
+    color: #efebe8;
+    color: #CDC6B9;
+
+    color: #87796d;
+    color: #CD7B34;
+    color: #919C1B;
+    color: #202d2d;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Noto Serif JP', serif;
+}
+
+/*==== <div class="iconoWWW"><img class="iconoWWW">
+    Íconos pequeños de logo de página para las  ligas
+    a páginas externas ===*/
+img.iconoWWW{
+    width:25px;
+    border:1px solid #87796d;
+    border-radius: 5px;
+    cursor:pointer;
+}
+img.iconoWWW:hover{
+    background-color:#CDC6B9;
+    border: 1px solid #919C1B;
+}
+div.iconoWWW {
+    display:inline-block;
+    font-size: 60%;
+    align-items: center;
+    text-align: center;
+    text-decoration:none;
+    color:inherit;
+}
+/* ====================== */
+
+/* === elemento: Para cuando hay varios elementos dentro de una
+   celda en una tabla, permite distinguir cada uno ===*/
+div.elemento {
+    display:inline-block;
+    border:1px dashed #CDC6B9;
+    padding:1px;
+    border-radius:3px;
+    margin:3px;
+}
+
+/* === agregar: integra ícono e input (o select)
+   en un elemento ===*/
+select.agregar,input.agregar{
+    width:85%;
+    display:inline-block;
+}
+i.agregar{
+    display:inline-block;
+    color:#CDC6B9;
+    margin-left:3px;
+    margin-right: 0px;
+    cursor:pointer;
+}
+/* =======================fin */
+
+/*=======================================
+  Inicia Caracteres especiales de texto para
+  traductores */
+.ar{
+    border-top: 1px solid black;
+}
+.ar::before{
+    content:' ';
+}
+.ab{
+    border-bottom: 1px solid black;
+}
+.ab::before{
+    content:' ';
+}
+
+.diag {
+    position: relative;
+}
+.diag::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: black;
+    transform: translateY(-50%) rotate(-45deg);
+    transform-origin: center;
+}
+.circ {
+  position: relative; /* Para posicionar el texto dentro */
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* Crea el círculo */
+  background-color: lightblue; /* Color de fondo */
+  display: flex; /* Para centrar el contenido */
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto; /* Centra el círculo en la página */
+}
+/* Termina Caracteres especiales de texto para
+  traductores
+======================================= */
