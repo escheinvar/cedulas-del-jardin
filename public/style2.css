@@ -289,7 +289,6 @@ margin-left: -1.5em;
     background-color: #efebe8 !important;
     /* border:0px solid #efebe8; */
 }
-
 /* ------------ TERMINA Formularios ---------*/
 /* ------------------------------------------*/
 
@@ -409,6 +408,7 @@ imagen {
     display:inline-block;
     padding:10px;
     vertical-align: top;
+    display:inline-block;
 }
 
 .imagen {
@@ -558,48 +558,3 @@ i.agregar{
     cursor:pointer;
 }
 /* =======================fin */
-
-/*=======================================
-  Inicia Caracteres especiales de texto para
-  traductores */
-.ar{
-    border-top: 1px solid black;
-}
-.ar::before{
-    content:' ';
-}
-.ab{
-    border-bottom: 1px solid black;
-}
-.ab::before{
-    content:' ';
-}
-
-.diag {
-    position: relative;
-}
-.diag::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: black;
-    transform: translateY(-50%) rotate(-45deg);
-    transform-origin: center;
-}
-.circ {
-  position: relative; /* Para posicionar el texto dentro */
-  width: 100px;
-  height: 100px;
-  border-radius: 50%; /* Crea el círculo */
-  background-color: lightblue; /* Color de fondo */
-  display: flex; /* Para centrar el contenido */
-  justify-content: center;
-  align-items: center;
-  margin: 20px auto; /* Centra el círculo en la página */
-}
-/* Termina Caracteres especiales de texto para
-  traductores
-======================================= */

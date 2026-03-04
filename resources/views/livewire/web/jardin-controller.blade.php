@@ -10,48 +10,98 @@
 @section('siglasMin'){{ strtolower($url->urlj_cjarsiglas) }}@endsection
 @section('jardin') {{ $url->jardin->cjar_nombre }} @endsection
 
+@section('red_facebook') {{ $url->jardin->cjar_face }} @endsection
+@section('red_instagram') {{ $url->jardin->cjar_insta }} @endsection
+@section('red_youtube') {{ $url->jardin->cjar_youtube }}  @endsection
+@section('ubicacion') {{ $url->jardin->cjar_ubica }}  @endsection
+@section('mail') {{ $url->jardin->cjar_mail }} @endsection
+@section('web') {{ $url->jardin->cjar_www }} @endsection
 
 <div>
-    <!-- pone título -->
-    @if($url->urlj_url=='inicio')
-        <h1>
-            {{ $url->jardin->cjar_nombre }}
-            @if($edit=='1') <error><i class="bi bi-record-circle" style="font-size:150%;"></i></error> @endif
-        </h1>
+
+    <!-- --------------------- Menú de traducciones ------------------------------ -->
+    @if($traducciones->count() > 0)
+    <div class="row">
+        <div class="col-4 col-md-6 "> &nbsp; </div>
+        <div class="col-4 col-md-3 form-group" style="text-align:right;">
+            <div>
+                <h3>{{ $url->lenguas->len_autonimias }}</h3>
+                <span style="font-size: 70%;">{{ $url->lenguas->len_lengua }}</span>
+            </div>
+        </div>
+        <div class="col-4 col-md-3 form-group">
+            <label class="form-label">Hay {{ $traducciones->count() }} @if($traducciones->count()=='1') traducción @else traducciones @endif</label>
+            <select wire:change="CambiaAunaTraduccion()" wire:model.live="traduccion" class="form-select">
+                <option value="">Selecciona ...</option>
+                @foreach ($traducciones as $t)
+                    <option value="{{ $t->urlj_id }}">{{ $t->lenguas->len_autonimias }} ({{ $t->lenguas->len_lengua }}) {{ $t->lenguas->len_code }}</optio>
+                @endforeach
+            </select>
+        </div>
+    </div>
     @endif
+
+    <!-- pone título -->
+    <h1>
+    @if($url->urlj_url=='inicio')
+        @if($edit=='1') <error><i class="bi bi-record-circle" style="font-size:150%;"></i></error> @endif
+            {{ $url->jardin->cjar_nombre }}
+        @else
+            {{ $url->urlj_titulo }}
+        @endif
+    </h1>
+
+
+
     <!-- --------------------- TEXTO PRINCIPAL ----------------------------------- -->
     @foreach ($txt as $l)
-        <div class="my-2">
+        <div wire:key="txt{{ $l->jar_id }}">
             <!-- muestra opción de edición -->
             @if($edit=='1')
-                <i wire:click="AbreModalEditaTextoWebJardin('{{ $l->jar_id }}','{{ $l->jar_orden }}')" class="bi bi-pencil-square agregar" style="display:inline;"><sup>{{ $l->jar_orden }}</sup><sub>Id {{ $l->jar_id }}</sub></i>
+                <i wire:click="AbreModalEditaTextoWebJardin('{{ $l->jar_id }}','{{ $l->jar_orden }}')" class="bi bi-pencil-square PaClick agregar" style="display:inline;">
+                    <sup>{{ $l->jar_orden }}</sup>{{-- <sub>Id {{ $l->jar_id }}</sub> --}}
+                </i>
             @endif
+
             <!-- muestra código html -->
             {!! $l->jar_txt !!}
         </div>
-
     @endforeach
+
+    @if($edit=='1')
+        <div class="row my-4" style="background-color: #CDC6B9;">
+            <div class="col-2">
+                <i wire:click="AbreModalEditaTextoWebJardin('0','')" class="bi bi-plus-square PaClick" style="display:inline;"> Nuevo párrrafo</i>
+            </div>
+            <div class="col-2">
+                <i class="bi bi-image PaClick"> ver Galería </i>
+            </div>
+        </div>
+        <div class="row my-4" style="background-color: #CDC6B9;">
+
+        </div>
+    @endif
 
     <livewire:sistema.jardin-web-modal-component>
 
     <script>
-        document.addEventListener('livewire:init', function () {
-            $('#summernote').summernote({
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['para', ['ul', 'ol']],
-                    ['height', ['height']],
-                    ['view', ['fullscreen', 'codeview', 'help']],
-                    ['table', ['table']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['group', [ 'specialChar' ]],
-                    ['mybutton', ['LineaArriba','LineaAbajo','LineaDiagonal','CirculoArriba']]
-                ],
-            });
-        });
+        // document.addEventListener('livewire:init', function () {
+        //     $('#summernote').summernote({
+        //         toolbar: [
+        //             ['style', ['bold', 'italic', 'underline', 'clear']],
+        //             ['font', ['strikethrough', 'superscript', 'subscript']],
+        //             ['fontsize', ['fontsize']],
+        //             ['color', ['color']],
+        //             ['para', ['ul', 'ol', 'paragraph']],
+        //             ['para', ['ul', 'ol']],
+        //             ['height', ['height']],
+        //             ['view', ['fullscreen', 'codeview', 'help']],
+        //             ['table', ['table']],
+        //             ['insert', ['link', 'picture', 'video']],
+        //             ['group', [ 'specialChar' ]],
+        //             ['mybutton', ['LineaArriba','LineaAbajo','LineaDiagonal','CirculoArriba']]
+        //         ],
+        //     });
+        // });
     </script>
 </div>

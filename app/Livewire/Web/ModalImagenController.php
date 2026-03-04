@@ -115,10 +115,10 @@ class ModalImagenController extends Component
         $this->ImgModaliasNvo=[];
     }
 
-    public function CerrarModalImg(){
-        $this->LimpiarModalImg();
-        $this->dispatch('cierraModalDeImagen',reload:1);
-        redirect()->back();
+    public function CerrarModalImg($idReturn){
+        $this->dispatch('cierraModalDeImagen',reload:1,IDreturn:$idReturn);
+        // $this->LimpiarModalImg();
+        // redirect()->back();
     }
 
     public function GuardarObjeto(){
@@ -189,7 +189,7 @@ class ModalImagenController extends Component
         }
 
         ##### Finaliza y cierra
-        $this->CerrarModalImg();
+        $this->CerrarModalImg($id);
     }
 
     public function BorrarObjeto(){
@@ -204,7 +204,7 @@ class ModalImagenController extends Component
         // unlink($archivo);
         Storage::move('/public/'.$archivo, '/public/'.$nvoarch);
         $this->dispatch('alertaBorradoImagen',msj:'La imagen se borró correctamente');
-        $this->CerrarModalImg();
+        $this->CerrarModalImg('0');
     }
 
     public function AgregarAlias(){

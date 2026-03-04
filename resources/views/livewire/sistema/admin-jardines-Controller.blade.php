@@ -191,6 +191,63 @@
                             @error('')<error>{{ $message }}</error>@enderror
                         </div>
                     </div>
+                    <div class="row">
+                        <!-- Facebook -->
+                        <div class="col-12 col-md-4 form-group">
+                            <label for="jar_red_face" class="form-label">Facebook<red></red></label>
+                            <input wire:model="jar_red_face" id="jar_red_face" type="text" class="@error('jar_red_face') is-invalid @enderror form-control">
+                            <div class="form-text">Pon la dirección https://...</div>
+                            @error('jar_red_face')<error>{{ $message }}</error>@enderror
+                        </div>
+
+                        <!-- Instagram -->
+                        <div class="col-12 col-md-4 form-group">
+                            <label for="jar_red_insta" class="form-label">Instagram<red></red></label>
+                            <input wire:model="jar_red_insta" id="jar_red_insta" type="text" class="@error('jar_red_insta') is-invalid @enderror form-control">
+                            <div class="form-text">Pon la dirección https://...</div>
+                            @error('jar_red_insta')<error>{{ $message }}</error>@enderror
+                        </div>
+
+                        <!-- Youtube -->
+                        <div class="col-12 col-md-4 form-group">
+                            <label for="jar_red_youtube" class="form-label">Youtube<red></red></label>
+                            <input wire:model="jar_red_youtube" id="jar_red_youtube" type="text" class="@error('jar_red_youtube') is-invalid @enderror form-control">
+                            <div class="form-text">Pon la dirección https://...</div>
+                            @error('jar_red_youtube')<error>{{ $message }}</error>@enderror
+                        </div>
+
+                        <!-- www -->
+                        <div class="col-12 col-md-4 form-group">
+                            <label for="jar_red_www" class="form-label">Página web<red></red></label>
+                            <input wire:model="jar_red_www" id="jar_red_www" type="text" class="@error('jar_red_www') is-invalid @enderror form-control">
+                            <div class="form-text">Pon la dirección https://...</div>
+                            @error('jar_red_www')<error>{{ $message }}</error>@enderror
+                        </div>
+
+                        <!-- ubicación -->
+                        <div class="col-12 col-md-4 form-group">
+                            <label for="jar_red_ubica" class="form-label">Ubicación<red></red></label>
+                            <input wire:model="jar_red_ubica" id="jar_red_ubica" type="text" class="@error('jar_red_ubica') is-invalid @enderror form-control">
+                            <div class="form-text">Pon la dirección https://...</div>
+                            @error('jar_red_ubica')<error>{{ $message }}</error>@enderror
+                        </div>
+
+                        {{-- <!-- Red1 -->
+                        <div class="col-12 col-md-4 form-group">
+                            <label for="jar_red_red1" class="form-label">Red 1<red></red></label>
+                            <input wire:model="jar_red_red1" id="jar_red_red1" type="text" class="@error('jar_red_red1') is-invalid @enderror form-control">
+                            <div class="form-text">Pon la dirección https://...</div>
+                            @error('jar_red_red1')<error>{{ $message }}</error>@enderror
+                        </div>
+
+                        <!-- Red2 -->
+                        <div class="col-12 col-md-4 form-group">
+                            <label for="jar_red_red2" class="form-label">Red 2<red></red></label>
+                            <input wire:model="jar_red_red2" id="jar_red_red2" type="text" class="@error('jar_red_red2') is-invalid @enderror form-control">
+                            <div class="form-text">Pon la dirección https://...</div>
+                            @error('jar_red_red2')<error>{{ $message }}</error>@enderror
+                        </div> --}}
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button wire:click="CierraModalJardin()" class="btn btn-secondary">

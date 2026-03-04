@@ -69,6 +69,7 @@
     <!-- HOJA DE ESTILOS  y JS -->
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/style2.css">
+    <link rel="stylesheet" href="/style3_linguistica.css">
     <script src="{{asset('MyJs.js')}}"></script>
 
     @livewireStyles
@@ -196,23 +197,39 @@
                     <div class="row redes-header text-start">
                         <!-- ----------------------- INICIA REDES SOCIALES ----------------------- -->
                         <!-- --------------------------------------------------------------------- -->
-                        {{-- <div class="col iconos">
-                            <a href="https://www.facebook.com/jardinoaxaca" target="_blank">
-                                <img src="/imagenes/icono-facebook.png" alt="icono facebook">
-                            </a>
-                            <a href="https://www.instagram.com/jardinetnobotanicodeoaxaca/" target="_blank">
-                                <img src="/imagenes/icono-instagram.png" alt="icono instagram ">
-                            </a>
-                            <a href="https://www.youtube.com/@jardinetnobiologicodeoaxaca" target="_blank">
-                                <img src="/imagenes/icono-youtube.png" alt="icono mapa">
-                            </a>
-                            <a href="https://goo.gl/maps/vdvcHAUMTHQaDZ676" target="_blank">
-                                <img src="/imagenes/icono-mapa.png" alt="icono mapa">
-                            </a>
-                            <a href="mailto:etnobotanico@infinitummail.com" target="_blank">
-                                <img src="/imagenes/icono-correo.png" alt="icono correo">
-                            </a>
-                        </div> --}}
+                        <div class="col iconos">
+                            @hasSection('red_facebook')
+                                <a href="@yield('red_facebook')" target="_blank">
+                                    <img src="/imagenes/icono-facebook.png" alt="icono facebook">
+                                </a>
+                            @endif
+
+                            @hasSection('red_instagram')
+                                <a href="@yield('red_instagram')" target="_blank">
+                                    <img src="/imagenes/icono-instagram.png" alt="icono instagram ">
+                                </a>
+                            @endif
+                            @hasSection('red_youtube')
+                                <a href="@yield('red_youtube')" target="_blank">
+                                    <img src="/imagenes/icono-youtube.png" alt="icono mapa">
+                                </a>
+                            @endif
+                            @hasSection('ubicacion')
+                                <a href="@yield('ubicacion')" target="_blank">
+                                    <img src="/imagenes/icono-mapa.png" alt="icono mapa">
+                                </a>
+                            @endif
+                            @hasSection('web')
+                                <a href="@yield('web')" target="_blank">
+                                    <img src="/imagenes/icono-web.png" alt="icono web">
+                                </a>
+                            @endif
+                            @hasSection('mail')
+                                <a href="mailto:@yield('mail')" target="_blank">
+                                    <img src="/imagenes/icono-correo.png" alt="icono correo">
+                                </a>
+                            @endif
+                        </div>
                         <!-- ----------------------- TERMINA REDES SOCIALES ----------------------- -->
                         <!-- --------------------------------------------------------------------- -->
                         <div class="col">
@@ -316,7 +333,7 @@
                             <a href="https://goo.gl/maps/vdvcHAUMTHQaDZ676" target="_blank">
                                 <img src="/imagenes/icono-mapa.png" alt="icono mapa">
                             </a>
-                            <a href="mailto:etnobotanico@infinitummail.com" target="_blank">
+                            <a href="mailto:escheinvar@gmail.com" target="_blank">
                                 <img src="/imagenes/icono-correo.png" alt="icono correo">
                             </a>
                         </div>

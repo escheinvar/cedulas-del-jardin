@@ -20,6 +20,7 @@ return new class extends Migration
                 $table->string('jar_urljurl');  ##### Texto de la url
                 // $table->foreign('jar_urljurl')->references('urlj_url')->on('jardin_url')->constrained('jardin_url','urlj_url');
 
+
                 $table->string('jar_cjarsiglas'); #####  siglas del jardín al que pertenece
                 $table->foreign('jar_cjarsiglas')->references('cjar_siglas')->on('cat_jardines')->constrained('cat_jardines','cjar_siglas');
 
@@ -28,11 +29,11 @@ return new class extends Migration
 
                 $table->integer('jar_orden'); #### Número de orden del párrafo (dentro de cada url)
                 $table->longText('jar_txt')->nullable(); ##### Código html del texto
-                $table->string('jar_arch1')->nullable();
-                $table->string('jar_arch2')->nullable();
-                $table->string('jar_arch3')->nullable();
-                $table->string('jar_arch4')->nullable();
-                $table->string('jar_arch5')->nullable();
+                // $table->string('jar_arch1')->nullable();
+                // $table->string('jar_arch2')->nullable();
+                // $table->string('jar_arch3')->nullable();
+                // $table->string('jar_arch4')->nullable();
+                // $table->string('jar_arch5')->nullable();
                 $table->timestamps();
             });
         }

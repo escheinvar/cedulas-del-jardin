@@ -17,7 +17,11 @@ return new class extends Migration
             $table->string('urlj_cjarsiglas'); #####  siglas del jardín al que pertenece
             $table->foreign('urlj_cjarsiglas')->references('cjar_siglas')->on('cat_jardines')->constrained('cat_jardines','cjar_siglas');
 
+            $table->string('urlj_urltxt'); ##### Nombre de url (sin traducción)
             $table->string('urlj_url'); ##### Nombre de url
+
+            $table->integer('urlj_tradid')->default('0'); #### urlj_id de la página que traduce, o 0 para original
+            $table->string('urlj_lencode')->default('spa'); ####  Código de lengua
 
             $table->enum('urlj_act',['0','1'])->default('1');  ##### borrado lógico inactivo
             $table->enum('urlj_del',['0','1'])->default('0'); ##### borrado lógico

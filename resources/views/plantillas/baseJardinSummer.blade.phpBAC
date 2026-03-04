@@ -31,6 +31,7 @@
     <!-- HOJA DE ESTILOS  y JS -->
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/style2.css">
+    <link rel="stylesheet" href="/style3_linguistica.css">
     <script src="{{asset('MyJs.js')}}"></script>
 
     @livewireStyles

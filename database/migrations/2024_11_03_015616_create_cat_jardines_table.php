@@ -25,6 +25,15 @@ return new class extends Migration
                 $table->string('cjar_mail')->nullable();    ###### Correo electrónico del jardín
                 $table->string('cjar_edo')->nullable();     ##### Estado de la república en el que está el jardín
                 $table->string('cjar_logo')->nullable();     ##### Ubicación del archivo con el logo del jardín
+
+                $table->string('cjar_face')->nullable();    ###### En su caso, poner red social
+                $table->string('cjar_insta')->nullable();   ###### En su caso, poner red social
+                $table->string('cjar_youtube')->nullable(); ###### En su caso, poner red social
+                $table->string('cjar_www')->nullable();     ###### En su caso, poner red social
+                $table->string('cjar_red1')->nullable();    ###### En su caso, poner red social
+                $table->string('cjar_red2')->nullable();    ###### En su caso, poner red social
+                $table->string('cjar_red3')->nullable();    ###### En su caso, poner red social
+                $table->string('cjar_ubica')->nullable();   ###### En su caso, poner red social
                 $table->timestamps();
             });
         }

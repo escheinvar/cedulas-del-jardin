@@ -118,15 +118,20 @@
             </div>
             <table class="table table-striped table-sm">
                 <thead style="vertical-align:middle;align:center;">
-                    <th>Id</th>
-                    <th>Jardin</th>
-                    <th>Modulo/Submódulo -<br>url,lengua</th>
-                    <th>Tipo</th>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>Pie</th>
+                    <th wire:click="Orden('img_id')" class="PaClick">Id</th>
+                    <th wire:click="Orden('img_cjarsiglas')" class="PaClick">Jardin</th>
+                    <th>
+                        <span wire:click="Orden('img_cimgmodulo')" class="PaClick">Modulo</span>/
+                        <span wire:click="Orden('img_cimgtipo')" class="PaClick">Submódulo</span> -<br>
+                        <span wire:click="Orden('img_urlurl')" class="PaClick">url</span>,
+                        <span wire:click="Orden('img_lencode')" class="PaClick">lengua</span>
+                    </th>
+                    <th wire:click="Orden('img_tipo')" class="PaClick">Tipo</th>
+                    <th wire:click="Orden('img_titulo')" class="PaClick">Titulo</th>
+                    <th wire:click="Orden('img_autor')" class="PaClick">Autor</th>
+                    <th wire:click="Orden('img_pie')" class="PaClick">Pie</th>
                     <th>Palabras clave</th>
-                    <th>Ruta</th>
+                    <th wire:click="Orden('img_id')" class="PaClick">Ruta</th>
                     <th></th>
                     <th></th>
                 </thead>

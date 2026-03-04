@@ -23,10 +23,5 @@ class jardin_txt extends Model
 
         'jar_orden',
         'jar_txt',
-        'jar_arch1',
-        'jar_arch2',
-        'jar_arch3',
-        'jar_arch4',
-        'jar_arch5',
     ];
 }

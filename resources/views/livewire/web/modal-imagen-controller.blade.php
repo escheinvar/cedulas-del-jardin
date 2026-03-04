@@ -80,7 +80,7 @@
                             <!-- Carga nuevo Objeto -->
                             <div class="col-12 form-group">
                                 @if($ImgMod_file == '')
-                                    <label for="ImgMod_Nvofile" class="form-label">Cargar objeto<red>*</red> </label>
+                                    <label for="ImgMod_Nvofile" class="form-label">Cargar objeto {{ $ImgId }}<red>*</red> </label>
                                 @endif
                                 <input wire:model="ImgMod_Nvofile" id="ImgMod_Nvofile" class="@error('ImgMod_Nvofile') is-invalid @enderror form-control" type="file">
                                 <div class="form-text">Selecciona el archivo a subir (imagen, audio o video)</div>
@@ -102,10 +102,16 @@
 
                             <!-- forzar título -->
                             <div class="col-6 form-check">
-                                <br>
+
                                 <input wire:model="ImgMod_tituloact" class="form-check-input" type="checkbox" value="" id="forzar">
                                 <label class="form-check-label" for="forzar">Forzar título   </label>
                                 <div class="form-text"></div>
+                                <!-- inactivar imagen -->
+
+                                <input wire:model.live="ImgMod_act" class="form-check-input" type="checkbox" value="" id="forzar">
+                                <label class="form-check-label" for="forzar">Inactivar imagen   </label>
+                                <div class="form-text"> @if($ImgMod_act==TRUE)<error>La imagen no es visible</error> @endif </div>
+
                             </div>
 
                             <!-- autor -->
@@ -181,29 +187,41 @@
                             </div>
 
                             <!-- inactivar imagen -->
-                            <div class="col-6 form-check">
+                            {{-- <div class="col-6 form-check">
                                 <br>
                                 <input wire:model.live="ImgMod_act" class="form-check-input" type="checkbox" value="" id="forzar">
                                 <label class="form-check-label" for="forzar">Inactivar imagen   </label>
                                 <div class="form-text"> @if($ImgMod_act==TRUE)<error>La imagen no es visible</error> @endif </div>
-                            </div>
+                            </div> --}}
 
-                            <!-- Borrar imagen -->
+                            {{-- <!-- Borrar imagen -->
                             <div class="col-6 form-check">
                                 @if($ImgId != '0')
                                     <br>
                                     <i wire:click="BorrarObjeto()" wire:confirm="Estás por eliminar esta imagen y NO SE VA A PODER RECUPERAR. ¿Quieres continuar?" class="bi bi-trash agregar"> Eliminar imagen permanentemente</i>
                                 @endif
-                            </div>
+                            </div> --}}
                         </div>
                     @endif
                 </div>
 
                 <div class="modal-footer">
-                    <button wire:click="CerrarModalImg()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    @if($ImgMod_file != '')
-                        <button class="btn btn-primary" wire:click="GuardarObjeto()"> Guardar </button>
-                    @endif
+                    <div class="row">
+                        <div class="col-3" style="border:0px solid black;">
+                            @if($ImgId != '0')
+                                <div style="width:130px;">
+                                    <i wire:click="BorrarObjeto()" wire:confirm="Estás por eliminar esta imagen y NO SE VA A PODER RECUPERAR. ¿Quieres continuar?" class="bi bi-trash agregar"> Eliminar imagen</i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-2"> &nbsp; </div>
+                        <div class="col-7">
+                            <button wire:click="CerrarModalImg()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            @if($ImgMod_file != '')
+                                <button class="btn btn-primary" wire:click="GuardarObjeto()"> Guardar </button>
+                            @endif
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -220,8 +238,15 @@
 
         Livewire.on('cierraModalDeImagen',()=>{
             $('#ModalDeImagen').modal('hide');
+
+            console.log('fin', event.detail.IDreturn)
+
             if(event.detail.reload == '1'){
                 window.location.reload();
+            }
+
+            if(event.detail.IDreturn != '0'){
+                console.log('f', event.detail.IDreturn);
             }
         })
 

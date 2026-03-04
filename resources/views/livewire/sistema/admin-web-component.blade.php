@@ -19,11 +19,11 @@
     <!-- buscar por jardín -->
     <div class="row my-3">
         <div class="col-6 col-md-3 form-group">
-            <label class="form-label">Jardin</label>
+            <label class="form-label">Jardin<red>*</red></label>
             <select wire:model.live="jardinSel" class="form-select">
                 <option value="">Indica un jardín</option>
                 @foreach($JardsDelUsr as $jar)
-                    <option value="{{ $jar->cjar_siglas }}">{{ $jar->cjar_name }}</option>
+                    <option value="{{ $jar->cjar_siglas }}">{{ $jar->cjar_siglas }} ({{ $jar->cjar_name }})</option>
                 @endforeach
                 @if(in_array('todos',$editjar))
                     <option value="%">Todos</option>
@@ -39,24 +39,27 @@
     <!-- ------------------------------------------------------------------------------------ -->
     <!-- ----------------------- SITIOS WEB DE LOS JARDÍNES --------------------------------- -->
     <!-- ------------------------------------------------------------------------------------ -->
-    <h3>Del jardin</h3>
-    <div class="" style="clear: both;">
+
+    <div class="" style="">
+        <h3>Del jardin</h3>
         @if($edit=='1' and $jardinSel != '%' and $jardinSel != '')
-            <div style="float: right;">
+            <div style="float: right;" class="my-3">
                 <button wire:click="AbreModalWeb('jardin','0')" class="btn btn-secondary">
                     Nueva página
                 </button>
             </div>
         @endif
     </div>
-    <div class=""
+
     <div class="table-responsive-sm"  style="clear:both;">
         <table class="table table-striped table-sm my-4">
             <thead>
                 <tr>
                     <th wire:click="ordenaTabla('urlj_id')" class="PaClick">Id</th>
                     <th></th>
+                    <th wire:click="ordenaTabla('urlj_id')" class="PaClick">Jardin</th>
                     <th wire:click="ordenaTabla('urlj_url')" class="PaClick">url</th>
+                    <th wire:click="ordenaTabla('urlj_lengua')" class="PaClick">Lengua</th>
                     <th wire:click="ordenaTabla('urlj_titulo')" class="PaClick">Titulo</th>
                     <th wire:click="ordenaTabla('urlj_descrip')" class="PaClick">Descripción</th>
                     <th> Edición </th>
@@ -65,29 +68,49 @@
             </thead>
             <tbody>
                 @foreach ($urls as $u)
-                    <tr>
+                    <tr wire:key="url{{ $u->urlj_id }}">
                         <!-- id -->
-                        <td class="@if($u->urlj_act=='0') inact @endif @if($edit=='1')PaClick @endif" wire:click="AbreModalWeb('jardin','{{ $u->urlj_id }}')">
+                        <td class="@if($u->urlj_act=='0') inact @endif">
                              {{ $u->urlj_id }}
                         </td>
 
-                        <!-- icono editar -->
+                         <!-- icono editar -->
                         <td>
-                            <i class="bi bi-pencil-square @if($edit=='1')PaClick @endif" wire:click="AbreModalWeb('jardin','{{ $u->urlj_id }}')"></i>
+                            @if($jardinSel !='%')
+                                <i class="bi bi-pencil-square @if($edit=='1')PaClick @endif"   wire:click="AbreModalWeb('jardin','{{ $u->urlj_id }}')"></i>
+                            @else
+                                <i class="bi bi-pencil-square" style="color:rgb(172, 172, 172);"></i>
+                            @endif
+                        </td>
+
+                        <!-- jardin -->
+                        <td class="@if($u->urlj_act=='0') inact @endif">
+                            {{ $u->urlj_cjarsiglas }}
                         </td>
 
                         <!-- url -->
-                        <td class="@if($u->urlj_act=='0') inact @endif @if($edit=='1')PaClick @endif" wire:click="AbreModalWeb('jardin','{{ $u->urlj_id }}')">
-                             {{ $u->urlj_url }}
+                        <td class="@if($u->urlj_act=='0') inact @endif">
+                            {{ $u->urlj_url }} &nbsp;
+                            @if($u->urlj_tradid =='0')
+                                (original)
+                            @else
+                                (traducción)
+                            @endif
+                        </td>
+
+                        <!-- lengua -->
+                        <td class="@if($u->urlj_act=='0') inact @endif">
+                            {{ $u->urlj_lencode }} &nbsp;
+                            {{ $u->lenguas->len_lengua }}
                         </td>
 
                         <!-- titulo-->
-                        <td class="@if($u->urlj_act=='0')  inact @endif @if($edit=='1')PaClick @endif" wire:click="AbreModalWeb('jardin','{{ $u->urlj_id }}')">
+                        <td class="@if($u->urlj_act=='0')  inact @endif">
                              {{ $u->urlj_titulo }}
                         </td>
 
                         <!-- descripcion -->
-                        <td  class="@if($u->urlj_act=='0') inact @endif  @if($edit=='1')PaClick @endif" wire:click="AbreModalWeb('jardin','{{ $u->urlj_id }}')">
+                        <td  class="@if($u->urlj_act=='0') inact @endif">
                             {{ $u->urlj_descrip }}
                         </td>
 
@@ -104,14 +127,15 @@
                         <!-- http dir-->
                         <td class="@if($u->urlj_act=='0') inact @endif">
                             @if($u->urlj_url == 'inicio')
-                                <a href="{{ url('/') }}/jardin/{{ strtolower($u->urlj_cjarsiglas) }}" target="new" class="nolink">
+                                <a href="{{ url('/') }}/jardin/{{ strtolower($u->urlj_cjarsiglas) }}" target="new" class="nolink" id="sale_url{{ $u->urlj_id }}">
                                     {{ url('/') }}/jardin/{{ strtolower($u->urlj_cjarsiglas) }}
                                 </a>
                             @else
-                                <a href="{{ url('/') }}/en/{{ strtolower($u->urlj_cjarsiglas) }}/{{ $u->urlj_url }}" target="new" class="nolink">
-                                    {{ url('/') }}/en/{{ strtolower($u->urlj_cjarsiglas) }}/{{ $u->urlj_url }}
+                                <a href="{{ url('/') }}/jardin/{{ strtolower($u->urlj_cjarsiglas) }}/{{ $u->urlj_url }}" target="new" class="nolink" id="sale_url{{ $u->urlj_id }}">
+                                    {{ url('/') }}/jardin/{{ strtolower($u->urlj_cjarsiglas) }}/{{ $u->urlj_url }}
                                 </a>
                             @endif
+                            <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('url','{{ $u->urlj_id }}')"></i>
 
                         </td>
 
@@ -207,9 +231,9 @@
 
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
-    <!-- ---------------------------- INICIA MODAL ROLES DE USUARIO --------------------------- -->
+    <!-- ---------------------------- INICIA MODAL PÁGINA WEB DE JARDIN --------------------------- -->
     <div wire:ignore.self class="modal fade" id="ModalUrlsJardin" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title">
@@ -228,7 +252,7 @@
                     <div class="row">
                         <div class="col-12 form-group">
                             <center>
-                                <label class="form-label">Banner del jardín</label><br>
+                                <label class="form-label">Banner de la página</label><br>
                                 <!-- MODAL: si no hay imagen -->
                                 @if($this->bannerimg =='')
                                     @if($this->NvoBanner != '')
@@ -248,16 +272,55 @@
                         </div>
                     </div>
                     <div class="row">
+                        <!-- Original o traducción -->
+                        <div class="col-6 form-group">
+                            <label for="origtrad" class="form-label">Original/Traducción<red>*</red></label>
+                            <select wire:model.live="origtrad"  wire:change="DeterminaVariablesDeCopia()" id="origtrad" class="@error('origtrad') is-invalid @enderror form-select" @if($jardinId > '0') disabled @endif>
+                                <option value="">Indica ...</option>
+                                <option value="original">Página original</option>
+                                <option value="traducción">Traducción de página</option>
+                            </select>
+                            <div class="form-text"></div>
+                            @error('origtrad') <error> {{ $message }}</error>@enderror
+                        </div>
+                        <!-- Copia de -->
+                        <div class="col-6 form-group">
+                            <label for="copiade" class="form-label">Copia de<red></red></label>
+                            <select wire:model.live="copiade" wire:change="DeterminaVariablesDeCopia()" id="copiade" class="@error('copiade') is-invalid @enderror form-select" @if($origtrad=='original' or $jardinId != '0') disabled @endif>
+                                <option value="">Indica ...</option>
+                                @foreach ($originales as $o)
+                                    <option value="{{ $o->urlj_id }}"> {{ $o->urlj_cjarsiglas }}: {{ $o->urlj_url }} [{{ $o->urlj_lencode }}]</option>
+                                @endforeach
+                            </select>
+                            <div class="form-text"></div>
+                            @error('copiade') <error> {{ $message }}</error>@enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Lengua -->
+                        <div class="col-6 form-group">
+                            <label for="lengua" class="form-label">Lengua<red>*</red></label>
+                            <select wire:model.live="lengua" wire:change="DeterminaVariablesDeCopia()" id="lengua" class="@error('lengua') is-invalid @enderror form-select">
+                                <option value="">Indica....</option>
+                                {{-- <option value="spa">Español</option> --}}
+                                @foreach($lenguas as $l)
+                                    <option value="{{ $l->len_code }}">{{ $l->len_code }}: {{ $l->len_lengua }} {{ $l->len_variante }}</option>
+                                @endforeach
+                            </select>
+                            <div class="form-text">Indica la lengua en la que estará la página.</div>
+                            @error('lengua') <error> {{ $message }}</error>@enderror
+                        </div>
+
                         <!-- MODAL: url web jardin -->
-                        <div class="col-12 col-md-6 form-group">
+                        <div class="col-6 form-group">
                             <label for="url" class="form-label">URL <red>*</red> </label>
-                            <input wire:model="url" id="url" class="@error('url') is-invalid @enderror form-control" @if($url=='inicio') disabled @endif type="text" >
-                            <div class="form-text">Texto sin espacios ni caracteres para usar como url en: {{ url('/')."/".$jardinSel."/url" }}</div>
+                            <input wire:model="url" id="url" class="@error('url') is-invalid @enderror form-control" @if($url=='inicio' or $origtrad=='traducción') disabled @endif type="text" >
+                            <div class="form-text">Texto sin espacios ni caracteres para usar como url</div>
                             @error('url')<error>{{ $message }}</error>@enderror
                         </div>
 
                         <!-- MODAL: banner titulo --->
-                        <div class="col-12 col-md-6 form-group">
+                        <div class="col-6 form-group">
                             <label for="bannertitle" class="form-label">Titulo<red>*</red> </label>
                             <input wire:model="bannertitle" id="bannertitle" class="@error('bannertitle') is-invalid @enderror form-control" type="text" >
                             <div class="form-text"> Texto que aparecerá como título de la página</div>
@@ -265,28 +328,14 @@
                         </div>
 
                         <!-- MODAL: titulo web jardin -->
-                        <div class="col-12 col-md-6 form-group">
+                        <div class="col-6 form-group">
                             <label for="titulo" class="form-label">Metadato: Título</label>
                             <input wire:model="titulo" id="titulo" class="@error('titulo') is-invalid @enderror form-control"  type="text" >
-                            <div class="form-text"> Texto que aparecerá como nombre de la página en la parte superior del navegador</div>
+                            <div class="form-text"> Texto que aparecerá en la parte superior del navegador</div>
                             @error('titulo')<error>{{ $message }}</error>@enderror
                         </div>
 
-                        <!-- MODAL: checkbox activo -->
-                        <div class="col-12 col-md-3 form-group my-2">
-                            <div class="form-check">
-                                <input class="form-check-input" wire:model.live="act" type="checkbox" id="act">
-                                <label class="form-check-label" for="checkDefault"> Publicar página </label><br>
-                                @if($act==FALSE)<b>La página no está disponible al público</b> @else El público puede acceder a este sitio @endif
-                            </div>
-                        </div>
 
-                        <!-- MODAL: Borrar-->
-                        <div class="col-12 col-md-3 form-group my-2">
-                            @if($url !='inicio' and $jardinId > '0')
-                                <i  wire:click="" class="bi bi-trash agregar"> Eliminar página completa</i>
-                            @endif
-                        </div>
 
                         <!-- MODAL: descrip web jardin -->
                         <div class="col-12  form-group">
@@ -295,13 +344,25 @@
                             <div class="form-text">Texto que mostrarán los buscadores (como google) como descripción de la página</div>
                             @error('descrip')<error>{{ $message }}</error>@enderror
                         </div>
+
+                        <!-- MODAL: checkbox activo -->
+                        <div class="col-6 form-group my-2">
+                            <div class="form-check">
+                                <input class="form-check-input" wire:model.live="act" type="checkbox" id="act">
+                                <label class="form-check-label" for="checkDefault"> Publicar página </label><br>
+                                @if($act==FALSE)<b>La página no está disponible al público</b> @else El público puede acceder a este sitio @endif
+                            </div>
+                        </div>
+
+                        <!-- MODAL: Borrar-->
+                        @if( !in_array($url,['inicio','autores','cedulas']) and $jardinId > '0')
+                            <div class="col-6 form-group my-2">
+                                <i  wire:click="EliminarSitioWeb()" class="bi bi-trash agregar"> Eliminar página completa</i>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="modal-footer">
-                    {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Cerrar
-                    </button> --}}
-
                     <button wire:click="GuardaModal()" class="btn btn-primary">
                         <span wire:loading.remove> Guardar </span>
                         <span wire:loading style="display:none;"> <red> ..guardando...</red> </span>
@@ -332,6 +393,10 @@
                 window.location.reload();
             }
         });
+
+        Livewire.on('AvisoExito',()=>{
+            alert(event.detail.msj);
+        })
 
         /* ### Script para mostrar botón personalizado de input=file */
         document.getElementById('MiBotonPersonalizado').addEventListener('click', function() {

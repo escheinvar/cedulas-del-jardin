@@ -32,7 +32,7 @@
 
 @if(isset($imags))
     @foreach ($imags as $o)
-        <imagen style="max-width:250px;">
+        <imagen style="max-width:250px; display:inline-block;" wire:key="imagenId{{ $o->img_id }}">
             <!-- TITULO -->
             <titulo class="truncarTexto" onclick="Destruncar('titulo','{{ $o->img_id }}')" id="titulo_{{ $o->img_id }}">
                 @if($o->img_act=='0') <error><i class="bi bi-eye-slash"></i></error>@endif
@@ -80,7 +80,7 @@
                     <!-- ícono para editar -->
                     @if(isset($edit) AND method_exists($this,'AbreModalObjeto'))
                         @if($edit=='1')
-                            <i wire:click="AbreModalObjeto('{{ $o->img_id }}')" class="bi bi-pencil-square agregar" style="float: right;"> Editar</i>
+                            <i wire:click="AbreModalObjeto('{{ $o->img_id }}')" class="bi bi-pencil-square agregar" style="float: right;"> Editar {{ $o->img_id }}</i>
                         @endif
                     @endif
                 </div>

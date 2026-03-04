@@ -24,8 +24,9 @@ class AdminJardinesController extends Component
     ##### Variables de Modal
     public $IdJardin, $jar_name, $jar_nombre, $jar_siglas, $jar_tipo;
     public $jar_direccion, $jar_edo, $jar_tel, $jar_mail, $jar_logo;
-    public $jar_logoNuevo;
-    // public $HayCampus, $cam_name, $cam_nombre, $cam_direccion;
+    public $jar_logoNuevo, $jar_red_face, $jar_red_insta, $jar_red_youtube, $jar_red_www;
+    public $jar_red_ubica, $jar_red_red1, $jar_red_red2;
+
 
     public function mount(){
         $this->IdJardin='0';
@@ -57,6 +58,13 @@ class AdminJardinesController extends Component
                 $this->jar_tel = $datoJardin->cjar_tel;
                 $this->jar_mail = $datoJardin->cjar_mail;
                 $this->jar_logo = $datoJardin->cjar_logo;
+                $this->jar_red_face = $datoJardin->cjar_face;
+                $this->jar_red_insta = $datoJardin->cjar_insta;
+                $this->jar_red_youtube = $datoJardin->cjar_youtube;
+                $this->jar_red_www = $datoJardin->cjar_www;
+                $this->jar_red_ubica = $datoJardin->cjar_ubica;
+                // $this->jar_red_red1 = $datoJardin->cjar_red1;
+                // $this->jar_red_red2 = $datoJardin->cjar_red2;
             }else{
                 $this->jar_name = '';
                 $this->jar_nombre = '';
@@ -75,14 +83,11 @@ class AdminJardinesController extends Component
     public function CierraModalJardin(){
         $this->resetValidation();
         $this->resetErrorBag();
-        $this->jar_name = '';
-        $this->jar_nombre = '';
-        $this->jar_siglas = '';
-        $this->jar_tipo = '';
-        $this->jar_direccion = '';
-        $this->jar_tel = '';
-        $this->jar_mail = '';
-        $this->jar_logo = '';
+        $this->reset('jar_name', 'jar_nombre', 'jar_siglas', 'jar_tipo',
+            'jar_direccion', 'jar_edo', 'jar_tel', 'jar_mail', 'jar_logo',
+            'jar_logoNuevo', 'jar_red_face', 'jar_red_insta', 'jar_red_youtube', 'jar_red_www',
+            'jar_red_ubica', 'jar_red_red1', 'jar_red_red2');
+
         $this->dispatch('CierraModalJardin');
     }
 
@@ -114,7 +119,14 @@ class AdminJardinesController extends Component
             'cjar_tel'=>$this->jar_tel,
             'cjar_mail'=>$this->jar_mail,
             'cjar_edo'=>$this->jar_edo,
-            'cjar_logo'=>$LogoNombre
+            'cjar_logo'=>$LogoNombre,
+            'cjar_face'=>$this->jar_red_face,
+            'cjar_insta'=>$this->jar_red_insta,
+            'cjar_youtube'=>$this->jar_red_youtube,
+            'cjar_www'=>$this->jar_red_www,
+            // 'cjar_red1'=>$this->jar_red_red1,
+            // 'cjar_red2'=>$this->jar_red_red2,
+            'cjar_ubica'=>$this->jar_red_ubica,
             ];
 
         ##### Guarda en la base de datos
@@ -123,17 +135,24 @@ class AdminJardinesController extends Component
             CatJardinesModel::create($datos);
             ##### Genera log
             paLog('Crea nuevo jardín '.$this->jar_name,'CatJardinesModel',$datos['cjar_id']);
+
             ##### Genera página url inicio del jardín
-            $ja=jardin_url::create([
-              'urlj_cjarsiglas'  =>$this->jar_siglas,
-              'urlj_url'=>'inicio',
-              'urlj_act'=>'0',
-              'urlj_titulo'=>$this->jar_nombre,
-              'urlj_descrip'=>'Página del '.$this->jar_nombre.' en el Sistema de Cédulas del Jardín en lenguas originarias',
-              'urlj_bannertitle'=>$this->jar_nombre,
-            ]);
-            ##### Genera log
-            paLog('Crea nueva url inicio de'.$this->jar_siglas,'jardin_url',$ja->urlj_id);
+            foreach(['inicio','autores','cedulas'] as $pag){
+                $ja=jardin_url::create([
+                'urlj_cjarsiglas'  =>$this->jar_siglas,
+                'urlj_urltxt'=>$pag,
+                'urlj_url'=>$pag,
+                'urlj_act'=>'0',
+                'urlj_titulo'=>$this->jar_nombre,
+                'urlj_descrip'=>'Página del '.$this->jar_nombre.' en el Sistema de Cédulas del Jardín en lenguas originarias',
+                'urlj_bannertitle'=>$this->jar_nombre,
+                ]);
+
+                ##### Genera log
+                paLog('Crea nueva url '.$pag.' de'.$this->jar_siglas,'jardin_url',$ja->urlj_id);
+            }
+
+
         }else{
             CatJardinesModel::where('cjar_id',$this->IdJardin)->update($datos);
             #### genera log

@@ -59,6 +59,11 @@ class AdminImagenesController extends Component
         }
     }
 
+    public function Orden($orden){
+        $this->orden=$orden;
+        if($this->sent=='asc'){$this->sent='desc';}else{$this->sent='asc';}
+    }
+
     public function render(){
         #######################################################
         ########################### Revisa permisos del usuario

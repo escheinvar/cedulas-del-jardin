@@ -16,7 +16,7 @@ use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
 use Illuminate\Validation\Rule;
 
-class WebComponent extends Component
+class AdminWebComponent extends Component
 {
     use WithFileUploads;
     use WithPagination;
@@ -26,12 +26,13 @@ class WebComponent extends Component
     public $abiertos; ##### vars de info. al usuario
     public $tipo, $jardinId; ##### Variables de modal
     ##### Variables de formulario de modal
-    public $NvoBanner, $url, $act, $titulo, $descrip, $bannerimg, $bannertitle;
+    public $NvoBanner, $origtrad, $copiade, $lengua, $url, $act, $titulo, $descrip, $bannerimg, $bannertitle;
 
     public function mount(){
-        $this->jardinSel='';
+        $this->jardinSel='JebOax';
         $this->orden='_id';
         $this->sentido='asc';
+        $this->origtrad='original';
     }
 
     public function ordenaTabla($ord){
@@ -50,7 +51,7 @@ class WebComponent extends Component
     }
 
     ###################################################
-    ###################  Iniciamos funciones de modal
+    #####################  Iniciamos funciones de modal
     public function AbreModalWeb($tipo,$var){
         $this->LimpiaModal();
         if($this->edit=='1'){
@@ -63,13 +64,15 @@ class WebComponent extends Component
                 ##### Carga datos
                 $this->url=$dato->urlj_url;
                 if($dato->urlj_act=='1'){$this->act=TRUE;}else{$this->act=FALSE;}
+                if($dato->urlj_tradid=='0'){$this->origtrad='original';}else{$this->origtrad='traducción';}
+                if($dato->urlj_tradid > '0'){$this->copiade=$dato->urlj_tradid;}
+                $this->lengua=$dato->urlj_lencode;
                 $this->titulo=$dato->urlj_titulo;
                 $this->descrip=$dato->urlj_descrip;
                 $this->bannerimg=$dato->urlj_bannerimg;
                 $this->bannertitle=$dato->urlj_bannertitle;
             }else{
-                $this->act=TRUE;
-                $this->reset('url','act','titulo','descrip','bannerimg','bannertitle','NvoBanner');
+                $this->LimpiaModal();
             }
 
             #### Abre modal
@@ -77,8 +80,21 @@ class WebComponent extends Component
         }
     }
 
+    public function DeterminaVariablesDeCopia(){
+        if($this->origtrad=='traducción' and $this->copiade != ''){
+            $original=jardin_url::where('urlj_id',$this->copiade)->first();
+            $this->url=$original->urlj_url.'_'.$this->lengua;
+            $this->bannertitle= $original->urlj_bannertitle;
+            $this->titulo = $original->urlj_titulo;
+            $this->descrip = $original->urlj_descrip;
+            $this->bannerimg= $original->urlj_bannerimg;
+        }
+        if($this->origtrad=="original"){$this->copiade ='';}
+    }
+
     public function LimpiaModal(){
-        $this->reset('url','act','titulo','descrip','bannerimg','bannertitle','NvoBanner');
+        $this->reset('NvoBanner', 'origtrad', 'copiade', 'lengua', 'url', 'titulo', 'descrip', 'bannerimg', 'bannertitle');
+        $this->act=FALSE;
         $this->resetErrorBag();
         $this->resetValidation();
     }
@@ -91,15 +107,38 @@ class WebComponent extends Component
     public function GuardaModal(){
         #### Valida cuestionario
         $this->validate([
+            'origtrad'=>'required',
+            'lengua'=>'required',
             'url'=> 'required',
             'bannertitle'=>'required',
         ]);
 
-        #### Valida que no se use index
-        if($this->jardinId=='0' and $this->url=='inicio'){
+        ##### Valida que haya copia
+        if($this->origtrad =='traducción' and $this->jardinId == '0'){
+            $this->validate(['copiade'=>'required']);
+
+            $urltxt=jardin_url::where('urlj_id',$this->copiade)->value('urlj_urltxt');
+            $ja=jardin_url::where('urlj_cjarsiglas',$this->jardinSel)
+                ->where('urlj_urltxt',$urltxt)
+                ->where('urlj_lencode',$this->lengua)
+                ->count();
+            if($ja > '0'){$this->addError('lengua','Ya existe una copia en esta lengua');return;}
+        }
+
+        #### Valida que no se use nombres prohibidos
+        $tabu=['inicio','autores','cedulas'];
+        if($this->jardinId=='0' and in_array($this->url, $tabu)) {
             $this->addError('url','inicio un nombre reservado y no se puede usar');
+            return;
             $this->url='';
         }
+
+        ##### Valida que url no tenga espacios ni ñ ni caracteres
+        if(preg_match('/\W/',$this->url)){
+            $this->addError('url','Url no puede tener acentos, eñe, espacios ni caracteres');
+            return;
+        }
+
         ##### Valida que no exista ya el nombre en el jardín
         $ja=jardin_url::where('urlj_cjarsiglas',$this->jardinSel)
             ->where('urlj_url',$this->url)
@@ -107,19 +146,26 @@ class WebComponent extends Component
             ->count();
         if($ja > '0'){$this->addError('url','Esta url ya existe en tu jardín');return;}
 
-        ##### transforma checkboxes
+        ##### transforma checkboxes y variables
         if($this->act==TRUE){$act='1';}else{$act='0';}
-
+        if($this->origtrad=='original'){$trad=0;}else{$trad=$this->copiade;}
+        if($this->origtrad=='original'){$urltxt=$this->url;}else{$urltxt=jardin_url::where('urlj_id',$this->copiade)->value('urlj_url');  $this->copiade;}
         ##### Genera datos
         $datos=[
             'urlj_cjarsiglas'=>$this->jardinSel,
             'urlj_url'=>$this->url,
+            'urlj_urltxt'=>$urltxt,
+            'urlj_tradid'=>$trad,
+            'urlj_lencode'=>$this->lengua,
             'urlj_act'=>$act,
             'urlj_titulo'=>$this->titulo,
             'urlj_descrip'=>$this->descrip,
             // 'urlj_bannerimg'=>$this->,
             'urlj_bannertitle'=>$this->bannertitle,
         ];
+        ##### en caso de copias, copia el banner
+        if($this->origtrad=='traducción'){$datos['urlj_bannerimg']=$this->bannerimg;}
+
         ##### Guarda en Base de datos
         if($this->jardinId=='0'){
             $ja=jardin_url::create($datos);
@@ -159,6 +205,24 @@ class WebComponent extends Component
         $this->bannerimg=''; $this->NvoBanner='';
     }
 
+    public function EliminarSitioWeb(){
+        ##### lee datos
+        $dato=jardin_url::where('urlj_id',$this->jardinId)->first();
+
+        jardin_url::where('urlj_id',$this->jardinId)->update([
+            'urlj_del'=>'1',
+            'urlj_url'=>$dato->urlj_url.'Eliminado'.date('Y-m-d'),
+        ]);
+
+        ##### Genera log
+        paLog('Se elimina la página '.$this->url, 'jardin_url',$this->jardinId);
+
+        $this->dispatch('AvisoExitoAdminWeb',msj:'La página fue eliminada correctamente');
+        $this->CierraModal();
+    }
+    ###################################################
+    ####################  Terminamos funciones de modal
+
     public function render() {
         ##### Revisa permisos del usuario
         $auts=['webmaster'];
@@ -168,12 +232,12 @@ class WebComponent extends Component
             $this->edit='0';
             redirect('/noauth/Solo accede rol '.implode(',',$auts));
         }
+
         ##### jardines autorizados al usuario
         $this->editjar = UserRolesModel::where('rol_usrid',Auth::user()->id)
             ->whereIn('rol_crolrol',$auts)
             ->where('rol_act','1')->where('rol_del','0')
             ->pluck('rol_cjarsiglas')->toArray();
-
 
         #### Genera lista de jardines autorizados al usuario
         if(in_array('todos',$this->editjar)){
@@ -196,25 +260,37 @@ class WebComponent extends Component
             ->count();
 
 
-        ##### Obtiene lista de url's
+        ##### Obtiene lista de url's accesibles por usuario
         if($this->jardinSel != ''){
             $urls=jardin_url::query();
             $urls=$urls->where('urlj_cjarsiglas','ilike',$this->jardinSel);
-            $urls=$urls->orderBy('urlj_id','asc');
-            $urls=$urls->get();
+            $urls=$urls->orderBy('urlj_cjarsiglas','asc')
+                ->orderBy('urlj_urltxt','asc')
+                ->orderBy('urlj_tradid','asc')
+                ->where('urlj_del','0')
+                ->with('jardin')
+                ->with('lenguas')
+                ->get();
         }else{
             $urls=collect();
         }
 
+        ##### Obtiene total de url's originales
+        $originales= jardin_url::where('urlj_cjarsiglas','ilike',$this->jardinSel)
+            ->where('urlj_tradid', '0')
+            ->where('urlj_del','0')
+            ->orderBy('urlj_tradid','asc')
+            ->orderBy('urlj_id','asc')
+            ->get();
+
         ##### Obtiene lista de autores
         $auts=cat_autores::query();
-        // $auts=$auts->where('urlj_cjarsiglas',$this->jardinSel);
-        // $urls=$auts->orderBy($this->orden, $this->sentido);
         $auts=$auts->get();
 
-        return view('livewire.sistema.web-component',[
+        return view('livewire.sistema.admin-web-component',[
             'JardsDelUsr'=>$JardsUsr,
             'lenguas'=>lenguas::get(),
+            'originales'=>$originales,
             'urls'=>$urls,
             'auts'=>$auts,
         ]);

@@ -26,5 +26,14 @@ class CatJardinesModel extends Model
         'cjar_mail',
         'cjar_edo',
         'cjar_logo',
+
+        'cjar_face',
+        'cjar_insta',
+        'cjar_youtube',
+        'cjar_www',
+        'cjar_red1',
+        'cjar_red2',
+        'cjar_red3',
+        'cjar_ubica',
     ];
 }
