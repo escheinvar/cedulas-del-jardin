@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('urlj_descrip')->nullable(); ##### Texto que va en head meta-description
             $table->string('urlj_bannerimg')->nullable(); ##### Ruta a archivo de banner en ruta: /public/jardines/
             $table->string('urlj_bannertitle')->nullable(); ##### Texto de título que aparece en banner
+            $table->decimal('urlj_version',5,2)->default('1.00'); ##### Versión de la página (si es copia, refleja la versión desde la que se realizó la copia)
 
             $table->timestamps();
         });

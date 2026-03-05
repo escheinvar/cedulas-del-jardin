@@ -27,13 +27,10 @@ return new class extends Migration
                 $table->enum('jar_act',['0','1'])->default('1');  ##### borrado lógico inactivo
                 $table->enum('jar_del',['0','1'])->default('0'); ##### borrado lógico
 
-                $table->integer('jar_orden'); #### Número de orden del párrafo (dentro de cada url)
+                $table->decimal('jar_orden',5,3); #### Número de orden del párrafo (dentro de cada url)
                 $table->longText('jar_txt')->nullable(); ##### Código html del texto
-                // $table->string('jar_arch1')->nullable();
-                // $table->string('jar_arch2')->nullable();
-                // $table->string('jar_arch3')->nullable();
-                // $table->string('jar_arch4')->nullable();
-                // $table->string('jar_arch5')->nullable();
+                $table->longText('jar_txtoriginal')->nullable(); ##### Código html del texto
+                $table->string('jar_audio')->nullable();  ##### Ruta al archivo de audio
                 $table->timestamps();
             });
         }

@@ -14,7 +14,7 @@ class cat_imgSeeder extends Seeder
     public function run(): void
     {
         $events=[
-            ['cimg_modulo'=>'jardin','cimg_tipo'=>'banner'],
+            // ['cimg_modulo'=>'jardin','cimg_tipo'=>'banner'],
             ['cimg_modulo'=>'jardin','cimg_tipo'=>'web'],
             ['cimg_modulo'=>'autor', 'cimg_tipo'=>'portada'],
             ['cimg_modulo'=>'autor', 'cimg_tipo'=>'web'],

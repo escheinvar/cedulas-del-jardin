@@ -24,6 +24,7 @@ class AdminImagenesController extends Component
                 'TipoCatImg'=>$this->BuscaSubMod, #  'Obligatorio: cimg_tipo de tabla cat_imgs'
                 'Url'=>$this->BuscaUrl,        # 'url a la que pertenece o vacío',
                 'Lengua'=>'',     # 'len_code de tabla lenguas o vacío',
+                'Reload'=>'1',
             ];
         }else {
             $ganon=Imagenes::where('img_id',$id)->first();
@@ -34,6 +35,7 @@ class AdminImagenesController extends Component
                 'TipoCatImg'=>$ganon->img_cimgtipo,
                 'Url'=>$ganon->img_urlurl,
                 'Lengua'=>$ganon->img_lencode,
+                'Reload'=>'1',
             ];
 
         }

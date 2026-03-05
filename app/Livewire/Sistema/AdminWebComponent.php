@@ -5,6 +5,7 @@ namespace App\Livewire\Sistema;
 use App\Models\cat_autores;
 use App\Models\CatJardinesModel;
 use App\Models\CatRolesModel;
+use App\Models\jardin_txt;
 use App\Models\jardin_url;
 use App\Models\lenguas;
 use App\Models\SpUrlModel;
@@ -164,7 +165,9 @@ class AdminWebComponent extends Component
             'urlj_bannertitle'=>$this->bannertitle,
         ];
         ##### en caso de copias, copia el banner
-        if($this->origtrad=='traducción'){$datos['urlj_bannerimg']=$this->bannerimg;}
+        if($this->origtrad=='traducción'){
+            $datos['urlj_bannerimg']=$this->bannerimg;
+        }
 
         ##### Guarda en Base de datos
         if($this->jardinId=='0'){
@@ -192,6 +195,19 @@ class AdminWebComponent extends Component
             ]);
             #### Crea log
             paLog('Se carga nueva imagen principal a página web ('.$this->url.') de '.$this->jardinSel,'jardin_url',$id);
+        }
+
+        ##### en caso de copias, copia el contenido de la página
+        if($this->origtrad=='traducción'){
+            $original=jardin_txt::where('jar_urljid',$this->copiade)
+                ->where('jar_act','1')->where('jar_del','0')
+                ->get();
+            foreach($original as $or){
+                $copia= $or->replicate();
+                $copia->jar_urljid = $id;
+                $copia->jar_txtoriginal = $or->jar_txt;
+                $copia->save();
+            }
         }
 
 

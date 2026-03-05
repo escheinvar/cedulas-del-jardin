@@ -84,7 +84,7 @@
                                 @endif
                                 <input wire:model="ImgMod_Nvofile" id="ImgMod_Nvofile" class="@error('ImgMod_Nvofile') is-invalid @enderror form-control" type="file">
                                 <div class="form-text">Selecciona el archivo a subir (imagen, audio o video)</div>
-                                @error('ImgMod_Nvofile')<error>{{ $message }}@enderror
+                                @error('Im  gMod_Nvofile')<error>{{ $message }}@enderror
                             </div>
                         </div>
                     @endif
@@ -202,20 +202,24 @@
                                 @endif
                             </div> --}}
                         </div>
+                        <div class="col-12 my-2" style="color: gray;">
+                            <!-- muestra en cuantas imagenes aparece -->
+                            @if($ImgId != '0' and $apariciones->count() > 0)
+                                Se usa {{ $apariciones->count() }} veces:
+                                @foreach ($apariciones as $a)  {{ $a->url->urlj_cjarsiglas }}:{{ $a->url->urlj_url }}, @endforeach
+
+                            @elseif($ImgId != '0' and $apariciones->count()=='0')
+                                <div class="my-2" style="">
+                                    <i wire:click="BorrarObjeto()" wire:confirm="Estás por eliminar esta imagen y NO SE VA A PODER RECUPERAR. ¿Quieres continuar?" class="bi bi-trash agregar"> Eliminar imagen</i>
+                                </div>
+                            @endif
+                        </div>
                     @endif
                 </div>
 
                 <div class="modal-footer">
                     <div class="row">
-                        <div class="col-3" style="border:0px solid black;">
-                            @if($ImgId != '0')
-                                <div style="width:130px;">
-                                    <i wire:click="BorrarObjeto()" wire:confirm="Estás por eliminar esta imagen y NO SE VA A PODER RECUPERAR. ¿Quieres continuar?" class="bi bi-trash agregar"> Eliminar imagen</i>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="col-2"> &nbsp; </div>
-                        <div class="col-7">
+                        <div class="col-12">
                             <button wire:click="CerrarModalImg()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             @if($ImgMod_file != '')
                                 <button class="btn btn-primary" wire:click="GuardarObjeto()"> Guardar </button>

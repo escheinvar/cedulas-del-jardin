@@ -80,12 +80,15 @@ class JardinController extends Component
 
                 'urljid'=>$this->url->urlj_id,
                 'urljurl'=>$this->url->urlj_url,
+                'urljurltxt'=>$this->url->urlj_urltxt,
                 'cjarsiglas'=>$this->url->urlj_cjarsiglas,
 
             ];
             $this->dispatch('AbreModalDeParrafoWebJardin',$data);
         }
     }
+
+
 
     public function render(){
         $this->edit='0';

@@ -2,20 +2,26 @@
   Caracteres especiales de texto para  traductores
   ==================================================*/
 
+button.lenguas{
+    padding: 5px;
+    border-radius:5px;
+    width: 40px;
+    font-size: 95%;
+}
 
 /*-- linea arriba del caracter (tono medio)--*/
-.ar{
+ar{
     border-top: 1px solid black;
 }
-.ar::before{
+ar::before{
     content:' ';
 }
 
 /*-- linea abajo del caracter (tono bajo) --*/
-.ab{
+ab{
     border-bottom: 1px solid black;
 }
-.ab::before{
+ab::before{
     content:' ';
 }
 
@@ -46,4 +52,18 @@
   justify-content: center;
   align-items: center;
   margin: 20px auto; /* Centra el círculo en la página */
+}
+
+
+colores{
+    color: #64383E;
+    color: #efebe8;
+    color: #CDC6B9;
+
+    color: #87796d;
+    color: #CD7B34;
+    color: #919C1B;
+    color: #202d2d;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Noto Serif JP', serif;
 }

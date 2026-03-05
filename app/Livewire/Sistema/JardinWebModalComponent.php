@@ -15,38 +15,6 @@ class JardinWebModalComponent extends Component
 {
     use WithFileUploads;
 
-
-    ##### vars. recibidas desde externo con datos de quien se está editando:
-    public $modJar_id, $modJar_orden, $modJar_urljid;
-    public $modJar_urljurl, $modJar_cjarsiglas;
-    ##### vars. del formulario:
-    public $modJar_txt, $modJar_archs;
-
-
-    #[Layout('plantillas.baseJardin')]
-    public function mount(){
-        //
-    }
-
-    #[On('AbreModalDeParrafoWebJardin')]
-    public function recibeDatos($data){
-        ##### Carga vars que vienen de controlador externo
-        $this->modJar_id=$data['id'];
-        $this->modJar_orden=$data['orden'];
-        $this->modJar_urljid=$data['urljid'];
-        $this->modJar_urljurl=$data['urljurl'];
-        $this->modJar_cjarsiglas=$data['cjarsiglas'];
-        ##### Carga variables
-        if($this->modJar_id=='0'){
-            $this->LimpiarModal();
-
-        }else{
-            $dato=jardin_txt::where('jar_id',$this->modJar_id)->first();
-            $this->modJar_orden=$dato->jar_orden;
-            $this->modJar_txt=$dato->jar_txt;
-        }
-    }
-
     ###########################################################
     ####### poner esta función en controlador que dispara
     #######   $id=jar_id  y  $orden=$jar_orden de tabal jardin_txt
@@ -59,10 +27,62 @@ class JardinWebModalComponent extends Component
     ### }
     ###########################################################
 
+    ##### vars. recibidas desde externo con datos de quien se está editando:
+    public $modJar_id, $modJar_orden, $modJar_urljid;
+    public $modJar_urljurl, $modJar_urljurltxt, $modJar_cjarsiglas;
+    ##### vars. del formulario:
+    public $modJar_txt, $modJar_archs, $VerOriginal, $VerHtml, $modJar_original;
+    public $modJar_NvoAudio, $modJar_Audio;
+
+
+
+    #[Layout('plantillas.baseJardin')]
+    public function mount(){
+        $this->VerHtml='0';
+        $this->VerOriginal='0';
+    }
+
+    #[On('AbreModalDeParrafoWebJardin')]
+    public function recibeDatos($data){
+        ##### Carga vars que vienen de controlador externo
+        $this->modJar_id=$data['id'];
+        $this->modJar_orden=$data['orden'];
+        $this->modJar_urljid=$data['urljid'];
+        $this->modJar_urljurl=$data['urljurl'];
+        $this->modJar_cjarsiglas=$data['cjarsiglas'];
+        $this->modJar_urljurltxt=$data['urljurltxt'];
+
+
+        ##### Carga variables
+        if($this->modJar_id=='0'){
+            $this->LimpiarModal();
+            $copiaUorig='0';
+
+        }else{
+            $dato=jardin_txt::where('jar_id',$this->modJar_id)
+                ->with('url')
+                ->first();
+            $this->modJar_orden=$dato->jar_orden;
+            $this->modJar_txt=$dato->jar_txt;
+            $this->modJar_Audio=$dato->jar_audio;
+
+            ##### Revisa si es copia u original
+            $copiaUorig= $dato->url->urlj_tradid;
+        }
+
+        if($copiaUorig=='0'){
+            // $this->modJar_original=jardin_txt::where('jar_id',$copiaUorig)->value('')
+            $this->modJar_original='Este es un documento original';
+        }else{
+            $this->modJar_original=$dato->jar_txtoriginal;
+        }
+    }
+
+
     public function LimpiarModal(){
         $this->resetErrorBag();
         $this->resetValidation();
-        $this->reset('modJar_txt', 'modJar_archs');
+        $this->reset('modJar_txt','modJar_archs', 'modJar_original', 'modJar_NvoAudio', 'modJar_Audio');
     }
 
     public function CierraModalEditaTextoWebJardin(){
@@ -100,6 +120,22 @@ class JardinWebModalComponent extends Component
         // return $id;
     }
 
+    public function VerOnoVerCodigoHtml(){
+        if($this->VerHtml=='1'){
+            $this->VerHtml ='0';
+        }else{
+            $this->VerHtml='1';
+        }
+    }
+
+    public function VerONoVerOriginal(){
+        if($this->VerOriginal=='1'){
+            $this->VerOriginal ='0';
+        }else{
+            $this->VerOriginal='1';
+        }
+    }
+
     public function AbreModalObjeto($id){
             $data=[
                 'ImgId'=>$id,        #'Obligatorio: img_id de tabla imagenes ó 0 para nuevo',
@@ -107,29 +143,55 @@ class JardinWebModalComponent extends Component
                 'ModuloCatImg'=>'jardin', #'Obligatorio: cimg_modulo de tabla cat_imgs',
                 'TipoCatImg'=>'web',   #'Obligatorio: cimg_tipo de tabla cat_imgs'
                 'Url'=>'',          #'url a la que pertenece o vacío',
-                'Lengua'=>'0'      #'len_code de tabla lenguas o vacío',
+                'Lengua'=>'0',      #'len_code de tabla lenguas o vacío',
+                'Reload'=>'0',
 
             ];
         $this->dispatch('abreModalDeImagen', $data);
     }
 
+    public function AbreModalVerImagenParrafo(){
+        $this->dispatch('AbreModalDeVerImagenParrafo');
+    }
+
+
+    public function CierraModalVerImagenParrafo(){
+        $this->dispatch('CierraModalDeVerImagenParrrafo');
+    }
+
+    #[On('event-from-js')]
+    public function CuandoInsertaTexto($codigo){
+        // dd('desdeJava',$codigo);
+        $this->modJar_txt=$codigo;
+    }
+
+    public function BorrarAudio(){
+        // $this->modJar_Audio='';
+        // dd('borrar');
+    }
+
     public function render(){
-
-        ##### Carga archivos file
-        $dato=jardin_txt::where('jar_id',$this->modJar_id)->first();
-        $archs=['ar1'=>null,'ar2'=>null,'ar3'=>null,'ar4'=>null,'ar5'=>null];
-        if($dato != null){
-            if($dato->jar_arch1 != ''){$archs['ar1']=Imagenes::where('img_id',$dato->jar_arch1)->get();}
-            if($dato->jar_arch2 != ''){$archs['ar2']=Imagenes::where('img_id',$dato->jar_arch2)->get();}
-            if($dato->jar_arch3 != ''){$archs['ar3']=Imagenes::where('img_id',$dato->jar_arch3)->get();}
-            if($dato->jar_arch4 != ''){$archs['ar4']=Imagenes::where('img_id',$dato->jar_arch4)->get();}
-            if($dato->jar_arch5 != ''){$archs['ar5']=Imagenes::where('img_id',$dato->jar_arch5)->get();}
+        ##### Si se sube un nuevo audio, lo carga a BD:
+        if($this->modJar_NvoAudio != ''){
+            dd('hay nuevo');
         }
-
-
+        ##### Obtiene tipo de imagen
+        if($this->modJar_urljurltxt=='autores'){
+            $mod='autor';
+        }elseif($this->modJar_urljurltxt=='cedula'){
+            $mod='cedula';
+        }else{
+            $mod='jardin';
+        }
+        $img=Imagenes::where('img_act','1')->where('img_del','0')
+            ->where('img_cjarsiglas',$this->modJar_cjarsiglas)
+            ->with('alias')
+            ->get();
 
         return view('livewire.sistema.jardin-web-modal-component',[
-            'archs'=>$archs,
+            'img'=>$img->where('img_tipo','img'),
+            'aud'=>$img->where('img_tipo','aud'),
+            'vid'=>$img->where('img_tipo','vid'),
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\alias_img;
 use App\Models\cat_tipoimg;
 use App\Models\CatJardinesModel;
 use App\Models\Imagenes;
+use App\Models\jardin_txt;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
@@ -19,7 +20,7 @@ class ModalImagenController extends Component
     ###################################################
     /*#### En view, para editar imágenes, requiere que
     ###### se defina $this->edit=='1' y poner:
-        <livewire:Web.ImagenController />
+        <livewire:Web.ModalImagenController />
 
     ###### En view, para visualizar una o más imágenes:
         <?php $imags = imagenes::get(); ?>
@@ -35,7 +36,7 @@ class ModalImagenController extends Component
                 'TipoCatImg'=>  'Obligatorio: cimg_tipo de tabla cat_imgs'
                 'Url'=>         'url a la que pertenece o vacío',
                 'Lengua'=>      'len_code de tabla lenguas o vacío',
-                // 'Reload'=>'0 o 1. Al cerrar, se recarga (1) o no (0) la pag'
+                'Reload'=>'0 o 1. Al cerrar, se recarga (1) o no (0) la pag'
             ];
             $this->dispatch('abreModalDeImagen', $data);
         }
@@ -64,6 +65,7 @@ class ModalImagenController extends Component
         if($data['TipoCatImg'] == '' ){redirect('/errorNo se recibieron los parámetros del objeto');return;}
         if($data['ImgId']!='0' and  Imagenes::where('img_id',$data['ImgId'])->where('img_del','0')->count() != '1'){redirect('/errorParámetros de objeto incorrectos');return;}
         if(CatJardinesModel::where('cjar_siglas',$data['SiglasJardin'])->count() != '1'){redirect('/errorParámetros de objeto incorrectos');return;}
+        if(!isset($data['Reload']) or $data['Reload']=='' or !in_array($data['Reload'], ['0','1']) ){$data['Reload']='0';}
 
         ##### Carga variables enviados desde controlador externo
         $this->ImgId=$data['ImgId'];
@@ -72,7 +74,7 @@ class ModalImagenController extends Component
         $this->ImgMod_tipomod=$data['TipoCatImg'];
         $this->ImgMod_url=$data['Url'];
         $this->ImgMod_lengua=$data['Lengua'];
-        // $this->ImgMod_reload=$data['Reload'];
+        $this->ImgMod_reload=$data['Reload'];
 
         ##### Carga valores de base de datos
         if($this->ImgId=='0'){
@@ -115,10 +117,12 @@ class ModalImagenController extends Component
         $this->ImgModaliasNvo=[];
     }
 
-    public function CerrarModalImg($idReturn){
-        $this->dispatch('cierraModalDeImagen',reload:1,IDreturn:$idReturn);
-        // $this->LimpiarModalImg();
-        // redirect()->back();
+    public function CerrarModalImg(){
+
+        // $this->dispatch('cierraModalDeImagen',reload:$this->ImgMod_reload, IDreturn:$idReturn);
+        $this->dispatch('cierraModalDeImagen',reload:$this->ImgMod_reload);
+
+
     }
 
     public function GuardarObjeto(){
@@ -272,8 +276,16 @@ class ModalImagenController extends Component
                 ->select('aimg_txt','aimg_id')->get();
         }
 
+        $apariciones=jardin_txt::where('jar_txt','ilike','%'.$this->ImgMod_file.'%')
+            ->where('jar_act','1')
+            ->where('jar_del','0')
+            // ->select('jar_urljurl')
+            // ->distinct('jar_urljurl')
+            ->with('url')
+            ->get();
+
         return view('livewire.web.modal-imagen-controller',[
-            // 'ImgModalias'=>$ImgModalias,
+            'apariciones'=>$apariciones,
         ]);
     }
 }

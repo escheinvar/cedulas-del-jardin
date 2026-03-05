@@ -90,18 +90,20 @@
 
                         <!-- url -->
                         <td class="@if($u->urlj_act=='0') inact @endif">
-                            {{ $u->urlj_url }} &nbsp;
-                            @if($u->urlj_tradid =='0')
-                                (original)
-                            @else
-                                (traducción)
-                            @endif
+                            <b>{{ $u->urlj_url }}</b>
+                            <div style="color:gray;font-size:80%;">
+                                @if($u->urlj_tradid =='0')
+                                    original
+                                @else
+                                    traducción
+                                @endif
+                            </div>
                         </td>
 
                         <!-- lengua -->
                         <td class="@if($u->urlj_act=='0') inact @endif">
-                            {{ $u->urlj_lencode }} &nbsp;
-                            {{ $u->lenguas->len_lengua }}
+                            <center>{{ $u->urlj_lencode }} <br>
+                            {{ $u->lenguas->len_lengua }}</center>
                         </td>
 
                         <!-- titulo-->
@@ -260,7 +262,7 @@
                                             <img src="{{ $this->NvoBanner->temporaryUrl() }}" style="width:100%; max-height:250px; border:1px solid #64383E;">
                                         </div>
                                     @endif
-                                        <input wire:model.live="NvoBanner" class="form-control my-2" type="file" id="MiInputFile" style="width:40%;">
+                                        <input wire:model.live="NvoBanner" class="form-control my-2" type="file" id="MiInputFile" style="width:40%;" @if($jardinId=='0' AND $origtrad !='original') disabled @endif>
                                 <!-- MODAL: si hay imagen -->
                                 @else
                                     <div>
@@ -394,7 +396,7 @@
             }
         });
 
-        Livewire.on('AvisoExito',()=>{
+        Livewire.on('AvisoExitoAdminWeb',()=>{
             alert(event.detail.msj);
         })
 

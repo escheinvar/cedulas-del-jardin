@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class jardin_txt extends Model
 {
@@ -23,5 +25,11 @@ class jardin_txt extends Model
 
         'jar_orden',
         'jar_txt',
+        'jar_txtoriginal',
+        'jar_audio',
     ];
+
+    public function url():BelongsTo {
+        return $this->belongsTo(jardin_url::class,'jar_urljid','urlj_id');
+    }
 }

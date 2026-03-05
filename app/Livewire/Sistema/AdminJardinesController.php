@@ -144,7 +144,7 @@ class AdminJardinesController extends Component
                 'urlj_url'=>$pag,
                 'urlj_act'=>'0',
                 'urlj_titulo'=>$this->jar_nombre,
-                'urlj_descrip'=>'Página del '.$this->jar_nombre.' en el Sistema de Cédulas del Jardín en lenguas originarias',
+                'urlj_descrip'=>'Página de .'.$pag.' del '.$this->jar_nombre.' en el Sistema de Cédulas del Jardín en lenguas originarias',
                 'urlj_bannertitle'=>$this->jar_nombre,
                 ]);
 
