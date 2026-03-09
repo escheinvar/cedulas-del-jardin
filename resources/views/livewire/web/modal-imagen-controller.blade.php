@@ -80,7 +80,7 @@
                             <!-- Carga nuevo Objeto -->
                             <div class="col-12 form-group">
                                 @if($ImgMod_file == '')
-                                    <label for="ImgMod_Nvofile" class="form-label">Cargar objeto {{ $ImgId }}<red>*</red> </label>
+                                    <label for="ImgMod_Nvofile" class="form-label">Cargar objeto<red>*</red> </label>
                                 @endif
                                 <input wire:model="ImgMod_Nvofile" id="ImgMod_Nvofile" class="@error('ImgMod_Nvofile') is-invalid @enderror form-control" type="file">
                                 <div class="form-text">Selecciona el archivo a subir (imagen, audio o video)</div>
@@ -232,25 +232,122 @@
         </div>
     </div>
 
+
+
+
+    <!-- ---------------------- MODAL PARA hipervínculos ---------------------- -->
+    <div wire:ignore.self class="modal fade" id="ModalDeHipervinculo" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- Título -->
+                   <h5> Subir Hipervínculo</h5>
+                    <button wire:click="cerrarModalHipervinculo()" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                         <!-- Hipervinculo -->
+                        <div class="col-7 form-group">
+                            <label for="" class="form-label">Tipo<red>*</red></label>
+                            <select wire:model="ImgMod_TipoHiper" class="@error('ImgMod_TipoHiper') is-invalid @enderror form-select">
+                                <option value="">Indica</option>
+                                <option value="you">Youtube</option>
+                                {{-- <option value="lnk">Liga</option> --}}
+                            </select>
+                            @error('ImgMod_hiper')<error>{{ $message }}@enderror
+                        </div>
+
+                        <!-- Hipervinculo -->
+                        <div class="col-12 form-group">
+                            <label for="ImgMod_hiper" class="form-label">Hipervínculo<red>*</red></label>
+                            <textarea wire:model="ImgMod_hiper" id="ImgMod_hiper" class="@error('ImgMod_hiper') is-invalid @enderror form-control"></textarea>
+                            <div class="form-text"></div>
+                            @error('ImgMod_hiper')<error>{{ $message }}@enderror
+                        </div>
+
+                        <!-- titulo -->
+                        <div class="col-7 form-group">
+                            <label for="ImgMod_titulo" class="form-label">Título<red>*</red></label>
+                            <input wire:model="ImgMod_titulo" id="ImgMod_titulo" class="@error('ImgMod_titulo') is-invalid @enderror form-control" type="text" >
+                            <div class="form-text"></div>
+                            @error('ImgMod_titulo')<error>{{ $message }}@enderror
+                        </div>
+
+                        <!-- inactivar imagen -->
+                        <div class="col-5 form-check">
+                            <br>
+                            <input wire:model.live="ImgMod_act" class="form-check-input" type="checkbox" value="" id="forzar">
+                            <label class="form-check-label" for="forzar">Inactivar hipervínculo   </label>
+                            <div class="form-text"> @if($ImgMod_act==TRUE)<error>El hipervínculo no es visible</error> @endif </div>
+                        </div>
+
+                        <!-- explicación de pie de figura -->
+                        <div class="col-12 form-group">
+                            <label for="ImgMod_pie" class="form-label">Pie de figura</label>
+                            <textarea wire:model="ImgMod_pie" id="ImgMod_pie" class="@error('ImgMod_pie') is-invalid @enderror form-control" ></textarea>
+                            <div class="form-text"></div>
+                            @error('ImgMod_pie')<error>{{ $message }}@enderror
+                        </div>
+
+                        <!-- alias o paslabras clave -->
+                        <div class="col-12 form-group">
+                            <label for="" class="form-label">Palabras clave</label><br>
+                            <input wire:model.live="ImgMod_NvoAlias" type="text" class="form-control sm agregar" style="width:30%;">
+                            <!-- alias para registrados -->
+                            @if($ImgId != '0')
+                                <i wire:click="AgregarAlias()" class="bi bi-plus-square-fill agregar"></i>
+                                @foreach ($ImgModalias as $a)
+                                    <div class="elemento">
+                                        {{ $a->aimg_txt }} <i wire:click="BorrarAlias('{{ $a->aimg_id }}')" wire:confirm="Vas a eliminar este alias de la imagen. ¿Deseas continuar?" class="bi bi-trash agregar"></i>
+                                    </div>
+                                @endforeach
+                            @else
+                                <i wire:click="AgregarAliasConIdNuevo()" class="bi bi-plus-square-fill agregar"></i>
+                                @foreach ($ImgModaliasNvo as $a)
+                                    <div class="elemento">
+                                        {{ $a }} <i wire:click="BorrarAliasConIdNuevo('{{ $a }}')" wire:confirm="Vas a eliminar este alias de la imagen. ¿Deseas continuar?" class="bi bi-trash agregar"></i>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-12">
+                            <button wire:click="cerrarModalHipervinculo()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button class="btn btn-primary" wire:click="GuardarHipervinculo()"> Guardar </button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         Livewire.on('abreModalDeImagen',()=>{
             $('#ModalDeImagen').modal('show'); // Abre modal
-            // const ImgId = event.detail.ImgId; // Envía variable ImgId
-            // @this.set('ImgId',ImgId, live=true);
-            // @this.set('tipo1',ImgTipo, live=true);
         })
 
         Livewire.on('cierraModalDeImagen',()=>{
             $('#ModalDeImagen').modal('hide');
-
-            console.log('fin', event.detail.IDreturn)
-
             if(event.detail.reload == '1'){
                 window.location.reload();
             }
+        })
 
-            if(event.detail.IDreturn != '0'){
-                console.log('f', event.detail.IDreturn);
+        Livewire.on('abreModalDeHipervinculo',()=>{
+            $('#ModalDeHipervinculo').modal('show');
+        })
+
+        Livewire.on('cierraModalDeHipervinculo',()=>{
+            $('#ModalDeHipervinculo').modal('hide');
+            if(event.detail.reload == '1'){
+                window.location.reload();
             }
         })
 

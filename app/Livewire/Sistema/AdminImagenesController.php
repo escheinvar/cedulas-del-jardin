@@ -41,16 +41,20 @@ class AdminImagenesController extends Component
         }
 
         $this->dispatch('abreModalDeImagen', $data);
+
     } ########################## termina imágenes
+
+
+
 
     public function mount($tipo){
         ### imagenes=Tabla; imagen=Imgs
         if($tipo=='nes'){$this->ModoTabla='1';}else{$this->ModoTabla='0';}
         $this->orden='img_id';
         $this->sent='asc';
-        $this->BuscaJardin='';
+        $this->BuscaJardin='JebOax';
         $this->BuscaTxt='';
-        $this->BuscaMod='';
+        $this->BuscaMod='jardin';
     }
 
     public function CambiaModo(){

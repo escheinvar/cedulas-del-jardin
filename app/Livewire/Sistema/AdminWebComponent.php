@@ -30,7 +30,7 @@ class AdminWebComponent extends Component
     public $NvoBanner, $origtrad, $copiade, $lengua, $url, $act, $titulo, $descrip, $bannerimg, $bannertitle;
 
     public function mount(){
-        $this->jardinSel='JebOax';
+        $this->jardinSel='';
         $this->orden='_id';
         $this->sentido='asc';
         $this->origtrad='original';
@@ -253,6 +253,7 @@ class AdminWebComponent extends Component
         $this->editjar = UserRolesModel::where('rol_usrid',Auth::user()->id)
             ->whereIn('rol_crolrol',$auts)
             ->where('rol_act','1')->where('rol_del','0')
+            ->distinct('rol_cjarsiglas')
             ->pluck('rol_cjarsiglas')->toArray();
 
         #### Genera lista de jardines autorizados al usuario

@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Web;
 
+use App\Models\cat_autores;
+use App\Models\cedulas_url;
 use App\Models\jardin_txt;
 use App\Models\jardin_url;
 use App\Models\UserRolesModel;
@@ -88,8 +90,6 @@ class JardinController extends Component
         }
     }
 
-
-
     public function render(){
         $this->edit='0';
         ##### Revisa permisos del usuario
@@ -125,11 +125,25 @@ class JardinController extends Component
             ->orderBy('urlj_lencode')
             ->get();
 
-        // dd($this->url->urlj_cjarsiglas, $this->url->urlj_url, $traducciones);
+        ############## Carga cédulas (pag. cédulas)
+        $cedulas=cedulas_url::where('url_cjarsiglas',$this->url->urlj_cjarsiglas)
+            ->where('url_del','0')
+            ->orderBy('url_url')
+            ->get();
+
+        ############## Carga autores
+        $autores=cat_autores::where('caut_cjarsiglas',$this->url->urlj_cjarsiglas)
+            ->where('caut_act','1')
+            ->where('caut_del','0')
+            ->orderBy('caut_nombre','asc')
+            ->orderBy('caut_apellido1','asc')
+            ->get();
 
         return view('livewire.web.jardin-controller',[
             'txt'=>$txt,
             'traducciones'=>$traducciones,
+            'cedulas'=>$cedulas,
+            'autores'=>$autores,
         ]);
     }
 }

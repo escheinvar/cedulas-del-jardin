@@ -53,6 +53,8 @@ class ModalImagenController extends Component
     public $ImgMod_pie, $ImgMod_autor, $ImgMod_fecha, $ImgMod_ubica;
     public $ImgMod_lonx, $ImgMod_laty, $ImgMod_Nvofile, $ImgMod_fileSize, $ImgMod_resol, $ImgMod_NvoAlias;
     public $ImgModalias, $ImgModaliasNvo;
+    ##### Vars de modal de hipervinculos
+    public $ImgMod_TipoHiper, $ImgMod_hiper;
 
 
     #[On('abreModalDeImagen')]
@@ -118,11 +120,8 @@ class ModalImagenController extends Component
     }
 
     public function CerrarModalImg(){
-
         // $this->dispatch('cierraModalDeImagen',reload:$this->ImgMod_reload, IDreturn:$idReturn);
         $this->dispatch('cierraModalDeImagen',reload:$this->ImgMod_reload);
-
-
     }
 
     public function GuardarObjeto(){
@@ -287,5 +286,44 @@ class ModalImagenController extends Component
         return view('livewire.web.modal-imagen-controller',[
             'apariciones'=>$apariciones,
         ]);
+    }
+
+    ############################## Inicia modal de  Hipervinculos
+    #[On('abreModalDeHipervinculo')]
+    public function recibeValores(){
+        $this->ImgMod_TipoHiper='you';
+
+    }
+
+    public function GuardarHipervinculo(){
+        ##### Valida
+        $this->validate([
+            'ImgMod_TipoHiper'=>'required',
+            'ImgMod_hiper'=>'required',
+            'ImgMod_titulo'=>'required',
+        ]);
+        ##### Procesa checkbox
+        if($this->ImgMod_act==TRUE){$act='0';}else{$act='1';}
+        dd($this->ImgMod_modulo);
+        ###### Crea objeto
+        $datos=[
+            'img_act'=> $act,
+            'img_cimgmodulo'=> $this->ImgMod_modulo,
+            'img_cimgtipo'=> $this->ImgMod_tipomod,
+            'img_cjarsiglas'=> $this->ImgMod_jardin,
+            'img_urlurl'=> $this->ImgMod_url,
+            'img_lencode'=> $this->ImgMod_lengua,
+            'img_ulr'=>$this->ImgMod_hiper,
+            'img_tipo'=> $this->ImgMod_TipoHiper,
+            'img_titulo'=> $this->ImgMod_titulo,
+            'img_pie'=> $this->ImgMod_pie,
+            'img_usrid'=> Auth::user()->id,
+        ];
+        ##### Guarda
+        Imagenes::create($datos);
+    }
+
+    public function cerrarModalHipervinculo(){
+        $this->dispatch('cierraModalDeHipervinculo');
     }
 }

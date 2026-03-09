@@ -32,6 +32,7 @@ return new class extends Migration
                 $table->longText('jar_txtoriginal')->nullable(); ##### Código html del texto
                 $table->string('jar_audio')->nullable();  ##### Ruta al archivo de audio
                 $table->timestamps();
+
             });
         }
     }

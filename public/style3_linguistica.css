@@ -3,9 +3,10 @@
   ==================================================*/
 
 button.lenguas{
-    padding: 5px;
+    padding: 3px;
+    margin-bottom: 3px;
     border-radius:5px;
-    width: 40px;
+    width: 35px;
     font-size: 95%;
 }
 

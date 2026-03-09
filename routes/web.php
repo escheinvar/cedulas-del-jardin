@@ -7,6 +7,7 @@ use App\Http\Controllers\sistema\ModalJardinWebComponent;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EditaCedulasMiddle;
 use App\Http\Middleware\UsuarioLogeadoConRolMiddle;
+use App\Http\Middleware\VerificaUrlCedula;
 use App\Livewire\Admin\Nuevousuario01Controller;
 use App\Livewire\Admin\NuevoUsuarioController;
 use App\Livewire\Cedulas\AportesComponent;
@@ -16,9 +17,10 @@ use App\Livewire\Cedulas\EditaCedulasComponent;
 use App\Livewire\Cedulas\EspeciesComponent;
 use App\Livewire\Login\RecuperaPasswd01Controller;
 use App\Livewire\Login\RecuperaPasswdController;
+use App\Livewire\Sistema\AdminCedulasComponent;
 use App\Livewire\Sistema\AdminImagenesController;
 use App\Livewire\Sistema\AdminJardinesController;
-use App\Livewire\Sistema\AutoresComponent;
+use App\Livewire\Sistema\AdminAutoresComponent;
 use App\Livewire\Sistema\BuzonController;
 use App\Livewire\Sistema\ErrorComponent;
 use App\Livewire\Sistema\HomeComponent;
@@ -27,6 +29,8 @@ use App\Livewire\Sistema\LenguasComponent;
 use App\Livewire\Sistema\UsuariosComponent;
 use App\Livewire\Sistema\VisitasComponent;
 use App\Livewire\Sistema\AdminWebComponent;
+use App\Livewire\Web\AutoresController;
+use App\Livewire\Web\CedulasController;
 use App\Livewire\Web\JardinController2;
 use App\Livewire\Web\JardinController;
 use App\Livewire\Web\NoauthController;
@@ -78,9 +82,10 @@ Route::middleware([UsuarioLogeadoConRolMiddle::class,Authenticate::class])->grou
     Route::get('/admin_usuarios',UsuariosComponent::class)->name('usuarios');
     Route::get('/admin_jardines', AdminJardinesController::class)->name('CatCampus');
     Route::get('/admin_lenguas', LenguasComponent::class)->name('AdminLenguas');
-    Route::get('/admin_autores',AutoresComponent::class)->name('AdminAutores');
+    Route::get('/admin_autores',AdminAutoresComponent::class)->name('AdminAutores');
     Route::get('/admin_web',AdminWebComponent::class)->name('AdminWeb');
     Route::get('/admin_image{tipo}',AdminImagenesController::class)->name('AdminImg');
+    Route::get('/admin_cedulas',AdminCedulasComponent::class)->name('AdminCedulas');
     Route::get('/admin_aportes',AportesComponent::class)->name('aportes');
     Route::get('/admin_visitas',VisitasComponent::class)->name('visitas');
 
@@ -98,14 +103,17 @@ Route::get('/autores',SistAutoresController::class)->name('autores');
 Route::get('/cedulasdeljardin', SistCedulasComponent::class)->name('cedulas');
 Route::get('/noauth/{msj}', NoauthController::class)->name('cedulas');
 Route::get('/jardin/{jardin}/{pag?}/', JardinController::class)->name('enjardin');
-
+Route::middleware([VerificaUrlCedula::class])->group(function(){
+    Route::get('/cedula/{jardin}/{url}', CedulasController::class)->name('cedula');
+});
+Route::get('/autor/{jardin}/{url}', AutoresController::class)->name('autor');
 
 /* --------------------------- SECCION CÉDULAS -------------------------------- */
 /* ---------------------------------------------------------------------------- */
-Route::get('/sp/{url}/{jardin}', EspeciesComponent::class)->name('cedula');
-Route::get('/sppdf/{cedID}/{tipo}',[especies_pdf_controller::class, 'index']);
-Route::get('/buscar', SistCedulasComponent::class)->name('buscadorDeCedulas');
-Route::get('/len/{url}/{jardin}/{lengua}', DistribuidorDeCedulasComponent::class)->name('distrilengua');
+// Route::get('/sp/{url}/{jardin}', EspeciesComponent::class)->name('cedula');
+// Route::get('/sppdf/{cedID}/{tipo}',[especies_pdf_controller::class, 'index']);
+// Route::get('/buscar', SistCedulasComponent::class)->name('buscadorDeCedulas');
+// Route::get('/len/{url}/{jardin}/{lengua}', DistribuidorDeCedulasComponent::class)->name('distrilengua');
 
 
 

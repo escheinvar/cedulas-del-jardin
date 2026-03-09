@@ -93,10 +93,11 @@
         </div>
 
         <!-- Botón para agregar nuevo objeto -->
-        <div class="col-6 col-md-2" style="">
+        <div class="col-6 col-md-6" style="">
             @if($BuscaJardin != '' AND $BuscaMod != '' AND $BuscaSubMod != '' AND $edit=='1')
                 <br>
-                <button wire:click="AbreModalObjeto('0')" type="button" class="btn btn-primary">Nuevo Objeto</button>
+                <button wire:click="AbreModalObjeto('0','img')" type="button" class="btn btn-primary">Nuevo Objeto</button>
+                <button wire:click="AbreModalObjeto('0','hip')" type="button" class="btn btn-primary">Nuevo Hipervínculo</button>
             @else
                 <span style="font-size:80%; color:gray;"><br>Para agregar una nueva imagen,<br>indica jardin, Modelo y Submodelo</span>
             @endif
@@ -198,7 +199,11 @@
 
                             <!-- icono de editar -->
                             <td>
-                                <i wire:click="AbreModalObjeto('{{ $i->img_id }}')" class="bi bi-pencil-square mx-2 PaClick"></i>
+                                @if($i->img_tipo=='you')
+                                    editeichon
+                                @else
+                                    <i wire:click="AbreModalObjeto('{{ $i->img_id }}')" class="bi bi-pencil-square mx-2 PaClick"></i>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

@@ -40,11 +40,12 @@ class HomeComponent extends Component
     ##### Termina imágens
     public function render(){
         ##### Recupera aportaciones a revisar
-        $aporta=SpAporteUsrsModel::where('msg_act','1')
-            ->where('msg_usr',Auth::user()->id)
-            ->leftJoin('sp_urlcedula','ced_id','=','msg_cedid')
-            ->orderBy('msg_date','desc')
-            ->get();
+        // $aporta=SpAporteUsrsModel::where('msg_act','1')
+        //     ->where('msg_usr',Auth::user()->id)
+        //     ->leftJoin('sp_urlcedula','ced_id','=','msg_cedid')
+        //     ->orderBy('msg_date','desc')
+        //     ->get();
+        $aporta=collect();
         $MisRoles=UserRolesModel::where('rol_usrid',Auth::user()->id)->where('rol_act','1')->where('rol_del','0')->get();
 
         return view('livewire.sistema.home-component',[

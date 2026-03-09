@@ -44,23 +44,40 @@
                                 <!-- Nombre -->
                                 <div class="col-12 col-md-6  form-group">
                                     <label for="ModAut_nombre" class="form-label">Nombre(s)<red>*</red></label>
-                                    <input wire:model="ModAut_nombre" id="ModAut_" class="@error('ModAut_nombre') is-invalid @enderror form-control" type="text">
+                                    <input wire:model.live="ModAut_nombre" id="ModAut_nombre" class="@error('ModAut_nombre') is-invalid @enderror form-control" type="text">
                                     <div class="form-text"></div>
                                     @error('ModAut_nombre')<error>{{ $message }}</error>@enderror
                                 </div>
 
                                 <!-- Apellido -->
                                 <div class="col-12 col-md-6  form-group">
-                                    <label for="ModAut_apellido" class="form-label">Apellido(s)<red>*</red></label>
-                                    <input wire:model="ModAut_apellido" id="ModAut_"apellido class="@error('ModAut_apellido') is-invalid @enderror form-control" type="text">
+                                    <label for="ModAut_apellido1" class="form-label">Primer apellido<red>*</red></label>
+                                    <input wire:model.live="ModAut_apellido1" id="ModAut_apellido1"apellido class="@error('ModAut_apellido1') is-invalid @enderror form-control" type="text">
                                     <div class="form-text"></div>
-                                    @error('ModAut_apellido')<error>{{ $message }}</error>@enderror
+                                    @error('ModAut_apellido1')<error>{{ $message }}</error>@enderror
+                                </div>
+
+                                <!-- Apellido 2-->
+                                <div class="col-12 col-md-6  form-group">
+                                    <label for="ModAut_apellido2" class="form-label">Segundo apellido<red></red></label>
+                                    <input wire:model.live="ModAut_apellido2" id="ModAut_apellido2" class="@error('ModAut_apellido2') is-invalid @enderror form-control" type="text">
+                                    <div class="form-text"></div>
+                                    @error('ModAut_apellido2')<error>{{ $message }}</error>@enderror
+                                </div>
+
+                                <!-- Url-->
+                                <div class="col-12 col-md-6  form-group">
+                                    <label for="ModAut_url" class="form-label">Url<red></red></label>
+                                    <input wire:model="ModAut_url" id="ModAut_url" class="@error('ModAut_url') is-invalid @enderror form-control" readonly type="text">
+                                    <div class="form-text"></div>
+                                    @error('ModAut_url')<error>{{ $message }}</error>@enderror
                                 </div>
 
                                 <!-- Nombre de autor  -->
                                 <div class="col-12 col-md-6  form-group">
                                     <label for="ModAut_autorname" class="form-label">Nombre de autor<red>*</red></label>
-                                    <input wire:model="ModAut_autorname" id="ModAut_autorname" class="@error('ModAut_autorname') is-invalid @enderror form-control" type="text">
+                                    <i wire:click="CalculaNombre()" class="bi bi-info-square-fill PaClick"> Sugerir</i>
+                                    <input wire:model.live="ModAut_autorname" wire:change="CalculaUrl()" id="ModAut_autorname" class="@error('ModAut_autorname') is-invalid @enderror form-control" type="text">
                                     <div class="form-text">Nombre único del autor (generalmente apellido-apellido N.)</div>
                                     @error('ModAut_autorname')<error>{{ $message }}</error>@enderror
                                 </div>
@@ -85,7 +102,7 @@
                                 <div class="col-12 col-md-6  form-group">
                                     <label for="ModAut_orcid" class="form-label">Orcid</label>
                                     <input wire:model="ModAut_orcid" id="ModAut_orcid" class="@error('ModAut_orcid') is-invalid @enderror form-control" type="text">
-                                    <div class="form-text">Número de autor para investigadores (en caso de haberlo)</div>
+                                    <div class="form-text">Número de autor para investigadores (sacar en <a href="https://orcid.org/" target="new">orcid.org</a>)</div>
                                     @error('ModAut_orcid')<error>{{ $message }}</error>@enderror
                                 </div>
                             </div>
@@ -104,17 +121,16 @@
                             </div>
                         </div>
                         <!-- tipo de dato -->
-                        <div class="col-6 col-md-3 form-group">
+                        {{-- <div class="col-6 col-md-3 form-group">
                             <label for="ModAut_tipo" class="form-label">Tipo</label>
                             <select wire:model="ModAut_tipo" id="ModAut_tipo" class="@error('ModAut_tipo') is-invalid @enderror form-select">
                                 <option value="">Indicar</option>
                                 <option value="Autor">Autor</option>
                                 <option value="Traductor">Traductor</option>
                                 <option value="AutorTraductor">Autor y Traductor</option>
-                                {{-- <option value="Comunidad">Comunidad</option> --}}
                             </select>
                             @error('ModAut_tipo')<error>{{ $message }}</error>@enderror
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="modal-footer">

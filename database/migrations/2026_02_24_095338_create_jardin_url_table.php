@@ -35,6 +35,8 @@ return new class extends Migration
             $table->decimal('urlj_version',5,2)->default('1.00'); ##### Versión de la página (si es copia, refleja la versión desde la que se realizó la copia)
 
             $table->timestamps();
+
+            $table->unique(['urlj_cjarsiglas','urlj_url']);
         });
     }
 

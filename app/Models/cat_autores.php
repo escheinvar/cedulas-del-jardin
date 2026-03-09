@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class cat_autores extends Model
 {
@@ -17,10 +18,13 @@ class cat_autores extends Model
         'caut_id',
         'caut_act',
         'caut_del',
-        'caut_tipo',
+        'caut_edit',
+        'caut_cjarsiglas',
         'caut_nombre',
-        'caut_apellidos',
+        'caut_apellido1',
+        'caut_apellido2',
         'caut_nombreautor',
+        'caut_url',
         'caut_correo',
         'caut_institu',
         'caut_usrid',
@@ -30,4 +34,8 @@ class cat_autores extends Model
         'caut_orcid',
         'caut_img',
     ];
+
+    public function jardin():BelongsTo{
+        return $this->belongsTo(CatJardinesModel::class,'caut_cjarsiglas','cjar_siglas');
+    }
 }

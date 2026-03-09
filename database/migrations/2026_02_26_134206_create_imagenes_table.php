@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('img_urlurl')->nullable(); ##### en su caso, url
             $table->string('img_lencode')->nullable(); ##### en su caso, lengua
             $table->string('img_file')->nullable(); ##### archivo del objeto
+            $table->longText('img_url')->nullable(); ##### Código html para embeber objeto externo o dirección url de liga
             $table->enum('img_tipo',['img','aud','tau','vid','otro'])->nullable(); ##### tipo de objeto
             $table->string('img_size')->nullable(); #### Tamaño en MB del objeto
             $table->string('img_resolu')->nullable(); #### Resolución en px X,Y

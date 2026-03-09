@@ -58,6 +58,8 @@
     {{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script> --}}
 
+    <!-- fontawesome kit jardinetnobiologicodeoaxaca@gmail -->
+    <script src="https://kit.fontawesome.com/0001232f51.js" crossorigin="anonymous"></script>
 
     <!-- HOJA DE ESTILOS  y JS -->
     <link rel="stylesheet" href="/style.css">
@@ -194,6 +196,7 @@
                                                 <li><a class="dropdown-item @if(request()->path() == 'admin_jardines') active @endif" href="/admin_jardines">Jardines</a></li>
                                                 <li><a class="dropdown-item @if(request()->path() == 'admin_lenguas') active @endif" href="/admin_lenguas">Lenguas</a></li>
                                                 <li><a class="dropdown-item @if(request()->path() == 'admin_autores') active @endif" href="/admin_autores">Autores</a></li>
+                                                {{-- <li><a class="dropdown-item @if(request()->path() == 'admin_cedulas') active @endif" href="/admin_cedulas">Cedulas</a></li> --}}
 
                                                 <li> <hr class="dropdown-divider"> </li>
                                                 <li><a class="dropdown-item @if(request()->path() == 'admin_web') active @endif" href="/admin_web">Web</a></li>
@@ -211,7 +214,8 @@
                                                 Cédulas
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item @if(request()->path() == 'catCedulas') active @endif" href="/catCedulas">Cédulas</a></li>
+                                                <li><a class="dropdown-item @if(request()->path() == 'admin_cedulas') active @endif" href="/admin_cedulas">Admin. Cedulas</a></li>
+                                                {{-- <li><a class="dropdown-item @if(request()->path() == 'catCedulas') active @endif" href="/catCedulas">Cédulas</a></li> --}}
                                                 {{-- <li><a class="dropdown-item @if(request()->path() == 'jardines') active @endif" href="/jardines">Jardines</a></li>
                                                 <li><a class="dropdown-item @if(request()->path() == 'aportes') active @endif" href="/aportes">Aportes</a></li>
                                                 <li><a class="dropdown-item @if(request()->path() == 'vervisitas') active @endif" href="/vervisitas">Visitas</a></li> --}}

@@ -68,6 +68,21 @@ function VerNoVerPass(CampoPass,CampoIcono, iconoText, iconoPass){
     }
 }
 
+function playAudio(IdAudio) {
+    var MyAudio = document.getElementById('SpAudio'+IdAudio);
+    document.getElementById('IconPlay'+IdAudio).style.display='none';
+    document.getElementById('IconStop'+IdAudio).style.display='inline';
+    MyAudio.play();
+}
+
+function pauseAudio(IdAudio) {
+    var MyAudio = document.getElementById('SpAudio'+IdAudio);
+    document.getElementById('IconPlay'+IdAudio).style.display='inline';
+    document.getElementById('IconStop'+IdAudio).style.display='none';
+    MyAudio.pause();
+    MyAudio.currentTime = 0;
+}
+
 // function VerMapaJardin(IDreceptor){
 //     //var mapa = L.map(IDreceptor).setView([17.0666, -96.72243], 19);
 //     var mapa = L.map(IDreceptor).setView([17.06588524915741, -96.72211246391984], 20);
@@ -196,31 +211,6 @@ function VerNoVerPass(CampoPass,CampoIcono, iconoText, iconoPass){
 //     return mapa
 // }
 
-
-
-// function EscuchaAudio(soundFile){
-//     $("#sound").html("<embed src=\"" + soundFile + "\" hidden=\"true\" autostart=\"true\" />");
-// }
-
-// function Escucha(audio){
-//     new  Audio(audio).play();
-// }
-
-
-// function playAudio(IdAudio) {
-//     var MyAudio = document.getElementById('SpAudio'+IdAudio);
-//     document.getElementById('IconPlay'+IdAudio).style.display='none';
-//     document.getElementById('IconStop'+IdAudio).style.display='inline';
-//     MyAudio.play();
-// }
-
-// function pauseAudio(IdAudio) {
-//     var MyAudio = document.getElementById('SpAudio'+IdAudio);
-//     document.getElementById('IconPlay'+IdAudio).style.display='inline';
-//     document.getElementById('IconStop'+IdAudio).style.display='none';
-//     MyAudio.pause();
-//     MyAudio.currentTime = 0;
-// }
 
 //Inhabilitar tecla de espacio
 //function NoEspacio(e, campo){
