@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Sistema;
 
+use App\Models\cat_autores;
 use App\Models\cat_tipocedula;
 use App\Models\CatJardinesModel;
+use App\Models\ced_autores;
 use App\Models\cedulas_txt;
 use App\Models\cedulas_url;
 use App\Models\lenguas;
@@ -14,20 +16,38 @@ use Livewire\Component;
 class AdminCedulasComponent extends Component
 {
     public $edit, $editjar; ##### Variables de permisos del usuario
-    public $jardinSel, $sentido, $orden, $edoEdit, $abiertos; ##### Vars de formulario de búsqueda y de tabla
-    ### vars. del modal:
-    public $cedulaId, $origtrad, $copiade, $tipoCedula, $lengua;
+    public $jardinSel, $BuscaLengua, $BuscaEstado, $BuscaTexto, $sentido, $orden, $edoEdit, $abiertos; ##### Vars de formulario de búsqueda y de tabla
+    ##### vars. del modal Edición de ćedula
+    public $cedulaId, $origtrad, $copiade, $tipoCedula, $lengua, $CedAutores;
     public $url, $titulo, $tituloOrig, $resumen, $resumenOrig, $act;
+    ##### Vars del modal Buscar Autor:
+    public $BuscaAutor_BuscaNombre, $BuscaAutor_BuscaApellido, $BuscaAutor_Posibles;
+    public $BuscaAutor_tipo, $BuscaAutor_Ganon, $BuscaAutor_id, $BuscaAutor_name, $BuscaAutor_comunidad;
+    public $BuscaAutor_institu, $BuscaAutor_correo, $BuscaAutor_corresponding;
 
 
-
-
+    #################################################################################
+    /*##### Inicia con la vista mostrando en $this->urls con el listado de cédulas.
+            Cuando se pica en editar, se ejecuta AbreModalCedula(), se guarda
+            $this->cedulaId (con Id de la cédula) y se abre el "modal de edición de ćedula".
+            Dentro del "Modal de edición de cédula" se puede invocar el "Modal de buscar autor"
+            (para determinar autores)
+    */
     public function mount(){
         $this->jardinSel='JebOax';
-        $this->orden='_id';
-        $this->sentido='asc';
+        // $this->orden='_id';
+        // $this->sentido='asc';
         $this->origtrad='original';
-        // $this->CedsOriginales=collect();
+        ##### del modal busca autor:
+        $this->BuscaAutor_Posibles=collect();
+        $this->BuscaAutor_BuscaNombre='';
+        $this->BuscaAutor_BuscaApellido='';
+        $this->BuscaAutor_Ganon=collect();
+
+    }
+
+    public function ordenaTabla(){
+
     }
 
     public function render(){
@@ -69,19 +89,41 @@ class AdminCedulasComponent extends Component
             ->count();
 
         ##### Obtiene lista de url's accesibles por usuario
+        $urls=collect();
         if($this->jardinSel != ''){
             $urls=cedulas_url::query();
             $urls=$urls->where('url_cjarsiglas','ilike',$this->jardinSel);
-            $urls=$urls->orderBy('url_cjarsiglas','asc')
+
+        }
+        ##### Obtiene lista de url's por lengua
+        if($this->BuscaLengua != ''){
+            $urls=$urls->where('url_lencode',$this->BuscaLengua);
+        }
+
+        ##### Obtiene lista de url's por estado
+        if($this->BuscaEstado != ''){
+            $urls=$urls->where('url_edo',$this->BuscaEstado);
+        }
+
+        ##### Obtiene lista de url's por estado
+        if($this->BuscaTexto != ''){
+            $urls=$urls->where(function($q){
+                return $q
+                ->where('url_url','ilike', '%'.$this->BuscaTexto.'%')
+                ->orWhere('url_titulo','ilike', '%'.$this->BuscaTexto.'%')
+                ->orWhere('url_resumen','ilike', '%'.$this->BuscaTexto.'%');
+            });
+        }
+
+        ### Finaliza búsqueda de url
+        $urls=$urls->orderBy('url_cjarsiglas','asc')
                 ->orderBy('url_urltxt','asc')
                 ->orderBy('url_tradid','asc')
                 ->where('url_del','0')
                 ->with('jardin')
                 ->with('lenguas')
+                ->with('autores')
                 ->get();
-        }else{
-            $urls=collect();
-        }
 
         ##### Obtiene total de url's originales
         $CedsOriginales= cedulas_url::where('url_cjarsiglas','ilike',$this->jardinSel)
@@ -93,7 +135,7 @@ class AdminCedulasComponent extends Component
 
         return view('livewire.sistema.admin-cedulas-component',[
             'JardsDelUsr'=>$JardsUsr,  ##### Lista de siglas de jardines autorizados
-            'lenguas'=>lenguas::get(),  ##### Lista de lenguas del catálogo
+            'lenguas'=>lenguas::orderBy('len_lengua')->get(),  ##### Lista de lenguas del catálogo
             'CedsOriginales'=>$CedsOriginales, ##### Lista de cédulas originales (para copiar)
             'TiposDeCedula'=>cat_tipocedula::get(),
             'urls'=>$urls,   ##### Tabla de urls para ver en tabla
@@ -103,6 +145,13 @@ class AdminCedulasComponent extends Component
     ####################################################################
     ####################################### Funciones de Modal de Cédula
     ####################################################################
+    public function LimpiaModal(){
+        $this->reset('origtrad', 'copiade', 'tipoCedula', 'lengua', 'url', 'titulo', 'tituloOrig', 'resumen', 'resumenOrig', 'act');
+        // $this->act=FALSE;
+        $this->resetErrorBag();
+        $this->resetValidation();
+    }
+
     public function AbreModalCedula($id,$jardin){ #($tipo,$var){
         $this->LimpiaModal();
         $this->jardinSel=$jardin;
@@ -113,7 +162,10 @@ class AdminCedulasComponent extends Component
             $this->cedulaId=$id;
             if($id > '0'){
                 ##### Lee el campo
-                $dato=cedulas_url::where('url_id',$id)->first();
+                $dato=cedulas_url::where('url_id',$id)
+                    ->with('autores')
+                    ->first();
+
                 ##### Carga datos
                 $this->url=$dato->url_url;
                 if($dato->url_act=='1'){$this->act=TRUE;}else{$this->act=FALSE;}
@@ -125,21 +177,16 @@ class AdminCedulasComponent extends Component
                 $this->tituloOrig=$dato->url_tituloOrig;
                 $this->resumen=$dato->url_resumen;
                 $this->resumenOrig=$dato->url_resumenOrig;
+                $this->CedAutores=$dato->autores;
 
             }else{
+                $this->CedAutores=collect();
                 $this->LimpiaModal();
             }
 
             #### Abre modal
             $this->dispatch('AbreModalDeCedula');
         }
-    }
-
-    public function LimpiaModal(){
-        // $this->reset('NvoBanner', 'origtrad', 'copiade', 'lengua', 'url', 'titulo', 'descrip', 'bannerimg', 'bannertitle');
-        // $this->act=FALSE;
-        $this->resetErrorBag();
-        $this->resetValidation();
     }
 
     public function CierraModalCedula(){
@@ -159,6 +206,12 @@ class AdminCedulasComponent extends Component
             $this->resumenOrig = $original->url_resumenorig;
         }
         if($this->origtrad=="original"){$this->copiade ='';}
+    }
+
+    public function ProponUrl(){
+        $entra=strtolower(quitarAcentos($this->titulo));
+        $entra=preg_replace('/[^A-Za-z0-9-]/', '', $entra);
+        $this->url= $entra;
     }
 
     public function GuardaCedula(){
@@ -235,7 +288,6 @@ class AdminCedulasComponent extends Component
             'url_resumenorig'=>$resOrig,
         ];
 
-
         ##### Guarda en Base de datos
         if($this->cedulaId=='0'){
             $ja=cedulas_url::create($datos);
@@ -263,14 +315,142 @@ class AdminCedulasComponent extends Component
         $this->CierraModalCedula();
     }
 
-    ####################################################################
-    ################################# Funciones de Modal de Buscar Autor
-    ####################################################################
-    public function AbreModalDeBuscarAutor(){
+    ########################################################################################
+    ################################################# Funciones de Modal de Buscar Autor
+    ########################################################################################
+    /*  Desde el modal de edición de cédula, se abre el modal con AbremodalDeBuscarAutor().
+        Dentro del modal, ejecuta búsqueda con BuscarAutores() que afecta la variable
+        $this->BuscaAutor_Posibles (con lista de autores buscados). Si no se encuentra
+        ningún autor, se puede ejecutar AbrirModalDeNuevoAutor() para que abra el
+        modal externo, pero si se selecciona un autor, se ejecuta ConfirmarDatosDeAutor()
+        el cual da valor a $this->Buscar_Autor_Ganon para que se vea el segundo formulario
+        de datos de autor.
+    #######################################################################################*/
+
+    public function AbreModalDeBuscarAutor($tipo){
+        $this->BuscaAutor_tipo=$tipo;
         $this->dispatch('AbreModalDeBuscarAutor');
     }
 
+    public function LimpiaBusqueda1(){
+        $this->reset('BuscaAutor_tipo','BuscaAutor_BuscaNombre','BuscaAutor_BuscaApellido','BuscaAutor_Ganon');
+    }
+
+    public function LimpiaBusqueda2(){
+        // $this->reset('BuscaAutor_Ganon');
+        $this->BuscaAutor_Ganon=collect();
+    }
+
     public function CierraModalDeBuscarAutor(){
+        $this->LimpiaBusqueda1();
+        $this->LimpiaBusqueda2();
+        $this->BuscaAutor_Posibles=collect();
+
         $this->dispatch('CierraModalDeBuscarAutor');
+    }
+
+    public function BuscarAutores(){
+        $this->LimpiaBusqueda2();
+
+        ##### Genera query de búsqueda
+        $busqueda=cat_autores::query();
+        $busqueda=$busqueda->where('caut_cjarsiglas',$this->jardinSel)
+            ->where('caut_act','1')
+            ->where('caut_del','0');
+
+        ###### Busca por nombre
+        if($this->BuscaAutor_BuscaNombre != '' ){
+            $busqueda=$busqueda->where('caut_nombre','ilike', '%'.$this->BuscaAutor_BuscaNombre.'%');
+        }
+
+        ##### Busca por apellidos
+        if($this->BuscaAutor_BuscaApellido != ''){
+            $busqueda=$busqueda->where(function($q){
+                return $q
+                ->whereRaw("unaccent(caut_apellido1) ILIKE unaccent(?)", ['%'.$this->BuscaAutor_BuscaApellido.'%'])
+                ->orWhereRaw("unaccent(caut_apellido2) ILIKE unaccent(?)", ['%'.$this->BuscaAutor_BuscaApellido.'%']);
+            });
+        }
+
+        ##### Finaliza búsqueda
+        $this->BuscaAutor_Posibles=$busqueda->orderBy('caut_nombre','asc')
+            ->orderBy('caut_apellido1','asc')
+            ->get();
+    }
+
+    public function ConfirmarDatosDeAutor($id){
+        ##### Vacía los campos de búsqueda
+        $this->BuscaAutor_BuscaNombre='';
+        $this->BuscaAutor_BuscaApellido='';
+
+        ##### Obtiene datos del Autor:
+        $dato=cat_autores::where('caut_id',$id)->first();
+        $this->BuscaAutor_id=$dato->caut_id;
+        $this->BuscaAutor_name=$dato->caut_nombreautor;
+        $this->BuscaAutor_comunidad= $dato->caut_comunidad;
+        $this->BuscaAutor_institu= $dato->caut_institu;
+        $this->BuscaAutor_correo= $dato->caut_correo;
+        $this->BuscaAutor_Ganon=$dato;
+    }
+
+    public function AgregarAutorACedula(){
+        ##### Procesa checkbox
+        if($this->BuscaAutor_corresponding == TRUE){$corr='1';}else{$corr='0';}
+        ##### Genera array de datos:
+        $datos=[
+            'aut_cautid'=>$this->BuscaAutor_id,
+            'aut_urlid'=>$this->cedulaId, #### if id != 0
+            'aut_corresponding'=>$corr,
+            'aut_name'=>$this->BuscaAutor_name,
+            'aut_correo'=>$this->BuscaAutor_correo,
+            'aut_institucion'=>$this->BuscaAutor_institu,
+            'aut_comunidad'=>$this->BuscaAutor_comunidad,
+            'aut_tipo'=>$this->BuscaAutor_tipo,
+        ];
+        if($this->cedulaId > '0'){
+            ###### Si hay id asignado, guarda en BD
+            $bla=ced_autores::create($datos);
+            $id=$bla->aut_id;
+            #### Genera log
+            paLog('Se agrega '.$this->BuscaAutor_tipo.' id '.$this->BuscaAutor_id.' a cédula '.$this->cedulaId,'ced_autores',$id);
+
+            ######## Recarga variable (para actualizar lista en modal)
+            $dato=cedulas_url::where('url_id',$this->cedulaId)
+                ->with('autores')
+                ->first();
+            $this->CedAutores=$dato->autores;
+
+        }
+
+        ##### Finaliza con mensaje y cierre
+        $this->dispatch('AvisoExitoCedula',msj:'Se agregó correctamente el autor');
+        $this->dispatch('LimpiaBusqueda1');
+        $this->dispatch('LimpiaBusqueda2');
+        $this->dispatch('CierraModalDeBuscarAutor');
+    }
+
+    public function AbrirModalDeNuevoAutor(){
+        ##### Limpia búsqueda
+        $this->BuscaAutor_BuscaNombre='';
+        $this->BuscaAutor_BuscaApellido='';
+        ##### Cierra modal de búsqueda de autores
+        $this->dispatch('CierraModalDeBuscarAutor',reload:'0');
+        ##### Abre modal para ingresar nuevo autor a catálogo
+        $datos=[
+            'cautId'=>'0',
+            'cjarsiglas'=>$this->jardinSel,
+            'reload'=>'0',
+        ];
+        $this->dispatch('AbreModalDeAutores',$datos);
+    }
+
+    public function BorrarAutor($id){
+        ced_autores::where('aut_id',$id)->update(['aut_del'=>'1']);
+        paLog('Se elimina '.$this->BuscaAutor_tipo.' id '.$this->BuscaAutor_id.' a cédula '.$this->cedulaId,'ced_autores',$id);
+        ######## Recarga variable (para actualizar lista en modal)
+        $dato=cedulas_url::where('url_id',$this->cedulaId)
+            ->with('autores')
+            ->first();
+        $this->CedAutores=$dato->autores;
     }
 }

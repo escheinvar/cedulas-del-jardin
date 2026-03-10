@@ -33,6 +33,7 @@ use App\Livewire\Web\AutoresController;
 use App\Livewire\Web\CedulasController;
 use App\Livewire\Web\JardinController2;
 use App\Livewire\Web\JardinController;
+use App\Livewire\Web\ListaController;
 use App\Livewire\Web\NoauthController;
 use App\Livewire\Web\SistAutoresController;
 use App\Livewire\Web\SistCedulasComponent;
@@ -102,12 +103,13 @@ Route::get('/jardiness',SistJardinesController::class)->name('jardines');
 Route::get('/autores',SistAutoresController::class)->name('autores');
 Route::get('/cedulasdeljardin', SistCedulasComponent::class)->name('cedulas');
 Route::get('/noauth/{msj}', NoauthController::class)->name('cedulas');
+
 Route::get('/jardin/{jardin}/{pag?}/', JardinController::class)->name('enjardin');
 Route::middleware([VerificaUrlCedula::class])->group(function(){
     Route::get('/cedula/{jardin}/{url}', CedulasController::class)->name('cedula');
 });
 Route::get('/autor/{jardin}/{url}', AutoresController::class)->name('autor');
-
+Route::get('/lista/{jardin}', ListaController::class)->name('lista');
 /* --------------------------- SECCION CÉDULAS -------------------------------- */
 /* ---------------------------------------------------------------------------- */
 // Route::get('/sp/{url}/{jardin}', EspeciesComponent::class)->name('cedula');

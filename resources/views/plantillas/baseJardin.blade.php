@@ -117,7 +117,8 @@
                                 <!-- -------------------- INICIA MENÚ PÚBLICO --------------------------------------- -->
                                 <!-- El jardín (inicio) -->
                                 <li class="nav-item">
-                                    <a class="nav-link @if(preg_match("/en\/.*\/inicio/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')">
+
+                                    <a class="nav-link @if(preg_match("/jardins\/.*/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')">
                                         Inicio
                                     </a>
                                 </li>
@@ -125,15 +126,22 @@
 
                                 <!-- Los autores -->
                                 <li class="nav-item">
-                                    <a class="nav-link @if(preg_match("/jardin.*autores/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')/autores">
+                                    <a class="nav-link @if(preg_match("/jardin\/.*\/autores/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')/autores">
                                         Autores
                                     </a>
                                 </li>
 
                                 <!-- Las cédulas -->
                                 <li class="nav-item">
-                                    <a class="nav-link @if(request()->path() == 'cedulasdeljardin') active @endif" href="/jardin/@yield('siglasMin')/cedulas/">
-                                        cédulas
+                                    <a class="nav-link @if(preg_match("/jardin.*cedulas/", request()->path())) active @endif" href="/jardin/@yield('siglasMin')/cedulas/">
+                                        Cédulas
+                                    </a>
+                                </li>
+
+                                <!-- La lista -->
+                                <li class="nav-item">
+                                    <a class="nav-link @if(preg_match("/lista.*/", request()->path())) active @endif" href="/lista/@yield('siglasMin')">
+                                        Listado
                                     </a>
                                 </li>
 

@@ -19,8 +19,10 @@ return new class extends Migration
             $table->enum('aut_del',['0','1'])->default('0'); ##### borrado lógico
             $table->decimal('aut_orden',4,2)->default('1.0'); ##### orden del autor
             $table->enum('aut_corresponding',['0','1'])->default('0'); ##### Indica si es(1) o no es(0) corresponding autor
+            $table->string('aut_name')->nullable(); ##### Nombre de autor
             $table->string('aut_correo')->nullable(); ##### Correo electrónico del autor
             $table->string('aut_institucion')->nullable(); ##### Institución a la que pertenece el autor
+            $table->string('aut_comunidad')->nullable(); ##### Comunidad a la que pertenece
             $table->string('aut_tipo')->default('Autor'); #### tipo: Autor, Traductor, Editor
             $table->integer('aut_usrid')->nullable(); #### En caso de haberlo, id de usuario
 

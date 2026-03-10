@@ -78,7 +78,7 @@
 
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
-    <!-- ---------------------------- INICIA MODAL ROLES DE USUARIO --------------------------- -->
+    <!-- ---------------------------- INICIA MODAL EDITA/NUEVO JARDÍN ------------------------- -->
     <div wire:ignore.self class="modal fade" id="ModalJardin" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">

@@ -124,8 +124,6 @@ class AdminJardinesController extends Component
             'cjar_insta'=>$this->jar_red_insta,
             'cjar_youtube'=>$this->jar_red_youtube,
             'cjar_www'=>$this->jar_red_www,
-            // 'cjar_red1'=>$this->jar_red_red1,
-            // 'cjar_red2'=>$this->jar_red_red2,
             'cjar_ubica'=>$this->jar_red_ubica,
             ];
 
@@ -137,7 +135,7 @@ class AdminJardinesController extends Component
             paLog('Crea nuevo jardín '.$this->jar_name,'CatJardinesModel',$datos['cjar_id']);
 
             ##### Genera página url inicio del jardín
-            foreach(['inicio','autores','cedulas'] as $pag){
+            foreach(['inicio','autores','cedulas','lista'] as $pag){
                 $ja=jardin_url::create([
                 'urlj_cjarsiglas'  =>$this->jar_siglas,
                 'urlj_urltxt'=>$pag,

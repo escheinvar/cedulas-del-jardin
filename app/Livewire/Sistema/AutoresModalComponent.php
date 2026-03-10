@@ -11,16 +11,21 @@ class AutoresModalComponent extends Component
 {
     use WithFileUploads;
 
-    public $ModAut_IdAutor; ##### Variable con idde autor o 0 recibida desde componente
+    public $ModAut_IdAutor, $ModAut_jardin, $ModAut_reload; ##### Variable con idde autor o 0 recibida desde componente
     ##### Variables de formulario:
-    public $ModAut_jardin, $ModAut_nombre, $ModAut_apellido1, $ModAut_apellido2, $ModAut_url, $ModAut_autorname, $ModAut_correo;
-    public $ModAut_institu, $ModAut_orcid, $ModAut_img, $ModAut_NvaImg;
+    public $ModAut_nombre, $ModAut_apellido1, $ModAut_apellido2, $ModAut_url, $ModAut_autorname, $ModAut_correo;
+    public $ModAut_institu,$ModAut_comunidad, $ModAut_orcid, $ModAut_img, $ModAut_NvaImg;
     public $ModAut_web, $ModAut_mailpublic,$ModAut_tipo;
 
     #[On('AbreModalDeAutores')]
     public function recibeDatos($data){
         $this->ModAut_IdAutor=$data['cautId'];
         $this->ModAut_jardin=$data['cjarsiglas'];
+        if(!isset($data['reload'])){
+            $this->ModAut_reload='1';
+        }else{
+            $this->ModAut_reload= $data['reload'];
+        }
 
         if($this->ModAut_IdAutor=='0'){
             $this->LimpiaModalAutores();
@@ -34,6 +39,7 @@ class AutoresModalComponent extends Component
             $this->ModAut_url = $datos->caut_url;
             $this->ModAut_autorname = $datos->caut_nombreautor;
             $this->ModAut_correo = $datos->caut_correo;
+            $this->ModAut_comunidad = $datos->caut_comunidad;
             $this->ModAut_institu = $datos->caut_institu;
             $this->ModAut_orcid = $datos->caut_orcid;
             $this->ModAut_img = $datos->caut_img;
@@ -51,7 +57,7 @@ class AutoresModalComponent extends Component
 
     public function CierraModalAutores(){
         $this->LimpiaModalAutores();
-        $this->dispatch('CierraModalDeAutores',reload:1);
+        $this->dispatch('CierraModalDeAutores',reload:$this->ModAut_reload);
     }
 
     public function  CalculaNombre(){

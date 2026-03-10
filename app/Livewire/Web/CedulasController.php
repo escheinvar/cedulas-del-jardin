@@ -19,14 +19,14 @@ class CedulasController extends Component
         $this->jardin=$jardin;
 
         ##### Carga variables recibidas por URL: carga datos url
-
         $this->url=cedulas_url::where('url_cjarsiglas','ilike',strtolower($jardin))
             ->where('url_url',$url)
             ->where('url_del','0')
             ->with('jardin')
             ->with('lenguas')
+            ->with('autores')
             ->first();
-
+// dd($this->url);
         if(is_null($this->url)) {
             redirect('/errorLa dirección indicada es incorrecta');
         }else{

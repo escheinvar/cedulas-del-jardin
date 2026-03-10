@@ -89,37 +89,52 @@
                                     <div class="form-text">Correo electrónico de contacto</div>
                                     @error('ModAut_correo')<error>{{ $message }}</error>@enderror
                                 </div>
-
-                                <!--  Institución -->
-                                <div class="col-12 col-md-6  form-group">
-                                    <label for="ModAut_institu" class="form-label">Institución</label>
-                                    <input wire:model="ModAut_institu" id="ModAut_institu" class="@error('ModAut_institu') is-invalid @enderror form-control" type="text">
-                                    <div class="form-text">Institución a la que pertenece</div>
-                                    @error('ModAut_institu')<error>{{ $message }}</error>@enderror
-                                </div>
-
-                                <!--  Orcid -->
-                                <div class="col-12 col-md-6  form-group">
-                                    <label for="ModAut_orcid" class="form-label">Orcid</label>
-                                    <input wire:model="ModAut_orcid" id="ModAut_orcid" class="@error('ModAut_orcid') is-invalid @enderror form-control" type="text">
-                                    <div class="form-text">Número de autor para investigadores (sacar en <a href="https://orcid.org/" target="new">orcid.org</a>)</div>
-                                    @error('ModAut_orcid')<error>{{ $message }}</error>@enderror
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <!-- checkboxes de web y de publicar -->
-                        <div class="col-6 col-md-3 form-group">
-                            <div class="form-check">
-                                <input wire:model="ModAut_web" class="form-check-input" type="checkbox" value="1" id="ModAut_web">
-                                <label class="form-check-label" for="ModAut_web">Publicar web</label>
-                            </div>
-                            <div class="form-check">
-                                <input wire:model="ModAut_mailpublic" class="form-check-input" type="checkbox" value="1" id="ModAut_mailpublic">
-                                <label class="form-check-label" for="ModAut_mailpublic">Publicar correo en web</label>
+                        <div class="col-12">
+                            <div class="row">
+                                <!--  Comunidad -->
+                                <div class="col-12 col-md-4  form-group">
+                                    <label for="ModAut_comunidad" class="form-label">Comunidad</label>
+                                    <input wire:model="ModAut_comunidad" id="ModAut_comunidad" class="@error('ModAut_comunidad') is-invalid @enderror form-control" type="text">
+                                    <div class="form-text">En su caso, comunidad a la que pertenece</div>
+                                    @error('ModAut_comunidad')<error>{{ $message }}</error>@enderror
+                                </div>
+
+                                <!--  Institución -->
+                                <div class="col-12 col-md-4  form-group">
+                                    <label for="ModAut_institu" class="form-label">Institución</label>
+                                    <input wire:model="ModAut_institu" id="ModAut_institu" class="@error('ModAut_institu') is-invalid @enderror form-control" type="text">
+                                    <div class="form-text">En su caso, institución a la que pertenece</div>
+                                    @error('ModAut_institu')<error>{{ $message }}</error>@enderror
+                                </div>
+
+                                <!--  Orcid -->
+                                <div class="col-12 col-md-4  form-group">
+                                    <label for="ModAut_orcid" class="form-label">Orcid</label>
+                                    <input wire:model="ModAut_orcid" id="ModAut_orcid" class="@error('ModAut_orcid') is-invalid @enderror form-control" type="text">
+                                    <div class="form-text">En su caso, número de autor para investigadores (sacar en <a href="https://orcid.org/" target="new">orcid.org</a>)</div>
+                                    @error('ModAut_orcid')<error>{{ $message }}</error>@enderror
+                                </div>
+
+                                <!-- checkboxes de web y de publicar -->
+                                <div class="col-6 col-md-4 form-group">
+                                    <div class="form-check">
+                                        <input wire:model="ModAut_web" class="form-check-input" type="checkbox" value="1" id="ModAut_web">
+                                        <label class="form-check-label" for="ModAut_web">Publicar web</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 form-group">
+                                    <div class="form-check">
+                                        <input wire:model="ModAut_mailpublic" class="form-check-input" type="checkbox" value="1" id="ModAut_mailpublic">
+                                        <label class="form-check-label" for="ModAut_mailpublic">Publicar correo en web</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                         <!-- tipo de dato -->
                         {{-- <div class="col-6 col-md-3 form-group">
                             <label for="ModAut_tipo" class="form-label">Tipo</label>
@@ -147,7 +162,7 @@
             </div>
         </div>
     </div>
-    <!-- ----------------------------- TERMINA MODAL ROLES DE USUARIO ------------------------- -->
+    <!-- ----------------------------- TERMINA MODAL AUTORES ---------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
 </div>
