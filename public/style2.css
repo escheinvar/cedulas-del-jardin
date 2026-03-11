@@ -6,11 +6,6 @@ a:link:visited:hover:active.nolink{
     text-decoration:none;
     color:inherit;
 }
-/* ------------  Corta texto a los 380px ------------- */
-.cortaTexto{overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 380px;}
-/* ------------  Corta texto a las 3 líneas ------------- */
-.cortaLineas { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
-
 /* Centra un Div.center dentro de otro div */
 .center {
     /* margin: auto; */
@@ -293,7 +288,6 @@ margin-left: -1.5em;
 /* ------------ TERMINA Formularios ---------*/
 /* ------------------------------------------*/
 
-
 error, red {
     color:#CD7B34;
     font-size: 1.2rem;
@@ -304,32 +298,24 @@ error, red {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
-.etiqueta{
+/* .etiqueta{
     font-size:10px;
     border:1px solid #87796d;
     display:inline-block;
     padding:3px;
     border-radius:4px;
     background-color:#CDC6B9
-}
+} */
 .PaClick{
     cursor:pointer;
 }
 
-.TipoTabla{
+/* .TipoTabla{
     display:inline-block;
-}
+} */
 
-.ContenedorImg{
-    margin-left:auto;
-    margin-right: auto;
-    position: relative; /* Referencia para los elementos internos */
-    display: inline-block; /* O un div con width y height */
-    margin-top:0px;
-    padding:15px;
-    color:#87796d;
-    /* width:100%; */
-}
+
+
 /*=== inact: formato para tablas cuando act=0
 (tacha y pone en gris el texto) ===*/
 tr.inact, td.inact{
@@ -337,8 +323,9 @@ tr.inact, td.inact{
     color:gray;
     font-weight: 50;
 }
-/*======*/
 
+/*=== avatar: usado en home
+para mostrar el avatar del usuario */
 img.avatar{
     border-radius:13px;
     max-width:80px;
@@ -346,28 +333,35 @@ img.avatar{
     border:1px solid #64383E;
     text-align:right;
 }
+
 /* estilo para notas en buzón */
 nota{
     display:block;
     margin-left:10px;
 }
 
-.truncar1linea{
-  white-space: nowrap; /* Prevents text from wrapping to the next line */
-  overflow: hidden;    /* Hides any content that overflows the element's box */
-  text-overflow: ellipsis; /* Displays an ellipsis (...) to indicate truncated text */
+/* .truncar1linea{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display:inherit;
   height:15px;
-}
+} */
+/* ------------  Corta texto a los 380px ------------- */
+/* .cortaTexto{overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 380px;} */
+/* ------------  Corta texto a las 3 líneas ------------- */
+/* .cortaLineas { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;} */
 
-/* ----------- LEAFLET MAPS -------------- --*/
+
+
+/* -----------map: LEAFLET MAPS -------------- --*/
 #map {
     /* height: 180px; */
     height:540px;
     border:1px solid black;
 }
 
-.regresar{
+/* .regresar{
     padding-bottom:20px;
     color:#87796d;
 }
@@ -376,7 +370,7 @@ nota{
 }
 .regresar::before{
     content: "<--";
-}
+} */
 
 /* === imagen: muestra las imágenes en formato con titulo, autor, fecha y datos.
    <imagen> <img class="imagen"> <titulo> <fecha>
@@ -480,9 +474,7 @@ i.audioTxtStop::before {
   content: "\F60C";
   font-family: "bootstrap-icons";
   font-size: 1.4rem;
-
 }
-
 audio.web{
     width:80%;
     display: inline-block;
@@ -490,24 +482,25 @@ audio.web{
     margin-bottom: 10px;
 }
 /* ################################# Termina audioTXT */
-hr.titulo{
+
+/* hr.titulo{
     height:10px;
     background-color:#64383E;
     border:1px solid #64383E;
     margin-top: 40px;
     margin-bottom: 7px;
-}
+} */
 
-T{
+/* T{
     border-top:1px solid black;
     margin:0;
     padding:0;
-}
-bajo{
+} */
+/* bajo{
     border-bottom:1px solid black;
     margin:0;
     padding:0;
-}
+} */
 
 colores{
     color: #64383E;
@@ -527,7 +520,7 @@ colores{
     a páginas externas ===*/
 img.iconoWWW{
     width:25px;
-    border:1px solid #87796d;
+    /* border:1px solid #87796d; */
     border-radius: 5px;
     cursor:pointer;
 }
@@ -546,7 +539,8 @@ div.iconoWWW {
 /* ====================== */
 
 /* === elemento: Para cuando hay varios elementos dentro de una
-   celda en una tabla, permite distinguir cada uno ===*/
+   celda en una tabla, permite distinguir cada uno generando un
+   borde punteado alrededor del texto===*/
 div.elemento {
     display:inline-block;
     border:1px dashed #CDC6B9;
@@ -568,10 +562,11 @@ i.agregar{
     margin-right: 0px;
     cursor:pointer;
 }
-/* =======================fin */
+/* =========fin agregar */
 
-/* ===== cedEdo#: colores de los indicadores de estado
-de las cédulas */
+/* ===== cedEdo#: colores de los
+indicadores de estado de
+las cédulas */
 .cedEdo0{color:#9917aa;}
 .cedEdo1{color:#CD7B34;}
 .cedEdo2{color:#9917aa;}
@@ -579,3 +574,54 @@ de las cédulas */
 .cedEdo4{color:#9c1919;}
 .cedEdo5{color:#108516;}
 .cedEdo6{color:#108516;}
+
+
+/*========== inicia con estilos aplicados
+    a las cédulas */
+.ced-cintillo{
+    background-color: #CDC6B9;
+    color:#87796d;
+    border-radius:8px;
+    padding:15px;
+    font-family: 'Roboto Condensed', sans-serif;"
+    font-weight: 900;
+}
+.ced-selectorLengua{
+    width:180px;
+    display:inline-block;
+    background-color:#efebe8;
+    border:2px solid #87796d;
+}
+.ced-barraLatIzq{
+    position:relative;
+    padding:10px;
+    border-top-left-radius:8px;
+    background-color:#CDC6B9;
+}
+.ced-Portada{
+    /* max-width:100%; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+}
+.ced-imgMetadata{
+    font-size:80%;
+    text-align: left;
+    color:#87796d;
+}
+
+/*=== ContenedorImg: usado en las cédulas para mostrar
+cada una de las imágenes laterales */
+/* .ContenedorImg{
+    margin-left:auto;
+    margin-right: auto;
+    position: relative;
+    display: inline-block;
+    margin-top:0px;
+    padding:15px;
+    color:#87796d;
+} */
+
+/*========== Termina estilos de cédulas

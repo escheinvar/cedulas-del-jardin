@@ -352,7 +352,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" wire:model.live="act" type="checkbox" id="act">
                                 <label class="form-check-label" for="checkDefault"> Publicar página </label><br>
-                                @if($act==FALSE)<b>La página no está disponible al público</b> @else El público puede acceder a este sitio @endif
+                                @if($act==FALSE)<b><error>La página no está disponible al público</error></b> @else El público puede acceder a este sitio @endif
                             </div>
                         </div>
 

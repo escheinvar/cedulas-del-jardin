@@ -546,7 +546,7 @@
                             </div>
                         </div>
                     @else
-                        <div class="alert alert-danger my-3" role="alert">
+                        <div class="alert alert-warning my-3" role="alert">
                             Luego de generar la cédula, deberás regresar para agrega <b>autores</b>, <b>editores</b> y <b>metadatos</b>.
                         </div>
                     @endif
