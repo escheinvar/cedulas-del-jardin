@@ -41,6 +41,9 @@ class DatabaseSeeder extends Seeder
             #### Cédulas:
             CatTipocedulaSeeder::class,
             CatAutoresSeeder::class,
+            CedulaUrlSeeder::class,
+            CatUsosSeeder::class,
+            CedCatalogos::class,
         ]);
     }
 }

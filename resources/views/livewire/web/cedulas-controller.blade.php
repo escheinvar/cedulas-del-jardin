@@ -17,33 +17,12 @@
 
 
 <div>
-
-    {{-- <h1>Cédula de {{ $url->url_url }}</h1>
-    <div><b>Id url</b>: {{ $url->url_id }}</div>
-    <div>Edit: {{ $edit }}, enEdit:{{ $enEdit }}:
-           @if ($enEdit=='1' and $edit=='1')  Página no pública, modo edición
-        @elseif($enEdit=='1' and $edit=='0')  Página no pública
-        @elseif($enEdit=='0' and $edit=='1')  Página pública, acepta edición
-        @elseif($enEdit=='0' and $edit=='0')  Página pública.
-        @endif
-    </div>
-    <div><b>Estado</b>: {{ $url->url_edo }}</div>
-
-    <div><b>Jardín</b> {{ $jardin }}</div>
-    <div><b>Url</b> {{ $url->url_url }}</div>
-    <div><b>Lengua</b>: {{ $url->lenguas->len_lengua }} [{{ $url->lenguas->len_code }}]</div>
-    <div><b>Traducciones</b>: {{ $traducciones->count() }}</div>
-    <div><b>Autores</b>:   @foreach($url->autores->where('aut_tipo','Autor') as $a) {{ $a->aut_name }} @endforeach</div>
-    <div><b>Traductor</b>: @foreach($url->autores->where('aut_tipo','Traductor') as $a) {{ $a->aut_name }} @endforeach</div>
-    <div><b>Editor</b>:   @foreach($url->autores->where('aut_tipo','Editor') as $a) {{ $a->aut_name }} @endforeach</div> --}}
-
-
     <!-- -------------------------------------- CINTILLO SUPERIOR  ----------------------------------------------->
     <!-- -------------------------------------- CINTILLO SUPERIOR  ----------------------------------------------->
     <!-- -------------------------------------- CINTILLO SUPERIOR  ----------------------------------------------->
     <div class="row ">
-        <div class="col-12 ced-cintillo">
-            <a href="/especies" class="nolink">
+        <div class="col-12 col-md-12 ced-cintillo">
+            <a href="/jardin/{{ $url->url_cjarsiglas }}/cedulas/" class="nolink">
                 <i class="bi bi-arrow-left-short"></i>Regresar
             </a> &nbsp; | &nbsp;
             <div class="d-none d-sm-none d-md-inline-block">
@@ -52,16 +31,24 @@
             </div>
             <!-- -------------------- Indicador de edición ------------------------------ -->
             @if($edit=='1')
-                | &nbsp; <error>Modo edición: estado {{ $url->url_edo }}</error>
+                | &nbsp; <error>Modo edición</error>
             @endif
+            @if($url->url_edo <='4')
+                <i class="cedEdoIcon{{ $url->url_edo }}"></i>
+            @endif
+
             <!-- -------------------- Menú de lenguas ------------------------------------ -->
             <div style="float: right;">
                 <!-- selector de idioma -->
                 @if($traducciones->count() > '0')
                     Traducciones:
-                    <select wire:change="idiomas()" wire:model="idioma" id="MiIdioma" class="form-select ced-selectorLengua">
+                    <select wire:change="CambiaIdiomaCedula()" wire:model.live="idiomaSelected" id="MiIdioma" class="form-select ced-selectorLengua">
+                        <option value="">Ver traducciones..</option>
                         @foreach ($traducciones as $t)
-                            <option value="{{ $t->lenguas->len_code }}"> @if($t->lenguas->len_autonimias != '') {{ $t->lenguas->len_autonimias }} @endif  ({{ $t->lenguas->len_lengua }}) {{ $t->lenguas->len_code }}</option>
+                            <option value="{{ $t->url_url }}">
+                                @if($t->lenguas->len_autonimias != '') {{ $t->lenguas->len_autonimias }} @endif
+                                ({{ $t->lenguas->len_lengua }}) {{ $t->lenguas->len_code }}
+                            </option>
                         @endforeach
                     </select>
                 @endif
@@ -75,11 +62,12 @@
     </div>
 
 
+
+
     <!-- -------------------------------------- ZONA DE CABEZA DE CÉDULA  ----------------------------------------------->
     <!-- -------------------------------------- ZONA DE CABEZA DE CÉDULA  ----------------------------------------------->
     <!-- -------------------------------------- ZONA DE CABEZA DE CÉDULA  ----------------------------------------------->
     <div class="row" style="margin-top:5px; border-radius:8px; ">
-
         <!-- ------------------------- BARRA LATERAL IZQUIERDA ------------------------>
         <!-- ------------------------- BARRA LATERAL IZQUIERDA ------------------------>
         <div class="col-12 col-md-4 col-lg-3 ced-barraLatIzq" style="">
@@ -186,25 +174,10 @@
 
         <!-- ------------------------- FOTO DE LA PORTADA ------------------------>
         <!-- ------------------------- FOTO DE LA PORTADA ------------------------>
-        <div class="col-sm-12 col-md-4 col-lg-5 ced-Portada">
+        <div class="col-12 col-md-5 col-lg-6 ced-Portada">
             <div class="ContendorImg" style="width:100%">
-                <!-- ------------------INICIA IMÁGEN ------------------------ -->
-                <?php $foto=$objs->where('img_cimgtipo','portada')->first(); ?>
-                @if($foto AND $foto->img_file != '')
-                    <img style="display:flex;width:100%;" class="img-fluid PaClick" src="{{ $foto->img_file }}" onclick="VerNoVer('foto','{{ $foto->img_id }}')">
-                    <div class="ced-imgMetadata" style="display:none;" id="sale_foto{{ $foto->img_id }}">
-                        @if($foto->img_titulo != '') <b>{{ $foto->img_titulo }}</b><br>@endif
-                        @if($foto->img_pie != '')    {{ $foto->img_pie }}<br> @endif
-                        @if($foto->img_autor != '')  Autor: {{ $foto->img_autor }}<br>@endif
-                        @if($foto->img_ubica != '')  Ubicación: {{ $foto->img_ubica }}<br>@endif
-                        @if($foto->img_fecha != '')  Fecha: {{ $foto->img_fecha }}<br>@endif
-                        <a href="{{ $foto->img_file }}" target="new">{{ $foto->img_file }}</a>
-                        @if($edit=='1')<i class="bi bi-trash agregar mx-3" wire:click="EliminaImagen('{{ $foto->img_id }}')" wire:confirm="Estas por eliminar esta imagen. ¿Seguro quieres continuar?">Portada</i>@endif
-                    </div>
-                @else
-                    @if($edit=='1')<center><i wire:click="AbreModalObjeto('0','portada')" class="bi bi-file-earmark-image agregar"> Portada</i></center>@endif
-                @endif
-                <!-- ------------------TERMINA IMÁGEN ------------------------ -->
+                <!-- muestra portada -->
+                @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','portada'),'TipoDeObjeto'=>'portada'])
             </div>
         </div>
 
@@ -217,45 +190,23 @@
             <!-- <div class="center" style="text-align: center;">
                 <i class="bi bi-arrow-up-circle" style="font-size: 170%; color:#87796d;; cursor: pointer;"></i>
             </div> -->
+
             <!-- imagenes laterales ppal1, ppal2 y ppal3 -->
             @foreach (['ppal1','ppal2','ppal3'] as $ppal)
-                <!-- ------------------INICIA IMÁGEN ------------------------ -->
-                <?php $foto=$objs->where('img_cimgtipo',$ppal)->first(); ?>
-                @if($foto AND $foto->img_file != '')
-                    <img style="display:flex;width:100%;" class="img-fluid PaClick" src="{{ $foto->img_file }}" onclick="VerNoVer('foto','{{ $foto->img_id }}')">
-                    <div class="ced-imgMetadata" style="display:none;" id="sale_foto{{ $foto->img_id }}">
-                        @if($foto->img_titulo != '') <b>{{ $foto->img_titulo }}</b><br>@endif
-                        @if($foto->img_pie != '')    {{ $foto->img_pie }}<br> @endif
-                        @if($foto->img_autor != '')  Autor: {{ $foto->img_autor }}<br>@endif
-                        @if($foto->img_ubica != '')  Ubicación: {{ $foto->img_ubica }}<br>@endif
-                        @if($foto->img_fecha != '')  Fecha: {{ $foto->img_fecha }}<br>@endif
-                        <a href="{{ $foto->img_file }}" target="new">{{ $foto->img_file }}</a>
-                        @if($edit=='1')<i class="bi bi-trash agregar mx-3" wire:click="EliminaImagen('{{ $foto->img_id }}')" wire:confirm="Estas por eliminar esta imagen. ¿Seguro quieres continuar?">{{ $ppal }}</i>@endif
-                    </div>
-                @else
-                    @if($edit=='1')<center><i wire:click="AbreModalObjeto('0','{{ $ppal }}')" class="bi bi-image agregar"> {{ $ppal }}</i></center>@endif
-                @endif
-                <!-- ------------------TERMINA IMÁGEN ------------------------ -->
+                @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo',$ppal),'TipoDeObjeto'=>$ppal])
             @endforeach
+
             <!-- demás imágenes laterales ppal -->
-            @foreach($objs->where('img_cimgtipo','ppal') as $ob)
-                <!-- ------------------INICIA IMÁGEN ------------------------ -->
-                <?php $foto=$ob ?>
-                @if($foto AND $foto->img_file != '')
-                    <img style="display:flex;width:100%;" class="img-fluid PaClick" src="{{ $foto->img_file }}" onclick="VerNoVer('foto','{{ $foto->img_id }}')">
-                    <div class="ced-imgMetadata" style="display:none;" id="sale_foto{{ $foto->img_id }}">
-                        @if($foto->img_titulo != '') <b>{{ $foto->img_titulo }}</b><br>@endif
-                        @if($foto->img_pie != '')    {{ $foto->img_pie }}<br> @endif
-                        @if($foto->img_autor != '')  Autor: {{ $foto->img_autor }}<br>@endif
-                        @if($foto->img_ubica != '')  Ubicación: {{ $foto->img_ubica }}<br>@endif
-                        @if($foto->img_fecha != '')  Fecha: {{ $foto->img_fecha }}<br>@endif
-                        <a href="{{ $foto->img_file }}" target="new">{{ $foto->img_file }}</a>
-                        @if($edit=='1')<i class="bi bi-trash agregar mx-3" wire:click="EliminaImagen('{{ $foto->img_id }}')" wire:confirm="Estas por eliminar esta imagen. ¿Seguro quieres continuar?">ppal</i>@endif
-                    </div>
-                @endif
-            @endforeach
-            @if($edit=='1' )<center><i wire:click="AbreModalObjeto('0','ppal')" class="bi bi-image agregar"> ppal</i></center>@endif
-            <!-- ------------------TERMINA IMÁGEN ------------------------ -->
+            @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','ppal'),'TipoDeObjeto'=>'ppal'])
+            @if($edit=='1')
+                <div class="margin:20px; text-align:center;">
+                    <center>
+                        <button class="btn" wire:click="AbreModalObjetoEnCedula('0','{{ 'ppal' }}')" style="margin-top:30px;">
+                            <i class="bi bi-image" style="color:#87796d;">ppal</i>
+                        </button>
+                    </center>
+                </div>
+            @endif
             <!-- flecha -->
             <!-- <div class="center" style="text-align: center;">
                 <i class="bi bi-arrow-down-circle" style="font-size: 170%; color:#87796d;; cursor: pointer;"></i>
@@ -271,101 +222,268 @@
     <!-- -------------------------------------- ZONA DE CUERPO DE CÈDULA ----------------------------------------------->
     <!-- -------------------------------------- ZONA DE CUERPO DE CÈDULA ----------------------------------------------->
     <div class="row" style="margin-top:5px; border-bottom-left-radius:8px;">
-        <!-- -------------- CentroIzq: Menú izquierdo ----------------->
-        <div class="col-12 col-sm-12 col-md-2" style="color:#efebe8;padding:40px;font-size:1.3em;background-color:#CDC6B9;">
-            <H3>
-                {{-- {{ $lenguas->where('clen_code',session('locale2'))->value('clen_autonimias') }} --}}
-            </H3>
-
+        <!-- -------------- Zona de Menú  ----------------->
+        <div class="col-12 col-md-2 col-lg-2 p-1 p-md-4" style="font-size:1.2em;background-color:#CDC6B9;">
+            <!-- Título de lengua -->
+            <b style="color:#64383E;">{{ $url->lenguas->len_autonimias }}</b>
+            <!-- menú -->
             <nav class="navbar navbar-expand-md">
-
-                <!-- --------- CentroIzq:  Menú Hamburguesa -------------- -->
-                <button class="navbar-toggler"
-                    data-toggle="collapse" type="button" data-bs-toggle="offcanvas" data-bs-target="#MenuEspecifico">
-                    <span style="font-size:50%;">Menú</span><span class="navbar-toggler-icon"></span>
+                <!-- Menú hamb comprimido-->
+                <button class="navbar-toggler" data-toggle="collapse" type="button" data-bs-toggle="offcanvas" data-bs-target="#MenuEspecifico">
+                    <span style="font-size:50%;"></span><span class="navbar-toggler-icon"></span>
                 </button>
 
-                <!-- --------- CentroIzq: Menú Extendido -------------- -->
+                <!-- Menú hamb desplegado-->
                 <div class="offcanvas offcanvas-end" tabindex="-1" id="MenuEspecifico">
                     <div class="offcanvas-header">
                         <a class="offcanvas-logo" href="index.html" id="offcanvasNavbar2Label">
-                            <img src="imagenes/logo-nav.png" alt="logo del Jardín Etnobotánico">
+                            <img src="{{ $url->jardin->cjar_logo }}" style="width:50%;" alt="logo del Jardín">
                         </a>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
-                    <!-- titulos -->
-                    {{-- @foreach ($titulos as $titulo)
-                        <div class="px-0 py-2" style="font-size:90%;">
-                            <a class="nolink" href="#IrA{{ $titulo->txt_id }}tit">
-                                {!! $titulo->txt_codigo !!}
-                            </a>
-                        </div>
-                    @endforeach --}}
+                    <!-- elementos del menú -->
+                    @if($txt)
+                        @foreach ($txt->whereIn('txt_tipo',['h1','h2','h3']) as $titulo)
+                            <div class="px-0 py-2">
+                                @if($titulo->txt_tipo=='h1')
+                                    <a class="nolink" href="#IrA{{ $titulo->txt_id }}tit" style="font-size:110%;font-weight:700;">
+                                        {!! $titulo->txt_txt !!}
+                                    </a>
+                                @elseif($titulo->txt_tipo=='h2')
+                                    <a class="nolink" href="#IrA{{ $titulo->txt_id }}tit" style="font-size:100%;">
+                                        <i>{!! $titulo->txt_txt !!}</i>
+                                    </a>
+                                @elseif($titulo->txt_tipo=='h3')
+                                    <a class="nolink" href="#IrA{{ $titulo->txt_id }}tit" style="font-size:80%;">
+                                        <i>{!! $titulo->txt_txt !!}</i>
+                                    </a>
+                                @endif
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </nav>
         </div>
 
-        <!-- -------------- CentroCtro: Texto central ----------------->
-        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7" style="background-color:#CDC6B9;">
-            <?php $num=0; ?>
-            {{-- @foreach($texto as $text)
-                @if($text->txt_titulo == '1')
-                    <div style="margin-top: 30px;">
-                        <h4>
-                            <a name="IrA{{ $text->txt_id }}tit">{!! $text->txt_codigo !!}</a>
-                            @if($text->txt_audio != '')
+        <!-- -------------- Zona de texto principal  ----------------->
+        <div class="col-12 col-md-8 col-lg-7 ced-parrafos" style="">
+            <!--  Título de cédula  -->
+            <div class="row" style="">
+                <div class="col-12" style="text-align: center;margin:30px;">
+                    <h2 style="display:inline   ">{{ $url->url_titulo }}</h2>
+                    @if($edit=='1')
+                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbirModalTraduceTitulo()">
+                            <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
+                        </span>
+                    @endif
+                </div>
+            </div>
+
+            <!--  Autores de cédula  -->
+            <?php $total=$autores->count(); ?>
+            @if($total > '0')
+                <div class="row" style="margin-bottom:50px;margin-right:7px;">
+                    <div class="col-12 col-md-4" style=""> &nbsp; </div>
+                    <div class="col-12 col-md-8" style="text-align: right;">
+                        <?php $num='0'; ?>
+                        <div style="font-weight:700;">
+                            @foreach ($autores as $a)
                                 <?php $num++; ?>
-                                <i class="bi bi-volume-down-fill" style="cursor:pointer;display:inline; font-size:200%;vertical-align:middle;" onclick="Escucha('/cedulas/audios/{{ $text->txt_audio }}')"></i><span style="font-size:10px;">{{ $num }} </span>
+                                {{ $a->autor->caut_nombre }} {{ $a->autor->caut_apellido1 }} {{ $a->autor->caut_apellido2 }}
+                                @if($total > '1' AND ($a->aut_comunidad != '' OR $a->aut_institucion != '' or $a->aut_corresponding=='1'))
+                                    <sup>{{ $num }}</sup>
+                                @endif
+
+                                @if($total > '1' and $num==($total-1) ) y
+                                @elseif($total > '1' and $num < ($total-1)),
+                                @endif
+                            @endforeach
+                        </div>
+
+                        <?php $num='1'; ?>
+                        <div style="font-size: 70%;">
+                        @foreach ($autores as $a)
+                            @if($a->aut_comunidad != '' OR $a->aut_institucion != '' or $a->aut_corresponding=='1')
+                                @if($total > '1' )<sup>{{ $num++ }}</sup>@endif {{ $a->aut_comunidad }} {{ $a->aut_institucion }}
+                                @if($a->aut_corresponding=='1') <b>{{ $a->aut_correo }}</b>&nbsp; |@endif
                             @endif
-                        </h4>
-                    </div>
-                @else
-                    <div class="my-2">
-                        {!! $text->txt_codigo !!}
-                        @if($text->txt_audio != '')
-                            <?php $num++; ?>
-                            <audio id="SpAudio{{ $text->txt_id }}">
-                                <source src='/cedulas/audios/{{ $text->txt_audio }}' type="audio/ogg">
-                                <source src='/cedulas/audios/{{ $text->txt_audio }}' type="audio/mpeg">
-                                El navegador no soporta el audio
-                            </audio>
-                            <i class="bi bi-volume-down-fill" id="IconPlay{{ $text->txt_id }}" onclick="playAudio('{{ $text->txt_id }}')" style="cursor:pointer;display:inline; font-size:200%;vertical-align:top;"></i>
-                            <i class="bi bi-volume-mute-fill" id="IconStop{{ $text->txt_id }}" onclick="pauseAudio('{{ $text->txt_id }}')" style="cursor:pointer;display:none; font-size:200%;vertical-align:top;"></i>
-                            <span style="font-size:10px;">{{ $num }} </span>
-                        @endif
-                    </div>
-                @endif
-            @endforeach --}}
-        </div>
-
-        <!-- -------------- CentroDerecha: Imágenes derecha ----------------->
-        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3" style="background-color:#CDC6B9;">
-            <!-- lateralvideo1 -->
-            {{-- @if($fotos->where('imgsp_cimgname','lateralvideo1')->value('imgsp_file') != '')
-                <video width="40" height="40" controls>
-                    <source src="" type="video/ogg">
-                    Tu navegador no soporta el video
-                </video>
-
-            @endif --}}
-
-            <!-- Imágenes laterales -->
-            {{-- @foreach (['lateral1','lateral2','lateral3','lateral4','lateral5','lateral6','lateral7','lateral8','lateral9','lateral10'] as $lat)
-                @if($fotos->where('imgsp_cimgname',$lat)->value('imgsp_file') != '')
-                    <div class="ContenedorImg" style="padding:15px;">
-                        <img class="PaClick" src="/cedulas/{{ $fotos->where('imgsp_cimgname',$lat)->value('imgsp_file') }}" onclick="VerNoVer('foto','{{ $fotos->where('imgsp_cimgname',$lat)->value('imgsp_id') }}')" style="width:100%;">
-                        <div style="display:none; font-size:90%;" id="sale_foto{{ $fotos->where('imgsp_cimgname',$lat)->value('imgsp_id') }}">
-                            <b style="padding:3px;">{{ $fotos->where('imgsp_cimgname',$lat)->value('imgsp_titulo') }}</b><br>
-                            <p>{{ $fotos->where('imgsp_cimgname',$lat)->value('imgsp_pie') }}</p>
-                            <b>Autor:</b> {{ $fotos->where('imgsp_cimgname',$lat)->value('imgsp_autor') }}<br>
-                            <b>Fecha:</b> {{ $fotos->where('imgsp_cimgname',$lat)->value('imgsp_date') }} &nbsp;
-                            <a href="/cedulas/{{ $fotos->where('imgsp_cimgname',$lat)->value('imgsp_file') }}" target="new">Abrir imagen</a>
+                        @endforeach
                         </div>
                     </div>
+                </div>
+            @endif
+
+            <!--  Párrafos de cédula  -->
+            <div class="row" >
+                @foreach($txt as $t)
+                    <div class="col-12" style="" wire:key="parr_{{ $t->txt_id }}">
+                        @if($t->txt_tipo == 'h1')
+                            <div style="margin-top: 50px;">
+                                <h3 style="display:inline;">
+                                    <a name="IrA{{ $t->txt_id }}tit">{!! $t->txt_txt !!}</a>
+                                </h3>
+                                @if($t->txt_audio != '')
+                                    <audio id="SpAudio{{ $t->txt_id }}" style="display:inline-block;">
+                                        <source src="{{ $t->txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
+                                    </audio>
+                                    <i class="audioTxtPlay" id="IconPlay{{ $t->txt_id }}" onclick="playAudio('{{ $t->txt_id }}')"></i>
+                                    <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
+                                @endif
+                                @if($edit=='1')
+                                    <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaTextoWebJardin('{{ $t->txt_id }}',' {{ $t->txt_orden }}')">
+                                        <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
+                                    </span>
+                                @endif
+                            </div>
+                        @elseif($t->txt_tipo=='h2')
+                            <div style="margin-top: 30px;">
+                                <h4 style="display:inline;">
+                                    <a name="IrA{{ $t->txt_id }}tit">{!! $t->txt_txt !!}</a>
+                                </h4>
+                                @if($t->txt_audio != '')
+                                    <audio id="SpAudio{{ $t->txt_id }}" style="display:inline-block;">
+                                        <source src="{{ $t->txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
+                                    </audio>
+                                    <i class="audioTxtPlay" id="IconPlay{{ $t->txt_id }}" onclick="playAudio('{{ $t->txt_id }}')"></i>
+                                    <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
+                                @endif
+                                @if($edit=='1')
+                                    <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaTextoWebJardin('{{ $t->txt_id }}',' {{ $t->txt_orden }}')">
+                                        <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
+                                    </span>
+                                @endif
+                            </div>
+                        @elseif($t->txt_tipo=='h3')
+                            <div style="margin-top: 30px;">
+                                <h5 style="display:inline;">
+                                    <a name="IrA{{ $t->txt_id }}tit">{!! $t->txt_txt !!}</a>
+                                </h5>
+                                @if($t->txt_audio != '')
+                                    <audio id="SpAudio{{ $t->txt_id }}" style="display:inline-block;">
+                                        <source src="{{ $t->txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
+                                    </audio>
+                                    <i class="audioTxtPlay" id="IconPlay{{ $t->txt_id }}" onclick="playAudio('{{ $t->txt_id }}')"></i>
+                                    <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
+                                @endif
+                                @if($edit=='1')
+                                    <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaTextoWebJardin('{{ $t->txt_id }}',' {{ $t->txt_orden }}')">
+                                        <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
+                                    </span>
+                                @endif
+                            </div>
+                        @endif
+                        @if($t->txt_tipo=='p')
+                            <div class="my-2" style="display:inline;">
+                                {!! $t->txt_txt !!}
+                                @if($t->txt_audio != '')
+                                    <audio id="SpAudio{{ $t->txt_id }}" style="display:inline-block;">
+                                        <source src="{{ $t->txt_audio }}" type="audio/ogg"> El navegador no soporta el audio
+                                    </audio>
+                                    <i class="audioTxtPlay" id="IconPlay{{ $t->txt_id }}" onclick="playAudio('{{ $t->txt_id }}')"></i>
+                                    <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
+                                @endif
+                                @if($edit=='1')
+                                    <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaTextoWebJardin('{{ $t->txt_id }}',' {{ $t->txt_orden }}')">
+                                        <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
+                                    </span>
+                                @endif
+                            </div>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Zona de traductor y editor-->
+            <div class="row">
+                @if($traductores->count() != '0')
+                    <div class="col-10" style="margin-top:70px;border-top:1px solid #64383E;">
+                        Traducción y voz en lengua <b>{{ $url->lenguas->len_autonimias }}</b> ({{ $url->lenguas->len_lengua }}):
+                        @foreach($traductores as $trad)
+                            <span wire:key="trad_{{ $trad->autor->caut_id }}">
+                                <b>{{ $trad->autor->caut_nombre }} {{ $trad->autor->caut_apellido1 }} {{ $trad->autor->caut_apellido2 }}</b>@if($trad->aut_corresponding=='1')*@endif
+                                @if($trad->aut_comunidad!='')({{ $trad->aut_comunidad }})@endif<br>
+                                @if($trad->aut_institucion!=''){{ $trad->aut_institucion }}@endif
+                                @if($trad->aut_corresponding=='1')<br>*{{ $trad->aut_correo }}@endif
+                            </span>
+                        @endforeach
+                    </div>
                 @endif
-            @endforeach --}}
+            </div>
+
+            <!-- Zona de editor -->
+            <div class="row my-5">
+                <div class="col-12" style="margin-top:20px; font-size:70%;">
+                    @if($editores->count() > '0')
+                        @if($editores->count() =='1')Editor responsable: @else Editores responsables:@endif
+                        @foreach ($editores as $e)
+                            {{ $e->autor->caut_nombre }} {{ $e->autor->caut_apellido1 }} {{ $e->autor->caut_apellido2 }},
+                            {{ $e->aut_correo }}
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+
+            <!-- -------------------- Indicador de edición ------------------------------ -->
+            <center>
+                @if($edit=='1')
+                    <error>Modo edición</error>
+                @endif
+                @if($url->url_edo <='4')
+                    <i class="cedEdoIcon{{ $url->url_edo }}"></i>
+                @endif
+            </center>
+
+
+            <!-- Zona de palabras clave-->
+            @if($edit=='1')
+                <div class="row my-5">
+                    <h4 class="cedEdoIcon{{ $url->url_edo }}">: Palabras clave</h4>
+                    <div class="col-6">
+                        <h5>Especies</h5>
+                    </div>
+
+                    <div class="col-6">
+                        <h5>Localidades</h5>
+                    </div>
+
+                    <div class="col-6">
+                        <h5>Usos</h5>
+                    </div>
+
+                    <div class="col-6">
+                        <h5>Palabras</h5>
+                    </div>
+
+                </div>
+            @endif
+
+
         </div>
+
+        <!-- -------------- Zona de objetos laterales  ----------------->
+        <div class="col-12 col-md-2 col-lg-3" style="background-color:#CDC6B9;">
+            @foreach (['lat1','lat2','lat3','lat4','lat5'] as $posi)
+                @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo',$posi),'TipoDeObjeto'=>$posi])
+            @endforeach
+
+            @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','lat'),'TipoDeObjeto'=>'lat'])
+            @if($edit=='1')
+                <div class="margin:20px; text-align:center;">
+                    <center>
+                        <button class="btn" wire:click="AbreModalObjetoEnCedula('0','{{ 'lat' }}')" style="margin-top:30px;">
+                            <i class="bi bi-image" style="color:#87796d;">lat</i>
+                        </button>
+                    </center>
+                </div>
+            @endif
+
+        </div>
+
+
+
     </div>
+
+
 
     <!-- -------------------------------------- BLOQUE INFERIOR AUTORÍAS ----------------------------------------------->
     <!-- -------------------------------------- BLOQUE INFERIOR AUTORÍAS ----------------------------------------------->
@@ -548,13 +666,143 @@
     </div>
 
 
-    <livewire:web.modal-imagen-controller>
+
+
+
+    <!-- ------------------------------------------------------------------------------------------ -->
+    <!-- ----------------------------------- MODAL DE TRADUCCIÓN DE TÍTULO ------------------------ -->
+    <!-- ------------------------------------------------------------------------------------------ -->
+    <!-- ------------------------------------------------------------------------------------------ -->
+    <div wire:ignore.self class="modal fade" id="ModalTraduceTitulo" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Traduce el título</h3>
+                    <button wire:click="CerrarModalTraduceTitulo()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
+                </div>
+                <!-- ----------------------------  cuerpo del modal --------------------------->
+                <div class="modal-body" style="">
+                    <div class="form-group">
+                        <b>Título original:</b>
+                        <input type="text" class="form-control" value="{{ $url->url_tituloorig }}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <b>Título en {{ $url->lenguas->len_autonimias }}</b>:<br>
+                        <input  wire:model="NuevoTituloTraducido" type="text" class="@error('NuevoTituloTraducido') is-invalid @enderror form-control" >
+                        @error('NuevoTituloTraducido')<error>{{ $message }}</error>@enderror
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button wire:click="CerrarModalTraduceTitulo()" class="btn btn-secondary">
+                        Cerrar
+                    </button>
+
+                    <button wire:click="GuardaTituloTraducido()" wire:loading.attr="disabled" class="btn btn-primary">
+                        Guardar
+                    </button>
+                    <span wire:loading style="display:none;"> <red>..guardando...</red> </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ---------------------- TERMINA MODAL DE TRADUCCIÓN DE TÍTULO ------------------------- -->
+    <!-- -------------------------------------------------------------------------------------- -->
+    <!-- -------------------------------------------------------------------------------------- -->
+
+
+
+
+
+
+    <!-- ------------------------------------------------------------------------------------------ -->
+    <!-- --------------------------------------- MODAL DE CAMBIO DE TÍTULO ------------------------ -->
+    <!-- ------------------------------------------------------------------------------------------ -->
+    <!-- ------------------------------------------------------------------------------------------ -->
+    {{-- <div wire:ignore.self class="modal fade" id="ModalTraduceTitulo" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                    </h3>
+                    <button wire:click="" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
+                </div>
+                <!-- ----------------------------  cuerpo del modal --------------------------->
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button wire:click="" class="btn btn-secondary">
+                        Cerrar
+                    </button>
+
+                    <button wire:click="GuardaModal()" wire:loading.attr="disabled" class="btn btn-primary">
+                        Guardar
+                    </button>
+                    <span wire:loading style="display:none;"> <red>..guardando...</red> </span>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+    <!-- ----------------------------- TERMINA MODAL ROLES DE USUARIO ------------------------- -->
+    <!-- -------------------------------------------------------------------------------------- -->
+    <!-- -------------------------------------------------------------------------------------- -->
+
+
+
+
+
+
+    <!-- ------------------------------------------------------------------------------------------ -->
+    <!-- --------------------------------------- MODAL DE CAMBIO DE TÍTULO ------------------------ -->
+    <!-- ------------------------------------------------------------------------------------------ -->
+    <!-- ------------------------------------------------------------------------------------------ -->
+    {{-- <div wire:ignore.self class="modal fade" id="ModalTraduceTitulo" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                    </h3>
+                    <button wire:click="" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
+                </div>
+                <!-- ----------------------------  cuerpo del modal --------------------------->
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button wire:click="" class="btn btn-secondary">
+                        Cerrar
+                    </button>
+
+                    <button wire:click="GuardaModal()" wire:loading.attr="disabled" class="btn btn-primary">
+                        Guardar
+                    </button>
+                    <span wire:loading style="display:none;"> <red>..guardando...</red> </span>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+    <!-- ----------------------------- TERMINA MODAL ROLES DE USUARIO ------------------------- -->
+    <!-- -------------------------------------------------------------------------------------- -->
+    <!-- -------------------------------------------------------------------------------------- -->
+
+<livewire:web.modal-imagen-controller>
+<livewire:sistema.jardin-web-modal-component>
 
     <script>
         /* ### Script para abrir mensaje */
         Livewire.on('AvisoExitoCedula',()=>{
             alert(event.detail.msj);
         })
+
+        /* ### Script para abrir y cerrar modal */
+        Livewire.on('AbreModalTraduceTitulo', () => {
+            $('#ModalTraduceTitulo').modal('show');
+        });
+        Livewire.on('CierraModalTraduceTitulo', () => {
+            $('#ModalTraduceTitulo').modal('hide');
+        });
+
+
 
     </script>
 </div>

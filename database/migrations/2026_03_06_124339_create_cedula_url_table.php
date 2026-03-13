@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('url_del',['0','1'])->default('0'); ##### borrado lógico
 
             $table->integer('url_edo')->default('0');  #### Estado 0=creación(xAutor o Trad.), 1=edición(Xeditor) 2=revisión(xAutor o trad) 3=Autorizacin(x admin), 4=Publicada, 5=PublicadaConSolicitudDeEdición
+            $table->enum('url_edit',['0','1'])->default('0'); ##### Estado de edición
             $table->integer('url_ciclo')->default('0');  #### Número de autorizaciones completas un ciclo= estado 0 a 4
             $table->string('url_ccedtipo');     #### Tipo de cédula que se construye
             $table->foreign('url_ccedtipo')->references('cced_tipo')->on('cat_tipocedulas')->constrained('cat_tipocedulas','cced_tipo');
@@ -36,7 +37,7 @@ return new class extends Migration
             $table->string('url_cita')->nullable(); ##### Cita de la cédula
             $table->string('url_anio')->nullable(); ##### Año de la cédula
             // $table->integer('url_editor')->nullable(); ##### Id_usr del editor asignado
-            $table->string('url_vesion')->nullable();
+            $table->decimal('url_version',5 ,2)->default('1.0');
             $table->string('url_doi')->nullable();
 
             $table->timestamps();

@@ -33,6 +33,19 @@ class AdminCedulasComponent extends Component
             Dentro del "Modal de edición de cédula" se puede invocar el "Modal de buscar autor"
             (para determinar autores)
     */
+
+    #################################################################################
+    /*##### Tabla de cambios de estado:
+    edo       Autor   Editor  Administrador
+    0crea     1       4       1,5
+    1edita    -       2,4     2,5
+    2revisa   3       4       1,5
+    3edita    -       2,4     2,5
+    4autori   -       -       1,2,5
+    5publicado6       6       6
+    6PideEdit -       2       1,2,cancela
+    */
+
     public function mount(){
         $this->jardinSel='JebOax';
         // $this->orden='_id';
@@ -47,7 +60,41 @@ class AdminCedulasComponent extends Component
     }
 
     public function ordenaTabla(){
+        //
+    }
 
+    public function CambiaAmodoEdicion($id){
+        $edo=cedulas_url::where('url_id',$id)->value('url_edit');
+        if($edo=='0'){$nvo='1';}else{$nvo='0';}
+        cedulas_url::where('url_id',$id)->update(['url_edit'=>$nvo]);
+    }
+
+    public function CambiaEstadoCedula($id,$edo){
+        if($edo=='5'){
+            dd('lógica de cierre de ciclo: ¿registro año?, ¿es nueva versión?',
+            'en lugar de ir aquí, abrir modal de versión donde ve estadísticas y determina versión?');
+        }
+
+        ##### Calcula ciclo
+        $previo=cedulas_url::where('url_id',$id)->value('url_ciclo');
+        if($edo=='5'){
+            $ciclo=$previo +1;
+        }else{
+            $ciclo=$previo;
+        }
+
+        ##### Calcula estado de edición
+        if($edo <='4'){$editar='1';}else{$editar='0';}
+        ##### Modifica base
+        cedulas_url::where('url_id',$id)->update([
+            'url_edit'=>$editar,
+            'url_edo'=>$edo,
+            'url_ciclo'=>$ciclo,
+        ]);
+        ##### Actualiza variable
+
+        ### Crea log
+        paLog('Se cambió el estado de la cédula a '.$edo,'cedulas_url',$id);
     }
 
     public function render(){
@@ -117,8 +164,7 @@ class AdminCedulasComponent extends Component
 
         ### Finaliza búsqueda de url
         $urls=$urls->orderBy('url_cjarsiglas','asc')
-                ->orderBy('url_urltxt','asc')
-                ->orderBy('url_tradid','asc')
+                ->orderBy('url_url','asc')
                 ->where('url_del','0')
                 ->with('jardin')
                 ->with('lenguas')
@@ -426,6 +472,7 @@ class AdminCedulasComponent extends Component
         $this->dispatch('AvisoExitoCedula',msj:'Se agregó correctamente el autor');
         $this->dispatch('LimpiaBusqueda1');
         $this->dispatch('LimpiaBusqueda2');
+        $this->BuscaAutor_Ganon=collect();
         $this->dispatch('CierraModalDeBuscarAutor');
     }
 

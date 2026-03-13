@@ -10,27 +10,25 @@ class cedulas_txt extends Model
     #use HasFactory;
 	protected $connection='pgsql';
 	protected $table = 'cedula_txt';
-	protected $primaryKey = 'ced_id';
+	protected $primaryKey = 'txt_id';
 	public $incrementing = true;
 	#protected $keyType = 'string';
 
     protected $fillable = [
-        'ced_id',
-        'ced_urlid',
-        'ced_urlid',
-        'ced_cjarsiglas',
-        'ced_cjarsiglas',
-        'ced_urlurl',
-        'ced_urlurl',
+        'txt_id',
+        'txt_cjarsiglas',
+        'txt_urlid',
+        'txt_urlurl',
 
-        'ced_act',
-        'ced_del',
-        'ced_orden',
+        'txt_act',
+        'txt_del',
+        'txt_tipo',
+        'txt_orden',
 
-        'ced_txt',
-        'ced_txtoriginal',
-        'ced_audio',
-        'ced_version',
+        'txt_txt',
+        'txt_txtoriginal',
+        'txt_audio',
+        'txt_version',
     ];
 
 

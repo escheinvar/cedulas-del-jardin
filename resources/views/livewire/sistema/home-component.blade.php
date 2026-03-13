@@ -16,7 +16,7 @@
         </div>
         <div class="col-sm-12 col-md-8 col-lg-6">
             <div style="background-color:#CDC6B9;padding:10px; color:#64383E">
-                <div style="width:86%;display:inline-block;">
+                <div style="width:80%;display:inline-block;">
                     <!-- muestra usuario -->
                     <div>
                         <div style="display:inline-block; width:70px; font-weight:bold">Usuario:</div>

@@ -66,40 +66,26 @@
         <div class="col-12" style="background-color:#CDC6B9;text-align:center;"><b>El ciclo de publicación de una cédula</b></div>
         <div class="col-0 col-md-3"> &nbsp; </div>
 
-        <div class="col-3 col-md-1 cedEdo0" style="text-align:center;">
-            <div style="font-size:80%; font-weight:600;">0 Crea</div>
-            <i class="bi bi-brush-fill"></i>
-            <div style="font-size:60%;">Autor/traductor</div>
+        <div class="col-3 col-md-1 cedEdoIcon0" style="text-align:center;font-size:80%;">
+            <div class="cedEdo0" style="font-size: 80%;">Autor/Traductor</div>
         </div>
-        <div class="col-3 col-md-1 cedEdo1" style="text-align:center;">
-            <div style="font-size:80%; font-weight:600;">1 Edita</div>
-            <i class='bi bi-pencil-square'></i>
-            <div style="font-size:60%;">Editor</div>
+        <div class="col-3 col-md-1 cedEdoIcon1" style="text-align:center;font-size:80%;">
+            <div class="cedEdo1" style="font-size: 80%;">Editor</div>
         </div>
-        <div class="col-3 col-md-1 cedEdo2" style="text-align:center;">
-            <div style="font-size:80%; font-weight:600;">2 Revisa</div>
-            <i class='bi bi-search'></i>
-            <div style="font-size:60%;">Autor/traductor</div>
+        <div class="col-3 col-md-1 cedEdoIcon2" style="text-align:center;font-size:80%;">
+            <div class="cedEdo2" style="font-size: 80%;">Autor/Traductor</div>
         </div>
-        <div class="col-3 col-md-1 cedEdo3" style="text-align:center;">
-            <div style="font-size:80%; font-weight:600;">3 Edita2</div>
-            <i class='bi bi-pencil-square'><sub>2</sub></i>
-            <div style="font-size:60%;">Editor</div>
+        <div class="col-3 col-md-1 cedEdoIcon3" style="text-align:center;font-size:80%;">
+            <div class="cedEdo3" style="font-size: 80%;">Editor</div>
         </div>
-        <div class="col-3 col-md-1 cedEdo4" style="text-align:center;">
-            <div style="font-size:70%; font-weight:600;">4 Autoriza</div>
-            <i class='bi bi-star-fill'></i>
-            <div style="font-size:60%;">Administrador</div>
+        <div class="col-3 col-md-1 cedEdoIcon4" style="text-align:center;font-size:80%;">
+            <div class="cedEdo4" style="font-size: 80%;">Administrador</div>
         </div>
-        <div class="col-3 col-md-1 cedEdo5" style="text-align:center;">
-            <div style="font-size:80%; font-weight:600;">5 Publica</div>
-            <i class="bi bi-file-earmark-check-fill"></i>
-            <div style="font-size:60%;">Administrador</div>
+        <div class="col-3 col-md-1 cedEdoIcon5" style="text-align:center;font-size:80%;">
+            <div class="cedEdo5" style="font-size: 80%;">Administrador</div>
         </div>
-        <div class="col-3 col-md-1 cedEdo6" style="text-align:center;">
-            <div style="font-size:70%; font-weight:600;">6 Solicita edición</div>
-            <i class="bi bi-hand-index-thumb-fill"></i>
-            <div style="font-size:60%;"></div>
+        <div class="col-3 col-md-1 cedEdoIcon6" style="text-align:center;font-size:80%;">
+            <div class="cedEdo6" style="font-size: 80%;"></div>
         </div>
     </div>
 
@@ -131,13 +117,14 @@
                     <th wire:click="ordenaTabla('url_titulo')" class="PaClick">Titulo</th>
                     <th wire:click="ordenaTabla('url_tipo')" class="PaClick">Tipo</th>
                     <th wire:click="ordenaTabla('url_descrip')" class="PaClick">Estado</th>
-                    <th> Edición </th>
+                    <th> Acción </th>
                     <th wire:click="ordenaTabla('url_descrip')" class="PaClick"> Dirección </th>
+                    <th>Ciclo (V.0)</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($urls as $u)
-                    <tr>
+                    <tr wire:key="url{{ $u->url_id }}">
                         <!-- id -->
                         <td class="@if($u->url_act=='0') inact @endif">
                             {{ $u->url_id }}
@@ -174,29 +161,24 @@
                         </td>
 
                          <!-- autor -->
-                        <td class="@if($u->url_act=='0') inact @endif">
-                            <div>
+                        <td class="@if($u->url_act=='0') inact @endif" >
+                            <div wire:click="AbreModalCedula('{{ $u->url_id }}','{{ $u->url_cjarsiglas }}')" class="PaClick">
                                 <!-- conteo de autores -->
                                 <div style="color:gray;font-size:80%;">
-                                    {{-- {{ $u->autores->where('aut_tipo','Autor')->count() }} --}}
                                     @if($u->autores->where('aut_tipo','Autor')->count() =='0')
-                                        <error style="font-size:110%;">Falta Autor</error>
-                                    @elseif($u->autores->where('aut_tipo','Autor')->count() =='1')
-                                        {{ $u->autores->where('aut_tipo','Autor')->first()->aut_name }}
+                                        <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>a</sub></i>
                                     @else
-                                        {{ $u->autores[0]->where('aut_tipo','Autor')->aut_name }},
-                                        {{ $u->autores[1]->where('aut_tipo','Autor')->aut_name }} et al.
+                                        <i class="bi bi-check"></i>Aut
                                     @endif
                                 </div>
 
                                 <!-- conteo de traductores -->
                                 @if($u->url_tradid=='1')
                                     <div style="color:gray;font-size:80%;">
-                                        {{-- {{ $u->autores->where('aut_tipo','Traductor')->count() }} --}}
                                         @if($u->autores->where('aut_tipo','Traductor')->count() =='0')
-                                            <error style="font-size:110%;">Falta Traductor</error>
+                                            <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>t</sub></i>
                                         @else
-                                            Tr:{{ $u->autores->where('aut_tipo','Traductor')[0]->aut_name }}
+                                            <i class="bi bi-check"></i>Trad.
                                         @endif
                                     </div>
                                 @endif
@@ -205,9 +187,9 @@
                                 <div style="color:gray;font-size:80%;">
                                     {{-- {{ $u->autores->where('aut_tipo','Editor')->count() }} --}}
                                     @if($u->autores->where('aut_tipo','Editor')->count() =='0')
-                                        <error style="font-size:110%;">Falta Editor</error>
+                                        <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>e</sub></i>
                                     @else
-                                        {{-- Ed:{{ $u->autores[0]->where('aut_tipo','Editor')->aut_name }} --}}
+                                        <i class="bi bi-check"></i>Edit.
                                     @endif
                                 </div>
 
@@ -216,67 +198,117 @@
 
                         <!-- Palabras clave -->
                         <td class="@if($u->url_act=='0') inact @endif">
-                            <div>
-                                <error style="font-size: 80%;">Falta sp</error>
-                            </div>
-                            <div>
-                                <error style="font-size: 80%;">Falta comunidad</error>
-                            </div>
-                            <div>
-                                <error style="font-size: 80%;">Falta usos</error>
-                            </div>
-                            <div>
-                                <error style="font-size: 80%;">Falta p. clave</error>
+                            <div style="color:gray;font-size:80%;"  wire:click="AbreModalCedula('{{ $u->url_id }}','{{ $u->url_cjarsiglas }}')" class="PaClick">
+                                <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>sp</sub></i>
+
+                                <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>co</sub></i>
+
+                                <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>us</sub></i>
+
+                                <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>cl</sub></i>
+                                <div class="elemento">
+                                </div>
                             </div>
                         </td>
                         <!-- titulo -->
                         <td>
-                            {{ $u->url_titulo }}
+                            <div wire:click="AbreModalCedula('{{ $u->url_id }}','{{ $u->url_cjarsiglas }}')" class="PaClick">
+                                {{ $u->url_titulo }}
+                            </div>
                         </td>
 
                         <!-- tipo -->
                         <td>
-                            {{ $u->url_ccedtipo }}
+                            <div wire:click="AbreModalCedula('{{ $u->url_id }}','{{ $u->url_cjarsiglas }}')" class="PaClick">
+                                {{ $u->url_ccedtipo }}
+                            </div>
                         </td>
                         <!-- estado -->
                         <td  class="@if($u->url_act=='0') inact @endif">
-
+                            <!-- ------------------------- Muestra estado actual --------------------- -->
+                            {{-- <span class="cedEdo{{ $u->url_edo }}">{{ $u->url_edo }}</span> --}}
                             @if($u->url_edo =='0')
-                                <i class="bi bi-0-circle-fill cedEdo0"></i>
-                                Creación
-                                {{-- <div style="color:gray;font-size:80%;"> Con autor/traductor</div> --}}
+                                <div class="cedEdoIcon0" style="text-align:center;font-size:80%;">
+                                    {{ $u->url_edo }}<div class="cedEdo0" style="font-size: 80%;">Autor/Traductor</div>
+                                </div>
                             @elseif($u->url_edo =='1')
-                                <i class="bi bi-1-circle-fill cedEdo1"></i>
-                                Edición
-                                {{-- <div style="color:gray;font-size:80%;"> Con editor</div> --}}
+                                <div class="cedEdoIcon1" style="text-align:center;font-size:80%;">
+                                    <div class="cedEdo1" style="font-size: 80%;">Editor</div>
+                                </div>
                             @elseif($u->url_edo =='2')
-                                <i class="bi bi-2-circle-fill cedEdo2"></i>
-                                Revisión
-                                {{-- <div style="color:gray;font-size:80%;"> Con autor/traductor</div> --}}
+                                <div class="cedEdoIcon2" style="text-align:center;font-size:80%;">
+                                    <div class="cedEdo2" style="font-size: 80%;">Autor/Traductor</div>
+                                </div>
                             @elseif($u->url_edo =='3')
-                                <i class="bi bi-3-circle-fill cedEdo3"></i>
-                                Edición 2
-                                {{-- <div style="color:gray;font-size:80%;"> Con admin</div> --}}
+                                <div class="cedEdoIcon3" style="text-align:center;font-size:80%;">
+                                    <div class="cedEdo3" style="font-size: 80%;">Editor</div>
+                                </div>
                             @elseif($u->url_edo =='4')
-                                <i class="bi bi-4-circle-fill cedEdo4"></i>
-                                Autorización
+                                <div class="cedEdoIcon4" style="text-align:center;font-size:80%;">
+                                    <div class="cedEdo4" style="font-size: 80%;">Administrador</div>
+                                </div>
                             @elseif($u->url_edo =='5')
-                                <i class="bi bi-5-circle-fill cedEdo5"></i>
-                                Publicado
+                                <div class="cedEdoIcon5" style="text-align:center;font-size:80%;">
+                                    <div class="cedEdo5" style="font-size: 80%;">Administrador</div>
+                                </div>
                             @elseif($u->url_edo =='6')
-                                <i class="bi bi-6-circle-fill cedEdo6"></i>
-                                Publicado (Solicita edición)
+                                <div class="cedEdoIcon6" style="text-align:center;font-size:80%;">
+                                    <div class="cedEdo6" style="font-size: 80%;"></div>
+                                </div>
                             @endif
                         </td>
 
-                        <!-- Edición -->
+                        <!-- ACCIONES -->
                         <td>
-                            @if($edit=='1')
-                                <div class="form-check form-switch">
-                                    {{-- <input  wire:change="CambiaEstadoEdicion('{{ $u->url_id }}')" class="form-check-input" value="1" type="checkbox" role="switch" id="flexSwitchCheckDefault" @if($u->url_edo <= 3 ) checked @endif style="@if($u->url_edo <= 3) background-color:red; @endif">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault"> @if($u->url_edo < '4')Publicado @else Editando @endif  </label> --}}
-                                </div>
+                            <center>
+                            @if(array_intersect(['admin'],session('rol')) )
+                                <!-- --------------------- acciones del admin ------------------ -->
+                                @if(in_array($u->url_edo, ['0','2','4','6'])) <!-- a 1edita -->
+                                    <button wire:click="CambiaEstadoCedula('{{ $u->url_id }}','1')" class="cedEdo1 btn btn-sm btn-light" wire:confirm="Estás por enviar la cédula al editor para su edición. ¿Deseas continuar?">
+                                        <i class="cedEdoIcon1"></i>
+                                    </button>
+                                @endif
+                                @if(in_array($u->url_edo, ['1','3','4','6'])) <!-- a 2revisa -->
+                                    <button wire:click="CambiaEstadoCedula('{{ $u->url_id }}','2')" class="cedEdo2 btn btn-sm btn-light" wire:confirm="Estás por enviar la cédula al autor/traductor para su revisión. ¿Deseas continuar?">
+                                        <i class="cedEdoIcon2"></i>
+                                    </button>
+                                @endif
+                                @if(in_array($u->url_edo, ['0','1','2','3','4','6'])) <!-- a 5publica -->
+                                    <button wire:click="CambiaEstadoCedula('{{ $u->url_id }}','5')" class="cedEdo5 btn btn-sm btn-light" wire:confirm="Estás por publicar la cédula y podrá ser vista por los visitantes. ¿Deseas continuar?">
+                                        <i class="cedEdoIcon5"></i>
+                                    </button>
+                                @endif
+                            @elseif(array_intersect(['editor'],session('rol')) )
+                                <!-- -------------------- acciones del editor -------------- -->
+                                @if(in_array($u->url_edo, ['1','3','6'])) <!-- a 2revisa -->
+                                    <button wire:click="CambiaEstadoCedula('{{ $u->url_id }}','2')" class="cedEdo2 btn btn-sm btn-light" wire:confirm="Estás por enviar la cédula al autor/traductor para su revisión. ¿Deseas continuar?">
+                                        <i class="cedEdoIcon2"></i>
+                                    </button>
+                                @endif
+                                @if(in_array($u->url_edo, ['0','1','2','3'])) <!-- a 4revisa -->
+                                    <button wire:click="CambiaEstadoCedula('{{ $u->url_id }}','4')" class="cedEdo4 btn btn-sm btn-light" wire:confirm="Estás por enviar la cédula al administrador para autorizar su publicación. ¿Deseas continuar?">
+                                        <i class="cedEdoIcon4"></i>
+                                    </button>
+                                @endif
+                            {{-- @elseif(array_intersect(['autor','traductor'],session('rol')) )
+                                <!-- -------------------- acciones del Autor/Traductor -------------- -->
+                                @if(in_array($u->url_edo, ['0'])) <!-- a 1edita -->
+                                    <button wire:click="CambiaEstadoCedula('{{ $u->url_id }}','1')" class="cedEdo1 btn btn-sm btn-light" wire:confirm="Estás por enviar la cédula al editor para su edición. ¿Deseas continuar?">
+                                        <i class="cedEdoIcon1"></i>
+                                    </button>
+                                @endif
+                                @if(in_array($u->url_edo, ['3'])) <!-- a 3edita -->
+                                    <button wire:click="CambiaEstadoCedula('{{ $u->url_id }}','3')" class="cedEdo3 btn btn-sm btn-light" wire:confirm="Estás por enviar la cédula  al editor para su edición. ¿Deseas continuar?">
+                                        <i class="cedEdoIcon3"></i>
+                                    </button>
+                                @endif --}}
                             @endif
+                            @if(in_array($u->url_edo, ['5'])) <!-- a 6solEdit -->
+                                <button wire:click="CambiaEstadoCedula('{{ $u->url_id }}','6')" class="cedEdo6 btn btn-sm btn-light" wire:confirm="Estás por solicitar la suspensión de la publicación de la cédula para comenzar la edición.. ¿Deseas continuar?">
+                                    <i class="cedEdoIcon6"></i>
+                                </button>
+                            @endif
+                            </center>
                         </td>
 
                         <!-- URL -->
@@ -285,6 +317,17 @@
                                 {{ url('/') }}/cedula/{{ strtolower($u->url_cjarsiglas) }}/{{ $u->url_url }}
                             </a>
                             <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('url','{{ $u->url_id }}')"></i>
+                            @if($u->url_doi != '')<b>DOI: {{ $u->url_doi }} @endif
+                                <!-- -------------------- switch Modo edición --------------------- -->
+                            @if($u->url_edo <='4')
+                                <div class="form-check form-switch my-1">
+                                    <input  wire:change="CambiaAmodoEdicion('{{ $u->url_id }}')" class="form-check-input" value="1" type="checkbox" role="switch" id="flexSwitchCheckDefault" @if($u->url_edit=='1') checked @endif style="@if($u->url_edit=='1')background-color:red; @endif">
+                                    <label class="form-check-label" style="font-size:90%;" for="flexSwitchCheckDefault">@if($u->url_edit=='0') Modo público @else Modo edición @endif</label>
+                                </div>
+                            @endif
+                        </td>
+                        <td>
+                            {{ $u->url_ciclo }} ({{ $u->url_version }}) {{ $u->url_anio }}
                         </td>
                     </tr>
                 @endforeach
@@ -431,7 +474,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" wire:model.live="act" type="checkbox" id="act">
                                 <label class="form-check-label" for="checkDefault"> Publicar página </label><br>
-                                @if($act==FALSE)<b>La cédula no está disponible al público</b> @else El público puede acceder a este sitio @endif
+                                @if($act==FALSE)<error>La cédula no está disponible al público</b></error> @else El público puede acceder a este sitio @endif
                             </div>
                         </div>
 

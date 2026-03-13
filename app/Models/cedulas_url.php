@@ -21,6 +21,7 @@ class cedulas_url extends Model
         'url_del',
 
         'url_edo',
+        'url_edit',
         'url_ciclo',
         'url_ccedtipo',
         'url_ccedtipo',
@@ -40,7 +41,7 @@ class cedulas_url extends Model
         'url_cita',
         'url_anio',
         // 'url_editor',
-        'url_vesion',
+        'url_version',
         'url_doi',
 
     ];
