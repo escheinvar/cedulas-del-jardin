@@ -25,6 +25,7 @@ class Imagenes extends Model
         'img_lencode',
         'img_file',
         'img_url',
+        'img_urltxt',
         'img_tipo',
         'img_size',
         'img_resolu',

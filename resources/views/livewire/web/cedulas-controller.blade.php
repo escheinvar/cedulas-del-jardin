@@ -88,7 +88,18 @@
             <!--  BarraLatIzq: Nombre común y Lengua -->
             <div style="color:#202d2d; font-family: 'Noto Serif JP', serif; text-align:center; font-weight:100;" >
                 <div class="py-1" style="font-size:120%;">{{ $url->lenguas->len_autonimias }} ({{ $url->lenguas->len_lengua }})</div>
-                <div class="" style="font-size:90%;"> Especie asociada <br> Especie asociada <br> Especie asociada </div>
+
+                <div class="" style="font-size:90%;">
+                    @if($especies->count() > '0')
+                        @foreach ($especies as $e)
+                            @if($e->sp_scname != '')
+                                <div>
+                                    {{ $e->sp_scname }}
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
+                </div>
             </div>
 
             <!-- ------------------------- GralIzq: Categoría de riesgo ------------------------>
@@ -437,21 +448,35 @@
             <!-- Zona de palabras clave-->
             @if($edit=='1')
                 <div class="row my-5">
-                    <h4 class="cedEdoIcon{{ $url->url_edo }}">: Palabras clave</h4>
+                    <h5 class="cedEdo{{ $url->url_edo }}">Palabras clave</h5>
+
                     <div class="col-6">
-                        <h5>Especies</h5>
+                        <button class="btn btn-sm" wire:click="AbrirModalDeBuscarAutor()">
+                            <i class="bi bi-plus-square-fill PaClick" style="color:#87796d"></i>
+                            <b>Especies</b>
+                        </button>
+                        <div>
+                            @foreach ($especies as $sp)
+                                @if($sp->sp_scname != '')
+                                    <div class="elemento" style="border:1px dashed #87796d;;">
+                                        {{ $sp->sp_scname }} &nbsp; &nbsp;
+                                        <i class="bi bi-trash PaClick" wire:click="BorrarEspecie('{{ $sp->sp_id }}')" wire:confirm="Estas por desvincular una especie a esta cédula. ¿Seguro quieres continuar?" style="color:#87796d;"></i>
+                                    </div><br>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
 
                     <div class="col-6">
-                        <h5>Localidades</h5>
+                        <b>Localidades</b>
                     </div>
 
                     <div class="col-6">
-                        <h5>Usos</h5>
+                        <b>Usos</b>
                     </div>
 
                     <div class="col-6">
-                        <h5>Palabras</h5>
+                        <b>Palabras</b>
                     </div>
 
                 </div>
@@ -712,81 +737,9 @@
     <!-- -------------------------------------------------------------------------------------- -->
 
 
-
-
-
-
-    <!-- ------------------------------------------------------------------------------------------ -->
-    <!-- --------------------------------------- MODAL DE CAMBIO DE TÍTULO ------------------------ -->
-    <!-- ------------------------------------------------------------------------------------------ -->
-    <!-- ------------------------------------------------------------------------------------------ -->
-    {{-- <div wire:ignore.self class="modal fade" id="ModalTraduceTitulo" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">
-                    </h3>
-                    <button wire:click="" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
-                </div>
-                <!-- ----------------------------  cuerpo del modal --------------------------->
-                <div class="modal-body">
-                </div>
-                <div class="modal-footer">
-                    <button wire:click="" class="btn btn-secondary">
-                        Cerrar
-                    </button>
-
-                    <button wire:click="GuardaModal()" wire:loading.attr="disabled" class="btn btn-primary">
-                        Guardar
-                    </button>
-                    <span wire:loading style="display:none;"> <red>..guardando...</red> </span>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- ----------------------------- TERMINA MODAL ROLES DE USUARIO ------------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
-
-
-
-
-
-
-    <!-- ------------------------------------------------------------------------------------------ -->
-    <!-- --------------------------------------- MODAL DE CAMBIO DE TÍTULO ------------------------ -->
-    <!-- ------------------------------------------------------------------------------------------ -->
-    <!-- ------------------------------------------------------------------------------------------ -->
-    {{-- <div wire:ignore.self class="modal fade" id="ModalTraduceTitulo" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">
-                    </h3>
-                    <button wire:click="" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
-                </div>
-                <!-- ----------------------------  cuerpo del modal --------------------------->
-                <div class="modal-body">
-                </div>
-                <div class="modal-footer">
-                    <button wire:click="" class="btn btn-secondary">
-                        Cerrar
-                    </button>
-
-                    <button wire:click="GuardaModal()" wire:loading.attr="disabled" class="btn btn-primary">
-                        Guardar
-                    </button>
-                    <span wire:loading style="display:none;"> <red>..guardando...</red> </span>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- ----------------------------- TERMINA MODAL ROLES DE USUARIO ------------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
-
 <livewire:web.modal-imagen-controller>
 <livewire:sistema.jardin-web-modal-component>
+<livewire:sistema.modal-cedula-especie-component>
 
     <script>
         /* ### Script para abrir mensaje */

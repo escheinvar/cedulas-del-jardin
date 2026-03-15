@@ -16,15 +16,15 @@ return new class extends Migration
             $table->enum('sp_act',['0','1'])->default('1');  ##### borrado lógico inactivo
             $table->enum('sp_del',['0','1'])->default('0'); ##### borrado lógico
             $table->string('sp_cjarsiglas');     #### Jardín al que pertenece
-            $table->string('sp_urlurl');     #### url de la cédula ej: huaje_huv
+            $table->string('sp_urltxt');     #### urltxt de la cédula ej: huaje (sin traducción)
 
-            $table->string('sp_scname');  ##### Nombre científico
-            $table->enum('sp_reino',['planta','animal','fungi','bacteria','protista','arquea'])->default('planta');
+            $table->string('sp_scname')->nullable();  ##### Nombre científico
+            $table->enum('sp_reino',['planta','animal','hongo','bacteria','protista','arquea'])->default('planta');
             $table->string('sp_familia')->nullable();
             $table->string('sp_genero')->nullable();
             $table->string('sp_especie')->nullable();
             $table->string('sp_ssp')->nullable();
-            $table->string('sp_raza')->nullable();
+            $table->string('sp_var')->nullable();
             $table->timestamps();
         });
     }

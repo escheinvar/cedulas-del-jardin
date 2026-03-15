@@ -20,7 +20,7 @@ class ced_sp extends Model
         'sp_del',
 
         'sp_cjarsiglas',
-        'sp_urlurl',
+        'sp_urltxt',
 
         'sp_scname',
         'sp_reino',
@@ -28,7 +28,7 @@ class ced_sp extends Model
         'sp_genero',
         'sp_especie',
         'sp_ssp',
-        'sp_raza',
+        'sp_var',
     ];
 
     public function jardin():BelongsTo{

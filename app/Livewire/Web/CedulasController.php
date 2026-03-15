@@ -3,6 +3,7 @@
 namespace App\Livewire\Web;
 
 use App\Models\ced_autores;
+use App\Models\ced_sp;
 use App\Models\cedulas_txt;
 use App\Models\cedulas_url;
 use App\Models\Imagenes;
@@ -13,7 +14,7 @@ use SimpleSoftwareIO\QrCode\Image;
 class CedulasController extends Component
 {
     public $jardin, $url; ##### Vars. recibidas por URL, y luego en url se guarda toda la info de cedula_url
-    public $edit, $enEdit; ###### Vars. de edición
+    public $edit, $enEdit, $editMaster; ###### Vars. de edición
     ###### Variables de página cédulas:
     public $traducciones; ##### get() de cédulas con igual urltxt
     public $objs; ##### get() de fotos de la cédulas
@@ -106,6 +107,11 @@ class CedulasController extends Component
         }
     }
 
+    public function BorrarEspecie($id){
+        ced_sp::where('sp_id',$id)->update([
+            'sp_del'=>'1',
+        ]);
+    }
 
     public function render(){
         ##### Revisa permisos del usuario (rol y no doi)
@@ -121,7 +127,13 @@ class CedulasController extends Component
                 $this->edit='0';
             }
         }
-
+        ##### Diferencía tipo de aut
+        $dictadores=['editor','admin'];
+        if(array_intersect($dictadores,session('rol'))){
+            $this->editMaster='1';
+        }else{
+            $this->editMaster='0';
+        }
         ##### Revisa si la página es pública:
         if($this->url->url_edo <= '4'){
             $this->enEdit='1';
@@ -169,14 +181,30 @@ class CedulasController extends Component
             ->where('img_cimgtipo','ppal1')
             ->get();
 
-        // dd($objsPpal);
+        $especies=ced_sp::where('sp_cjarsiglas',$this->url->url_cjarsiglas)
+            ->where('sp_urltxt',$this->url->url_urltxt)
+            ->where('sp_act','1')->where('sp_del','0')
+            ->get();
+            // dd($especies, $this->url->url_cjarsiglas, $this->url->url_urltxt);
 
         return view('livewire.web.cedulas-controller',[
             'autores'=>$autores,
             'traductores'=>$traductores,
             'editores'=>$editores,
             'objsPpal'=>$objsPpal,
+            'especies'=>$especies,
         ]);
+    }
+
+    ##########################################################
+    ############ Modal externo BuscarAutor
+    public function AbrirModalDeBuscarAutor(){
+        $datos=[
+            'jardin'=>$this->url->url_cjarsiglas,
+            'urltxt'=>$this->url->url_urltxt,
+        ];
+
+        $this->dispatch('AbreModalDeBuscarAutor',$datos);
     }
 
     ############################################################
