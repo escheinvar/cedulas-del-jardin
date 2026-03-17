@@ -13,22 +13,24 @@ return new class extends Migration
     {
         #####  DOF 14/11/2019.
         #####  MODIFICACIÓN del Anexo Normativo III, Lista de especies en riesgo de la Norma Oficial Mexicana NOM-059-SEMARNAT-2010, Protección ambiental-Especies nativas de México de flora y fauna silvestres-Categorías de riesgo y especificaciones para su inclusión, exclusión o cambio-Lista de especies en riesgo, publicada el 30 de diciembre de 2010.
-        Schema::create('nom059semarnat', function (Blueprint $table) {
-            $table->id('nom_id');
-            $table->string('nom_grupo');
-            $table->string('nom_subgrupo');
-            $table->string('nom_familia');
-            $table->string('nom_genero');
-            $table->string('nom_especie');
-            $table->string('nom_catinfrasp')->nullable();
-            $table->string('nom_infrasp')->nullable();
-            $table->string('nom_autor')->nullable();
-            $table->mediumText('nom_sinonimia')->nullable();
-            $table->mediumText('nom_comunname')->nullable();
-            $table->string('nom_distri')->nullable();
-            $table->string('nom_cat');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('nom059semarnat')){
+            Schema::create('nom059semarnat', function (Blueprint $table) {
+                $table->id('nom_id');
+                $table->string('nom_grupo');
+                $table->string('nom_subgrupo');
+                $table->string('nom_familia');
+                $table->string('nom_genero');
+                $table->string('nom_especie');
+                $table->string('nom_catinfrasp')->nullable();
+                $table->string('nom_infrasp')->nullable();
+                $table->string('nom_autor')->nullable();
+                $table->mediumText('nom_sinonimia')->nullable();
+                $table->mediumText('nom_comunname')->nullable();
+                $table->string('nom_distri')->nullable();
+                $table->string('nom_cat');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -36,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Schema::dropIfExists('nom054semarnat');
+        // Schema::dropIfExists('nom059semarnat');
     }
 };
