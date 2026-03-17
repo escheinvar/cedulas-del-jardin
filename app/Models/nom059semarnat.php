@@ -8,7 +8,7 @@ class nom054semarnat extends Model
 {
     // use HasFactory;
 	protected $connection='pgsql';
-	protected $table = 'nom054semarnat';
+	protected $table = 'nom059semarnat';
 	protected $primaryKey = 'nom_id';
 	public $incrementing = true;
 	#protected $keyType = 'string';

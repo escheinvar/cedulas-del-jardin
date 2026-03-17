@@ -21,7 +21,11 @@ class UsuarioLogeadoConRolMiddle
     public function handle(Request $request, Closure $next): Response{
 
         if(Auth::user()) {
-            $roles=UserRolesModel::where('rol_act','1')->where('rol_usrid',Auth::id())->pluck('rol_crolrol')->toArray();
+            $roles=UserRolesModel::where('rol_act','1')
+                ->where('rol_del','0')
+                ->where('rol_usrid',Auth::id())
+                ->pluck('rol_crolrol')
+                ->toArray();
 
             ######################### Revisa buzón y aportaciones
             ##### Recupera el número de mensajes sin leer
@@ -36,7 +40,7 @@ class UsuarioLogeadoConRolMiddle
 
 
             if(in_array('cedulas',$roles)){
-                $jards=UserRolesModel::where('rol_act','1')
+                $jards=UserRolesModel::where('rol_act','1')->where('rol_del','0')
                     ->where('rol_usrid',Auth::user()->id)
                     ->where('rol_crolrol','cedulas')
                     ->pluck('rol_tipo1')
@@ -47,7 +51,7 @@ class UsuarioLogeadoConRolMiddle
 
                 ##### Recupera cantidad de aportaciones PENDIENTES DE APROBAR
                 $aportes=SpAporteUsrsModel::leftJoin('sp_urlcedula','ced_id','=','msg_cedid')
-                    ->where('msg_act','1')
+                    ->where('msg_act','1')->where('msg_del','0')
                     ->where('msg_edo','0')
                     ->whereIn('ced_cjarsiglas',$jards)
                     ->count();

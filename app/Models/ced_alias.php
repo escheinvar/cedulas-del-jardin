@@ -20,7 +20,7 @@ class ced_alias extends Model
         'ali_act',
         'ali_del',
         'ali_cjarsiglas',
-        'ali_urlurl',
+        'ali_urltxt',
 
         'ali_calitipo',
         'ali_txt',

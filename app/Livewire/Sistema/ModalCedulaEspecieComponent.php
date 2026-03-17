@@ -9,24 +9,25 @@ use Livewire\Component;
 
 class ModalCedulaEspecieComponent extends Component
 {
-    ############################################## ModalAlias_Especies
+     /*############################################## ModalAlias_Especies
     ###################################################################
     ##### Este modal, requiere dos varables, url_cjarsiglas y url_urltxt
-    ##### Copiar AbrirModalDeBuscarAutor en controller disparador
-    // public function AbrirModalDeBuscarAutor(){
-    //     $datos=[
-    //         'jardin'=>$this->url->url_cjarsiglas,
-    //         'urltxt'=>$this->url->url_urltxt
-    //     ];
-    //     $this->dispatch('AbreModalDeBuscarAutor',$datos);
-    // }
+    ##### Copiar AbrirModalDeBuscarEspecie en controller disparador
+    public function AbrirModalDeBuscarEspecie(){
+        $datos=[
+            'jardin'=>$this->url->url_cjarsiglas,
+            'urltxt'=>$this->url->url_urltxt
+        ];
+        $this->dispatch('AbreModalDeBuscarEspecie',$datos);
+    }
+    ############################################################# */
     public $aliasp_jardin, $aliasp_urltxt;  ##### Vars. grales.
     public $aliasp_ConCatalogo; #### Indica si hay o no catálogo de sp.
     public $aliasp_reino, $aliasp_familia, $aliasp_buscaGen, $aliasp_gen;
     public $aliasp_sp, $aliasp_ssp, $aliasp_var, $aliasp_especies; ##### Variables de formaulario
 
-    #[On('AbreModalDeBuscarAutor')]
-    public function montarAbrirModalDeBuscarAutor($datos){
+    #[On('AbreModalDeBuscarEspecie')]
+    public function montarAbrirModalDeBuscarEspecie($datos){
         ##### recibe variables externas
         $this->aliasp_jardin=$datos['jardin'];
         $this->aliasp_urltxt=$datos['urltxt'];
@@ -36,17 +37,17 @@ class ModalCedulaEspecieComponent extends Component
         $this->aliasp_especies=collect();
     }
 
-    public function limpiarModalDeBuscarAutor(){
+    public function limpiarModalDeBuscarEspecie(){
         $this->reset('aliasp_familia','aliasp_buscaGen','aliasp_especies','aliasp_sp','aliasp_gen','aliasp_ssp','aliasp_var');
         $this->aliasp_especies=collect();
         $this->resetValidation();
         $this->resetErrorBag();
     }
 
-    public function CerrarModalDeBuscarAutor(){
-        $this->limpiarModalDeBuscarAutor();
+    public function CerrarModalDeBuscarEspecie(){
+        $this->limpiarModalDeBuscarEspecie();
         $this->aliasp_reino='';
-        $this->dispatch('CierraModalDeBuscarAutor',reload:'1');
+        $this->dispatch('CierraModalDeBuscarEspecie',reload:'1');
     }
 
     public function DeterminaReino(){
@@ -59,7 +60,7 @@ class ModalCedulaEspecieComponent extends Component
             $this->aliasp_ConCatalogo='0';
         }
         ##### Limpia:
-        $this->limpiarModalDeBuscarAutor();
+        $this->limpiarModalDeBuscarEspecie();
     }
 
     public function BuscaCatalogoDeSp(){
@@ -164,14 +165,14 @@ class ModalCedulaEspecieComponent extends Component
         paLog('Se vincula la cedula '.$this->aliasp_jardin."-".$this->aliasp_urltxt.' a la sp '.$nombre,'ced_sp',$bla->sp_id);
 
         #### Limpia
-        $this->limpiarModalDeBuscarAutor();
+        $this->limpiarModalDeBuscarEspecie();
         $this->aliasp_reino='';
 
         #### Aviso
         $this->dispatch('AvisoExitoAliasCedula',msj:'Se vinculó la cédula a la especie correctamente');
 
         ##### Cierra
-        $this->dispatch('CierraModalDeBuscarAutor',reload:'1');
+        $this->dispatch('CierraModalDeBuscarEspecie',reload:'1');
     }
 
     ################################################## Página general

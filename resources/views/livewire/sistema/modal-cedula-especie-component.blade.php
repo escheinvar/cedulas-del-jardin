@@ -9,7 +9,7 @@
                     <h3 class="modal-title">
                         Especies para {{ $aliasp_urltxt }} en {{ $aliasp_jardin }}
                     </h3>
-                    <button wire:click="CerrarModalDeBuscarAutor()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
+                    <button wire:click="CerrarModalDeBuscarEspecie()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
                 </div>
                 <!-- ----------------------------  cuerpo del modal --------------------------->
                 <div class="modal-body" >
@@ -29,6 +29,7 @@
                             <div class="form-text"></div>
                             @error('aliasp_reino')<error>{{ $message }}</error>@enderror
                         </div>
+
                         @if($aliasp_reino!='')
                             <!-- Familia -->
                             <div class="col-12 col-md-6 form-group">
@@ -103,10 +104,9 @@
                             </div>
                         @endif
                     </div>
-
                 </div>
                 <div class="modal-footer">
-                    <button wire:click="CerrarModalDeBuscarAutor()" class="btn btn-secondary">
+                    <button wire:click="CerrarModalDeBuscarEspecie()" class="btn btn-secondary">
                         Cerrar
                     </button>
 
@@ -127,10 +127,10 @@
 
     <script>
         /* ### Script para abrir y cerrar ModalAlias_Especies */
-        Livewire.on('AbreModalDeBuscarAutor', () => {
+        Livewire.on('AbreModalDeBuscarEspecie', () => {
             $('#ModalAlias_Especies').modal('show');
         });
-        Livewire.on('CierraModalDeBuscarAutor', () => {
+        Livewire.on('CierraModalDeBuscarEspecie', () => {
             $('#ModalAlias_Especies').modal('hide');
             if(event.detail.reload == '1'){
                 window.location.reload();

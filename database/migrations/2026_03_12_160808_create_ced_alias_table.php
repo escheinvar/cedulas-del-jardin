@@ -16,7 +16,7 @@ return new class extends Migration
             $table->enum('ali_act',['0','1'])->default('1');  ##### borrado lógico inactivo
             $table->enum('ali_del',['0','1'])->default('0'); ##### borrado lógico
             $table->string('ali_cjarsiglas');     #### Jardín al que pertenece
-            $table->string('ali_urlurl');     #### url de la cédula ej: huaje_huv
+            $table->string('ali_urltxt');     #### urltxt de la cédula ej: huaje (sin traducción)
 
             $table->string('ali_calitipo'); ##### tipo de alias según catálogo
             $table->string('ali_txt');  ##### texto del alias

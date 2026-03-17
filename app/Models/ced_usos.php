@@ -9,7 +9,7 @@ class ced_usos extends Model
 {
     #use HasFactory;
 	protected $connection='pgsql';
-	protected $table = 'ced_uso';
+	protected $table = 'ced_usos';
 	protected $primaryKey = 'uso_id';
 	public $incrementing = true;
 	#protected $keyType = 'string';
@@ -18,13 +18,20 @@ class ced_usos extends Model
         'uso_id',
         'uso_act',
         'uso_del',
+        'uso_spid',
+        'uso_spname',
         'uso_cjarsiglas',
-        'uso_urlurl',
+        'uso_urltxt',
 
         'uso_categoria',
-        'uso_parte',
+        'uso_partes',
         'uso_uso',
+        'uso_describe',
     ];
+
+    public function especie():BelongsTo{
+        return $this->belongsTo(ced_sp::class,'sp_id','uso_spid');
+    }
 
     public function jardin():BelongsTo{
         return $this->belongsTo(CatJardinesModel::class,'cjar_siglas','uso_cjarsiglas');

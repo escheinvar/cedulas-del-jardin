@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ced_sp extends Model
 {
@@ -30,6 +31,13 @@ class ced_sp extends Model
         'sp_ssp',
         'sp_var',
     ];
+
+    public function usos():HasMany{
+        return $this->hasMany(ced_usos::class, 'uso_spid','sp_id')
+            ->where('uso_act','1')
+            ->where('uso_del','0')
+            ->orderBy('uso_id','asc');
+    }
 
     public function jardin():BelongsTo{
         return $this->belongsTo(CatJardinesModel::class,'cjar_siglas','sp_cjarsiglas');

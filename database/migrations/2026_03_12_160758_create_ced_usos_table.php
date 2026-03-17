@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id('uso_id');
             $table->enum('uso_act',['0','1'])->default('1');  ##### borrado lógico inactivo
             $table->enum('uso_del',['0','1'])->default('0'); ##### borrado lógico
+            $table->foreignId('uso_spid')->constrained('ced_sp','sp_id');       #### Id de la especie a la que se vincula el uso
+            $table->string('uso_spname')->nullable(); ##### nombre de especie según tabla ced_sp
             $table->string('uso_cjarsiglas');     #### Jardín al que pertenece
-            $table->string('uso_urlurl');     #### url de la cédula ej: huaje_huv
+            $table->string('uso_urltxt');     #### urltxt de la cédula ej: huaje (sin traducción)
 
-            $table->string('uso_categoria')->nullable();
-            $table->string('uso_parte')->nullable();
-            $table->string('uso_uso')->nullable();
+            $table->string('uso_categoria')->nullable();  ##### cuso_catego del catálogo cat_uso
+            $table->string('uso_uso')->nullable(); ##### cuso_uso del catálogo cat_uso
+            $table->longText('uso_partes')->nullable(); #### array; de cat_valor dado cat_tipo=parteplanta de ced_catalogo
+            $table->longText('uso_describe')->nullable(); #### Descripción
             $table->timestamps();
         });
     }

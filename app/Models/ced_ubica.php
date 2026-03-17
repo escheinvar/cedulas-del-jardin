@@ -19,7 +19,7 @@ class ced_ubica extends Model
         'ubi_act',
         'ubi_del',
         'ubi_cjarsiglas',
-        'ubi_urlurl',
+        'ubi_urltxt',
 
         'ubi_tipo',
         'ubi_edo',

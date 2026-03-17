@@ -31,7 +31,7 @@
             </div>
             <!-- -------------------- Indicador de edición ------------------------------ -->
             @if($edit=='1')
-                | &nbsp; <error>Modo edición</error>
+                | &nbsp; <error>Modo edición @if($editMaster=='1')2 @endif</error>
             @endif
             @if($url->url_edo <='4')
                 <i class="cedEdoIcon{{ $url->url_edo }}"></i>
@@ -94,7 +94,49 @@
                         @foreach ($especies as $e)
                             @if($e->sp_scname != '')
                                 <div>
-                                    {{ $e->sp_scname }}
+                                    <!-- Nombre de especie -->
+                                    {{ $e->sp_scname }}<br>
+                                    <!-- NOM-054 Semarnat -->
+                                    @if($e->nom_cat != '')
+                                        <span style="border:1px solid #CD7B34;color:#CD7B34;padding:3px;font-size:60%; border-radius:3px;">
+                                             NOM-059<b>
+                                                @if($e->nom_cat=='E') Extinta silvestre
+                                                @elseif($e->nom_cat=='P') Peligro extinción
+                                                @elseif($e->nom_cat=='A') Amenazada
+                                                @elseif($e->nom_cat=='Pr') Protección especial
+                                                @endif
+                                             </b>
+                                        </span>
+                                    @endif
+                                    <!-- CITES -->
+                                    {{-- @if($cites['estatus']=='200' & in_array('taxon_concepts',$cites['dato'])  )
+                                        @if(count($cites['dato']['taxon_concepts']) > 0 )
+                                            <div class="CategoriaDeRiesgo">
+                                                CITES <br>
+                                                Apéndice {{ $cites['dato']['taxon_concepts'][0]['cites_listing'] }}
+                                            </div>
+                                        @endif
+                                    @endif --}}
+
+                                    <!--UICN RED LIST -->
+                                    {{-- @if($redList['estatus']=='200')
+                                        <div class="CategoriaDeRiesgo">
+                                            <a href="{{ $redList['dato']['url'] }}" class="nolink" target="new">
+                                                UICN Red List:
+                                                {{ $redList['dato']['red_list_category_code'] }}<br>
+                                                @if( $redList['dato']['red_list_category_code'] == 'NE' ) No evaluado
+                                                @elseif($redList['dato']['red_list_category_code']=='DD') Datos deficientes
+                                                @elseif($redList['dato']['red_list_category_code']=='LC') Preocupación menor
+                                                @elseif($redList['dato']['red_list_category_code']=='NT') Casi amenazada
+                                                @elseif($redList['dato']['red_list_category_code']=='VU') Vulnerable
+                                                @elseif($redList['dato']['red_list_category_code']=='EN') En peligro
+                                                @elseif($redList['dato']['red_list_category_code']=='CR') Peligro crítico
+                                                @elseif($redList['dato']['red_list_category_code']=='EW') Extinto en silvestre
+                                                @elseif($redList['dato']['red_list_category_code']=='EX') Extinto
+                                                @endif
+                                            </a>
+                                        </div>
+                                    @endif --}}
                                 </div>
                             @endif
                         @endforeach
@@ -103,50 +145,7 @@
             </div>
 
             <!-- ------------------------- GralIzq: Categoría de riesgo ------------------------>
-            <div style="text-align: center;">
-                {{-- @if($nom054sem->count() =='1')
-                    <div class="CategoriaDeRiesgo">
-                        NOM-059-Sem
-                        <BR>
-                        {{ $nom054sem->value('nom_distri') }}
-                        @if($nom054sem->value('nom_cat')=='P') En Peligro de Extinción
-                        @elseif($nom054sem->value('nom_cat')=='A') Amenazada
-                        @elseif($nom054sem->value('nom_cat')=='Pr') Sujeta a Protección Especial
-                        @endif
-                        {{ $nom054sem->value('nom_cat') }}
-                    </div>
-                @endif --}}
 
-
-                {{-- @if($cites['estatus']=='200' & in_array('taxon_concepts',$cites['dato'])  )
-                    @if(count($cites['dato']['taxon_concepts']) > 0 )
-                        <div class="CategoriaDeRiesgo">
-                            CITES <br>
-                            Apéndice {{ $cites['dato']['taxon_concepts'][0]['cites_listing'] }}
-                        </div>
-                    @endif
-                @endif --}}
-
-                <!-- ------------------ API DE UICN RED LIST ------------- -->
-                {{-- @if($redList['estatus']=='200')
-                    <div class="CategoriaDeRiesgo">
-                        <a href="{{ $redList['dato']['url'] }}" class="nolink" target="new">
-                            UICN Red List:
-                            {{ $redList['dato']['red_list_category_code'] }}<br>
-                            @if( $redList['dato']['red_list_category_code'] == 'NE' ) No evaluado
-                            @elseif($redList['dato']['red_list_category_code']=='DD') Datos deficientes
-                            @elseif($redList['dato']['red_list_category_code']=='LC') Preocupación menor
-                            @elseif($redList['dato']['red_list_category_code']=='NT') Casi amenazada
-                            @elseif($redList['dato']['red_list_category_code']=='VU') Vulnerable
-                            @elseif($redList['dato']['red_list_category_code']=='EN') En peligro
-                            @elseif($redList['dato']['red_list_category_code']=='CR') Peligro crítico
-                            @elseif($redList['dato']['red_list_category_code']=='EW') Extinto en silvestre
-                            @elseif($redList['dato']['red_list_category_code']=='EX') Extinto
-                            @endif
-                        </a>
-                    </div>
-                @endif --}}
-            </div>
 
             <!-- ------------------------- GralIzq: Otras cédulas de otros jardines ------------------------>
             @if($traducciones->count() > 0) <!-- OJO:puse traducciones, pero hay que poner el match de temas -->
@@ -437,7 +436,7 @@
             <!-- -------------------- Indicador de edición ------------------------------ -->
             <center>
                 @if($edit=='1')
-                    <error>Modo edición</error>
+                    <error>Modo edición @if($editMaster=='1')2 @endif</error>
                 @endif
                 @if($url->url_edo <='4')
                     <i class="cedEdoIcon{{ $url->url_edo }}"></i>
@@ -446,34 +445,64 @@
 
 
             <!-- Zona de palabras clave-->
-            @if($edit=='1')
+            @if($editMaster=='1')
                 <div class="row my-5">
                     <h5 class="cedEdo{{ $url->url_edo }}">Palabras clave</h5>
 
-                    <div class="col-6">
-                        <button class="btn btn-sm" wire:click="AbrirModalDeBuscarAutor()">
+                    <!-- ------------------- Especies y sus usos------------------- -->
+                    <div class="col-12">
+                        <!-- botón de especie -->
+                        <button class="btn btn-sm" wire:click="AbrirModalDeBuscarEspecie()">
                             <i class="bi bi-plus-square-fill PaClick" style="color:#87796d"></i>
-                            <b>Especies</b>
+                            <b style="font-size: 130%;">Especies y usos</b>
                         </button>
+                        <!-- listado de sp -->
                         <div>
-                            @foreach ($especies as $sp)
-                                @if($sp->sp_scname != '')
-                                    <div class="elemento" style="border:1px dashed #87796d;;">
-                                        {{ $sp->sp_scname }} &nbsp; &nbsp;
-                                        <i class="bi bi-trash PaClick" wire:click="BorrarEspecie('{{ $sp->sp_id }}')" wire:confirm="Estas por desvincular una especie a esta cédula. ¿Seguro quieres continuar?" style="color:#87796d;"></i>
-                                    </div><br>
-                                @endif
-                            @endforeach
+                            <ul>
+                                @foreach ($especies as $sp)
+                                    @if($sp->sp_scname != '')
+                                        <div class="elemento" style="width:100%; border:1px dashed #87796d;padding:10px;">
+                                            <!-- muestra especie -->
+                                            <b><i>{{ $sp->sp_scname }}</i> {{ $sp->sp_var }} </b>[{{ $sp->sp_familia }}]&nbsp; &nbsp;
+                                            <!-- borrar especie -->
+                                            {{-- @if($sp->usos->count() == '0') --}}
+                                                <i class="bi bi-trash PaClick mx-1" wire:click="BorrarEspecie('{{ $sp->sp_id }}')" wire:confirm="Estas por borrar a esta especie de esta cédula y todos los usos asociados. ¿Seguro quieres continuar?" style="color:#87796d;float: right;"></i>
+                                            {{-- @endif --}}
+                                            <!-- botón uso -->
+                                            <i wire:click="AbrirModalDeUso('0','{{ $sp->sp_id }}')" class="bi bi-plus-circle-fill PaClick mx-1" style="color:#87796d"> uso</i> &nbsp;
+                                            <!-- muestra usos -->
+                                            @if($sp->usos->count() > '0')
+                                                <ul>
+                                                    @foreach ($sp->usos as $u)
+                                                        <li style="margin-top:12px;">
+                                                            <span  class="">
+                                                                <b>{{ $u->uso_categoria }}</b> {{ $u->uso_uso }}
+
+                                                                <br>
+                                                                @if($u->uso_partes != '') Partes: {{ preg_replace('/;/',', ',$u->uso_partes) }}<br>@endif
+                                                                @if($u->uso_describe != '') {{ $u->uso_describe }} @endif
+                                                            </span>
+                                                            <i wire:click="AbrirModalDeUso('{{ $u->uso_id }}','{{ $sp->sp_id }}')" class="bi bi-pencil-square mx-1 agregar" style="color:#87796d;"></i>
+                                                            {{-- <i class="bi bi-trash agregar mx-3" style="color:#87796d;"></i> --}}
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+
+                                            @endif
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
+
+
 
                     <div class="col-6">
                         <b>Localidades</b>
                     </div>
 
-                    <div class="col-6">
-                        <b>Usos</b>
-                    </div>
+
 
                     <div class="col-6">
                         <b>Palabras</b>
@@ -736,10 +765,12 @@
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
 
-
-<livewire:web.modal-imagen-controller>
-<livewire:sistema.jardin-web-modal-component>
-<livewire:sistema.modal-cedula-especie-component>
+@if($editMaster=='1')
+    <livewire:web.modal-imagen-controller>
+    <livewire:sistema.jardin-web-modal-component>
+    <livewire:sistema.modal-cedula-especie-component>
+    <livewire:sistema.modal-cedula-uso-component>
+@endif
 
     <script>
         /* ### Script para abrir mensaje */

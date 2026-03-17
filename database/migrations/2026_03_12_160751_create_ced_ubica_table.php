@@ -16,7 +16,7 @@ return new class extends Migration
             $table->enum('ubi_act',['0','1'])->default('1');  ##### borrado lógico inactivo
             $table->enum('ubi_del',['0','1'])->default('0'); ##### borrado lógico
             $table->string('ubi_cjarsiglas');     #### Jardín al que pertenece
-            $table->string('ubi_urlurl');     #### url de la cédula ej: huaje_huv
+            $table->string('ubi_urltxt');     #### urltxt de la cédula ej: huaje (sin traducción)
 
             $table->string('ubi_tipo')->nullable(); ##### Tipo de ubica.: localidad, región, área, poblado, zona
             $table->string('ubi_edo')->nullable();

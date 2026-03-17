@@ -107,7 +107,7 @@ class JardinController extends Component
             }else{
                 $this->edit='0';
             }
-            if(!array_intersect($auts,session('rol') )) {redirect('/noauth/Solo accede rol '.implode(',',$auts).' con acceso a todos');}
+            // if(!array_intersect($auts,session('rol') )) {redirect('/noauth/Solo accede rol '.implode(',',$auts).' con acceso a todos');}
         }
 
         ##### Carga texto
