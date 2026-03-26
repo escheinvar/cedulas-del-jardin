@@ -24,8 +24,11 @@
         <div wire:key="objetoCed_{{ $objeto->img_id }}">
             @if($objeto->img_file != '')
                 @if($objeto->img_tipo=='img')
+                    <!-- imprime imagen -->
                     <img style="display:flex;width:100%;" class="img-fluid PaClick" src="{{ $objeto->img_file }}" onclick="VerNoVer('foto','{{ $objeto->img_id }}')">
+
                 @elseif($objeto->img_tipo=='vid')
+                    <!-- imprime video -->
                     <video style="width:100%; max-height:200px;" controls>
                         <source src="{{ $objeto->img_file }}" type="video/mp4">
                         <source src="{{ $objeto->img_file }}" type="video/ogg">
@@ -34,19 +37,22 @@
                     <i onclick="VerYocultar('foto','{{ $objeto->img_id }}')" id="entra_foto{{ $objeto->img_id }}" class="bi bi-box-arrow-in-down-right agregar" style="color:#87796d;float: right;"></i>
                     {{-- <i onclick="VerNoVer('foto','{{ $objeto->img_id }}')" class="bi bi-box-arrow-in-down-right" style="color:#87796d;"></i> --}}
                 @elseif($objeto->img_tipo=='aud')
-                <div class="" style="margin-top:40px;">
-                    @if($objeto->img_titulo != '') <b>{{ $objeto->img_titulo }}</b><br>@endif
-                    <audio style="width:100%;" controls>
-                        <source src="{{ $objeto->img_file }}" type="audio/ogg">
-                        <source src="{{ $objeto->img_file }}" type="audio/mpeg">
-                        Tu navegador no soporta archivos de audio
-                    </audio>
-                    <i onclick="VerYocultar('foto','{{ $objeto->img_id }}')" id="entra_foto{{ $objeto->img_id }}" class="bi bi-box-arrow-in-down-right agregar" style="color:#87796d;float: right;"></i>
-                </div>
+                    <!-- imprime audio -->
+                    <div class="" style="margin-top:40px;">
+                        @if($objeto->img_titulo != '') <b>{{ $objeto->img_titulo }}</b><br>@endif
+                        <audio style="width:100%;" controls>
+                            <source src="{{ $objeto->img_file }}" type="audio/ogg">
+                            <source src="{{ $objeto->img_file }}" type="audio/mpeg">
+                            Tu navegador no soporta archivos de audio
+                        </audio>
+                        <i onclick="VerYocultar('foto','{{ $objeto->img_id }}')" id="entra_foto{{ $objeto->img_id }}" class="bi bi-box-arrow-in-down-right agregar" style="color:#87796d;float: right;"></i>
+                    </div>
                 @elseif($objeto->img_tipo=='you')
+                    <!-- imprime youtube -->
                     youtube
                 @endif
                 <div class="ced-imgMetadata" style="display:none;" id="sale_foto{{ $objeto->img_id }}">
+                    <!-- imprime metadatos del objeto -->
                     <i onclick="VerYocultar('foto','{{ $objeto->img_id }}')" class="bi bi-box-arrow-up-left agregar" style="color:#87796d;float: right;"></i>
                     <br>
                     @if($objeto->img_titulo != '') <b>{{ $objeto->img_titulo }}</b><br>@endif
@@ -55,7 +61,7 @@
                     @if($objeto->img_fecha != '')  Fecha: {{ $objeto->img_fecha }}<br>@endif
                     @if($objeto->img_ubica != '')  Ubicación: {{ $objeto->img_ubica }}<br>@endif
                     <a href="{{ $objeto->img_file }}" target="new">{{ $objeto->img_file }}</a><br>
-                    @if($edit=='1')
+                    @if($edit=='1'AND $editMaster=='1')
                         <div style="color:#87796d;padding-top:15px;">
                             <i class="bi bi-trash PaClick"  wire:click="EliminaImagen('{{ $objeto->img_id }}')" wire:confirm="Estas por eliminar esta imagen. ¿Seguro quieres continuar?">
                                 {{ $TipoDeObjeto }}
@@ -65,7 +71,7 @@
 
                 </div>
             @else
-                @if($edit=='1' )
+                @if($edit=='1' AND $editMaster=='1')
                     <div class="margin:20px;text-align:center">
                         <center">
                             <i wire:click="AbreModalObjetoEnCedula('0','{{ $TipoDeObjeto }}')" class="bi file-earmark-excel agregar">

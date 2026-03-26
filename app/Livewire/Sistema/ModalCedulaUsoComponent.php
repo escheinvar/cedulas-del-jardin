@@ -83,9 +83,9 @@ class ModalCedulaUsoComponent extends Component
         $this->uso_usosPartes=[];
     }
 
-    public function CerrarModalUsoEnCedula(){
+    public function CerrarModalUsoEnCedula($reload){
         $this->limpiarModalUsoEnCedula();
-        $this->dispatch('CierraModalUsoEnCedula',reload:1);
+        $this->dispatch('CierraModalUsoEnCedula',reload:$reload);
     }
 
     public function AgregarParte(){
@@ -145,14 +145,14 @@ class ModalCedulaUsoComponent extends Component
             paLog('Se edita uso de '.$this->uso_urltxt.' de '.$this->uso_jardin, 'ced_usos',  $this->uso_usoid);
         }
         $this->limpiarModalUsoEnCedula();
-        $this->CerrarModalUsoEnCedula();
+        $this->CerrarModalUsoEnCedula('1');
     }
 
     public function EliminarUso(){
         ced_usos::where('uso_id',$this->uso_usoid)->update([
             'uso_del'=>'1',
         ]);
-        $this->CerrarModalUsoEnCedula();
+        $this->CerrarModalUsoEnCedula('1');
     }
 
     public function render(){

@@ -7,7 +7,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class AutoresModalComponent extends Component
+class ModalCedulaAutoresComponent extends Component
 {
     use WithFileUploads;
 
@@ -154,6 +154,6 @@ class AutoresModalComponent extends Component
     }
 
     public function render(){
-        return view('livewire.sistema.autores-modal-component');
+        return view('livewire.sistema.modal-cedula-autores-component');
     }
 }

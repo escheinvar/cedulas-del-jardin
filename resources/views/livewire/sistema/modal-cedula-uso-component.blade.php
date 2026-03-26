@@ -18,7 +18,7 @@
                         de {{ $uso_sp->sp_scname}}
                     @endif
                 </h3>
-                <button wire:click="CerrarModalUsoEnCedula()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
+                <button wire:click="CerrarModalUsoEnCedula('0')" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
             </div>
             <!-- ----------------------------  cuerpo del modal ------------------------- -->
             <div class="modal-body" wire:loading.attr="disabled">
@@ -70,6 +70,7 @@
                 <!-- Partes usadas -->
                 <div class="row">
                     <div class="col-12 my-1 form-group">
+
                         <!-- Select Partes de planta-->
                         @if($uso_sp AND $uso_sp->sp_reino=='planta')
                             <label for="uso_parte" class="form-label">Parte(s) de la planta usadas<red></red></label>
@@ -82,7 +83,7 @@
                                         <option value="{{ $p->cat_valor }}">{{ $p->cat_valor }}</option>
                                     @endforeach
                                 @endif
-                            </select>ParteUtilizada
+                            </select>
                             @if($uso_uso != '')<i wire:click="AgregarParte()" class="bi bi-plus-square-fill agregar"></i>@endif
                                 <div class="form-text"></div>
                             @error('uso_parte')<error>{{ $message }}</error>@enderror
@@ -126,7 +127,7 @@
 
             <!-- ---------------------------- pie del modal ----------------------------- -->
             <div class="modal-footer">
-                <button wire:click="CerrarModalUsoEnCedula" class="btn btn-secondary">Cerrar</button>
+                <button wire:click="CerrarModalUsoEnCedula('0')" class="btn btn-secondary">Cerrar</button>
                 <button wire:click="GuardarUso()" wire:loading.attr="disabled" class="btn btn-primary">Guardar</button>
                 <span wire:loading style="display:none;"><red>pensando...</red> </span>
             </div>
@@ -159,8 +160,8 @@
         })
 
         /* ### Script para mostrar botón personalizado de input=file */
-        document.getElementById('MiBotonPersonalizado').addEventListener('click', function() {
-            document.getElementById('MiInputFile').click();
-        });
+        // document.getElementById('MiBotonPersonalizado').addEventListener('click', function() {
+        //     document.getElementById('MiInputFile').click();
+        // });
     </script>
 </div>

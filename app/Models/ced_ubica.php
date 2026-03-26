@@ -18,15 +18,20 @@ class ced_ubica extends Model
         'ubi_id',
         'ubi_act',
         'ubi_del',
+        'ubi_urlid',
         'ubi_cjarsiglas',
         'ubi_urltxt',
+        'ubi_urlurl',
 
-        'ubi_tipo',
+        // 'ubi_tipo',
         'ubi_edo',
         'ubi_mpio',
         'ubi_localidad',
         'ubi_paraje',
+        'ubi_x',
+        'ubi_y',
         'ubi_ubicacion',
+        'ubi_ubicacion_tr',
     ];
 
     public function jardin():BelongsTo{

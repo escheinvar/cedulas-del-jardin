@@ -147,6 +147,6 @@
         </div>
     </div>
 
-    <livewire:sistema.autores-modal-component>
+    <livewire:sistema.modal-cedula-autores-component >
 
 </div>

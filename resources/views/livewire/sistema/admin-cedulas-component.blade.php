@@ -51,7 +51,13 @@
                 <option value="5">5 Publicada</option>
                 <option value="6">6 Publicada Solicita Edición</option>
             </select>
-            @if($abiertos > '0')<error> @endif Hay {{ $abiertos }} @if($abiertos =='1' ) página @else páginas  @endif en edición</error>
+            @if($abiertos->where('url_edit','1')->count() > '0')
+                <error style="font-size: 90%;">
+            @endif
+            Hay {{ $abiertos->where('url_edit','1')->count() }} @if($abiertos =='1' ) página @else páginas  @endif en edición
+            y {{ $abiertos->where('url_edo','<','5')->count() }} en proceso
+            </error>
+
         </div>
 
         <!-- buscar por texto -->
@@ -111,14 +117,14 @@
                     <th></th>
                     <th wire:click="ordenaTabla('url_id')" class="PaClick">Jardin</th>
                     <th wire:click="ordenaTabla('url_url')" class="PaClick">url</th>
-                    <th wire:click="ordenaTabla('url_lengua')" class="PaClick">Lengua</th>
-                    <th wire:click="ordenaTabla('')" class="PaClick">Autor</th>
-                    <th wire:click="ordenaTabla('')" class="PaClick">P.clave</th>
+
+
+                    <th wire:click="ordenaTabla('')" class="PaClick">Lengua</th>
                     <th wire:click="ordenaTabla('url_titulo')" class="PaClick">Titulo</th>
                     <th wire:click="ordenaTabla('url_tipo')" class="PaClick">Tipo</th>
                     <th wire:click="ordenaTabla('url_descrip')" class="PaClick">Estado</th>
                     <th> Acción </th>
-                    <th wire:click="ordenaTabla('url_descrip')" class="PaClick"> Dirección </th>
+                    <th wire:click="ordenaTabla('urlO_descrip')" class="PaClick"> Dirección </th>
                     <th>Ciclo (V.0)</th>
                 </tr>
             </thead>
@@ -132,7 +138,20 @@
 
                         <!-- editar -->
                         <td class="@if($u->url_act=='0') inact @endif">
-                            <i wire:click="AbreModalCedula('{{ $u->url_id }}','{{ $u->url_cjarsiglas }}')" class="bi bi-pencil-square PaClick"></i>
+
+                            <!-- Verifica autores, editores y traductores -->
+                            <div wire:click="AbreModalCedula('{{ $u->url_id }}','{{ $u->url_cjarsiglas }}')" class="PaClick">
+                                @if($u->autores->count() =='0' OR
+                                    $u->editores->count() =='0' OR
+                                    ($u->url_tradid=='1' AND $u->traductores->count() =='0') OR
+                                    ($u->ubicaciones->count() == '0') OR
+                                    ($u->alias->count()=='0')
+                                )
+                                    <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"></i>
+                                @else
+                                    <i wire:click="AbreModalCedula('{{ $u->url_id }}','{{ $u->url_cjarsiglas }}')" class="bi bi-pencil-square PaClick"></i>
+                                @endif
+                            </div>
                         </td>
 
                         <!-- jardin -->
@@ -157,57 +176,6 @@
                             {{ $u->lenguas->len_lengua }}
                             <div style="color:gray;font-size:80%;">
                                 {{ $u->lenguas->len_code }}
-                            </div>
-                        </td>
-
-                         <!-- autor -->
-                        <td class="@if($u->url_act=='0') inact @endif" >
-                            <div wire:click="AbreModalCedula('{{ $u->url_id }}','{{ $u->url_cjarsiglas }}')" class="PaClick">
-                                <!-- conteo de autores -->
-                                <div style="color:gray;font-size:80%;">
-                                    @if($u->autores->where('aut_tipo','Autor')->count() =='0')
-                                        <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>a</sub></i>
-                                    @else
-                                        <i class="bi bi-check"></i>Aut
-                                    @endif
-                                </div>
-
-                                <!-- conteo de traductores -->
-                                @if($u->url_tradid=='1')
-                                    <div style="color:gray;font-size:80%;">
-                                        @if($u->autores->where('aut_tipo','Traductor')->count() =='0')
-                                            <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>t</sub></i>
-                                        @else
-                                            <i class="bi bi-check"></i>Trad.
-                                        @endif
-                                    </div>
-                                @endif
-
-                                <!-- conteo de Editor -->
-                                <div style="color:gray;font-size:80%;">
-                                    {{-- {{ $u->autores->where('aut_tipo','Editor')->count() }} --}}
-                                    @if($u->autores->where('aut_tipo','Editor')->count() =='0')
-                                        <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>e</sub></i>
-                                    @else
-                                        <i class="bi bi-check"></i>Edit.
-                                    @endif
-                                </div>
-
-                            </div>
-                        </td>
-
-                        <!-- Palabras clave -->
-                        <td class="@if($u->url_act=='0') inact @endif">
-                            <div style="color:gray;font-size:80%;"  wire:click="AbreModalCedula('{{ $u->url_id }}','{{ $u->url_cjarsiglas }}')" class="PaClick">
-                                <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>sp</sub></i>
-
-                                <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>co</sub></i>
-
-                                <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>us</sub></i>
-
-                                <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"><sub>cl</sub></i>
-                                <div class="elemento">
-                                </div>
                             </div>
                         </td>
                         <!-- titulo -->
@@ -318,11 +286,11 @@
                             </a>
                             <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('url','{{ $u->url_id }}')"></i>
                             @if($u->url_doi != '')<b>DOI: {{ $u->url_doi }} @endif
-                                <!-- -------------------- switch Modo edición --------------------- -->
+                            <!-- -------------------- switch Modo edición --------------------- -->
                             @if($u->url_edo <='4')
                                 <div class="form-check form-switch my-1">
                                     <input  wire:change="CambiaAmodoEdicion('{{ $u->url_id }}')" class="form-check-input" value="1" type="checkbox" role="switch" id="flexSwitchCheckDefault" @if($u->url_edit=='1') checked @endif style="@if($u->url_edit=='1')background-color:red; @endif">
-                                    <label class="form-check-label" style="font-size:90%;" for="flexSwitchCheckDefault">@if($u->url_edit=='0') Modo público @else Modo edición @endif</label>
+                                    <label class="form-check-label" style="font-size:90%;" for="flexSwitchCheckDefault">@if($u->url_edit=='0') Público @else Editando @endif</label>
                                 </div>
                             @endif
                         </td>
@@ -339,279 +307,11 @@
     </div>
 
 
+    <livewire:sistema.modal-admin-cedula-component>
 
 
 
 
-
-
-
-
-
-
-
-
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- ---------------------------- INICIA MODAL DE EDICIÓN DE CÉDULA ----------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
-    <div wire:ignore.self class="modal fade" id="ModalDeEdicionDeCedulas" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">
-                        @if($cedulaId=='0')
-                            Creando nueva cédula
-                        @else
-                            Editando cédula Id {{ $cedulaId }}
-                        @endif
-                        de {{ $jardinSel }}
-                    </h3>
-                    <button wire:click="CierraModalCedula()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
-                </div>
-                <!-- cuerpo del MODAL:EDICIÓN CÉDULA -->
-                <div class="modal-body">
-                    <!-- Original/Copia y copia de -->
-                    <div class="row">
-                        <!-- Original o traducción -->
-                        <div class="col-4 form-group">
-                            <label for="origtrad" class="form-label">Original/Traducción<red>*</red></label>
-                            <select wire:model.live="origtrad"  wire:change="DeterminaVariablesDeCopia()" id="origtrad" class="@error('origtrad') is-invalid @enderror form-select" @if($cedulaId > '0') disabled @endif>
-                                <option value="">Indica ...</option>
-                                <option value="original">Cédula original</option>
-                                <option value="traducción">Traducción de cédula</option>
-                            </select>
-                            <div class="form-text"></div>
-                            @error('origtrad') <error> {{ $message }}</error>@enderror
-                        </div>
-
-                        <!-- Copia de -->
-                        <div class="col-4 form-group">
-                            <label for="copiade" class="form-label">Copia de<red>@if($origtrad=='traducción')*@endif</red></label>
-                            <select wire:model.live="copiade" wire:change="DeterminaVariablesDeCopia()" id="copiade" class="@error('copiade') is-invalid @enderror form-select" @if($origtrad=='original' or $cedulaId != '0') disabled @endif>
-                                <option value="">Indica ...</option>
-                                @foreach($CedsOriginales as $o)
-                                    <option value="{{ $o->url_id }}">
-                                        {{ $o->url_cjarsiglas }}:
-                                        {{ $o->url_url }}
-                                        [{{ $o->url_lencode }}]
-                                        @if($o->url_edo < '4') -- EN EDICIÓN -- @endif
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="form-text"></div>
-                            @error('copiade') <error> {{ $message }}</error>@enderror
-                        </div>
-
-                        <!-- Tipo de cédula -->
-                        <div class="col-4 form-group">
-                            <label for="tipoCedula" class="form-label">Tipo de ćedula<red>*</red></label>
-                            <select wire:model.live="tipoCedula" wire:change="DeterminaVariablesDeCopia()" id="tipoCedula" class="@error('tipoCedula') is-invalid @enderror form-select" @if($origtrad=='traducción' ) disabled @endif>
-                                <option value="">Indica ...</option>
-                                @foreach($TiposDeCedula as $t)
-                                    <option value="{{ $t->cced_tipo }}"> {{ $t->cced_tipo }}</option>
-                                @endforeach
-                            </select>
-                            <div class="form-text"></div>
-                            @error('tipoCedula') <error> {{ $message }}</error>@enderror
-                        </div>
-                    </div>
-
-                    <!-- Datos generales de la cédula -->
-                    <div class="row">
-                        <!-- Lengua -->
-                        <div class="col-4 form-group">
-                            <label for="lengua" class="form-label">Lengua<red>*</red></label>
-                            <select wire:model.live="lengua" wire:change="DeterminaVariablesDeCopia()" id="lengua" class="@error('lengua') is-invalid @enderror form-select">
-                                <option value="">Indica....</option>
-                                @foreach($lenguas as $l)
-                                    <option value="{{ $l->len_code }}">{{ $l->len_code }}: {{ $l->len_lengua }} {{ $l->len_variante }}</option>
-                                @endforeach
-                            </select>
-                            <div class="form-text"></div>
-                            @error('lengua') <error> {{ $message }}</error>@enderror
-                        </div>
-
-                        <!-- MODAL: titulo --->
-                        <div class="col-4 form-group">
-                            <label for="titulo" class="form-label">
-                                Titulo<red>*</red>
-                            </label>
-                            @if($origtrad=='traducción') <span onclick="VerNoVer('titulo','Original')" class="PaClick">Ver original</span> @endif
-                            <input wire:model="titulo" id="titulo" class="@error('titulo') is-invalid @enderror form-control" type="text" >
-                            <div class="form-text"></div>
-                            @error('titulo')<error>{{ $message }}</error>@enderror
-
-                            <div id="sale_tituloOriginal" style="display:none;font-size:90%;">
-                                {{ $tituloOrig }}
-                            </div>
-                        </div>
-
-                        <!-- MODAL: url web jardin -->
-                        <div class="col-4 form-group">
-                            <label for="url" class="form-label">URL <red>*</red></label>
-                            &nbsp; <i class="bi bi-info-square-fill agregar" wire:click="ProponUrl()"> Proponer </i>
-                            <input wire:model="url"  id="url" class="@error('url') is-invalid @enderror form-control" @if($url=='inicio' or $origtrad=='traducción') disabled @endif type="text" >
-                            <div class="form-text">Sin espacios, ñ, acentos ni caracteres</div>
-                            @error('url')<error>{{ $message }}</error>@enderror
-                        </div>
-
-                        <!-- MODAL: Resumen -->
-                        <div class="col-9 form-group">
-                            <label for="resumen" class="form-label">Resumen</label>
-                            @if($origtrad=='traducción') <span onclick="VerNoVer('resumen','Original')" class="PaClick">Ver original</span> @endif
-                            <textarea wire:model="resumen" id="resumen" class="@error('resumen') is-invalid @enderror form-control"></textarea>
-                            <div class="form-text"> </div>
-                            @error('resumen')<error>{{ $message }}</error>@enderror
-                            <div id="sale_resumenOriginal" style="display:none;">
-                                {{ $resumenOrig }}
-                            </div>
-                        </div>
-
-                        <!-- MODAL: checkbox activo -->
-                        <div class="col-3 form-group my-2">
-                            <div class="form-check">
-                                <input class="form-check-input" wire:model.live="act" type="checkbox" id="act">
-                                <label class="form-check-label" for="checkDefault"> Publicar página </label><br>
-                                @if($act==FALSE)<error>La cédula no está disponible al público</b></error> @else El público puede acceder a este sitio @endif
-                            </div>
-                        </div>
-
-                        <!-- MODAL: Borrar-->
-                        @if( $cedulaId > '0')
-                            <div class="col-6 form-group my-2">
-                                <i  wire:click="EliminarSitioWeb()" class="bi bi-trash agregar"> Eliminar página completa</i>
-                            </div>
-                        @endif
-                    </div>
-
-                    @if($cedulaId > '0')
-                        <!-- Autor, editor y traductor -->
-                        <div class="row my-2">
-                            <hr>
-                            <!-- Autor -->
-                            <div class="col-4 form-group">
-                                <label for="" class="form-label">Autor(es)<red></red></label>
-                                <i wire:click="AbreModalDeBuscarAutor('Autor')" class="bi bi-plus-square-fill agregar"></i>
-                                @if($CedAutores AND $cedulaId > '0')
-                                    <?php $cont='1';?>
-                                    @foreach ($CedAutores->where('aut_tipo','Autor') as $a)
-                                        <div class="elemento" style="font-size: 80%;">
-                                            {{ $cont++ }} {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
-                                            <i wire:click="BorrarAutor('{{ $a->aut_id }}')" class="bi bi-trash agregar"></i>
-                                        </div>
-                                    @endforeach
-                                @endif
-                            </div>
-
-
-                            <!-- Editor -->
-                            <div class="col-4 form-group">
-                                <label for="" class="form-label">Editor<red></red></label>
-                                <i wire:click="AbreModalDeBuscarAutor('Editor')" class="bi bi-plus-square-fill agregar"></i>
-                                @if($CedAutores AND $cedulaId > '0')
-                                    <?php $cont='1';?>
-                                    @foreach ($CedAutores->where('aut_tipo','Editor') as $a)
-                                        <div class="elemento" style="font-size: 80%;">
-                                            {{ $cont++ }} {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
-                                            <i wire:click="BorrarAutor('{{ $a->aut_id }}')" class="bi bi-trash agregar"></i>
-                                        </div>
-                                    @endforeach
-
-                                @endif
-                            </div>
-
-                            <!-- Traductor -->
-                            <div class="col-4 form-group">
-                                @if($this->origtrad=='traducción')
-                                    <label for="" class="form-label">Traductor<red></red></label>
-                                    <i wire:click="AbreModalDeBuscarAutor('Traductor')" class="bi bi-plus-square-fill agregar"></i>
-                                    @if($CedAutores AND $cedulaId > '0')
-                                        <?php $cont='1';?>
-                                        @foreach ($CedAutores->where('aut_tipo','Traductor') as $a)
-                                            <div class="elemento" style="font-size: 80%;">
-                                                {{ $cont++ }} {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
-                                                <i wire:click="BorrarAutor('{{ $a->aut_id }}')" class="bi bi-trash agregar"></i>
-                                            </div>
-                                        @endforeach
-                                    @endif
-                                @endif
-                            </div>
-                        </div>
-
-                        <!-- Palabras clave -->
-                        <div class="row my-2">
-                            <hr>
-                            <h5>Metadatos</h5>
-                            <!-- especies -->
-                            <div class="col-6 form-group">
-                                <label for="" class="form-label">Especie(s)<red></red></label><br>
-                                <select wire:model="" id="" class="@error('') is-invalid @enderror form-select agregar" style="width:33%;">
-                                    <option value="">Selecciona ....</option>
-                                </select>
-                                <i wire:click="" class="bi bi-plus-circle agregar"></i>
-                                <div class="form-text"></div>
-                                @error('')<error>{{ $message }}</error>@enderror
-                            </div>
-
-                            <!-- localidades -->
-                            <div class="col-6 form-group">
-                                <label for="" class="form-label">Localidad(es)<red></red></label><br>
-                                <select wire:model="" id="" class="@error('') is-invalid @enderror form-select agregar" style="width:33%;">
-                                    <option value="">Selecciona ....</option>
-                                </select>
-                                <i wire:click="" class="bi bi-plus-circle agregar"></i>
-                                <div class="form-text"></div>
-                                @error('')<error>{{ $message }}</error>@enderror
-                            </div>
-
-                            <!-- Usos -->
-                            <div class="col-6 form-group">
-                                <label for="" class="form-label">Uso(s)<red></red></label><br>
-                                <select wire:model="" id="" class="@error('') is-invalid @enderror form-select agregar" style="width:33%;">
-                                    <option value="">Selecciona ....</option>
-                                </select>
-                                <i wire:click="" class="bi bi-plus-circle agregar"></i>
-                                <div class="form-text"></div>
-                                @error('')<error>{{ $message }}</error>@enderror
-                            </div>
-
-                            <!-- Pals. clave -->
-                            <div class="col-6 form-group">
-                                <label for="" class="form-label">Palabra(s) clave<red></red></label><br>
-                                <select wire:model="" id="" class="@error('') is-invalid @enderror form-select agregar" style="width:33%;">
-                                    <option value="">Selecciona ....</option>
-                                </select>
-                                <i wire:click="" class="bi bi-plus-circle agregar"></i>
-                                <div class="form-text"></div>
-                                @error('')<error>{{ $message }}</error>@enderror
-                            </div>
-                        </div>
-                    @else
-                        <div class="alert alert-warning my-3" role="alert">
-                            Luego de generar la cédula, deberás regresar para agrega <b>autores</b>, <b>editores</b> y <b>metadatos</b>.
-                        </div>
-                    @endif
-
-
-                </div>
-                <div class="modal-footer">
-                    <button wire:click="GuardaCedula()" class="btn btn-primary">
-                        <span wire:loading.remove> Guardar </span>
-                        <span wire:loading style="display:none;"> <red> ..guardando...</red> </span>
-                    </button>
-
-                    <button wire:click="CierraModalCedula()" class="btn btn-secondary">
-                        Cerrar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ----------------------------- TERMINA MODAL DE EDICIÓN DE CÉDULA --------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
 
 
 
@@ -624,7 +324,7 @@
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- ---------------------------- INICIA MODAL DE BUSCAR AUTOR ----------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
-    <div wire:ignore.self class="modal fade" id="ModalDeBusquedaDeElAutor" tabindex="-1" role="dialog">
+    {{-- <div wire:ignore.self class="modal fade" id="ModalDeBusquedaDeElAutor" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -705,17 +405,12 @@
                                 <!-- ------------------------------------------------------------------------------------- -->
                                 @if($BuscaAutor_Ganon->count() != '0')
                                     <h5 class="my-3">Confirma los datos del autor id {{ $BuscaAutor_id }}:</h5>
-                                    {{-- <div class="row">
-                                        <div class="col-4 col-md-3 px-1"><b>Orden</b></div>
-                                        <div class="col-8 col-md-3 px-1"><input wire:model="BuscaAutor_orden" class="@error('BuscaAutor_orden') is-invalid @enderror form-control" type="mail" style="width:90%;"> </div>
-                                    </div> --}}
                                     <div class="row">
                                         <div class="col-4 col-md-3 px-1"><b>Nombre</b></div>
                                         <div class="col-8 col-md-9 px-1"><input class="form-control" value="{{ $BuscaAutor_Ganon->caut_nombre }} {{ $BuscaAutor_Ganon->caut_apellido1 }} {{ $BuscaAutor_Ganon->caut_apellido2 }}" readonly></div>
                                     </div>
                                      <div class="row">
                                         <div class="col-4 col-md-3 px-1"><b>Nombre de autor:</b></div>
-                                        {{-- <div class="col-8 col-md-9 px-1"><input class="form-control" value="{{ $BuscaAutor_Ganon->caut_nombre }} {{ $BuscaAutor_Ganon->caut_apellido1 }} {{ $BuscaAutor_Ganon->caut_apellido2 }}" readonly></div> --}}
                                     </div>
 
                                     <div class="row">
@@ -752,26 +447,21 @@
 
                 </div>
                 <div class="modal-footer">
-                    {{-- <button wire:click="GuardaCedula()" class="btn btn-primary">
-                        <span wire:loading.remove> Guardar </span>
-                        <span wire:loading style="display:none;"> <red> ..guardando...</red> </span>
-                    </button> --}}
-
                     <button wire:click="CierraModalDeBuscarAutor()" class="btn btn-secondary">
                         Cerrar
                     </button>
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 
-    <livewire:sistema.autores-modal-component>
+    {{-- <livewire:sistema.modal-cedula-autores-component > --}}
 
 
 
 
-    <script>
+    {{-- <script>
         /* ### Script para abrir y cerrar modal de Cédula */
         Livewire.on('AbreModalDeCedula', () => {
             $('#ModalDeEdicionDeCedulas').modal('show');
@@ -805,6 +495,6 @@
         document.getElementById('MiBotonPersonalizado').addEventListener('click', function() {
             document.getElementById('MiInputFile').click();
         });
-    </script>
+    </script> --}}
 
 </div>

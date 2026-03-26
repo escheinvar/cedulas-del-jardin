@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('aut_id');
             $table->foreignId('aut_cautid')->constrained('cat_autores','caut_id'); ##### Id del autor
             $table->foreignId('aut_urlid')->constrained('cedula_url','url_id'); ##### Id de la cédula
+            $table->string('aut_urltxt');  ##### url_txt (sin traducción)
             $table->enum('aut_act',['0','1'])->default('1');  ##### borrado lógico inactivo
             $table->enum('aut_del',['0','1'])->default('0'); ##### borrado lógico
             $table->decimal('aut_orden',4,2)->default('1.0'); ##### orden del autor

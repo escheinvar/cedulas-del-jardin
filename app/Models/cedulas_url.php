@@ -55,8 +55,43 @@ class cedulas_url extends Model
     }
 
     public function autores():HasMany {
-        return $this->HasMany(ced_autores::class,'aut_urlid','url_id')
+        ############## Falta agregar cjarsiglas!!!!
+        return $this->HasMany(ced_autores::class,'aut_urltxt','url_urltxt')
+            ->where('aut_tipo','Autor')
             ->where('aut_act','1')
             ->where('aut_del','0');
+    }
+
+    public function editores():HasMany {
+        return $this->HasMany(ced_autores::class,'aut_urlid','url_id')
+            ->where('aut_tipo','Editor')
+            ->where('aut_act','1')
+            ->where('aut_del','0');
+    }
+
+    public function traductores():HasMany {
+        return $this->HasMany(ced_autores::class,'aut_urlid','url_id')
+            ->where('aut_tipo','Traductor')
+            ->where('aut_act','1')
+            ->where('aut_del','0');
+    }
+
+    public function ubicaciones():HasMany {
+        return $this->HasMany(ced_ubica::class, 'ubi_urlid','url_id')
+            ->where('ubi_act','1')
+            ->where('ubi_del','0');
+    }
+
+    public function alias():HasMany {
+        return $this->HasMany(ced_alias::class, 'ali_urlid','url_id')
+            ->where('ali_act','1')
+            ->where('ali_del','0');
+    }
+
+    public function especies():HasMany{
+        ############## Falta agregar cjarsiglas!!!!
+        return $this->HasMany(ced_sp::class, 'sp_urltxt','url_urltxt')
+            ->where('sp_act','1')
+            ->where('sp_del','0');
     }
 }

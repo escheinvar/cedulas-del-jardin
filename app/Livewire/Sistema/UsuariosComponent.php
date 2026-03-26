@@ -124,7 +124,7 @@ class UsuariosComponent extends Component
             'usrname'=>'required|unique:users,usrname,'.$this->usrId,
         ]);
         ##### Si hay rol pendiente de guardar, lo guarda
-        if($this->NvoJardin !='' AND $this->NvoRol != ''){$this->AgregarRol();}
+        if($this->NvoJardin !='' AND $this->NvoRol != ''){$this->AgregarRol_Modal();}
         ##### convierte variable checkbox
         if($this->Inactiva==TRUE){$act='0';}else{$act='1';}
         if($this->mensajes==TRUE){$mens='1';}else{$mens='0';}

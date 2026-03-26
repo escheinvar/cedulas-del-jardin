@@ -19,11 +19,15 @@ class ced_alias extends Model
         'ali_id',
         'ali_act',
         'ali_del',
+
+        'ali_urlid',
         'ali_cjarsiglas',
         'ali_urltxt',
+        'ali_urlurl',
 
         'ali_calitipo',
         'ali_txt',
+        'ali_txt_tr',
         'ali_lengua',
     ];
 

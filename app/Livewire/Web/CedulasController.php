@@ -4,6 +4,7 @@ namespace App\Livewire\Web;
 
 use App\Models\ced_autores;
 use App\Models\ced_sp;
+use App\Models\ced_ubica;
 use App\Models\ced_usos;
 use App\Models\cedulas_txt;
 use App\Models\cedulas_url;
@@ -22,6 +23,7 @@ class CedulasController extends Component
     public $objs; ##### get() de fotos de la cédulas
     public $idiomaSelected; ##### Idioma seleccionado en el select de vista
     public $txt; #### get() de cedula_txt con todo el texto
+    public $verSp, $verUbica, $verAlias; ##### flags para VerNoVer apartados de sp, ubicación y alias.
 
     ###### Variables de modal Traduce titulo
     public $NuevoTituloTraducido;
@@ -57,6 +59,12 @@ class CedulasController extends Component
             ->with('jardin') ##quitar cuando quite $traducciones en lína 169 de la vista
             ->orderBy('url_lencode')
             ->get();
+
+        ##### Carga vauribbles
+        $this->verSp='0';
+        $this->verUbica='0';
+        $this->verAlias='0';
+
     }
 
     public function EliminaImagen($id){
@@ -77,6 +85,10 @@ class CedulasController extends Component
         ced_sp::where('sp_id',$id)->update([
             'sp_del'=>'1',
         ]);
+    }
+
+    public function VerNoVer($apartado){
+        if($this->$apartado =='0'){$this->$apartado='1';}else{$this->$apartado='0';}
     }
 
     public function render(){
@@ -161,6 +173,10 @@ class CedulasController extends Component
                 ->on('nom_infrasp','ilike','sp_ssp');
             })
             ->get();
+        $localidades=ced_ubica::where('ubi_cjarsiglas',$this->url->url_cjarsiglas)
+            ->where('ubi_urltxt',$this->url->url_urltxt)
+            ->where('ubi_act','1')->where('ubi_del','0')
+            ->get();
 
         return view('livewire.web.cedulas-controller',[
             'autores'=>$autores,
@@ -168,8 +184,10 @@ class CedulasController extends Component
             'editores'=>$editores,
             'objsPpal'=>$objsPpal,
             'especies'=>$especies,
+            'localidades'=>$localidades,
         ]);
     }
+
 
     ############################################################
     ############################## Abre editor de texto
@@ -252,6 +270,15 @@ class CedulasController extends Component
         $this->dispatch('AbreModalUsoEnCedula',$datos);
     }
 
+    ##########################################################
+    ################## Modal externo Agregar Ubicación
+    public function AbrirModalDeUbicacion(){
+        $datos=[
+            'jardin'=>$this->url->url_cjarsiglas,
+            'urltxt'=>$this->url->url_urltxt
+        ];
+        $this->dispatch('AbreModalAsignaUbicacion',$datos);
+    }
 }
 
 

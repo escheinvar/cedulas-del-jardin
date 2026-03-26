@@ -18,6 +18,7 @@ class ced_autores extends Model
         'aut_id',
         'aut_cautid',
         'aut_urlid',
+        'aut_urltxt',
         'aut_act',
         'aut_del',
         'aut_orden',
