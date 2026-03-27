@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('uso_spname')->nullable(); ##### nombre de especie según tabla ced_sp
             $table->string('uso_cjarsiglas');     #### Jardín al que pertenece
             $table->string('uso_urltxt');     #### urltxt de la cédula ej: huaje (sin traducción)
+            $table->string('uso_key'); ##### key: jardin + urltxt (sin traducción)NOTA: key con traducción es equivalente a url_id
 
             $table->string('uso_categoria')->nullable();  ##### cuso_catego del catálogo cat_uso
             $table->string('uso_uso')->nullable(); ##### cuso_uso del catálogo cat_uso

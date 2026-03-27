@@ -44,10 +44,11 @@ class ModalCedulaEspecieComponent extends Component
         $this->resetErrorBag();
     }
 
-    public function CerrarModalDeBuscarEspecie(){
+    public function CerrarModalDeBuscarEspecie($reload){
+        if(!isset($reload) or $reload==''){$reload='1';}
         $this->limpiarModalDeBuscarEspecie();
         $this->aliasp_reino='';
-        $this->dispatch('CierraModalDeBuscarEspecie',reload:'1');
+        $this->dispatch('CierraModalDeBuscarEspecie',reload:$reload);
     }
 
     public function DeterminaReino(){

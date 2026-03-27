@@ -70,8 +70,7 @@ class ModalCedulaBuscautorComponent extends Component
 
         ##### Genera query de búsqueda
         $busqueda=cat_autores::query();
-        $busqueda=$busqueda->where('caut_cjarsiglas',$this->jardinSel)
-            ->where('caut_act','1')
+        $busqueda=$busqueda->where('caut_act','1')
             ->where('caut_del','0');
 
         ###### Busca por nombre
@@ -116,6 +115,7 @@ class ModalCedulaBuscautorComponent extends Component
         $datos=[
             'aut_cautid'=>$this->BuscaAutor_id,
             'aut_urlid'=>$this->cedulaId, #### if id != 0
+            'aut_cjarsiglas'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_cjarsiglas'),
             'aut_urltxt'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt'),
             'aut_corresponding'=>$corr,
             'aut_name'=>$this->BuscaAutor_name,

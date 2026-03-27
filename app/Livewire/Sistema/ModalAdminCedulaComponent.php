@@ -5,7 +5,9 @@ namespace App\Livewire\Sistema;
 use App\Models\cat_tipocedula;
 use App\Models\cedulas_url;
 use App\Models\ced_autores;
+use App\Models\ced_sp;
 use App\Models\ced_ubica;
+use App\Models\ced_usos;
 use App\Models\lenguas;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -28,7 +30,8 @@ class ModalAdminCedulaComponent extends Component
     ##### vars. del modal Edición de ćedula
     public $cedulaId, $origtrad, $copiade, $tipoCedula, $lengua;
     public $url, $titulo, $tituloOrig, $resumen, $resumenOrig, $act;
-    public $CedAutores, $CedEditores, $CedTraductores,$CedSp, $CedUbica, $CedAlias;
+    public $CedAutores, $CedEditores, $CedTraductores,$CedSp, $CedUsos, $CedUbica, $CedAlias;
+    public $verTituloOrig, $verResumenOrig, $verAutor, $verEditor, $verTraductor, $verUbicacion, $verAlias, $verSp, $verUso;
 
     #[On('AbreModalDeCedula')]
     public function AbriendoModalCedula($datos){
@@ -51,9 +54,9 @@ class ModalAdminCedulaComponent extends Component
             $this->tipoCedula=$dato->url_ccedtipo;
             $this->lengua=$dato->url_lencode;
             $this->titulo=$dato->url_titulo;
-            $this->tituloOrig=$dato->url_tituloOrig;
+            $this->tituloOrig=$dato->url_tituloorig;
             $this->resumen=$dato->url_resumen;
-            $this->resumenOrig=$dato->url_resumenOrig;
+            $this->resumenOrig=$dato->url_resumenorig;
             // $this->CedAutores=$dato->autores;
         }else{
             // $this->CedAutores=collect();
@@ -64,10 +67,14 @@ class ModalAdminCedulaComponent extends Component
     public function mount(){
         $this->jardinSel='';
         $this->origtrad='original';
+        $this->verAutor='0'; $this->verEditor='0'; $this->verTraductor='0';
+        $this->verUbicacion='0'; $this->verAlias='0'; $this->verSp='0'; $this->verUso='0';
+        $this->verTituloOrig='0'; $this->verResumenOrig='0';
     }
 
     public function LimpiaModal(){
         $this->reset('origtrad', 'copiade', 'tipoCedula', 'lengua', 'url', 'titulo', 'tituloOrig', 'resumen', 'resumenOrig', 'act');
+        $this->reset(['verAutor', 'verEditor', 'verTraductor', 'verUbicacion', 'verAlias', 'verSp', 'verUso']);
         // $this->act=FALSE;
         $this->resetErrorBag();
         $this->resetValidation();
@@ -201,11 +208,16 @@ class ModalAdminCedulaComponent extends Component
     }
 
     public function AbreModalDeBuscarAutor($tipo){
+        if($tipo=='Autor'){$this->verAutor='1';}
+        elseif($tipo=='Editor'){$this->verEditor='1';}
+        elseif($tipo=='Traductor'){$this->verTraductor='1';}
+
         $datos=['tipo'=>$tipo, 'cedulaId'=>$this->cedulaId, 'jardinSel'=>$this->jardinSel];
         $this->dispatch('AbreModalDeBuscarAutor',$datos);
     }
 
     public function AbrirModalDeUbicacion($ubicaId){
+        $this->verUbicacion='1';
         $datos=[
             'ubicaId'=>$ubicaId,
             'urlid'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_id'),
@@ -223,6 +235,52 @@ class ModalAdminCedulaComponent extends Component
         $this->CedAutores=$dato->autores;
     }
 
+    public function AbrirModalDeBuscarEspecie(){
+        $this->verSp='1';
+        $datos=[
+            'jardin'=>$this->jardinSel,
+            'urltxt'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt'),
+        ];
+        $this->dispatch('AbreModalDeBuscarEspecie',$datos);
+    }
+
+    public function BorrarEspecieDeCedula($id){
+        ###### Elimina usos de la especie
+        $ja=ced_usos::where('uso_spid',$id)->update(['uso_del'=>'1']);
+        if($ja > '0'){
+            paLog('Se eliminaron usos de sp id'.$id, 'ced_usos','uno o más');
+        }
+        ##### Elimina especie
+        ced_sp::where('sp_id',$id)->update(['sp_del'=>'1']);
+        paLog('Se eliminó una especie','ced_sp',$id);
+    }
+
+    public function AbrirModalDeUso($usoId, $spId){
+        $this->verUso='1';
+        $datos=[
+                'usoid'=>$usoId, ### o id del uso
+                'spid'=>$spId, ### Id de sp_id de tabla ced_sp
+                'jardin'=>$this->jardinSel,
+                'urltxt'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt'),
+            ];
+        $this->dispatch('AbreModalUsoEnCedula',$datos);
+    }
+
+    public function AbrirModalDeAlias($aliasId){
+        $this->verAlias='1';
+        $datos=[
+            'aliasId'=>$aliasId, ### o id del uso
+            'urlId'=>$this->cedulaId,
+            // 'jardin'=>$this->jardinSel,
+            // 'urltxt'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt'),
+        ];
+
+        $this->dispatch('AbreModalAlias',$datos);
+    }
+
+    public function VerNoVer($tipo){
+        if($this->$tipo=='1'){$this->$tipo='0';}else{$this->$tipo='1';}
+    }
     public function render() {
         ##### Obtiene total de url's originales
         $CedsOriginales= cedulas_url::where('url_cjarsiglas','ilike',$this->jardinSel)
@@ -239,6 +297,7 @@ class ModalAdminCedulaComponent extends Component
                 ->with('editores')
                 ->with('traductores')
                 ->with('especies')
+                ->with('usos')
                 ->with('ubicaciones')
                 ->with('alias')
                 ->first();
@@ -247,6 +306,7 @@ class ModalAdminCedulaComponent extends Component
             $this->CedEditores=$dato->editores;
             $this->CedTraductores=$dato->traductores;
             $this->CedSp=$dato->especies;
+            $this->CedUsos=$dato->usos;
             $this->CedUbica=$dato->ubicaciones;
             $this->CedAlias=$dato->alias;
         }else{
@@ -254,6 +314,7 @@ class ModalAdminCedulaComponent extends Component
             $this->CedEditores=collect();
             $this->CedTraductores=collect();
             $this->CedSp=collect();
+            $this->CedUsos=collect();
             $this->CedUbica=collect();
             $this->CedAlias=collect();
         }

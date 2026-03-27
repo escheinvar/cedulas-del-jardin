@@ -9,7 +9,7 @@
                     <h3 class="modal-title">
                         Especies para {{ $aliasp_urltxt }} en {{ $aliasp_jardin }}
                     </h3>
-                    <button wire:click="CerrarModalDeBuscarEspecie()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
+                    <button wire:click="CerrarModalDeBuscarEspecie('0')" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
                 </div>
                 <!-- ----------------------------  cuerpo del modal --------------------------->
                 <div class="modal-body" >
@@ -95,9 +95,9 @@
                                     @error('aliasp_ssp')<error>{{ $message }}</error>@enderror
                                 </div>
                             @endif
-                            <!-- Varidedad o raza -->
+                            <!-- Cultivar/variante/raza -->
                             <div class="col-12 col-md-6 form-group">
-                                <label for="aliasp_var" class="form-label">Variedad o raza<red></red></label>
+                                <label for="aliasp_var" class="form-label">Cultivar o raza:<red></red></label>
                                 <input wire:model="aliasp_var" id="aliasp_var" class="@error('aliasp_var') is-invalid @enderror form-control" @if($aliasp_sp =='') disabled @endif type="text">
                                 <div class="form-text"></div>
                                 @error('aliasp_var')<error>{{ $message }}</error>@enderror
@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button wire:click="CerrarModalDeBuscarEspecie()" class="btn btn-secondary">
+                    <button wire:click="CerrarModalDeBuscarEspecie('0')" class="btn btn-secondary">
                         Cerrar
                     </button>
 

@@ -18,6 +18,7 @@ class ced_autores extends Model
         'aut_id',
         'aut_cautid',
         'aut_urlid',
+        'aut_cjarsiglas',
         'aut_urltxt',
         'aut_act',
         'aut_del',
@@ -30,6 +31,19 @@ class ced_autores extends Model
         'aut_tipo',
         'aut_usrid',
     ];
+
+    ################################################################
+    ############# Función que genera automáticamente la columna key
+    ############# a partir de concatenar cjarsiglas y urltxt
+    protected static function boot() {
+        parent::boot();
+        static::saving(function ($registro) {
+            if ($registro->aut_cjarsiglas && $registro->aut_urltxt) {
+                $registro->aut_key = trim($registro->aut_cjarsiglas . '@' . $registro->aut_urltxt);
+            }
+        });
+    }
+
 
     public function autor():BelongsTo{
         return $this->belongsTo(cat_autores::class,'aut_cautid','caut_id');

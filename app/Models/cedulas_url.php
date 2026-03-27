@@ -24,13 +24,10 @@ class cedulas_url extends Model
         'url_edit',
         'url_ciclo',
         'url_ccedtipo',
-        'url_ccedtipo',
 
-        'url_cjarsiglas',
         'url_cjarsiglas',
         'url_urltxt',
         'url_url',
-        'url_lencode',
         'url_lencode',
         'url_tradid',
 
@@ -45,6 +42,19 @@ class cedulas_url extends Model
         'url_doi',
 
     ];
+    ################################################################
+    ############# Función que genera automáticamente la columna key
+    ############# a partir de concatenar cjarsiglas y urltxt
+    protected static function boot() {
+        parent::boot();
+        static::saving(function ($registro) {
+            if ($registro->url_cjarsiglas && $registro->url_urltxt) {
+                $registro->url_key = trim($registro->url_cjarsiglas . '@' . $registro->url_urltxt);
+            }
+        });
+    }
+
+
 
     public function jardin(): BelongsTo {
         return $this->belongsTo(CatJardinesModel::class,'url_cjarsiglas','cjar_siglas');
@@ -55,8 +65,7 @@ class cedulas_url extends Model
     }
 
     public function autores():HasMany {
-        ############## Falta agregar cjarsiglas!!!!
-        return $this->HasMany(ced_autores::class,'aut_urltxt','url_urltxt')
+        return $this->HasMany(ced_autores::class,'aut_key','url_key')
             ->where('aut_tipo','Autor')
             ->where('aut_act','1')
             ->where('aut_del','0');
@@ -89,9 +98,18 @@ class cedulas_url extends Model
     }
 
     public function especies():HasMany{
-        ############## Falta agregar cjarsiglas!!!!
-        return $this->HasMany(ced_sp::class, 'sp_urltxt','url_urltxt')
+        return $this->HasMany(ced_sp::class, 'sp_key','url_key')
             ->where('sp_act','1')
             ->where('sp_del','0');
+    }
+
+    public function usos():HasMany{
+        return $this->HasMany(ced_usos::class, 'uso_key','url_key')
+            ->join('ced_sp', 'sp_id','uso_spid')
+            ->where('uso_act','1')
+            ->where('uso_del','0')
+            ->where('sp_act','1')
+            ->where('sp_del','0');
+
     }
 }

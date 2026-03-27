@@ -22,7 +22,7 @@ class ced_sp extends Model
 
         'sp_cjarsiglas',
         'sp_urltxt',
-
+        ###'sp_key', ## no es necesario aquí xq se calcula automático
         'sp_scname',
         'sp_reino',
         'sp_familia',
@@ -30,7 +30,19 @@ class ced_sp extends Model
         'sp_especie',
         'sp_ssp',
         'sp_var',
+
     ];
+    ################################################################
+    ############# Función que genera automáticamente la columna key
+    ############# a partir de concatenar cjarsiglas y urltxt
+    protected static function boot() {
+        parent::boot();
+        static::saving(function ($registro) {
+            if ($registro->sp_cjarsiglas && $registro->sp_urltxt) {
+                $registro->sp_key = trim($registro->sp_cjarsiglas . '@' . $registro->sp_urltxt);
+            }
+        });
+    }
 
     public function usos():HasMany{
         return $this->hasMany(ced_usos::class, 'uso_spid','sp_id')

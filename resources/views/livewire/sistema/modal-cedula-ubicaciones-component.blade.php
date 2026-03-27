@@ -34,7 +34,7 @@
 
                 <!-- Municipio -->
                 <div class="col-12 col-md-6 my-1 form-group">
-                    <label for="ubica_mpio" class="form-label">Municipio<red></red></label>
+                    <label for="ubica_mpio" class="form-label">Municipio:<red></red>@if($ubica_ubicaId > '0') {{ $ubica_mpio }}@endif</label>
                     <select wire:model.live="ubica_mpio" wire:change="CalculaTextoUbicacion()" id="ubica_mpio" class="@error('ubica_mpio') is-invalid @enderror form-select"  @if($ubica_copia=='1') disabled @endif>
                         @if($ubica_edo == '')
                             <option value="">Selecciona entidad</option>

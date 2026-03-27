@@ -29,6 +29,18 @@ class ced_usos extends Model
         'uso_describe',
     ];
 
+    ################################################################
+    ############# Función que genera automáticamente la columna key
+    ############# a partir de concatenar cjarsiglas y urltxt
+    protected static function boot() {
+        parent::boot();
+        static::saving(function ($registro) {
+            if ($registro->uso_cjarsiglas && $registro->uso_urltxt) {
+                $registro->uso_key = trim($registro->uso_cjarsiglas . '@' . $registro->uso_urltxt);
+            }
+        });
+    }
+
     public function especie():BelongsTo{
         return $this->belongsTo(ced_sp::class,'sp_id','uso_spid');
     }

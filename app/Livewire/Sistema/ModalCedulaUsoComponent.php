@@ -44,7 +44,6 @@ class ModalCedulaUsoComponent extends Component
             #### Carga datos:
             $dato=ced_usos::where('uso_id',$this->uso_usoid)->first();
             $this->uso_catego= $dato->uso_categoria;
-            $this->uso_uso= $dato->uso_uso;
             $this->uso_explica=$dato->uso_describe;
             $this->uso_uso=cat_usos::where('cuso_uso', $dato->uso_uso)->value('cuso_id');
             ### ojo: las partes usadas ($this->uso_usosPartes) se cargan en render
@@ -57,9 +56,7 @@ class ModalCedulaUsoComponent extends Component
                 ->value('uso_partes');
             if($partes != ''){
                 $this->uso_usosPartes=explode(';',$partes);
-
             }
-
 
         }else{
             $this->uso_catego= '';
@@ -74,6 +71,11 @@ class ModalCedulaUsoComponent extends Component
     public function mount(){
         $this->uso_sp=ced_sp::first();
         $this->uso_usosPartes=[];
+        if($this->uso_usoid > '0'){
+            $uso=ced_usos::where('uso_id',$this->uso_usoid)->value('uso_uso');
+            $this->uso_uso=cat_usos::where('cuso_uso',$uso)->value('cuso_id');
+            // dd('ja',$uso,$this->uso_uso);
+        }
     }
 
     public function limpiarModalUsoEnCedula(){
@@ -123,9 +125,10 @@ class ModalCedulaUsoComponent extends Component
             'uso_uso'=>'required',
         ]);
 
-        ##### Construye arra
+        ##### Construye array
         $datos=[
             'uso_spid'=>$this->uso_sp->sp_id,
+            'uso_spname'=>ced_sp::where('sp_id',$this->uso_sp->sp_id)->value('sp_scname'),
             'uso_cjarsiglas'=>$this->uso_jardin,
             'uso_urltxt'=>$this->uso_urltxt,
             'uso_categoria'=>$this->uso_catego,

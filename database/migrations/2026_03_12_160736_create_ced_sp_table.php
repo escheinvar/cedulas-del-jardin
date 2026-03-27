@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('sp_del',['0','1'])->default('0'); ##### borrado lógico
             $table->string('sp_cjarsiglas');     #### Jardín al que pertenece
             $table->string('sp_urltxt');     #### urltxt de la cédula ej: huaje (sin traducción)
+            $table->string('sp_key'); ##### key: jardin + urltxt (sin traducción)NOTA: key con traducción es equivalente a url_id
 
             $table->string('sp_scname')->nullable();  ##### Nombre científico
             $table->enum('sp_reino',['planta','animal','hongo','bacteria','protista','arquea'])->default('planta');

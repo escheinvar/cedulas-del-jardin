@@ -38,16 +38,16 @@
 
                     <!-- Uso -->
                     <div class="col-6 my-1 form-group">
-                        <label for="uso_uso" class="form-label">Uso<red>*</red></label>
+                        <label for="uso_uso" class="form-label">Uso<red>*</red>: {{ $uso_uso }}</label>
                         <select wire:model.live="uso_uso" id="uso_uso" class="@error('uso_uso') is-invalid @enderror form-select @if($uso_catego=='') disabled @endif">
-                            @if($uso_catego=='')
+                            {{-- @if($uso_catego=='')
                                 <option value="">Indicar categoria primero</option>
-                            @else
+                            @else --}}
                                 <option value="">Selecciona uso</option>
                                 @foreach($usos as $u)
-                                    <option value="{{ $u->cuso_id }}">{{ $u->cuso_id }}) {{ $u->cuso_uso }}</option>
+                                    <option wire:key="{{ $u->cuso_id }}" value="{{ $u->cuso_id }}">{{ $u->cuso_id }}) {{ $u->cuso_uso }}</option>
                                 @endforeach
-                            @endif
+                            {{-- @endif --}}
                         </select>
                         <div class="form-text"></div>
                         @error('uso_uso')<error>{{ $message }}</error>@enderror
@@ -121,7 +121,9 @@
                 </div>
 
                 <div class="col-12 form-group">
-                    <i class="bi bi-trash agregar" wire:click="EliminarUso()" wire:confirm="Estas a punto de eliminar todo el registro del uso. ¿Estás seguro de querer continuar?" style="float: right;"> Eliminar uso</i>
+                    @if($uso_usoid > '0')
+                        <i class="bi bi-trash agregar" wire:click="EliminarUso()" wire:confirm="Estas a punto de eliminar todo el registro del uso. ¿Estás seguro de querer continuar?" style="float: right;"> Eliminar uso</i>
+                    @endif
                 </div>
             </div>
 

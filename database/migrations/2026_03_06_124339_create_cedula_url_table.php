@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreign('url_cjarsiglas')->references('cjar_siglas')->on('cat_jardines')->constrained('cat_jardines','cjar_siglas');
             $table->string('url_urltxt');       #### Nombre url de la cédula (compartido con las traducciones y único por jardín)
             $table->string('url_url');          ##### Código url (url_urltxt+_+url_lencode)
+            $table->string('url_key'); ##### key: jardin + urltxt (sin traducción)NOTA: key con traducción es equivalente a url_id
             $table->string('url_lencode');      ##### Lengua de la cédula
             $table->foreign('url_lencode')->references('len_code')->on('lenguas')->constrained('lenguas','len_code');
             $table->integer('url_tradid');      ##### url_id de la cédula de la que proviene la traducción o 0 para original
