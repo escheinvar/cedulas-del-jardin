@@ -143,8 +143,10 @@
 
                         <!-- MODAL: Borrar-->
                         @if( $cedulaId > '0')
-                            <div class="col-6 form-group my-2">
-                                <i  wire:click="EliminarSitioWeb()" class="bi bi-trash agregar"> Eliminar página completa</i>
+                            <div class="col-12 form-group my-2">
+                                <i  wire:click="EliminarSitioWeb()" wire:confirm="ATENCIÓN: Estás a punto de eliminar la cédula completa, todos sus textos, todas sus imágenes y todos los metadatos asociados. ¿seguro que quieres continuar?" class="bi bi-trash agregar" style="float: right;">
+                                    Eliminar cédula
+                                </i>
                             </div>
                         @endif
                     </div>

@@ -285,9 +285,9 @@
                                 {{ url('/') }}/cedula/{{ strtolower($u->url_cjarsiglas) }}/{{ $u->url_url }}
                             </a>
                             <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('url','{{ $u->url_id }}')"></i>
-                            @if($u->url_doi != '')<b>DOI: {{ $u->url_doi }} @endif
+                            @if($u->url_doi != '')<div><b>DOI: {{ $u->url_doi }}</b> </doi>@endif
                             <!-- -------------------- switch Modo edición --------------------- -->
-                            @if($u->url_edo <='4')
+                            @if($u->url_edo <='4' and $u->url_doi == '')
                                 <div class="form-check form-switch my-1">
                                     <input  wire:change="CambiaAmodoEdicion('{{ $u->url_id }}')" class="form-check-input" value="1" type="checkbox" role="switch" id="flexSwitchCheckDefault" @if($u->url_edit=='1') checked @endif style="@if($u->url_edit=='1')background-color:red; @endif">
                                     <label class="form-check-label" style="font-size:90%;" for="flexSwitchCheckDefault">@if($u->url_edit=='0') Público @else Editando @endif</label>

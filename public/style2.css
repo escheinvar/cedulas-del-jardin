@@ -554,6 +554,13 @@ div.elemento {
     border-radius:3px;
     margin:3px;
 }
+div.elemento2 {
+    display:inline-block;
+    border:1px dashed #87796d;
+    padding:1px;
+    border-radius:3px;
+    margin:3px;
+}
 
 /* === agregar: integra ícono e input (o select)
    en un elemento ===*/
@@ -564,6 +571,13 @@ select.agregar,input.agregar{
 i.agregar{
     display:inline-block;
     color:#CDC6B9;
+    margin-left:3px;
+    margin-right: 0px;
+    cursor:pointer;
+}
+i.agregar2{
+    display:inline-block;
+    color:#87796d;
     margin-left:3px;
     margin-right: 0px;
     cursor:pointer;

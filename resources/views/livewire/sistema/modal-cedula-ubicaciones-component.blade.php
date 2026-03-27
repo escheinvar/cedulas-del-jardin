@@ -11,7 +11,8 @@
             <h3 class="modal-title">
                 @if($ubica_url)
                     Ubicación de cédula {{ $ubica_url->url_url }} de {{ $ubica_url->url_cjarsiglas }}
-                    (@if($ubica_copia=='1') copia @else original @endif) Id: {{ $ubica_ubicaId }}
+                    (@if($ubica_copia=='1') copia @else original @endif)
+                    Id: {{ $ubica_ubicaId }}
                 @endif
             </h3>
             <button wire:click="CerrarModalDeUbicacion()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
@@ -22,7 +23,7 @@
                 <!-- Estado -->
                 <div class="col-12 col-md-6 my-1 form-group">
                     <label for="ubica_edo" class="form-label">Entidad federativa<red></red></label>
-                    <select wire:model.live="ubica_edo" wire:change="CalculaTextoUbicacion()" id="ubica_edo" class="@error('ubica_edo') is-invalid @enderror form-select" @if($ubica_copia=='1') disabled @endif>
+                    <select wire:model.live="ubica_edo" wire:change="CalculaTextoUbicacion()" id="ubica_edo" class="@error('ubica_edo') is-invalid @enderror form-select" @if($ubica_ubicaId > '0') disabled @endif>
                         <option value="">Indicar...</option>
                         @foreach($edos as $e)
                             <option value="{{ $e->cedo_nombre }}">{{ $e->cedo_nombre }}</option>
@@ -35,7 +36,7 @@
                 <!-- Municipio -->
                 <div class="col-12 col-md-6 my-1 form-group">
                     <label for="ubica_mpio" class="form-label">Municipio:<red></red>@if($ubica_ubicaId > '0') {{ $ubica_mpio }}@endif</label>
-                    <select wire:model.live="ubica_mpio" wire:change="CalculaTextoUbicacion()" id="ubica_mpio" class="@error('ubica_mpio') is-invalid @enderror form-select"  @if($ubica_copia=='1') disabled @endif>
+                    <select wire:model.live="ubica_mpio" wire:change="CalculaTextoUbicacion()" id="ubica_mpio" class="@error('ubica_mpio') is-invalid @enderror form-select"  @if($ubica_ubicaId > '0') disabled @endif>
                         @if($ubica_edo == '')
                             <option value="">Selecciona entidad</option>
                         @else
@@ -52,7 +53,7 @@
                 <!-- Localidad -->
                 <div class="col-12 col-md-6 my-1 form-group">
                     <label for="ubica_localidad" class="form-label">Localidad<red></red></label>
-                    <input wire:model="ubica_localidad" wire:change="CalculaTextoUbicacion()" id="ubica_localidad" class="@error('ubica_localidad') is-invalid @enderror form-control" type="text"  @if($ubica_copia=='1' or $ubica_mpio=='') disabled @endif>
+                    <input wire:model="ubica_localidad" wire:change="CalculaTextoUbicacion()" id="ubica_localidad" class="@error('ubica_localidad') is-invalid @enderror form-control" type="text"  @if($ubica_ubicaId > '0' or $ubica_mpio=='') disabled @endif>
                     <div class="form-text"></div>
                     @error('ubica_localidad')<error>{{ $message }}</error>@enderror
                 </div>
@@ -60,7 +61,7 @@
                 <!-- Paraje -->
                 <div class="col-12 col-md-6 my-1 form-group">
                     <label for="ubica_paraje" class="form-label">Paraje<red></red></label>
-                    <input wire:model="ubica_paraje" wire:change="CalculaTextoUbicacion()" id="ubica_paraje" class="@error('ubica_paraje') is-invalid @enderror form-control" type="text"  @if($ubica_copia=='1' or $ubica_mpio=='') disabled @endif>
+                    <input wire:model="ubica_paraje" wire:change="CalculaTextoUbicacion()" id="ubica_paraje" class="@error('ubica_paraje') is-invalid @enderror form-control" type="text"  @if($ubica_ubicaId > '0' or $ubica_mpio=='') disabled @endif>
                     <div class="form-text"></div>
                     @error('ubica_paraje')<error>{{ $message }}</error>@enderror
                 </div>
@@ -68,7 +69,7 @@
                 <!-- Coords. X longitud -->
                 <div class="col-12 col-md-6 my-1 form-group">
                     <label for="ubica_x" class="form-label">Coords X (longitud)<red></red></label>
-                    <input wire:model="ubica_x" id="ubica_x" class="@error('ubica_x') is-invalid @enderror form-control" type="number"  @if($ubica_copia=='1') disabled @endif>
+                    <input wire:model="ubica_x" id="ubica_x" class="@error('ubica_x') is-invalid @enderror form-control" type="number"  @if($ubica_ubicaId > '0') disabled @endif>
                     <div class="form-text"></div>
                     @error('ubica_x')<error>{{ $message }}</error>@enderror
                 </div>
@@ -76,7 +77,7 @@
                 <!-- Coords. Y latitud -->
                 <div class="col-12 col-md-6 my-1 form-group">
                     <label for="ubica_y" class="form-label">Coords. Y (latitud)<red></red></label>
-                    <input wire:model="ubica_y" id="ubica_y" class="@error('ubica_y') is-invalid @enderror form-control" type="number"  @if($ubica_copia=='1') disabled @endif>
+                    <input wire:model="ubica_y" id="ubica_y" class="@error('ubica_y') is-invalid @enderror form-control" type="number"  @if($ubica_ubicaId > '0') disabled @endif>
                     <div class="form-text"></div>
                     @error('ubica_y')<error>{{ $message }}</error>@enderror
                 </div>
@@ -84,12 +85,12 @@
                 <!-- Ubicación -->
                 <div class="col-12 my-1 form-group">
                     <label for="ubica_ubicacion" class="form-label">Ubicación:<red>*</red></label>
-                    <textarea wire:model="ubica_ubicacion" id="ubica_ubicacion" class="@error('ubica_ubicacion') is-invalid @enderror form-control"  @if($ubica_copia=='1') disabled @endif></textarea>
+                    <textarea wire:model="ubica_ubicacion" id="ubica_ubicacion" class="@error('ubica_ubicacion') is-invalid @enderror form-control"  @if($ubica_ubicaId > '0') disabled @endif></textarea>
                     <div class="form-text"></div>
                     @error('ubica_ubicacion')<error>{{ $message }}</error>@enderror
                 </div>
 
-                @if($ubica_copia=='1')
+                @if($ubica_ubicaId > '0')
                     <!-- Ubicación transl -->
                     <div class="col-12 my-1 form-group">
                         <label for="ubica_ubicacion_tr" class="form-label">Ubicación:<red>*</red></label>

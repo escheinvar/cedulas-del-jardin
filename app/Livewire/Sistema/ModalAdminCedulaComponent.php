@@ -6,8 +6,10 @@ use App\Models\cat_tipocedula;
 use App\Models\cedulas_url;
 use App\Models\ced_autores;
 use App\Models\ced_sp;
+use App\Models\ced_alias;
 use App\Models\ced_ubica;
 use App\Models\ced_usos;
+use App\Models\cedulas_txt;
 use App\Models\lenguas;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -281,6 +283,65 @@ class ModalAdminCedulaComponent extends Component
     public function VerNoVer($tipo){
         if($this->$tipo=='1'){$this->$tipo='0';}else{$this->$tipo='1';}
     }
+
+    public function EliminarSitioWeb(){
+        // dd('fin',$this->cedulaId);
+        $del=cedulas_url::where('url_id',$this->cedulaId)
+            ->with('autores')
+            ->with('editores')
+            ->with('traductores')
+            ->with('especies')
+            ->with('usos')
+            ->with('ubicaciones')
+            ->with('alias')
+            ->first();
+        ##### Elimina editores
+        foreach($del->editores as $x){
+            $a=ced_autores::where('aut_id',$x->aut_id)->update(['aut_del'=>'1']);
+            paLog('Se elimina cédula id '.$this->cedulaId.' y sus autores','ced_autores',$x->aut_id);
+        }
+        ##### Elimina traductores
+        foreach($del->traductores as $x){
+            $a=ced_autores::where('aut_id',$x->aut_id)->update(['aut_del'=>'1']);
+            paLog('Se elimina cédula id '.$this->cedulaId.' y sus traductores','ced_autores',$x->aut_id);
+        }
+        ##### Elimina especies
+        foreach($del->especies as $x){
+            $a=ced_sp::where('sp_id',$x->sp_id)->update(['sp_del'=>'1']);
+            paLog('Se elimina cédula id '.$this->cedulaId.' y sus especies','ced_sp',$x->sp_id);
+        }
+        ##### Elimina usos
+        foreach($del->usos as $x){
+            $a=ced_usos::where('uso_id',$x->uso_id)->update(['uso_del'=>'1']);
+            paLog('Se elimina cédula id '.$this->cedulaId.' y sus usos','ced_usos',$x->uso_id);
+        }
+        ##### Elimina ubicaciones
+        foreach($del->ubicaciones as $x){
+            $a=ced_ubica::where('ubi_id',$x->ubi_id)->update(['ubi_del'=>'1']);
+            paLog('Se elimina cédula id '.$this->cedulaId.' y sus ubicaciones','ced_ubica',$x->ubi_id);
+        }
+        ##### Elimina alias
+        foreach($del->alias as $x){
+            $a=ced_alias::where('ali_id',$x->ali_id)->update(['ali_del'=>'1']);
+            paLog('Se elimina cédula id '.$this->cedulaId.' y sus alias','ced_alias',$x->ali_id);
+        }
+
+        ##### Elimina textos
+        cedulas_txt::where('txt_cjarsiglas',$del->url_cjarsiglas)
+            ->where('txt_urlurl', $del->url_url)
+            ->update(['txt_del'=>'1']);
+        paLog('Se elimina cédula id '.$this->cedulaId.' y todos sus textos','cedulas_txt','varios id');
+
+        ##### Elimina cédula
+        cedulas_url::where('url_id',$this->cedulaId)->update(['url_del'=>'1']);
+        paLog('Se elimina la cédula id '.$this->cedulaId, 'cedulas_url',$this->cedulaId);
+
+        ###### Mensaje
+        $this->dispatch('AvisoExitoCedula',msj:'Se elimino la cédula y todos sos datos');
+        ###### Redirecciona
+        redirect('/admin_cedulas');
+    }
+
     public function render() {
         ##### Obtiene total de url's originales
         $CedsOriginales= cedulas_url::where('url_cjarsiglas','ilike',$this->jardinSel)

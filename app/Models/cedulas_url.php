@@ -88,13 +88,15 @@ class cedulas_url extends Model
     public function ubicaciones():HasMany {
         return $this->HasMany(ced_ubica::class, 'ubi_urlid','url_id')
             ->where('ubi_act','1')
-            ->where('ubi_del','0');
+            ->where('ubi_del','0')
+            ->orderBy('ubi_ubicacion_tr');
     }
 
     public function alias():HasMany {
         return $this->HasMany(ced_alias::class, 'ali_urlid','url_id')
             ->where('ali_act','1')
-            ->where('ali_del','0');
+            ->where('ali_del','0')
+            ->orderBy('ali_txt_tr');
     }
 
     public function especies():HasMany{

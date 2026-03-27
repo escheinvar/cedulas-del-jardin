@@ -90,9 +90,13 @@ class ModalCedulaUbicacionesComponent extends Component
                 'ubica_y'=>'required|numeric',
             ]);
         }
+
         #### Valida que haya traducción
-        if($this->ubica_copia=='1'){
-            $this->validate(['ubica_ubicacion'=>'required', 'ubica_ubicacion_tr'=>'required']);
+        if($this->ubica_ubicaId > '1'){
+            $this->validate([
+                'ubica_ubicacion'=>'required',
+                'ubica_ubicacion_tr'=>'required'
+            ]);
 
         }else{
             $this->validate(['ubica_ubicacion'=>'required']);
@@ -114,6 +118,7 @@ class ModalCedulaUbicacionesComponent extends Component
             'ubi_ubicacion'=>$this->ubica_ubicacion,
             'ubi_ubicacion_tr'=>$this->ubica_ubicacion_tr,
         ];
+
         if($this->ubica_ubicaId=='0'){
             ##### Genera lista de todas las traducciones (para poner nueva ubicación en todas)
             $hermanitos=cedulas_url::where('url_cjarsiglas',$this->ubica_url->url_cjarsiglas)
@@ -133,6 +138,8 @@ class ModalCedulaUbicacionesComponent extends Component
             ##### Da aviso
             $this->dispatch('AvisoExitoAsignaUbica',msj:'Se generó exitosamente el registro de ubicación');
         }else{
+            $datos['ubi_urlid']=$this->ubica_url->url_id;
+            $datos['ubi_urlurl']=$this->ubica_url->url_url;
             ##### guarda datos
             ced_ubica::where('ubi_id',$this->ubica_ubicaId)->update($datos);
             #### Genera log

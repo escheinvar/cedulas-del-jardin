@@ -24,6 +24,7 @@ class CedulasController extends Component
     public $idiomaSelected; ##### Idioma seleccionado en el select de vista
     public $txt; #### get() de cedula_txt con todo el texto
     public $verSp, $verUbica, $verAlias; ##### flags para VerNoVer apartados de sp, ubicación y alias.
+    public $alias, $ubicaciones; ### datos de alias y de locs de la cédula
 
     ###### Variables de modal Traduce titulo
     public $NuevoTituloTraducido;
@@ -135,27 +136,14 @@ class CedulasController extends Component
             ->orderBy('txt_orden')
             ->get();
 
-        ###### Carga autores de la cédula
-        $autores=ced_autores::where('aut_urlid',$this->url->url_id)
-            ->where('aut_tipo','Autor')
-            ->where('aut_act','1')->where('aut_del','0')
-            ->orderBy('aut_id')
-            ->with('autor')
-            ->get();
-
-        $traductores=ced_autores::where('aut_urlid',$this->url->url_id)
-            ->where('aut_tipo','Traductor')
-            ->where('aut_act','1')->where('aut_del','0')
-            ->orderBy('aut_id')
-            ->with('autor')
-            ->get();
-
-        $editores=ced_autores::where('aut_urlid',$this->url->url_id)
-            ->where('aut_tipo','Editor')
-            ->where('aut_act','1')->where('aut_del','0')
-            ->orderBy('aut_id')
-            ->with('autor')
-            ->get();
+        $cedula=cedulas_url::where('url_id',$this->url->url_id)
+            ->with('jardin')
+            ->with('lenguas')
+            ->with('autores')
+            ->with('traductores')
+            ->with('ubicaciones')
+            ->with('alias')
+            ->first();
 
         $objsPpal=Imagenes::where('img_urlurl',$this->url->url_url)
             ->where('img_act','1')->where('img_del','0')
@@ -173,18 +161,16 @@ class CedulasController extends Component
                 ->on('nom_infrasp','ilike','sp_ssp');
             })
             ->get();
-        $localidades=ced_ubica::where('ubi_cjarsiglas',$this->url->url_cjarsiglas)
-            ->where('ubi_urltxt',$this->url->url_urltxt)
-            ->where('ubi_act','1')->where('ubi_del','0')
-            ->get();
+
+        $this->alias=$cedula->alias;
+        $this->ubicaciones=$cedula->ubicaciones;
 
         return view('livewire.web.cedulas-controller',[
-            'autores'=>$autores,
-            'traductores'=>$traductores,
-            'editores'=>$editores,
+            'autores'=>$cedula->autores,
+            'traductores'=>$cedula->traductores,
+            'editores'=>$cedula->editores,
             'objsPpal'=>$objsPpal,
             'especies'=>$especies,
-            'localidades'=>$localidades,
         ]);
     }
 
@@ -247,37 +233,50 @@ class CedulasController extends Component
         redirect('/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url);
     }
 
-    ##########################################################
-    ############ Modal externo para agregar especies
-    public function AbrirModalDeBuscarEspecie(){
-        $datos=[
-            'jardin'=>$this->url->url_cjarsiglas,
-            'urltxt'=>$this->url->url_urltxt,
-        ];
+    // ##########################################################
+    // ############ Modal externo para agregar especies
+    // public function AbrirModalDeBuscarEspecie(){
+    //     $datos=[
+    //         'jardin'=>$this->url->url_cjarsiglas,
+    //         'urltxt'=>$this->url->url_urltxt,
+    //     ];
 
-        $this->dispatch('AbreModalDeBuscarEspecie',$datos);
-    }
+    //     $this->dispatch('AbreModalDeBuscarEspecie',$datos);
+    // }
 
-    ##########################################################
-    ################## Modal externo Agregar Uso a una especie
-    public function AbrirModalDeUso($iduso,$idsp){
-        $datos=[
-            'spid'=>$idsp, #### id de la sp
-            'usoid'=>$iduso, ### id del uso o 0 para nuevo
-            'jardin'=>$this->url->url_cjarsiglas,
-            'urltxt'=>$this->url->url_urltxt
-        ];
-        $this->dispatch('AbreModalUsoEnCedula',$datos);
-    }
+    // ##########################################################
+    // ################## Modal externo Agregar Uso a una especie
+    // public function AbrirModalDeUso($iduso,$idsp){
+    //     $datos=[
+    //         'spid'=>$idsp, #### id de la sp
+    //         'usoid'=>$iduso, ### id del uso o 0 para nuevo
+    //         'jardin'=>$this->url->url_cjarsiglas,
+    //         'urltxt'=>$this->url->url_urltxt
+    //     ];
+    //     $this->dispatch('AbreModalUsoEnCedula',$datos);
+    // }
 
     ##########################################################
     ################## Modal externo Agregar Ubicación
-    public function AbrirModalDeUbicacion(){
+
+    public function AbrirModalDeUbicacion($ubicaId){
         $datos=[
-            'jardin'=>$this->url->url_cjarsiglas,
-            'urltxt'=>$this->url->url_urltxt
+            'ubicaId'=>$ubicaId,
+            'urlid'=>$this->url->url_id,
         ];
         $this->dispatch('AbreModalAsignaUbicacion',$datos);
+    }
+
+    ##########################################################
+    ################## Modal externo Agregar Alias
+    public function AbrirModalDeAlias($aliasId){
+        $this->verAlias='1';
+        $datos=[
+            'aliasId'=>$aliasId, ### o id del uso
+            'urlId'=>$this->url->url_id,
+        ];
+
+        $this->dispatch('AbreModalAlias',$datos);
     }
 }
 

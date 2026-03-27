@@ -137,6 +137,14 @@
                                             </a>
                                         </div>
                                     @endif --}}
+                                    <!-- Botón agregar nueva especie -->
+                                    {{-- @if($edit=='1' AND $editMaster=='1')
+                                        <center>
+                                            <button wire:click="" class="btn"  style="margin-top:30px;">
+                                                <i class="bi bi-plus-circle" style="color:#87796d;">Sp</i>
+                                            </button>
+                                        </center>
+                                    @endif --}}
                                 </div>
                             @endif
                         @endforeach
@@ -172,7 +180,7 @@
 
             <!-- apoyo tamaño para diseño -->
             @if($edit=='1')
-                <div style="display:inline-block;">
+                <div style="display:inline-block;" class="cedEdo{{ $url->url_edo }}">
                     <span class="d-none d-xl-inline-block">xl ExtraGrande</span>
                     <span class="d-none d-lg-inline-block d-xl-none">lg Grande</span>
                     <span class="d-none d-md-inline-block d-lg-none">md Mediano</span>
@@ -403,7 +411,7 @@
                 @endforeach
             </div>
 
-            <!-- Zona de traductor y editor-->
+            <!-- Zona de traductor-->
             <div class="row">
                 @if($traductores->count() != '0')
                     <div class="col-10" style="margin-top:70px;border-top:1px solid #64383E;">
@@ -432,6 +440,36 @@
                     @endif
                 </div>
             </div>
+
+            @if($edit=='1')
+            <div class="row my-5">
+                    <!-- Zona de palabras clave -->
+                    <div class="col-12 col-md-8">
+                        <div class="cedEdo{{ $url->url_edo }}">
+                            <b>Palabras clave:</b>
+                        </div>
+                        @foreach ($alias as $a)
+                            <div class="elemento2" style="padding:5px;">
+                                {{ $a->ali_txt_tr }}
+                                <i wire:click="AbrirModalDeAlias('{{ $a->ali_id }}')" class="bi bi-pencil-square cedEdo{{ $url->url_edo }} PaClick"></i>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Zona de Ubicaciones -->
+                    <div class="col-12 col-md-4">
+                        <div class="cedEdo{{ $url->url_edo }}">
+                            <b>Ubicaciones:</b>
+                        </div>
+                        @foreach ($ubicaciones as $l)
+                            <div class="elemento2" style="padding:5px;">
+                                {{ $l->ubi_ubicacion_tr }}
+                                <i wire:click="AbrirModalDeUbicacion('{{ $l->ubi_id }}')" class="bi bi-pencil-square cedEdo{{ $url->url_edo }} PaClick"></i>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
 
 
@@ -645,7 +683,7 @@
     <!-- -------------------------------------- BLOQUE DE ADMINISTRACIÓN ----------------------------------------------->
     <!-- -------------------------------------- BLOQUE DE ADMINISTRACIÓN ----------------------------------------------->
     <!-- -------------------------------------- BLOQUE DE ADMINISTRACIÓN ----------------------------------------------->
-    <div class="row" style="margin-top:5px; border-bottom-left-radius:8px; border:1px solid gray;">
+    {{-- <div class="row" style="margin-top:5px; border-bottom-left-radius:8px; border:1px solid gray;">
         @if($edit=='1')
             <!-- -------------------- Indicador de edición ------------------------------ -->
             <center>
@@ -654,115 +692,8 @@
                     <i class="cedEdoIcon{{ $url->url_edo }}"></i>
                 @endif
             </center>
-
-            <!-- ------------------- Especies y sus usos------------------- -->
-            <div class="col-12">
-                @if($especies->count() < '1')
-                    <i class="bi bi-exclamation-octagon-fill PaClick" wire:click="VerNoVer('verSp')" style="color:#CD7B34"></i>
-                @else
-                    <i class="bi bi-plus-square-fill PaClick" wire:click="VerNoVer('verSp')" style="color:#87796d"></i>
-                @endif
-                <b style="font-size: 130%;">Especies y usos</b>
-
-                <!-- listado de Especies -->
-                @if($verSp=='1')
-                    <div>
-                        <!-- botón de nueva especie -->
-                        @if($editMaster=='1')
-                            <button wire:click="AbrirModalDeBuscarEspecie()" class="btn btn-sm">
-                                <i class="bi bi-plus-circle-fill PaClick" style="color:#87796d"> Agregar sp</i>
-                            </button>
-                        @endif
-                        <div class="row">
-                            @if($especies->count() < '1') -- aún no hay especies -- @endif
-                            @foreach ($especies as $sp) @if($sp->sp_scname != '')
-                                <div class="col-12 col-md-5 elemento" style="border:1px dashed #87796d;padding:10px;">
-                                    <!-- muestra especie -->
-                                    <b><i>{{ $sp->sp_scname }}</i> {{ $sp->sp_var }} </b>[{{ $sp->sp_familia }}]&nbsp; &nbsp;
-
-                                    <!-- borrar especie -->
-                                    @if($editMaster == '1')
-                                        <i class="bi bi-trash PaClick mx-1" wire:click="BorrarEspecie('{{ $sp->sp_id }}')" wire:confirm="Estas por borrar a esta especie de esta cédula y todos los usos asociados. ¿Seguro quieres continuar?" style="color:#87796d;float: right;"></i>
-                                        <!-- botón uso -->
-                                        <i wire:click="AbrirModalDeUso('0','{{ $sp->sp_id }}')" class="bi bi-plus-circle-fill PaClick mx-1" style="color:#87796d"> Agregar uso</i> &nbsp;
-                                    @endif
-                                    <!-- muestra usos -->
-                                    @if($sp->usos->count() > '0')
-                                        <ul>
-                                            @foreach ($sp->usos as $u)
-                                                <li style="margin-top:12px;">
-                                                    <span  class="">
-                                                        <b>{{ $u->uso_categoria }}</b> {{ $u->uso_uso }}
-                                                        <br>
-                                                        @if($u->uso_partes != '') Partes: {{ preg_replace('/;/',', ',$u->uso_partes) }}<br>@endif
-                                                        @if($u->uso_describe != '') {{ $u->uso_describe }} @endif
-                                                    </span>
-                                                    @if($editMaster=='1')
-                                                        <i wire:click="AbrirModalDeUso('{{ $u->uso_id }}','{{ $sp->sp_id }}')" class="bi bi-pencil-square mx-1 agregar" style="color:#87796d;"></i>
-                                                    @endif
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
-                                </div>
-                            @endif @endforeach
-                        </div>
-                    </div>
-                @endif
-            </div>
-
-
-            <!-- ------------------- Localidades------------------- -->
-            <div class="col-12">
-                @if($localidades->count() < '1')
-                    <i class="bi bi-exclamation-octagon-fill PaClick" wire:click="VerNoVer('verUbica')" style="color:#CD7B34"></i>
-                @else
-                    <i class="bi bi-plus-square-fill PaClick" wire:click="VerNoVer('verUbica')" style="color:#87796d"></i>
-                @endif
-                <b style="font-size: 130%;">Localidades</b>
-
-                <!-- listado de sp -->
-                @if($verUbica=='1')
-                    <div>
-                        <!-- botón de nueva especie -->
-                        @if($editMaster=='1')
-                            <button wire:click="AbrirModalDeBuscarEspecie()" class="btn btn-sm">
-                                <i class="bi bi-plus-circle-fill PaClick" style="color:#87796d"> Agregar sp</i>
-                            </button>
-                        @endif
-                        <div class="row">
-                            @if($especies->count() < '1') -- aún no hay especies -- @endif
-                            @foreach ($especies as $sp)
-                            a
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-            </div>
-
-
-
-            <!-- ------------------- Palabras clave------------------- -->
-            <div class="col-12">
-                <i class="bi bi-plus-square-fill PaClick" onclick="VerNoVer('Ver','Palabras')" style="color:#87796d"></i>
-                <b style="font-size: 130%;">Palabras clave</b>
-
-
-                <!-- listado de sp -->
-                <div id="sale_VerPalabras"  style="display:none;">
-                    @if($editMaster=='1')
-                        <!-- agregar nuevo -->
-                        <button wire:click="AbrirModalDeBuscarEspecie()" class="btn btn-sm">
-                            <i class="bi bi-plus-circle-fill PaClick" style="color:#87796d"> Agregar</i>
-                        </button>
-                    @endif
-                    <ul>
-                        b
-                    </ul>
-                </div>
-            </div>
         @endif
-    </div>
+    </div> --}}
 
 
 
@@ -819,8 +750,9 @@
 @if($editMaster=='1')
     <livewire:web.modal-imagen-controller>
     <livewire:sistema.jardin-web-modal-component>
-    <livewire:sistema.modal-cedula-especie-component>
-    <livewire:sistema.modal-cedula-uso-component>
+
+    <livewire:sistema.modal-cedula-ubicaciones-component >
+    <livewire:sistema.modal-cedula-alias-component >
 @endif
 
     <script>
@@ -837,6 +769,13 @@
             $('#ModalTraduceTitulo').modal('hide');
         });
 
+        Livewire.on('RecibeVariablesDeUbicacion',() => {
+            @this.set('ubicaciones',event.detail.dato, live=true);
+        });
+
+        Livewire.on('RecibeVariablesDeAlias',() => {
+            @this.set('alias',event.detail.dato, live=true);
+        });
 
 
     </script>
