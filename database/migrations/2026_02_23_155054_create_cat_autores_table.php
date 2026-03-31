@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('caut_correo')->nullable();    #### Correo electrńico
             $table->string('caut_institu')->nullable();   #### Institución
             $table->string('caut_comunidad')->nullable(); #### Nombre de la comunidad de origen
-            $table->string('caut_usrid')->nullable();     #### En caso de haberlo, id de usuario
+            $table->integer('caut_usrid')->nullable();     #### En caso de haberlo, id de usuario
             $table->string('caut_lenguas')->default('spa;'); ##### texto de array con lenguas separadas por punto y coma
             $table->enum('caut_web',['0','1'])->default('0'); ##### flag de existencia de web
             $table->enum('caut_mailpublic',['0','1'])->default('0'); ##### flag de autorización para publicar datos

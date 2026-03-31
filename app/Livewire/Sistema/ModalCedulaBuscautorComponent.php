@@ -87,6 +87,11 @@ class ModalCedulaBuscautorComponent extends Component
             });
         }
 
+        ##### En caso de Editor, restringe a puro registrado
+        if($this->BuscaAutor_tipo=="Editor"){
+            // $busqueda=$busqueda->where('caut_usrid','>','0');
+        }
+
         ##### Finaliza búsqueda
         $this->BuscaAutor_Posibles=$busqueda->orderBy('caut_nombre','asc')
             ->orderBy('caut_apellido1','asc')
@@ -112,11 +117,13 @@ class ModalCedulaBuscautorComponent extends Component
         ##### Procesa checkbox
         if($this->BuscaAutor_corresponding == TRUE){$corr='1';}else{$corr='0';}
         ##### Genera array de datos:
+        $UrlKey=cedulas_url::where('url_id',$this->cedulaId)->value('url_key');
         $datos=[
             'aut_cautid'=>$this->BuscaAutor_id,
             'aut_urlid'=>$this->cedulaId, #### if id != 0
             'aut_cjarsiglas'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_cjarsiglas'),
             'aut_urltxt'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt'),
+            'aut_key'=>$UrlKey,
             'aut_corresponding'=>$corr,
             'aut_name'=>$this->BuscaAutor_name,
             'aut_correo'=>$this->BuscaAutor_correo,
@@ -124,13 +131,29 @@ class ModalCedulaBuscautorComponent extends Component
             'aut_comunidad'=>$this->BuscaAutor_comunidad,
             'aut_tipo'=>$this->BuscaAutor_tipo,
         ];
-        if($this->cedulaId > '0'){
-            ###### Si hay id asignado, guarda en BD
-            $bla=ced_autores::create($datos);
-            $id=$bla->aut_id;
-            #### Genera log
-            paLog('Se agrega '.$this->BuscaAutor_tipo.' id '.$this->BuscaAutor_id.' a cédula '.$this->cedulaId,'ced_autores',$id);
 
+        if($this->cedulaId > '0'){
+            if($this->BuscaAutor_tipo == 'Autor'){
+                ##### Identifica todas las copias de este key
+                $ganones=cedulas_url::where('url_key',$UrlKey)->get();
+                ##### Guarda autores en cada una de las copias
+                foreach($ganones as $g){
+                    $datos2=$datos;
+                    $datos2['aut_urlid']=$g->url_id;
+                    ###### Si hay id asignado, guarda en BD
+                    $bla=ced_autores::create($datos2);
+                    $id=$bla->aut_id;
+                    #### Genera log
+                    paLog('Se agrega '.$this->BuscaAutor_tipo.' id '.$this->BuscaAutor_id.' a cédula '.$this->cedulaId,'ced_autores',$id);
+                }
+
+            }else{
+                ###### Si hay id asignado, guarda en BD
+                $bla=ced_autores::create($datos);
+                $id=$bla->aut_id;
+                #### Genera log
+                paLog('Se agrega '.$this->BuscaAutor_tipo.' id '.$this->BuscaAutor_id.' a cédula '.$this->cedulaId,'ced_autores',$id);
+            }
             ######## Recarga variable (para actualizar lista en modal)
             $dato=cedulas_url::where('url_id',$this->cedulaId)
                 ->with('autores')

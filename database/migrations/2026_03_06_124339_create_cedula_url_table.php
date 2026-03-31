@@ -35,7 +35,9 @@ return new class extends Migration
             $table->string('url_tituloorig')->nullable(); ##### Título traducido de la cédula
             $table->longText('url_resumen')->nullable(); ##### Resumen de la cédula
             $table->longText('url_resumenorig')->nullable(); ##### Resumen traducido de la cédula
-            $table->string('url_cita')->nullable(); ##### Cita de la cédula
+            $table->string('url_cita')->nullable(); ##### Cita completa de la cédula
+            $table->string('url_cita_aut')->nullable(); ##### Autores en formato de cita
+            $table->string('url_cita_trad')->nullable(); ##### Traductores en formato de cita
             $table->string('url_anio')->nullable(); ##### Año de la cédula
             // $table->integer('url_editor')->nullable(); ##### Id_usr del editor asignado
             $table->decimal('url_version',5 ,2)->default('1.0');

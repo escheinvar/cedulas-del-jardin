@@ -15,7 +15,7 @@ use Livewire\Component;
 
 class AdminCedulasComponent extends Component
 {
-    public $edit, $editjar; ##### Variables de permisos del usuario
+    public $edit, $editMaster, $editjar; ##### Variables de permisos del usuario
     public $jardinSel, $BuscaLengua, $BuscaEstado, $BuscaTexto, $sentido, $orden, $edoEdit, $abiertos; ##### Vars de formulario de búsqueda y de tabla
 
     #################################################################################
@@ -40,8 +40,13 @@ class AdminCedulasComponent extends Component
 
     public function CambiaAmodoEdicion($id){
         $edo=cedulas_url::where('url_id',$id)->value('url_edit');
-        if($edo=='0'){$nvo='1';}else{$nvo='0';}
+        if($edo=='0'){
+            $nvo='1';
+        }else{
+            $nvo='0';
+        }
         cedulas_url::where('url_id',$id)->update(['url_edit'=>$nvo]);
+
     }
 
     public function CambiaEstadoCedula($id,$edo){
@@ -74,7 +79,7 @@ class AdminCedulasComponent extends Component
 
     public function render(){
         ##### Revisa permisos del usuario
-        $auts=['editor','admin']; ##### array de roles autorizados a editar
+        $auts=['editor','admin','autor','traductor']; ##### array de roles autorizados a editar
         if(array_intersect($auts,session('rol'))){
             $this->edit='1';
 
@@ -83,7 +88,14 @@ class AdminCedulasComponent extends Component
             redirect('/noauth/Solo accede rol '.implode(',',$auts));
         }
 
-        ##### jardines autorizados al usuario (puede incluir "todos")
+        ##### Distingue permisos superiores
+        if(array_intersect(['editor','admin'], session('rol'))){
+            $this->editMaster='1';
+        }else{
+            $this->editMaster='0';
+        }
+
+        ##### jardines autorizados al usuario (puede incluir palabra "todos")
         $this->editjar = UserRolesModel::where('rol_usrid',Auth::user()->id)
             ->whereIn('rol_crolrol',$auts)
             ->where('rol_act','1')->where('rol_del','0')
@@ -104,31 +116,25 @@ class AdminCedulasComponent extends Component
                 ->get();
         }
 
-        ##### Obtiene cantidad de cedulas en edición:
-        $this->abiertos=cedulas_url::whereIn('url_cjarsiglas', $JardsUsr->pluck('cjar_siglas')->toArray())
-            // ->where('url_edo','<','5')   ####0:crea, 1:edicion 2:revision, 3:autoriza, 4:publicado 5:publicadoCnSolEdit.
-            // ->where('url_edit','1')
-            ->where('url_act','1')->where('url_del','0')
-            ->get();
-
-        ##### Obtiene lista de url's accesibles por usuario
+        ############################# Inicia lista de Cédulas
+        ##### Obtiene lista de Cédulas accesibles por usuario
         $urls=collect();
         if($this->jardinSel != ''){
             $urls=cedulas_url::query();
             $urls=$urls->where('url_cjarsiglas','ilike',$this->jardinSel);
-
         }
-        ##### Obtiene lista de url's por lengua
+
+        ##### Obtiene lista de Cédulas por lengua (en caso de búsqueda por lengua)
         if($this->BuscaLengua != ''){
             $urls=$urls->where('url_lencode',$this->BuscaLengua);
         }
 
-        ##### Obtiene lista de url's por estado
+        ##### Obtiene lista de Cédulas por estado
         if($this->BuscaEstado != ''){
             $urls=$urls->where('url_edo',$this->BuscaEstado);
         }
 
-        ##### Obtiene lista de url's por estado
+        ##### Obtiene lista de Cédulas por texto
         if($this->BuscaTexto != ''){
             $urls=$urls->where(function($q){
                 return $q
@@ -145,20 +151,50 @@ class AdminCedulasComponent extends Component
                 ->with('jardin')
                 ->with('lenguas')
                 ->with('autores')
+                ->with('editores')
                 ->with('traductores')
                 ->with('ubicaciones')
-                ->with('alias')
+                ->with('alias');
+
+        ##### En autor y traductor, restringe a cédulas autorizadas
+        if( (array_intersect(['autor','traductor'],session('rol'))) and  (!array_intersect(['editor','admin'], session('rol'))) ){
+            $urls=$urls->join('ced_autores','aut_urlid','=','url_id')
+                ->join('cat_autores','aut_cautid','=','caut_id')
+                ->where('aut_del','0')->where('aut_act','1')
+                ->where('caut_del','0')->where('caut_act','1')
+                ->where('caut_usrid',Auth::user()->id);
+        }
+
+        ##### Obtiene cantidad de cedulas en edición:
+        if( array_intersect(['editor','admin'], session('rol'))  ){
+            $this->abiertos=cedulas_url::whereIn('url_cjarsiglas', $JardsUsr->pluck('cjar_siglas')->toArray())
+                ->where('url_act','1')->where('url_del','0')
                 ->get();
+        }elseif((array_intersect(['autor','traductor'],session('rol'))) ){
+            $this->abiertos=cedulas_url::whereIn('url_cjarsiglas', $JardsUsr->pluck('cjar_siglas')->toArray())
+                ->where('url_act','1')->where('url_del','0')
+                ->join('ced_autores','aut_urlid','=','url_id')
+                ->join('cat_autores','aut_cautid','=','caut_id')
+                ->where('aut_del','0')->where('aut_act','1')
+                ->where('caut_del','0')->where('caut_act','1')
+                ->where('caut_usrid',Auth::user()->id)
+                ->get();
+        }
 
         return view('livewire.sistema.admin-cedulas-component',[
             'JardsDelUsr'=>$JardsUsr,  ##### Lista de siglas de jardines autorizados
             'lenguas'=>lenguas::orderBy('len_lengua')->get(),  ##### Lista de lenguas del catálogo
-            'urls'=>$urls,   ##### Tabla de urls para ver en tabla
+            'urls'=>$urls->get(),   ##### Tabla de urls para ver en tabla
             ]);
     }
 
     public function AbreModalCedula($id,$jardin){
         $data=['idCed'=>$id, 'jardin'=>$jardin];
         $this->dispatch('AbreModalDeCedula',$data);
+    }
+
+    public function AbreModalDeCambioDeEstado($id){
+         $data=['urlId'=>$id];
+        $this->dispatch('AbreModalCambiaEdoCedula',$data);
     }
 }

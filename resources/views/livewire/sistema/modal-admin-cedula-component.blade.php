@@ -162,44 +162,22 @@
                                     <label for="" class="form-label">Autor(es)<red>*</red></label>
                                     @if($CedAutores->count() =='0')
                                         <i wire:click="AbreModalDeBuscarAutor('Autor')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
-                                    @else
-                                    <i wire:click="AbreModalDeBuscarAutor('Autor')" class="bi bi-plus-circle-fill agregar"></i>
                                     @endif
                                 </div>
                                 @if($CedAutores AND $cedulaId > '0' AND $verAutor=='1')
-                                    <div class="form-text">(Aplica a todas las traducciones)</div>
+                                    <i wire:click="AbreModalDeBuscarAutor('Autor')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
+                                    {{-- <div class="form-text">(Aplica a todas las traducciones)</div> --}}
                                     <?php $cont='1';?>
                                     @foreach ($CedAutores as $a)
                                         <div class="elemento" style="font-size: 80%;">
-                                            {{ $cont++ }} {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
-                                            <i wire:click="BorrarAutor('{{ $a->aut_id }}')" wire:confirm="Estas por eliminar a este autor de esta cédula y todas sus traducciones. ¿Seguro quieres continuar?" class="bi bi-trash agregar"></i>
+                                            {{ $cont++ }}
+                                            @if($a->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
+                                            {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
+                                            <i wire:click="BorrarAutor('{{ $a->aut_id }}','Autor','{{ $a->aut_key }}')" wire:confirm="Estas por eliminar a este autor de esta cédula y todas sus traducciones. ¿Seguro quieres continuar?" class="bi bi-trash agregar"></i>
                                         </div>
                                     @endforeach
                                 @endif
 
-                            </div>
-
-                            <!-- Editor -->
-                            <div class="col-4 form-group">
-                                <div>
-                                    <i wire:click="VerNoVer('verEditor')" class="@if($verEditor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
-                                    <label for="" class="form-label">Editor<red>*</red></label>
-                                    @if($CedEditores->where('aut_tipo','Editor')->count() =='0')
-                                        <i wire:click="AbreModalDeBuscarAutor('Editor')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
-                                    @else
-                                        <i wire:click="AbreModalDeBuscarAutor('Editor')" class="bi bi-plus-circle-fill agregar"></i>
-                                        @endif
-                                    </div>
-                                @if($CedEditores AND $cedulaId > '0' and $verEditor=='1')
-                                    <div class="form-text">(Aplica a esta cédula)</div>
-                                    <?php $cont='1';?>
-                                    @foreach ($CedEditores as $a)
-                                        <div class="elemento" style="font-size: 80%;">
-                                            {{ $cont++ }} {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
-                                            <i wire:click="BorrarAutor('{{ $a->aut_id }}')" wire:confirm="Estás por eliminar al editor de esta cédula. ¿Seguro quires continuar?"  class="bi bi-trash agregar"></i>
-                                        </div>
-                                    @endforeach
-                                @endif
                             </div>
 
                             <!-- Traductor -->
@@ -210,24 +188,49 @@
                                         <label for="" class="form-label">Traductor<red>*</red></label>
                                         @if($CedTraductores->count() =='0')
                                             <i wire:click="AbreModalDeBuscarAutor('Traductor')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
-                                        @else
-                                            <i wire:click="AbreModalDeBuscarAutor('Traductor')" class="bi bi-plus-circle-fill agregar"></i>
                                         @endif
                                     </div>
 
                                     @if($CedTraductores AND $cedulaId > '0' and $verTraductor=='1')
-                                        <div class="form-text">(Aplica a esta cédula)</div>
+                                        <i wire:click="AbreModalDeBuscarAutor('Traductor')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
+                                        {{-- <div class="form-text">(Aplica a esta cédula)</div> --}}
                                         <?php $cont='1';?>
                                         @foreach ($CedTraductores->where('aut_tipo','Traductor') as $a)
                                             <div class="elemento" style="font-size: 80%;">
-                                                {{ $cont++ }} {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
-                                                <i wire:click="BorrarAutor('{{ $a->aut_id }}')" wire:confirm="Estás por eliminar a este autor de esta cédula. ¿Quieres continuar?" class="bi bi-trash agregar"></i>
+                                                {{ $cont++ }}
+                                                @if($a->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
+                                                {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
+                                                <i wire:click="BorrarAutor('{{ $a->aut_id }}','Traductor','{{ $a->aut_key }}')" wire:confirm="Estás por eliminar a este autor de esta cédula. ¿Quieres continuar?" class="bi bi-trash agregar"></i>
                                             </div>
                                         @endforeach
                                     @endif
                                 @else
                                     {{-- <label for="" class="form-label">Traductor<red></red></label>
                                     <div class="form-text">(No aplica)</div> --}}
+                                @endif
+                            </div>
+
+                            <!-- Editor -->
+                            <div class="col-4 form-group">
+                                <div>
+                                    <i wire:click="VerNoVer('verEditor')" class="@if($verEditor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
+                                    <label for="" class="form-label">Editor<red>*</red></label>
+                                    @if($CedEditores->where('aut_tipo','Editor')->count() =='0')
+                                        <i wire:click="AbreModalDeBuscarAutor('Editor')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
+                                    @endif
+                                </div>
+                                @if($CedEditores AND $cedulaId > '0' and $verEditor=='1')
+                                    <i wire:click="AbreModalDeBuscarAutor('Editor')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
+                                    {{-- <div class="form-text">(Aplica a esta cédula)</div> --}}
+                                    <?php $cont='1';?>
+                                    @foreach ($CedEditores as $a)
+                                        <div class="elemento" style="font-size: 80%;">
+                                            {{ $cont++ }}
+                                            @if($a->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
+                                            {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
+                                            <i wire:click="BorrarAutor('{{ $a->aut_id }}','Editor','{{ $a->aut_key }}')" wire:confirm="Estás por eliminar al editor de esta cédula. ¿Seguro quires continuar?"  class="bi bi-trash agregar"></i>
+                                        </div>
+                                    @endforeach
                                 @endif
                             </div>
                         </div>
@@ -244,11 +247,10 @@
                                     <label for="" class="form-label">Ubicación(es)<red>*</red></label>
                                     @if($CedUbica->count() =='0')
                                         <i wire:click="AbrirModalDeUbicacion('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
-                                    @else
-                                        <i wire:click="AbrirModalDeUbicacion('0')" class="bi bi-plus-circle-fill agregar"></i>
                                     @endif
                                 </div>
                                 @if($CedUbica AND $cedulaId > '0' and $verUbicacion=='1')
+                                    <i wire:click="AbrirModalDeUbicacion('0')" class="bi bi-plus-circle-fill agregar"> Nuevo</i>
                                     <div class="form-text">(Aplica a todas las traducciones y se traduce)</div>
                                     @foreach ($CedUbica as $a)
                                         <div class="elemento" style="font-size: 80%;width:100%;">
@@ -268,11 +270,10 @@
                                     <label for="" class="form-label">Palabras clave<red>*</red></label>
                                     @if($CedAlias->count() =='0')
                                         <i wire:click="AbrirModalDeAlias('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
-                                    @else
-                                        <i wire:click="AbrirModalDeAlias('0')" class="bi bi-plus-circle-fill agregar"></i>
                                     @endif
                                 </div>
                                 @if($CedAlias AND $cedulaId > '0' AND $verAlias=='1')
+                                    <i wire:click="AbrirModalDeAlias('0')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
                                     <div class="form-text">(Aplica a todas las traducciones y se traduce)</div>
                                     @foreach ($CedAlias as $a)
                                         <div class="elemento" style="font-size: 80%;width:100%;">
@@ -298,9 +299,9 @@
                                     {{-- @if($CedSp->count() =='0')
                                         <i wire:click="AbrirModalDeBuscarEspecie('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
                                         @endif --}}
-                                        <i wire:click="AbrirModalDeBuscarEspecie('0')" class="bi bi-plus-circle-fill agregar"></i>
                                     </div>
                                 @if($CedSp AND $cedulaId > '0' and $verSp=='1')
+                                    <i wire:click="AbrirModalDeBuscarEspecie('0')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
                                     <div class="form-text">(Aplica a todas las traducciones)</div>
                                     @foreach ($CedSp as $sp)
                                         <div class="elemento" style="font-size: 80%;width:100%;">

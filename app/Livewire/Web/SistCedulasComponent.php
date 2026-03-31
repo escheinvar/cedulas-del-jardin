@@ -3,6 +3,7 @@
 namespace App\Livewire\Web;
 
 use App\Models\SpUrlCedulaModel;
+use App\Models\cedulas_url;
 use App\Models\SpUrlModel;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -36,38 +37,33 @@ class SistCedulasComponent extends Component
             $texto=$this->buscaText;
         }
 
-        $cedulas=DB::table('sp_urlcedula')
-            ->where('ced_act','1')
-            ->where('ced_edo','5')
-            ->where('ced_cjarsiglas','like',$this->buscaJardin)
-            ->where('ced_clencode','like',$this->buscaLengua)
-            ->where(function($q) use ($texto) {
-                return $q
-                ->where('ced_urlurl','like','%'.$texto.'%')
-                ->orWhere('url_url','like','%'.$texto.'%')
-                ->orWhere('url_nombre','like','%'.$texto.'%')
-                ->orWhere('url_nombrecomun','like','%'.$texto.'%')
-            ;})
-            ->leftJoin('sp_url','url_url','=','ced_urlurl')
-            ->leftJoin('cat_lenguas', 'ced_clencode', '=', 'clen_code')
-            ->leftJoin('cat_jardines','cjar_siglas','=','ced_cjarsiglas')
-            ->orderBy('url_nombre')
-            ->orderBy('ced_cjarsiglas')
-            ->orderBy('ced_clencode')
+        $cedulas=cedulas_url::where('url_ciclo','>','0')
+            ->where('url_act','1')
+            ->where('url_del','0')
+            ->with('jardin')
+            ->with('lenguas')
+            ->with('ubicaciones')
+            ->with('especies')
+            ->with('usos')
+            ->with('autores')
+            ->with('traductores')
             ->get();
 
-
-        $cedulas2=SpUrlCedulaModel::where('ced_act','1')
-            ->where('ced_edo','5')
-            ->leftJoin('sp_url','url_url','=','ced_urlurl')
-            ->leftJoin('cat_lenguas', 'ced_clencode', '=', 'clen_code')
-            ->leftJoin('cat_jardines','cjar_siglas','=','ced_cjarsiglas')
-            ->orderBy('url_nombre')
-            ->orderBy('ced_clencode')
+        $lenguas=cedulas_url::where('url_ciclo','>','0')
+            ->leftJoin('lenguas', 'url_lencode', '=', 'len_code')
+            ->where('url_act','1')
+            ->where('url_del','0')
+            ->distinct('url_lencode')
+            ->select('url_lencode','len_lengua','len_autonimias')
             ->get();
 
-        $jardines=$cedulas2->unique('ced_cjarsiglas');
-        $lenguas=$cedulas2->unique('ced_clencode');
+        $jardines=cedulas_url::where('url_ciclo','>','0')
+            ->leftJoin('cat_jardines', 'cjar_siglas', '=', 'url_cjarsiglas')
+            ->where('url_act','1')
+            ->where('url_del','0')
+            ->distinct('cjar_siglas')
+            ->select('cjar_siglas','cjar_nombre','cjar_name')
+            ->get();
 
         return view('livewire.web.sist-cedulas-component',[
             'cedulas'=>$cedulas,

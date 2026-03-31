@@ -6,8 +6,24 @@ use Livewire\Component;
 
 class SistAutoresController extends Component
 {
-    public function render()
-    {
-        return view('livewire.web.sist-autores-controller');
+    public $buscaText, $buscaJardin, $buscaLengua;
+
+    public function mount(){
+        MyRegistraVisita('web_buscaCedulas');
+        $this->buscaText='';
+        $this->buscaJardin='%';
+        $this->buscaLengua='%';
+    }
+
+    public function render(){
+        $autores=collect();
+        $jardines=collect();
+        $lenguas=collect();
+
+        return view('livewire.web.sist-autores-controller',[
+            'autores'=>$autores,
+            'jardines'=>$jardines,
+            'lenguas'=>$lenguas,
+        ]);
     }
 }

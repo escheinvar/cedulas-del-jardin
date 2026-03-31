@@ -34,7 +34,7 @@
                 | &nbsp; <error>Modo edición @if($editMaster=='1')1 @endif</error>
             @endif
             @if($url->url_edo <='4')
-                <i class="cedEdoIcon{{ $url->url_edo }}"></i>
+                <i class="cedEdoIcon{{ $url->url_edo }}"> {{ Auth::user()->usrname }}</i>
             @endif
 
             <!-- -------------------- Menú de lenguas ------------------------------------ -->
@@ -201,7 +201,6 @@
 
         <!-- ------------------------- BARRA LATERAL DERECHA ------------------------>
         <!-- ------------------------- BARRA LATERAL DERECHA ------------------------>
-
         <div class="col-12 col-md-3 col-lg-3 center">
             <!-- ----------------------------------- Inicia imágenes superiores izquierdas ------------------------------------------------------ -->
             <!-- flecha -->
@@ -291,7 +290,7 @@
                     <h2 style="display:inline   ">{{ $url->url_titulo }}</h2>
                     @if($edit=='1')
                         <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbirModalTraduceTitulo()">
-                            <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
+                            <i  class="bi bi-pencil-square"></i><sup></sup>
                         </span>
                     @endif
                 </div>
@@ -441,8 +440,9 @@
                 </div>
             </div>
 
+            <!-- ------------------ Zona de edición -------------------- -->
             @if($edit=='1')
-            <div class="row my-5">
+                <div class="row my-5">
                     <!-- Zona de palabras clave -->
                     <div class="col-12 col-md-8">
                         <div class="cedEdo{{ $url->url_edo }}">
@@ -469,6 +469,18 @@
                         @endforeach
                     </div>
                 </div>
+
+                <div class="row my-4">
+                    <div class="col-12">
+                        <center>
+                            <button wire:click="AbreModalDeCambioDeEstado('{{ $url->url_id }}')" class="btn cedEdo{{ $url->url_edo }}" style="border:1px solid #524942">
+                                Finalizar revisión y turnar
+                            </button>
+                        </center>
+                    </div>
+                </div>
+
+
             @endif
         </div>
 
@@ -501,77 +513,83 @@
     <!-- -------------------------------------- BLOQUE INFERIOR AUTORÍAS ----------------------------------------------->
     <!-- -------------------------------------- BLOQUE INFERIOR AUTORÍAS ----------------------------------------------->
     <!-- -------------------------------------- BLOQUE INFERIOR AUTORÍAS ----------------------------------------------->
-    <div class="row my-4 p-3" style="margin:5px; border-radius:8px; background-color:#87796d;">
+    <div class="row my-4" style="margin-top:5px; border-radius:8px; background-color:#87796d;">
         <!-- Cita -->
-        <div class="col-12" style="margin:20px;">
+        <div class="col-10 p-4">
             <h4>Forma de citar:</h4>
-            {{-- <!-- autores -->    <b> @if($version['ced_cita']!=''){{ $version['ced_cita'] }} @else {{ $version['jardin'] }}@endif</b>.
-            <!-- año -->        {{ date('Y', strtotime($version['ced_versiondate'])) }}.
-            <!-- nombre/lengua --> <u>{{ $version['ced_nombre'] }} / {{ $idioma }}</u>
-            <!-- version -->    (V. {{ $version['ced_version'] }}).
-            <!-- jardin --> Cédulas de {{ $version['jardin'] }}
-            <!-- lengua --> en {{ $idioma2 }}<br>
-            <!-- registro doi-->
-            <!-- url --> @if($version['ced_doi'] != '') https://doi.org/{{ $version['ced_doi'] }} @else {{ url()->current() }} @endif accesado el {{ date('d') }} de {{ ['0','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][date('n')] }} de {{ date('Y') }} --}}
-        </div>
-        <!-- Versiones -->
-        <div class="col-12" style="margin:20px;">
-            <b>Versiones previas:</b>
-                {{-- @if(count($version['versiones']) > 0)
-                    @foreach ($version['versiones'] as $i)
-                        {{ $i->cedv_cedversion }},
-                    @endforeach
+                <b>{{ $url->url_cita_aut }}</b> {{ $url->url_anio }}. <u>{{ $url->url_titulo }}</u>
+                @if($url->url_tradid > '0')
+                    {{ $url->url_cita_trad }}
+                @endif
+                v.{{ $url->url_version }}
+                <i>Cédulas del Jardín en lenguas originarias</i>.
+                @if($url->url_doi == '')
+                    <a href="https://doi.org/{{ $url->url_doi }}" target="new" class="nolink">
+                        https://doi.org/{{ $url->url_doi }}
+                    </a>
                 @else
-                    Aún no existen versiones previas.
-                @endif --}}
+                    <a href="{{ url('/') }}cedula/{{ $url->url_cjarsiglas }}/{{ $url->url }}" target="new" class="nolink">
+                        {{ url('/') }}cedula/{{ $url->url_cjarsiglas }}/{{ $url->url }}
+                    </a>
+                @endif
+            accesado el {{ date('i') }} de {{ $meses[date('n')] }} de {{ date('Y') }}
 
+            <span id="sale_citaCedula" style="display:none">{{ $url->url_cita }} accesado el {{ date('i') }} de {{ $meses[date('n')] }} de {{ date('Y') }} </span>
+            <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('cita','Cedula')"></i>
+        </div>
+
+        <!-- Versiones -->
+        <div class="col-12 p-4">
+            @if($url->versiones->count() > '0')
+                <b>Versiones previas:</b>
+                @foreach($url->versiones->where('ver_version','!=', $url->url_version) as $v)
+                    <span style="padding:7px;" class="PaClick">
+                        <i class="bi bi-filetype-pdf">v.{{ $v->ver_version }} </i>
+                    </span>
+                @endforeach
+            @endif
         </div>
 
 
         <!-- aporte-->
         <div class="col-12" style="margin:20px;">
-            <!-- Yo tengo algo que aportar -->
-            <a href="#AporteUsrs" class="nolink">
-                <div class=""style="margin-left:20px; display:inline-block;" >
-                    <img src="/cedulas/BotonAportar.png" wire:click="VerMensaje('1')" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px;">
-                </div>
-            </a>
+
 
             <!-- Redes sociales -->
             <div style="width:300px; display:inline-block;margin:15px;vertical-align:middle;text-align:center;">
-                {{-- <div style="background-color: rgb(66, 42, 20);color:white;padding:4px;padding:2px; font-size:90%;text-align:center;" class="center">
+                <div style="background-color: rgb(66, 42, 20);color:white;padding:4px;padding:2px; font-size:90%;text-align:center;" class="center">
                     Compartir esta cédula en tus redes
                 </div>
-                <?php $MyUrl=url('/').'/sp/'.$url.'/'.$jardin; $MyTitle=$version['ced_nombre'];?>
+
                 <div style="font-size:150%;">
                     <!-- redes facebook-->
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $MyUrl }}&text=jaja" target="_blank" class="nolink" style="margin:7px; pading:5px;">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $UrlRedes }}&text=jaja" target="_blank" class="nolink" style="margin:7px; pading:5px;">
                         <i class="bi bi-facebook"></i>
                     </a>
                     <!-- redes instagra -->
                     <i class="bi bi-instagram"></i>
                     <!-- redes X -->
-                    <a href="https://x.com/intent/tweet?text={{ $MyTitle }}&url={{$MyUrl }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                    <a href="https://x.com/intent/tweet?text={{ $url->url_titulo }}&url={{$UrlRedes }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                         <i class="bi bi-twitter"></i>
                     </a>
                     <!-- redes linkedin -->
-                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ $MyUrl }}&title={{ $MyTitle }}"  target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ $UrlRedes }}&title={{ $url->url_titulo }}"  target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                         <i class="bi bi-linkedin"></i>
                     </a>
                     <!-- redes reddit -->
-                    <!--a href="https://www.reddit.com/submit?url={{ $MyUrl }}&title={{ $MyTitle }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                    <!--a href="https://www.reddit.com/submit?url={{ $UrlRedes }}&title={{ $url->url_titulo }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                         <img src="https://icon.png" alt="Share on Reddit">
                     </a-->
                     <!-- redes Whatsapp-->
-                    <a href="https://wa.me/?text={{ $MyTitle }}%20{{ $MyUrl }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                    <a href="https://wa.me/?text={{ $url->url_titulo }}%20{{ $UrlRedes }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                         <i class="bi bi-whatsapp"></i>
                     </a>
                     <!-- redes Tumblr-->
-                    <!--a href="https://www.tumblr.com/share/link?url={{ $MyUrl }}&name={{ $MyTitle }}&description=Mira lo que encontré" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                    <!--a href="https://www.tumblr.com/share/link?url={{ $UrlRedes }}&name={{ $url->url_titulo }}&description=Mira lo que encontré" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                     <img src="https://icon.png" alt="Share on Tumblr">
                     </a-->
                     <!-- redes Pinterest-->
-                    <a href="https://pinterest.com/pin/create/button/?url=[{{ $MyUrl }}]&media=[{{ $MyUrl }}]&description=[$MyTitle]" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                    <a href="https://pinterest.com/pin/create/button/?url=[{{ $UrlRedes }}]&media=[{{ $UrlRedes }}]&description=[$url->url_titulo]" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                         <i class="bi bi-pinterest"></i>
                     </a>
 
@@ -581,22 +599,22 @@
                     Share on Google+
                     </a-->
                     <!-- redes Mail-->
-                    <a href="mailto:?subject={{ $MyTitle }}&body=Mira lo que encontré: {{ $MyUrl }}" class="nolink">
+                    <a href="mailto:?subject={{ $url->url_titulo }}&body=Mira lo que encontré: {{ $UrlRedes }}" class="nolink">
                         <i class="bi bi-envelope"></i>
                     </a>
-                </div> --}}
+                </div>
             </div>
 
             <!-- Código QR -->
             <div  style="display: inline;">
-                {{-- <span wire:click="VerQR()" class="PaClick">
-                    {!! QrCode::margin(2)
+                <span wire:click="VerQR()" class="PaClick">
+                    {{-- {!! QrCode::margin(2)
                         ->size($qrSize)
                         ->backgroundColor(205,198,185)
                         ->color(32,45,45)
-                        ->generate( url('/').'/sp/'.$url.'/'.$jardin)
-                        !!}
-                </span> --}}
+                        ->generate({{ $UrlRedes }})
+                        !!} --}}
+                </span>
                 <span wire:click="BajarQR()" class="PaClick" style="margin:5px;vertical-align:bottom;">
                     <i class="bi bi-cloud-download"> </i>
                 </span>
@@ -652,6 +670,12 @@
     </div>
 
     <div>
+        <!-- Yo tengo algo que aportar -->
+            <a href="#AporteUsrs" class="nolink">
+                <div class=""style="margin-left:20px; display:inline-block;" >
+                    <img src="/imagenes/BotonAportar.png" wire:click="VerMensaje('1')" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px;">
+                </div>
+            </a>
         {{-- @if($aportes->count() > 0)
             @foreach ($aportes as $a)
                 <div style="padding:15px;">
@@ -679,21 +703,6 @@
     </div>
 
 
-
-    <!-- -------------------------------------- BLOQUE DE ADMINISTRACIÓN ----------------------------------------------->
-    <!-- -------------------------------------- BLOQUE DE ADMINISTRACIÓN ----------------------------------------------->
-    <!-- -------------------------------------- BLOQUE DE ADMINISTRACIÓN ----------------------------------------------->
-    {{-- <div class="row" style="margin-top:5px; border-bottom-left-radius:8px; border:1px solid gray;">
-        @if($edit=='1')
-            <!-- -------------------- Indicador de edición ------------------------------ -->
-            <center>
-                <error>Modo edición @if($editMaster=='1')1 @endif</error>
-                @if($url->url_edo <='4')
-                    <i class="cedEdoIcon{{ $url->url_edo }}"></i>
-                @endif
-            </center>
-        @endif
-    </div> --}}
 
 
 
@@ -753,6 +762,7 @@
 
     <livewire:sistema.modal-cedula-ubicaciones-component >
     <livewire:sistema.modal-cedula-alias-component >
+    <livewire:sistema.modal-cedula-cambia-estado-component >
 @endif
 
     <script>
@@ -773,10 +783,10 @@
             @this.set('ubicaciones',event.detail.dato, live=true);
         });
 
-        Livewire.on('RecibeVariablesDeAlias',() => {
-            @this.set('alias',event.detail.dato, live=true);
+        Livewire.on('RecargarPagina',() => {
+            location.reload();
+            // window.location.href;
         });
-
 
     </script>
 </div>

@@ -23,7 +23,7 @@
             <select wire:model.live="buscaJardin" class="form-select">
                 <option value="%"> Todos</option>
                 @foreach ($jardines as $i)
-                    <option value="{{ $i->ced_cjarsiglas }}"> {{ $i->cjar_nombre }}</option>
+                    <option value="{{ $i->url_cjarsiglas }}"> {{ $i->cjar_nombre }}</option>
                 @endforeach
             </select>
         </div>
@@ -33,7 +33,7 @@
             <select wire:model.live="buscaLengua" class="form-select">
                 <option value="%"> Todas</option>
                 @foreach ($lenguas as $i)
-                    <option value="{{ $i->ced_clencode }}"> {{ $i->clen_lengua }}</option>
+                    <option value="{{ $i->len_code }}"> {{ $i->len_autonimias }} ({{ $i->len_lengua }})</option>
                 @endforeach
             </select>
         </div>
@@ -44,42 +44,81 @@
             <thead>
                 <tr>
                     <th>Cédula</th>
-                    <th>Jardín &nbsp; &nbsp; Lengua</th>
+                    <th>Lengua</th>
+                    <th>Jardín</th>
                     <th>Palabras</th>
-                    <th></th>
+                    {{-- <th>Autores</th> --}}
+                    <th>Url</th>
                 </tr>
             </thead>
             <tbody>
-                <?php $ja=$cedulas->first()->url_nombre ?>
                 @foreach ($cedulas as $i)
                     <tr>
-                        <td class="PaClick" wire:click="CambiaLengua({{ $i->ced_id }})">
-                            <b>{{ $i->url_nombre }}</b>
-                            @if($i->url_nombre == $ja)  @else  @endif
-                        </td>
-                        <td class="PaClick" wire:click="CambiaLengua({{ $i->ced_id }})">
-                            {{ $i->ced_cjarsiglas }}
-                            &nbsp; &nbsp;
-                            {{ $i->clen_lengua }}
-                        </td>
-                        <td style="font-size: 80%;"  class="PaClick" wire:click="CambiaLengua({{ $i->ced_id }})">
-                            @if($i->url_nombrecomun !='')
-                                {{ $i->url_nombrecomun }},
-                            @endif
-
-                            @if($i->url_sciname != '')
-                                {{ $i->url_sciname }},
-                            @endif
-
-                            @if($i->url_palabras != '')
-                                {{ $i->url_palabras }}
-                            @endif
-                        </td>
+                        <!-- nombre cédula -->
                         <td>
-                            <i class="bi bi-clipboard PaClick" onclick="copiar('{{ url('/') }}','{{ $i->ced_urlurl }}','{{ $i->ced_cjarsiglas }}','{{ $i->ced_clencode }}')">url</i>
+                            <b>{{ $i->url_urltxt }}</b>
+                        </td>
+
+                        <!-- lengua -->
+                        <td>
+                            {{ $i->lenguas->len_autonimias }}
+                            ({{ $i->lenguas->len_lengua }})
+                            <span class="form-text">{{ $i->url_lencode }}</span>
+                        </td>
+
+                        <!-- Jardin -->
+                        <td>
+                            {{ $i->jardin->cjar_name }}
+                            <span class="form-text">{{ $i->jardin->cjar_siglas }}</span>
+                        </td>
+
+                        <!-- Palabras -->
+                        <td style="font-size:80%;">
+                            @foreach($i->especies as $e)
+                                <i>{{ $e->sp_scname }}</i>,
+                            @endforeach
+
+                            @foreach ($i->alias as $a)
+                                {{ $a->ali_txt_tr }},
+                            @endforeach
+
+                            @foreach ($i->ubicaciones as $u)
+                                {{ $u->ubi_ubicacion_tr }},
+                            @endforeach
+
+                            @foreach ($i->usos as $s)
+                                {{ $s->usos->cuso_uso }},
+                            @endforeach
+                        </td>
+
+                        <!-- autores -->
+                        {{-- <td style="font-size: 80%;" >
+                            @foreach ($i->autores as $a)
+                                {{ $a->aut_name }},
+                            @endforeach
+
+                            @if($i->traductores->count() > '0')
+                                (
+                                @foreach ($i->traductores as $a)
+                                    {{ $a->aut_name }},
+                                @endforeach
+                                )
+                            @endif
+                        </td> --}}
+
+                        <td>
+                            <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('url','{{ $i->url_id }}')"></i> &nbsp;
+                            @if($i->url_doi == '')
+                                <a href="{{ url('/cedula') }}/{{ $i->url_cjarsiglas }}/{{ $i->url_url }}" id="sale_url{{ $i->url_id }}" target="new" class="nolink">
+                                    {{ url('/cedula') }}/{{ $i->url_cjarsiglas }}/{{ $i->url_url }}
+                                </a>
+                            @else
+                                <a href="https://doi.org/{{ $i->url_doi }}" target="new" class="nolink">
+                                    https://doi.org/{{ $i->url_doi }}
+                                </a>
+                            @endif
                         </td>
                     </tr>
-                    <?php $ja=$i->url_nombre ?>
                 @endforeach
             </tbody>
         </table>

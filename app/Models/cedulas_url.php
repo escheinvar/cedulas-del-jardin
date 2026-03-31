@@ -36,6 +36,8 @@ class cedulas_url extends Model
         'url_resumen',
         'url_resumenorig',
         'url_cita',
+        'url_cita_aut',
+        'url_cita_trad',
         'url_anio',
         // 'url_editor',
         'url_version',
@@ -65,24 +67,27 @@ class cedulas_url extends Model
     }
 
     public function autores():HasMany {
-        return $this->HasMany(ced_autores::class,'aut_key','url_key')
+        return $this->HasMany(ced_autores::class,'aut_urlid','url_id')
             ->where('aut_tipo','Autor')
             ->where('aut_act','1')
-            ->where('aut_del','0');
+            ->where('aut_del','0')
+            ->leftJoin('cat_autores','caut_id','=','aut_cautid');
     }
 
     public function editores():HasMany {
         return $this->HasMany(ced_autores::class,'aut_urlid','url_id')
             ->where('aut_tipo','Editor')
             ->where('aut_act','1')
-            ->where('aut_del','0');
+            ->where('aut_del','0')
+            ->leftJoin('cat_autores','caut_id','=','aut_cautid');
     }
 
     public function traductores():HasMany {
         return $this->HasMany(ced_autores::class,'aut_urlid','url_id')
             ->where('aut_tipo','Traductor')
             ->where('aut_act','1')
-            ->where('aut_del','0');
+            ->where('aut_del','0')
+            ->leftJoin('cat_autores','caut_id','=','aut_cautid');
     }
 
     public function ubicaciones():HasMany {
@@ -112,6 +117,17 @@ class cedulas_url extends Model
             ->where('uso_del','0')
             ->where('sp_act','1')
             ->where('sp_del','0');
+    }
 
+    public function versiones():HasMany{
+        return $this->HasMany(ced_version::class, 'ver_cedid','url_id')
+            ->where('ver_act','1')
+            ->where('ver_del','0');
+    }
+
+    public function imagenesGral():HasMany{
+        return $this->HasMany(imagenes::class, 'img_key','url_key')
+            ->where('img_act','1')
+            ->where('img_del','1');
     }
 }

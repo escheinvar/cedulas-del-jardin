@@ -39,7 +39,7 @@ class CatAutoresSeeder extends Seeder
                 'caut_cjarsiglas'=>'JebOax',
                 'caut_correo'=>'alejandro@correo.mx',
                 'caut_institu'=>'JebOa',
-                'caut_usrid'=>'',
+                'caut_usrid'=>null,
                 'caut_lenguas'=>'spa;zap',
                 'caut_web'=>'1', ### 1=si publica web, 0=no publica
                 'caut_mailpublic'=>'1', ###1=si publica @ 0=no publica
@@ -53,7 +53,7 @@ class CatAutoresSeeder extends Seeder
                 'caut_cjarsiglas'=>'JebOax',
                 'caut_correo'=>'nizagt@gmail.com',
                 'caut_institu'=>'Secihti/JebOax',
-                'caut_usrid'=>'',
+                'caut_usrid'=>null,
                 'caut_lenguas'=>'spa',
                 'caut_web'=>'1', ### 1=si publica web, 0=no publica
                 'caut_mailpublic'=>'1', ###1=si publica @ 0=no publica
@@ -62,12 +62,12 @@ class CatAutoresSeeder extends Seeder
                 'caut_nombre'=>'Noe',
                 'caut_apellido1'=>'Pinzón',
                 'caut_apellido2'=>'Palafox',
-                'caut_nombreautor'=>'Pinzón-Palafox, N.',
+                'caut_nombreautor'=>'Pinzón-Palafox N.',
                 'caut_url'=>'pinzon-palafoxn',
                 'caut_cjarsiglas'=>'JebOax',
                 'caut_correo'=>'noe@y.que',
                 'caut_institu'=>'',
-                'caut_usrid'=>'',
+                'caut_usrid'=>null,
                 'caut_lenguas'=>'huv',
                 'caut_web'=>'1', ### 1=si publica web, 0=no publica
                 'caut_mailpublic'=>'0', ###1=si publica @ 0=no publica
@@ -81,7 +81,7 @@ class CatAutoresSeeder extends Seeder
                 'caut_url'=>'mendozaruizj',
                 'caut_correo'=>'',
                 'caut_institu'=>'Instituto de Investigaciones Filológicas, UNAM',
-                'caut_usrid'=>'',
+                'caut_usrid'=>null,
                 'caut_lenguas'=>'',
                 'caut_web'=>'0', ### 1=si publica web, 0=no publica
                 'caut_mailpublic'=>'1', ###1=si publica @ 0=no publica

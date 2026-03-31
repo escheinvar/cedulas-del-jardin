@@ -18,14 +18,21 @@ class Imagenes extends Model
         'img_id',
         'img_act',
         'img_del',
+
         'img_cimgmodulo',
         'img_cimgtipo',
         'img_cjarsiglas',
+
+        'img_urlid',
         'img_urlurl',
-        'img_lencode',
-        'img_file',
-        'img_url',
+        'img_key',
         'img_urltxt',
+        'img_lencode',
+
+        'img_file',
+        'img_web',
+        'img_html',
+
         'img_tipo',
         'img_size',
         'img_resolu',
@@ -40,8 +47,23 @@ class Imagenes extends Model
         'img_laty',
         'img_usrid',
     ];
+
+    ################################################################
+    ############# Función que genera automáticamente la columna key
+    ############# a partir de concatenar cjarsiglas y urltxt
+    protected static function boot() {
+        parent::boot();
+        static::saving(function ($registro) {
+            if ($registro->img_cjarsiglas && $registro->img_urltxt) {
+                $registro->img_key = trim($registro->img_cjarsiglas . '@' . $registro->img_urltxt);
+            }
+        });
+    }
+
+
     public function alias():HasMany{
         return $this->hasMany(alias_img::class,'aimg_imgid')
             ->where('aimg_act','1')->where('aimg_del','0');
     }
+
 }

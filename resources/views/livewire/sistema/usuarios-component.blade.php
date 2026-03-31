@@ -197,8 +197,8 @@
                                     <tr>
                                         <th>Rol</th>
                                         <th>Jardín</th>
-                                        <th>Lengua</th>
-                                        <th>Url</th>
+                                        {{-- <th>Lengua</th>
+                                        <th>Url</th> --}}
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -207,8 +207,8 @@
                                         <tr>
                                             <td> {{ $r->rol_crolrol }} </td>
                                             <td> {{ $r->rol_cjarsiglas }} @error('ErrorAdmin')<br><error>{{ $message }}</error>@enderror</td>
-                                            <td> len </td>
-                                            <td> url </td>
+                                            {{-- <td> len </td>
+                                            <td> url </td> --}}
                                             <td>
                                                 <!-- botón para borrar rol -->
                                                 @if(in_array($r->rol_cjarsiglas, $editjar) or in_array('todos',$editjar))
@@ -247,14 +247,14 @@
                                         </td>
 
                                         <!-- selecciona lengua -->
-                                        <td>
+                                        {{-- <td>
                                             len
                                         </td>
 
                                         <!-- selecciona url -->
                                         <td>
                                             url
-                                        </td>
+                                        </td> --}}
                                         <td>
                                             <!-- botón para agregar rol -->
                                             <button  wire:click="AgregarRol_Modal()" class="btn btn-secondary btn-sm" @if($NvoJardin =='' && $NvoRol == '') disabled @endif>

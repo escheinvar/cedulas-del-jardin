@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Sistema;
 
+use App\Models\ced_autores;
+use App\Models\cedulas_url;
 use App\Models\Imagenes;
 use App\Models\SpAporteUsrsModel;
 use App\Models\UserRolesModel;
@@ -39,6 +41,19 @@ class HomeComponent extends Component
 
     ##### Termina imágens
     public function render(){
+        ##### REcupera cédulas relacionadas al autor
+        // $cedulas=ced_autores::join('cat_autores','aut_cautid','=','caut_id')
+        //     ->join('cedula_url','aut_urlid','=','url_id')
+        //     ->where('caut_usrid',Auth::user()->id)
+        //     ->get();
+        $cedulas=cedulas_url::join('ced_autores','aut_urlid','=','url_id')
+            ->join('cat_autores','aut_cautid','=','caut_id')
+            ->where('caut_id',Auth::user()->id)
+            ->with('jardin')
+            ->with('lenguas')
+            ->get();
+
+// dd($cedulas);
         ##### Recupera aportaciones a revisar
         // $aporta=SpAporteUsrsModel::where('msg_act','1')
         //     ->where('msg_usr',Auth::user()->id)
@@ -49,6 +64,7 @@ class HomeComponent extends Component
         $MisRoles=UserRolesModel::where('rol_usrid',Auth::user()->id)->where('rol_act','1')->where('rol_del','0')->get();
 
         return view('livewire.sistema.home-component',[
+            'cedulas'=>$cedulas,
             'aporta'=>$aporta,
             'roles'=>$MisRoles,
         ]);

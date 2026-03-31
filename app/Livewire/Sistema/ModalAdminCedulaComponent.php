@@ -69,7 +69,7 @@ class ModalAdminCedulaComponent extends Component
     public function mount(){
         $this->jardinSel='';
         $this->origtrad='original';
-        $this->verAutor='0'; $this->verEditor='0'; $this->verTraductor='0';
+        $this->verAutor='1'; $this->verEditor='1'; $this->verTraductor='1';
         $this->verUbicacion='0'; $this->verAlias='0'; $this->verSp='0'; $this->verUso='0';
         $this->verTituloOrig='0'; $this->verResumenOrig='0';
     }
@@ -227,9 +227,15 @@ class ModalAdminCedulaComponent extends Component
         $this->dispatch('AbreModalAsignaUbicacion',$datos);
     }
 
-    public function BorrarAutor($id){
-        ced_autores::where('aut_id',$id)->update(['aut_del'=>'1']);
-        paLog('Se elimina autor id '.$id.' a cédula '.$this->cedulaId,'ced_autores',$id);
+    public function BorrarAutor($id,$tipo,$key){
+        if($tipo=='Autor'){
+            #### Como el autor es el mismo en las copias, asigna autor a todas las url de la key
+            ced_autores::where('aut_key',$key)->update(['aut_del'=>'1']);
+            paLog('Se elimina autor de todas las cedulas key '.$key,'ced_autores','varios id');
+        }else{
+            ced_autores::where('aut_id',$id)->update(['aut_del'=>'1']);
+            paLog('Se elimina autor id '.$id.' a cédula '.$this->cedulaId,'ced_autores',$id);
+        }
         ######## Recarga variable (para actualizar lista en modal)
         $dato=cedulas_url::where('url_id',$this->cedulaId)
             ->with('autores')
@@ -343,7 +349,7 @@ class ModalAdminCedulaComponent extends Component
     }
 
     public function render() {
-        ##### Obtiene total de url's originales
+        ##### Obtiene total de url's originales (para el menú de copiar desde original)
         $CedsOriginales= cedulas_url::where('url_cjarsiglas','ilike',$this->jardinSel)
             ->where('url_tradid', '0')
             ->where('url_del','0')

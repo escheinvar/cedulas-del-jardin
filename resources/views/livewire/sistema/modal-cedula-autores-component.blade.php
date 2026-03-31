@@ -41,6 +41,21 @@
 
                         <div class="col-12 col-md-9">
                             <div class="row">
+                                {{-- <!-- Vincular a: -->
+                                <div class="col-12 col-md-6 my-1 form-group">
+                                    <label for="" class="form-label">Vincular a usuario del sistema: <red></red></label>
+                                    <select wire:model="" id="" class="@error('') is-invalid @enderror form-select">
+                                        <option value="">Indicar...</option>
+                                        @foreach($usr as $u)
+                                            <option value="{{ $u->id }}">{{ $u->nombre }} {{ $u->apellido }} ({{ $u->usrname }})</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-text"></div>
+                                    @error('')<error>{{ $message }}</error>@enderror
+                                </div> --}}
+                            </div>
+
+                            <div class="row">
                                 <!-- Nombre -->
                                 <div class="col-12 col-md-6  form-group">
                                     <label for="ModAut_nombre" class="form-label">Nombre(s)<red>*</red></label>
@@ -67,7 +82,8 @@
 
                                 <!-- Url-->
                                 <div class="col-12 col-md-6  form-group">
-                                    <label for="ModAut_url" class="form-label">Url<red></red></label>
+                                    <label for="ModAut_url" class="form-label">Url<red></red></label> &nbsp; &nbsp;
+                                    <button class="btn btn-sm" @if($ModAut_nombre=='') disabled @endif><i wire:click="CalculaNombre()" class="bi bi-info-square PaClick"> Sugerir</i></button>
                                     <input wire:model="ModAut_url" id="ModAut_url" class="@error('ModAut_url') is-invalid @enderror form-control" readonly type="text">
                                     <div class="form-text"></div>
                                     @error('ModAut_url')<error>{{ $message }}</error>@enderror
@@ -75,8 +91,8 @@
 
                                 <!-- Nombre de autor  -->
                                 <div class="col-12 col-md-6  form-group">
-                                    <label for="ModAut_autorname" class="form-label">Nombre de autor<red>*</red></label>
-                                    <i wire:click="CalculaNombre()" class="bi bi-info-square-fill PaClick"> Sugerir</i>
+                                    <label for="ModAut_autorname" class="form-label">Nombre de autor<red>*</red></label> &nbsp; &nbsp;
+                                    <button class="btn btn-sm" @if($ModAut_nombre=='') disabled @endif><i wire:click="CalculaNombre()" class="bi bi-info-square PaClick"> Sugerir</i></button>
                                     <input wire:model.live="ModAut_autorname" wire:change="CalculaUrl()" id="ModAut_autorname" class="@error('ModAut_autorname') is-invalid @enderror form-control" type="text">
                                     <div class="form-text">Nombre único del autor (generalmente apellido-apellido N.)</div>
                                     @error('ModAut_autorname')<error>{{ $message }}</error>@enderror
@@ -123,7 +139,7 @@
                                 <div class="col-6 col-md-4 form-group">
                                     <div class="form-check">
                                         <input wire:model="ModAut_web" class="form-check-input" type="checkbox" value="1" id="ModAut_web">
-                                        <label class="form-check-label" for="ModAut_web">Publicar web</label>
+                                        <label class="form-check-label" for="ModAut_web">Generar página web</label>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-4 form-group">
@@ -131,6 +147,19 @@
                                         <input wire:model="ModAut_mailpublic" class="form-check-input" type="checkbox" value="1" id="ModAut_mailpublic">
                                         <label class="form-check-label" for="ModAut_mailpublic">Publicar correo en web</label>
                                     </div>
+                                </div>
+
+                                <!-- Vincular a usuario -->
+                                <div class="col-6 col-md-4 form-group">
+                                    <label for="ModAut_usrsist" class="form-label">@if($ModAut_usrsist=='')Vincular @else Vinculado @endif a usuario del sistema: <red></red></label>
+                                    <select wire:model.live="ModAut_usrsist" id="ModAut_usrsist" class="@error('ModAut_usrsist') is-invalid @enderror form-select">
+                                        <option value="">Indicar usuario del sistema...</option>
+                                        @foreach($usr as $u)
+                                            <option value='{{ $u->id }}'>{{ $u->nombre }} {{ $u->apellido }} ({{ $u->usrname }})</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-text"></div>
+                                    @error('ModAut_usrsist')<error>{{ $message }}</error>@enderror
                                 </div>
                             </div>
                         </div>

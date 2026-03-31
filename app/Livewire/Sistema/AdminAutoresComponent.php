@@ -62,7 +62,8 @@ class AdminAutoresComponent extends Component
             ->whereIn('rol_crolrol',$auts)
             ->where('rol_act','1')->where('rol_del','0')
             ->pluck('rol_cjarsiglas')->toArray();
-        if(array_intersect($auts,session('rol')) and in_array('todos',$this->editjar) ){
+        // if(array_intersect($auts,session('rol')) and in_array('todos',$this->editjar) ){
+        if(array_intersect($auts,session('rol'))  ){
             $this->edit='1';
         }else{
             $this->edit='0';

@@ -140,34 +140,47 @@
 
 
 
-
-    <!-- ----------------------- Módulo de Admin de sistema ----------------------- -->
-    @if(in_array('admin',session('rol')))
-
+    <!-- ---------------------------------------------------------------------------- -->
+    @if($cedulas->count() > '0')
+        <h3>Mis cédulas</h3>
+        <div class="table table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Titulo</th>
+                        <th>Url</th>
+                        <th>Lengua</th>
+                        <th>Jardin</th>
+                        <th>Rol</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($cedulas as $c)
+                        <tr>
+                            <td>{{ $c->url_titulo }}</td>
+                            <td>{{ $c->url_url }}</td>
+                            <td>{{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})</td>
+                            <td>{{ $c->jardin->cjar_nombre }} ({{ $c->jardin->cjar_siglas }})</td>
+                            <td>{{ $c->aut_tipo }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @endif
 
-    <!-- ----------------------- Módulo de Cédulas Audibles ----------------------- -->
-    @if(array_intersect(['traduce','cedulas'],session('rol')))
-        <h3>Módulo de cédulas audibles</h3>
-        <ul>
-            <li> <a href="/catCedulas">Catálogo de cédulas</a></li>
-            <li> <a href="/especies"> Ver Cédulas publicadas</a></li>
-        </ul>
-    @endif
 
     <!-- ----------------------- Faltantes ----------------------- -->
     @if(in_array('admin',session('rol')))
-        <h3>Faltantes</h3>
+        <h3>Pendientes</h3>
         <ol>
+            <li>Modal-cedula-cambia-edo: Enviar buzón y correo en c/cambio de estado a los involucrados</li>
+            <li>Modal-cedula-cambia-edo: Crear PDF con nueva versión</li>
             <li>Cédulas: Buscador de cédulas. Vincular cédulas por tema(s)</li>
-            <li>Cédulas: ver pdf en lugar de generar al vuelo.</li>
-            <li>Cédulas: cambiar versión + pdf: al meter cita, al pasar a edo 5 (desde 0->2->5 o desde 5->3->5)</li>
             <br>
 
             <li>Cédulas: Módulo para vaciar imágenes que no estan en sp_cedulas (txt_audio, txt_img1-3, txt_video) o en sp_fotos
             <br>
-
-            <li>Jardines: Módulo para vaciar las imágenes de carpeta /cargaMasiva que no están en la tabla pl_import (campos de fotos)</li>
         </ol>
     @endif
 </div>

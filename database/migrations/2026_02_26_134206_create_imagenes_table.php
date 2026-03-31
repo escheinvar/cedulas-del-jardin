@@ -16,15 +16,21 @@ return new class extends Migration
             $table->enum('img_act',['0','1'])->default('1');  ##### borrado lógico inactivo
             $table->enum('img_del',['0','1'])->default('0'); ##### borrado lógico
 
-            $table->string('img_cimgmodulo'); #### cimg_modulo de tabla cat_img
-            $table->string('img_cimgtipo');  #### cimg_tipo de tabla cat_img
-            $table->string('img_cjarsiglas'); #### cjar_siglas de tabla cat_jardines
-            $table->string('img_urlurl')->nullable(); ##### en su caso, url
+            $table->string('img_cimgmodulo'); #### cimg_modulo de tabla cat_img. Indica la página o sección en la que aparece del objeto en una página
+            $table->string('img_cimgtipo');  #### cimg_tipo de tabla cat_img. Indica la posición dentro de una página en donde aparece el objeto.
+            $table->string('img_cjarsiglas'); #### jardin al que pertenece el objeto cjar_siglas de tabla cat_jardines
+
+            $table->integer('img_urlid')->nullable(); ##### en su caso, Id de la url de origen
+            $table->string('img_urlurl')->nullable(); ##### en su caso, url (con lengua)
+            $table->string('img_urltxt')->nullable(); ##### en su caso, urltxt (sin lengua)
+            $table->string('img_key')->nullable();   ##### en su caso key automático: url@jardin
             $table->string('img_lencode')->nullable(); ##### en su caso, lengua
-            $table->string('img_file')->nullable(); ##### archivo del objeto
-            $table->longText('img_url')->nullable(); ##### Código html para embeber objeto externo o dirección url de liga
-            $table->longText('img_urltxt')->nullable(); ##### Código html para embeber objeto externo o dirección url de liga
-            $table->enum('img_tipo',['img','aud','tau','vid','otro'])->nullable(); ##### tipo de objeto
+
+            $table->string('img_file')->nullable(); ##### archivo del objeto (ubicado en /public/img)
+            $table->longText('img_web')->nullable(); ##### Dirección url del objeto (x ej. links)
+            $table->longText('img_html')->nullable(); ##### Código html para embeber objeto externo (x ej. youtube)
+
+            $table->enum('img_tipo',['img','aud','vid','web','you','otro'])->nullable(); ##### tipo de objeto: IMGen, AUDio, VIDeo, liga Web, YOUtube
             $table->string('img_size')->nullable(); #### Tamaño en MB del objeto
             $table->string('img_resolu')->nullable(); #### Resolución en px X,Y
             $table->string('img_titulo')->nullable(); ##### tiulo de la imágen

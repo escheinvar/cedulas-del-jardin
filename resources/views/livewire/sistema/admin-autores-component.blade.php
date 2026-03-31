@@ -61,7 +61,6 @@
 
                         <th>Web</th>
                         <th>Edit</th>
-                        <th>Jardines</th>
                         <th>Autorias</th>
                         <th>Traducciones</th>
                         <th></th>
@@ -126,9 +125,6 @@
                                 @endif
                             </td>
 
-                            <!-- Jardin(es) a los que pertenece -->
-                            <td> <div class="elemento">JebOax</div> </td>
-
                             <!-- Cédulas de las que es autor -->
                             <td> <div class="elemento">Cedula</div> </td>
 
@@ -136,7 +132,10 @@
                             <td> <div class="elemento">Cedula</div> </td>
 
                             <!-- Ícono de edición -->
-                            <td wire:click="AbreModalAutores({{ $a->caut_id }})" class="@if($edit=='1')PaClick @endif"> <i class="bi bi-pencil-square PaClick" wire:click="AbreModalAutores({{ $a->caut_id }})"></i> </td>
+                            <td>
+                                <i wire:click="AbreModalAutores({{ $a->caut_id }})"  class="bi bi-pencil-square PaClick" wire:click="AbreModalAutores({{ $a->caut_id }})"></i>
+                                @if($a->caut_usrid > '0') <i class="bi bi-person-check"><sub>{{ $a->caut_usrid }}</sub></i>@endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

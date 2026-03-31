@@ -12,7 +12,7 @@
                         @if($cedulaId=='0')
                             Buscando {{ $BuscaAutor_tipo }} para cédula nueva
                         @else
-                            Buscando autor para cédula Id {{ $cedulaId }}
+                            Buscando {{ $BuscaAutor_tipo }} para cédula Id {{ $cedulaId }}
                         @endif
                         de {{ $jardinSel }}
                     </h3>
@@ -21,6 +21,7 @@
                 <!-- cuerpo del modal -->
                 <div class="modal-body">
                         <div class="row">
+                            @if($BuscaAutor_tipo=='Editor') <div class="col-12 my-2"><div class="alert alert-warning"><b>Recuerda que el editor DEBE estar registrado en el sistema</b></div></div>@endif
                             <div class="col-12 col-md-4 form-group">
                                 <label for="BuscaAutor_BuscaNombre" class="form-label">Nombre:</label>
                                 <input wire:model="BuscaAutor_BuscaNombre" id="BuscaAutor_BuscaNombre" class="@error('BuscaAutor_BuscaNombre') is-invalid @enderror form-control">
@@ -56,6 +57,7 @@
                                                         <td>
                                                             <div class="py-2 PaClick" onclick="VerNoVer('Autor','{{ $a->caut_id }}')">
                                                                 {{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}
+                                                                @if($a->caut_usrid != '')<i class="bi bi-person-check"></i>@endif
                                                             </div>
                                                             <div id="sale_Autor{{ $a->caut_id }}" style="display:none;">
                                                                 Nombre de autor: {{ $a->caut_nombreautor }}<br>
@@ -63,7 +65,11 @@
                                                                 Comunidad: {{ $a->caut_comunidad }} <br>
                                                                 Instituto: {{ $a->caut_institu }} <br>
                                                                 @if($a->caut_lenguas != '') Lenguas: {{ $a->caut_lenguas }} <br> @endif
-                                                                <button wire:click="ConfirmarDatosDeAutor({{ $a->caut_id }})" class="btn btn-secondary btn-sm" style="float: right;">
+
+                                                                <button wire:click="ConfirmarDatosDeAutor({{ $a->caut_id }})"
+                                                                    class="btn btn-secondary btn-sm"
+                                                                    style="float: right;"
+                                                                    @if($BuscaAutor_tipo=='Editor' AND $a->caut_usrid =='') disabled @endif>
                                                                     Seleccionar a {{ $BuscaAutor_tipo }}
                                                                 </button>
                                                             </div>
@@ -74,7 +80,9 @@
                                         </table>
                                     @else
                                         No se encontraron autores en el catálogo.
-                                        <button wire:click="AbrirModalDeNuevoAutor()" class="btn btn-secondary">Agregar uno al catálogo</button>
+                                        <button wire:click="AbrirModalDeNuevoAutor()" class="btn btn-secondary" @if($BuscaAutor_tipo=='Editor') disabled @endif>
+                                            Agregar uno al catálogo
+                                        </button>
                                     @endif
                                 @endif
 
@@ -91,6 +99,9 @@
                                     </div>
                                      <div class="row">
                                         <div class="col-4 col-md-3 px-1"><b>Nombre de autor:</b></div>
+                                        <div class="col-8 col-md-9 px-1">{{ $BuscaAutor_Ganon->caut_nombreautor }}
+                                            @if($BuscaAutor_Ganon->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
+                                        </div>
                                     </div>
 
                                     <div class="row">

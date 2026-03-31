@@ -185,25 +185,29 @@
                                             Home
                                         </a>
                                     </li>
-                                    @if(array_intersect(['admin'],session('rol')))
+                                    @if(array_intersect(['admin','editor','webmaster'],session('rol')))
                                         <!-- #################### Admin ###################### -->
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle
                                                 {{-- @if(in_array(request()->path(),['admin_'])) active @endif"  --}}
-                                                @if(preg_match('/admin_.*/',request()->path())) active @endif"
+                                                @if(preg_match('/admin_(?!cedulas\b).*/i',request()->path())) active @endif"
                                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Admin
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item @if(request()->path() == 'admin_usuarios') active @endif" href="/admin_usuarios">Usuarios</a></li>
-                                                <li><a class="dropdown-item @if(request()->path() == 'admin_jardines') active @endif" href="/admin_jardines">Jardines</a></li>
-                                                <li><a class="dropdown-item @if(request()->path() == 'admin_lenguas') active @endif" href="/admin_lenguas">Lenguas</a></li>
-                                                <li><a class="dropdown-item @if(request()->path() == 'admin_autores') active @endif" href="/admin_autores">Autores</a></li>
-                                                <li><a class="dropdown-item @if(request()->path() == 'admin_cedulas') active @endif" href="/admin_cedulas">Cedulas</a></li>
+                                                @if(array_intersect(['admin'],session('rol')))
+                                                    <li><a class="dropdown-item @if(request()->path() == 'admin_usuarios') active @endif" href="/admin_usuarios">Usuarios</a></li>
+                                                    <li><a class="dropdown-item @if(request()->path() == 'admin_jardines') active @endif" href="/admin_jardines">Jardines</a></li>
+                                                    <li><a class="dropdown-item @if(request()->path() == 'admin_lenguas') active @endif" href="/admin_lenguas">Lenguas</a></li>
+                                                    <li><a class="dropdown-item @if(request()->path() == 'admin_autores') active @endif" href="/admin_autores">Autores</a></li>
+                                                @endif
 
+                                                {{-- <li><a class="dropdown-item @if(request()->path() == 'admin_cedulas') active @endif" href="/admin_cedulas">Cedulas</a></li> --}}
 
                                                 <li> <hr class="dropdown-divider"> </li>
-                                                <li><a class="dropdown-item @if(request()->path() == 'admin_web') active @endif" href="/admin_web">Web</a></li>
+                                                @if(array_intersect(['admin','webmaster'],session('rol')))
+                                                    <li><a class="dropdown-item @if(request()->path() == 'admin_web') active @endif" href="/admin_web">Web</a></li>
+                                                @endif
                                                 <li><a class="dropdown-item @if(request()->path() == 'admin_imagenes') active @endif" href="/admin_imagenes">Imágenes</a></li>
 
                                                 <li> <hr class="dropdown-divider"> </li>
@@ -211,8 +215,14 @@
                                                 <li><a class="dropdown-item @if(request()->path() == 'admin_vervisitas') active @endif" href="/admin_visitas">Visitas</a></li>
                                             </ul>
                                         </li>
-
                                     @endif
+
+                                    <li class="nav-item">
+                                        <a class="nav-link  @if(request()->path() == 'admin_cedulas') active @endif" href="/admin_cedulas">
+                                            Admin Cedulas
+                                        </a>
+                                    </li>
+
                                     <!-- Salir de sistema -->
                                     <li class="nav-item">
                                         <form action="{{route('logout')}}" method="post">

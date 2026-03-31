@@ -10,13 +10,14 @@ use App\Models\cedulas_txt;
 use App\Models\cedulas_url;
 use App\Models\Imagenes;
 use App\Models\nom054semarnat;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use SimpleSoftwareIO\QrCode\Image;
 
 class CedulasController extends Component
 {
-    public $jardin, $url; ##### Vars. recibidas por URL, y luego en url se guarda toda la info de cedula_url
+    public $jardin, $url; ##### Vars. recibidas por URL, y luego en url se guarda el first() de toda la info de cedula_url
     public $edit, $enEdit, $editMaster; ###### Vars. de edición
     ###### Variables de página cédulas:
     public $traducciones; ##### get() de cédulas con igual urltxt
@@ -25,6 +26,7 @@ class CedulasController extends Component
     public $txt; #### get() de cedula_txt con todo el texto
     public $verSp, $verUbica, $verAlias; ##### flags para VerNoVer apartados de sp, ubicación y alias.
     public $alias, $ubicaciones; ### datos de alias y de locs de la cédula
+    public $meses, $UrlRedes, $qrSize;
 
     ###### Variables de modal Traduce titulo
     public $NuevoTituloTraducido;
@@ -41,6 +43,13 @@ class CedulasController extends Component
             ->with('jardin')
             ->with('lenguas')
             ->with('autores')
+            ->with('editores')
+            ->with('traductores')
+            ->with('ubicaciones')
+            ->with('alias')
+            ->with('especies')
+            ->with('usos')
+            ->with('versiones')
             ->first();
 
         if(is_null($this->url)) {
@@ -65,6 +74,9 @@ class CedulasController extends Component
         $this->verSp='0';
         $this->verUbica='0';
         $this->verAlias='0';
+        $this->meses=['0','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','dieciembre'];
+        $this->UrlRedes=url('/').'/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url;
+        $this->qrSize='20';
 
     }
 
@@ -93,28 +105,30 @@ class CedulasController extends Component
     }
 
     public function render(){
-        ##### Revisa permisos del usuario (rol y no doi)
-        $auts=['editor','admin','traductor','autor']; ##### array de roles autorizados a editar
+        ##### Revisa permisos del usuario (rol)
         $this->edit='0';
+        // dd(Auth::user()->id, $this->url->autores->pluck('caut_usrid')->toArray(),   $this->url->traductores->pluck('caut_usrid')->toArray() );
         if(session('rol')){
-            if(array_intersect($auts,session('rol')) AND
-                $this->url->url_edit=='1' AND
-                $this->url->url_doi ==''
-            ){
+            if(array_intersect(['editor','admin'], session('rol')) AND
+                $this->url->url_edit=='1'){
                 $this->edit='1';
+                 $this->editMaster='1';
+
+            ##### Si es autor o traductor, revisa que esté en la lista de autores o traductores de la cédula
+            }elseif(array_intersect(['traductor','autor'], session('rol'))
+              AND
+              ($this->url->url_edit=='1')
+              AND
+              (in_array(Auth::user()->id, $this->url->autores->pluck('caut_usrid')->toArray())
+              OR
+              in_array(Auth::user()->id, $this->url->traductores->pluck('caut_usrid')->toArray()) ) ){
+                $this->edit='1';
+                $this->editMaster='0';
+
             }else{
                 $this->edit='0';
             }
-
-             ##### Diferencía tipo de autorizado
-            $dictadores=['editor','admin'];
-            if(array_intersect($dictadores,session('rol'))){
-                $this->editMaster='1';
-            }else{
-                $this->editMaster='0';
-            }
         }
-
 
         ##### Revisa si la página es pública:
         if($this->url->url_edo <= '4'){
@@ -136,6 +150,7 @@ class CedulasController extends Component
             ->orderBy('txt_orden')
             ->get();
 
+        ##### Carga datos y metadatos de la cédula
         $cedula=cedulas_url::where('url_id',$this->url->url_id)
             ->with('jardin')
             ->with('lenguas')
@@ -176,7 +191,7 @@ class CedulasController extends Component
 
 
     ############################################################
-    ############################## Abre editor de texto
+    ############################## Abre modal de editor de texto
     public function AbreModalEditaTextoWebJardin($id, $orden){
         if($this->edit=='1'){
             ###### Si es nuevo, calcula el orden
@@ -233,29 +248,6 @@ class CedulasController extends Component
         redirect('/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url);
     }
 
-    // ##########################################################
-    // ############ Modal externo para agregar especies
-    // public function AbrirModalDeBuscarEspecie(){
-    //     $datos=[
-    //         'jardin'=>$this->url->url_cjarsiglas,
-    //         'urltxt'=>$this->url->url_urltxt,
-    //     ];
-
-    //     $this->dispatch('AbreModalDeBuscarEspecie',$datos);
-    // }
-
-    // ##########################################################
-    // ################## Modal externo Agregar Uso a una especie
-    // public function AbrirModalDeUso($iduso,$idsp){
-    //     $datos=[
-    //         'spid'=>$idsp, #### id de la sp
-    //         'usoid'=>$iduso, ### id del uso o 0 para nuevo
-    //         'jardin'=>$this->url->url_cjarsiglas,
-    //         'urltxt'=>$this->url->url_urltxt
-    //     ];
-    //     $this->dispatch('AbreModalUsoEnCedula',$datos);
-    // }
-
     ##########################################################
     ################## Modal externo Agregar Ubicación
 
@@ -275,8 +267,14 @@ class CedulasController extends Component
             'aliasId'=>$aliasId, ### o id del uso
             'urlId'=>$this->url->url_id,
         ];
-
         $this->dispatch('AbreModalAlias',$datos);
+    }
+
+    ##########################################################
+    ################## Modal externo Cambio de estado
+    public function AbreModalDeCambioDeEstado($id){
+        $data=['urlId'=>$id];
+        $this->dispatch('AbreModalCambiaEdoCedula',$data);
     }
 }
 

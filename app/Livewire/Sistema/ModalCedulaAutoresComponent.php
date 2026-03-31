@@ -3,6 +3,7 @@
 namespace App\Livewire\Sistema;
 
 use App\Models\cat_autores;
+use App\Models\User;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -15,7 +16,7 @@ class ModalCedulaAutoresComponent extends Component
     ##### Variables de formulario:
     public $ModAut_nombre, $ModAut_apellido1, $ModAut_apellido2, $ModAut_url, $ModAut_autorname, $ModAut_correo;
     public $ModAut_institu,$ModAut_comunidad, $ModAut_orcid, $ModAut_img, $ModAut_NvaImg;
-    public $ModAut_web, $ModAut_mailpublic,$ModAut_tipo;
+    public $ModAut_web, $ModAut_mailpublic,$ModAut_tipo, $ModAut_usrsist;
 
     #[On('AbreModalDeAutores')]
     public function recibeDatos($data){
@@ -43,16 +44,18 @@ class ModalCedulaAutoresComponent extends Component
             $this->ModAut_institu = $datos->caut_institu;
             $this->ModAut_orcid = $datos->caut_orcid;
             $this->ModAut_img = $datos->caut_img;
+            $this->ModAut_usrsist= $datos->caut_usrid;
             // $this->ModAut_tipo = $datos->caut_tipo;
             if($datos->caut_web=='1'){$this->ModAut_web=true;}else{$this->ModAut_web=false;}
             if($datos->caut_mailpublic=='1'){$this->ModAut_mailpublic=true;}else{$this->ModAut_mailpublic=false;}
         }
     }
 
-    public function LimpiaModalAutores(){
+        public function LimpiaModalAutores(){
         $this->resetErrorBag();
         $this->resetValidation();
-        $this->reset('ModAut_nombre','ModAut_apellido1','ModAut_apellido2','ModAut_url','ModAut_autorname','ModAut_correo', 'ModAut_institu','ModAut_orcid','ModAut_img','ModAut_NvaImg','ModAut_web', 'ModAut_mailpublic','ModAut_tipo');
+        $this->reset('ModAut_nombre','ModAut_apellido1','ModAut_apellido2','ModAut_url','ModAut_autorname','ModAut_correo', 'ModAut_institu','ModAut_orcid','ModAut_img','ModAut_NvaImg','ModAut_web', 'ModAut_mailpublic','ModAut_tipo','ModAut_usrsist');
+        // $this->ModAut_nombre='';
     }
 
     public function CierraModalAutores(){
@@ -87,11 +90,12 @@ class ModalCedulaAutoresComponent extends Component
         ##### Valida url sea única
         $busca=cat_autores::where('caut_url','ilike',$this->ModAut_url)
             ->where('caut_del','0')->where('caut_act','1')
+            ->where('caut_cjarsiglas',$this->ModAut_jardin)
             ->where('caut_id','!=',$this->ModAut_IdAutor)
             ->count();
-        // dd($this->ModAut_url, $busca);
+
         if($busca > '0'){
-            $this->addError('ModAut_autorname','Este nombre de autor ya está registrado!');
+            $this->addError('ModAut_autorname','Este nombre de autor ya está registrado en este jardín!');
             return;
         }
 
@@ -113,6 +117,8 @@ class ModalCedulaAutoresComponent extends Component
             'caut_url'=>$this->ModAut_url,
             'caut_web'=>$web,
             'caut_mailpublic'=>$public,
+            'caut_usrid'=>$this->ModAut_usrsist,
+
         ];
 
         ##### Guarda base de datos
@@ -154,6 +160,13 @@ class ModalCedulaAutoresComponent extends Component
     }
 
     public function render(){
-        return view('livewire.sistema.modal-cedula-autores-component');
+        $usuarios=User::where('act','1')
+            ->where('del','0')
+            ->select('id','usrname','nombre','apellido')
+            ->get();
+
+        return view('livewire.sistema.modal-cedula-autores-component',[
+            'usr'=>$usuarios,
+        ]);
     }
 }

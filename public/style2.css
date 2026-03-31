@@ -595,6 +595,24 @@ las cédulas */
 .cedEdoIcon5, .cedEdo5{color:#108516;}
 .cedEdoIcon6, .cedEdo6{color:#108516;}
 
+button.cedEdoIcon0:disabled, .cedEdoIcon1:disabled, .cedEdoIcon2:disabled,.cedEdoIcon3:disabled, .cedEdoIcon4:disabled, .cedEdoIcon5:disabled, .cedEdoIcon6:disabled{
+    color: #87796d;
+    background-color: transparent !important;
+    opacity:1;
+    border-color: transparent;
+    cursor: not-allowed;
+}
+button.cedEdoIcon0, .cedEdoIcon1, .cedEdoIcon2, .cedEdoIcon3, .cedEdoIcon4, .cedEdoIcon5, .cedEdoIcon6{
+    font-size: 100%;
+    padding:10px;
+
+}
+button.EdoActual{
+    border:1px solid #87796d;
+    pointer-events:none;
+    box-shadow: 1px 1px 1px c;
+
+}
 .cedEdoIcon0::before{
     content: "\F1D7 crea";
     font-family: "bootstrap-icons";
@@ -626,7 +644,7 @@ las cédulas */
     font-size:100%;
 }
 .cedEdoIcon6::before{
-    content: "\F401  pide editar";
+    content: "\F401  pide corregir";
     font-family: "bootstrap-icons";
     font-size:100%;
 }
