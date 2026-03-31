@@ -27,6 +27,8 @@ class CedulasController extends Component
     public $verSp, $verUbica, $verAlias; ##### flags para VerNoVer apartados de sp, ubicación y alias.
     public $alias, $ubicaciones; ### datos de alias y de locs de la cédula
     public $meses, $UrlRedes, $qrSize;
+    public $aportes; ##### get() de aportes de usuarios publicos
+    public $ligas;  ##### get() de ligas extra
 
     ###### Variables de modal Traduce titulo
     public $NuevoTituloTraducido;
@@ -61,10 +63,11 @@ class CedulasController extends Component
         }
 
         ##### Carga todas las traducciones de la url
-        $this->traducciones=cedulas_url::where('url_cjarsiglas', $this->url->url_cjarsiglas)
-            ->where('url_urltxt',$this->url->url_urltxt)
+        $this->traducciones=cedulas_url::where('url_key', $this->url->url_key)
+            // ->where('url_urltxt',$this->url->url_urltxt)
             ->where('url_id','!=',$this->url->url_id)
             ->where('url_act','1')->where('url_del','0')
+            ->where('url_ciclo','>','0')
             ->with('lenguas')
             ->with('jardin') ##quitar cuando quite $traducciones en lína 169 de la vista
             ->orderBy('url_lencode')
@@ -119,9 +122,12 @@ class CedulasController extends Component
               AND
               ($this->url->url_edit=='1')
               AND
-              (in_array(Auth::user()->id, $this->url->autores->pluck('caut_usrid')->toArray())
+              ( in_array(Auth::user()->id, $this->url->autores->pluck('caut_usrid')->toArray())
               OR
-              in_array(Auth::user()->id, $this->url->traductores->pluck('caut_usrid')->toArray()) ) ){
+              in_array(Auth::user()->id, $this->url->traductores->pluck('caut_usrid')->toArray()) )
+              AND
+              in_array($this->url->url_edo, ['0','2'])
+            ){
                 $this->edit='1';
                 $this->editMaster='0';
 
@@ -180,10 +186,14 @@ class CedulasController extends Component
         $this->alias=$cedula->alias;
         $this->ubicaciones=$cedula->ubicaciones;
 
+        ##### Obtiene aportes
+        $this->aportes=collect();
+
+        ##### Obtiene ligas
+        $this->ligas=collect();
+
         return view('livewire.web.cedulas-controller',[
-            'autores'=>$cedula->autores,
-            'traductores'=>$cedula->traductores,
-            'editores'=>$cedula->editores,
+            'cedula'=>$cedula,
             'objsPpal'=>$objsPpal,
             'especies'=>$especies,
         ]);
@@ -193,6 +203,7 @@ class CedulasController extends Component
     ############################################################
     ############################## Abre modal de editor de texto
     public function AbreModalEditaTextoWebJardin($id, $orden){
+        #####<livewire:sistema.jardin-web-modal-component />
         if($this->edit=='1'){
             ###### Si es nuevo, calcula el orden
             if($id=='0'){
@@ -218,6 +229,7 @@ class CedulasController extends Component
     ############################################################
     ############################## Modal Objeto en ćedula
     public function AbreModalObjetoEnCedula($id,$tipo){
+        #####<livewire:web.modal-imagen-controller />
         $data=[
             'ImgId'=>$id,
             'SiglasJardin'=>$this->url->url_cjarsiglas,
@@ -233,12 +245,15 @@ class CedulasController extends Component
     ############################################################
     ############################## Modal Traduce Titulo
     public function AbirModalTraduceTitulo(){
+        #####<livewire: web.web.cedulas.controller  />
         $this->dispatch('AbreModalTraduceTitulo');
     }
     public function CerrarModalTraduceTitulo(){
+        #####<livewire: web.web.cedulas.controller  />
         $this->dispatch('CierraModalTraduceTitulo');
     }
     public function GuardaTituloTraducido(){
+        #####<livewire: web.web.cedulas.controller  />
         $this->validate([
             'NuevoTituloTraducido'=>'required'
         ]);
@@ -250,8 +265,8 @@ class CedulasController extends Component
 
     ##########################################################
     ################## Modal externo Agregar Ubicación
-
     public function AbrirModalDeUbicacion($ubicaId){
+        #####<livewire:sistema.modal-cedula-ubicaciones-component />
         $datos=[
             'ubicaId'=>$ubicaId,
             'urlid'=>$this->url->url_id,
@@ -262,6 +277,7 @@ class CedulasController extends Component
     ##########################################################
     ################## Modal externo Agregar Alias
     public function AbrirModalDeAlias($aliasId){
+        #####<livewire:sistema.modal-cedula-alias-component />
         $this->verAlias='1';
         $datos=[
             'aliasId'=>$aliasId, ### o id del uso
@@ -273,8 +289,16 @@ class CedulasController extends Component
     ##########################################################
     ################## Modal externo Cambio de estado
     public function AbreModalDeCambioDeEstado($id){
+        #####<livewire:sistema.modal-cedula-cambia-estado-component />
         $data=['urlId'=>$id];
         $this->dispatch('AbreModalCambiaEdoCedula',$data);
+    }
+
+    ##########################################################
+    ################## Modal externo Yo tengo algo que aportar
+    public function AbrirModalYoTengoAlgoQueAportar(){
+        ##### <livewire:web.modal-cedula-yo-tengo-que-aportar />
+        $this->dispatch('AbreModalYoTengoQueAportar');
     }
 }
 

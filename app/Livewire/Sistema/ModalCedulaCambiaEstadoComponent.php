@@ -41,7 +41,6 @@ class ModalCedulaCambiaEstadoComponent extends Component
 
     #[On('AbreModalCambiaEdoCedula')]
     public function montarDesdeExterno($data){
-        // $revisaId=cedulas_url::where('url_id',$data['urlId'])->count();
         $this->CambiaEdo_urlid=$data['urlId'];
         $this->CambiaEdo_urledo=cedulas_url::where('url_id',$data['urlId'])->value('url_edo');
         $this->CambiaEdo_ced=cedulas_url::where('url_id',$data['urlId'])

@@ -165,7 +165,7 @@ class AdminCedulasComponent extends Component
                 ->where('caut_usrid',Auth::user()->id);
         }
 
-        ##### Obtiene cantidad de cedulas en edición:
+        ##### Obtiene cantidad de cedulas en edición
         if( array_intersect(['editor','admin'], session('rol'))  ){
             $this->abiertos=cedulas_url::whereIn('url_cjarsiglas', $JardsUsr->pluck('cjar_siglas')->toArray())
                 ->where('url_act','1')->where('url_del','0')

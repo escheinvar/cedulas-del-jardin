@@ -230,7 +230,10 @@ class ModalAdminCedulaComponent extends Component
     public function BorrarAutor($id,$tipo,$key){
         if($tipo=='Autor'){
             #### Como el autor es el mismo en las copias, asigna autor a todas las url de la key
-            ced_autores::where('aut_key',$key)->update(['aut_del'=>'1']);
+            ced_autores::where('aut_key',$key)
+                ->where('aut_tipo','Autor')
+                ->where('aut_cautid',   ced_autores::where('aut_id',$id)->value('aut_cautid'))
+                ->update(['aut_del'=>'1']);
             paLog('Se elimina autor de todas las cedulas key '.$key,'ced_autores','varios id');
         }else{
             ced_autores::where('aut_id',$id)->update(['aut_del'=>'1']);

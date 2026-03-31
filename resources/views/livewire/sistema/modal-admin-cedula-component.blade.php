@@ -170,7 +170,7 @@
                                     <?php $cont='1';?>
                                     @foreach ($CedAutores as $a)
                                         <div class="elemento" style="font-size: 80%;">
-                                            {{ $cont++ }}
+                                            <sup>{{ $cont++ }}</sup>
                                             @if($a->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
                                             {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
                                             <i wire:click="BorrarAutor('{{ $a->aut_id }}','Autor','{{ $a->aut_key }}')" wire:confirm="Estas por eliminar a este autor de esta cédula y todas sus traducciones. ¿Seguro quieres continuar?" class="bi bi-trash agregar"></i>
@@ -197,7 +197,7 @@
                                         <?php $cont='1';?>
                                         @foreach ($CedTraductores->where('aut_tipo','Traductor') as $a)
                                             <div class="elemento" style="font-size: 80%;">
-                                                {{ $cont++ }}
+                                                <sup>{{ $cont++ }}</sup>
                                                 @if($a->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
                                                 {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
                                                 <i wire:click="BorrarAutor('{{ $a->aut_id }}','Traductor','{{ $a->aut_key }}')" wire:confirm="Estás por eliminar a este autor de esta cédula. ¿Quieres continuar?" class="bi bi-trash agregar"></i>
@@ -225,7 +225,7 @@
                                     <?php $cont='1';?>
                                     @foreach ($CedEditores as $a)
                                         <div class="elemento" style="font-size: 80%;">
-                                            {{ $cont++ }}
+                                            <sup>{{ $cont++ }}</sup>
                                             @if($a->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
                                             {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
                                             <i wire:click="BorrarAutor('{{ $a->aut_id }}','Editor','{{ $a->aut_key }}')" wire:confirm="Estás por eliminar al editor de esta cédula. ¿Seguro quires continuar?"  class="bi bi-trash agregar"></i>

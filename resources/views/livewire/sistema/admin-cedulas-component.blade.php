@@ -61,10 +61,10 @@
             @endif
             Hay {{ $abiertos->where('url_edit','1')->count() }} @if($abiertos =='1' ) página @else páginas  @endif en edición
             y {{ $abiertos->where('url_edo','<','5')->count() }} en proceso --}}
-            @if($abiertos->where('url_edit','1')->count() > '0')
+            @if($urls->where('url_edit','1')->count() > '0')
                 <error style="font-size: 90%;">
             @endif
-            Hay {{ $abiertos->where('url_edit','1')->count() }} @if($abiertos =='1' ) página @else páginas  @endif en edición
+            Hay {{ $urls->where('url_edit','1')->count() }} @if($abiertos =='1' ) página @else páginas  @endif en edición
             y {{ $abiertos->where('url_edo','<','5')->count() }} en proceso
             </error>
 
@@ -184,9 +184,9 @@
 
                         <!-- lengua -->
                         <td>
-                            {{ $u->lenguas->len_lengua }}
+                            {{ $u->lenguas->len_autonimias }}
                             <div style="color:gray;font-size:80%;">
-                                {{ $u->lenguas->len_code }}
+                                {{ $u->lenguas->len_lengua }} [{{ $u->lenguas->len_code }}]
                             </div>
                         </td>
 

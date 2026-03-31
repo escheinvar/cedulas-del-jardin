@@ -56,20 +56,37 @@
     <!-- ------------------------------------------- -->
 
 
+    <!-- ------------- Botones de acción ----------- -->
+    <div class="row" style="display: flex;">
+        <div class="col-4 col-md-2 my-4" style="font-size: 80%;">
+            <b>Mis cédulas</b><br>
+            Total: {{ $cedulas->count() }}<br>
+            Originales: {{ $cedulas->where('url_tradid','0')->count() }}<br>
+            En creación: {{ $cedulas->where('url_ciclo', '<','1')->where('url_edo','0')->count() }}<br>
+        </div>
+        <div class="col-4 col-md-2 my-4" style="font-size: 80%;">
+            <br>
+            En revisión: {{ $cedulas->where('url_edo','>','0')->where('url_edo','<','5')->count() }}<br>
+            Abiertas a edición {{ $cedulas->where('url_edit','1')->count() }}
+            Públicadas {{ $cedulas->where('url_edo','>=','5')->where('url_edit','0')->count() }}
+        </div>
+        <div class="col-4 col-md-2 my-4" style="display:flex; flex-direction:column;justify-content:center;">
+            <!-- Ver cédulas del usuario -->
+            <a href="/admin_cedulas" class="nolink">
+                <button  class="btn btn-primary">
+                    Ver mis cédulas
+                </button>
+            </a>
+        </div>
 
-
-
-
-
-
-    <!-- -- TABLA DE APORTES DEL USUARIO -->
-    <div class="my-4">
-        @if($MisAportes=='0')<br>
-        <button wire:click="VerNoverAportes()" class="btn btn-primary">
-            Ver mis aportes
-        </button>
-        @endif
+        <div class="col-4 col-md-2 my-4" style="display:flex; flex-direction:column;justify-content:center;">
+            <!-- Ver aportes del usuario -->
+            <button wire:click="VerNoverAportes()" class="btn btn-primary">
+                Ver mis aportes
+            </button>
+        </div>
     </div>
+
     <!-- ---------- Módulo de  aportes --------------->
     <div class="m-4">
         @if($MisAportes=='1')
@@ -140,34 +157,7 @@
 
 
 
-    <!-- ---------------------------------------------------------------------------- -->
-    @if($cedulas->count() > '0')
-        <h3>Mis cédulas</h3>
-        <div class="table table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Titulo</th>
-                        <th>Url</th>
-                        <th>Lengua</th>
-                        <th>Jardin</th>
-                        <th>Rol</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($cedulas as $c)
-                        <tr>
-                            <td>{{ $c->url_titulo }}</td>
-                            <td>{{ $c->url_url }}</td>
-                            <td>{{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})</td>
-                            <td>{{ $c->jardin->cjar_nombre }} ({{ $c->jardin->cjar_siglas }})</td>
-                            <td>{{ $c->aut_tipo }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    @endif
+
 
 
     <!-- ----------------------- Faltantes ----------------------- -->
