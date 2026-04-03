@@ -9,7 +9,8 @@
     <h2>Administración de Autores</h2>
 
     <div style="font-size: 80%;color:grey;">
-        Este catálogo es administrado por el rol <b>Admin@todos</b> en jardin: {{ implode(',',$editjar) }}
+        Este catálogo es administrado por el rol
+        <b style="@if(in_array('admin',session('rol'))) color:green; @endif">Admin</b><b>@todos</b> en jardin: {{ implode(',',$editjar) }}
         (@if($edit=='0') <error style="font-size: 90%;"> No autorizado</error> @else <span style="font-size:90%;color:green;"> Autorizado </span>@endif)
     </div>
 

@@ -12,7 +12,8 @@
 
     <h2>Administración de sitios web del jardín</h2>
     <div style="font-size: 80%;color:grey;">
-        Este catálogo es administrado por el rol <b>webmaster</b> en jardin: {{ implode(',',$editjar) }}
+        Este catálogo es administrado por el rol
+        <b style="@if(in_array('webmaster',session('rol'))) color:green; @endif">webmaster</b> en jardin: {{ implode(',',$editjar) }}
         (@if($edit=='0') <error style="font-size: 90%;"> No autorizado</error> @else <span style="font-size:90%;color:green;"> Autorizado </span>@endif)
     </div>
 

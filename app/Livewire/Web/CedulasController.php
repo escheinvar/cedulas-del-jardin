@@ -144,8 +144,7 @@ class CedulasController extends Component
         }
 
         ##### Obtiene fotos, audios y videos de la cédula
-        $this->objs=Imagenes::where('img_cjarsiglas',$this->url->url_cjarsiglas)
-            ->where('img_urlurl',$this->url->url_url)
+        $this->objs=Imagenes::where('img_key',$this->url->url_key)
             ->where('img_act','1')->where('img_del','0')
             ->get();
 
@@ -166,10 +165,10 @@ class CedulasController extends Component
             ->with('alias')
             ->first();
 
-        $objsPpal=Imagenes::where('img_urlurl',$this->url->url_url)
-            ->where('img_act','1')->where('img_del','0')
-            ->where('img_cimgtipo','ppal1')
-            ->get();
+        // $objsPpal=Imagenes::where('img_key',$this->url->url_key)
+        //     ->where('img_act','1')->where('img_del','0')
+        //     ->where('img_cimgtipo','ppal1')
+        //     ->get();
 
         $especies=ced_sp::where('sp_cjarsiglas',$this->url->url_cjarsiglas)
             ->where('sp_urltxt',$this->url->url_urltxt)
@@ -194,7 +193,7 @@ class CedulasController extends Component
 
         return view('livewire.web.cedulas-controller',[
             'cedula'=>$cedula,
-            'objsPpal'=>$objsPpal,
+            // 'objsPpal'=>$objsPpal,
             'especies'=>$especies,
         ]);
     }
@@ -228,19 +227,19 @@ class CedulasController extends Component
 
     ############################################################
     ############################## Modal Objeto en ćedula
-    public function AbreModalObjetoEnCedula($id,$tipo){
-        #####<livewire:web.modal-imagen-controller />
-        $data=[
-            'ImgId'=>$id,
-            'SiglasJardin'=>$this->url->url_cjarsiglas,
-            'ModuloCatImg'=>'cedula',
-            'TipoCatImg'=>$tipo,  #'Obligatorio: cimg_tipo de tabla cat_imgs'
-            'Url'=>$this->url->url_url,
-            'Lengua'=>$this->url->url_lencode,      #'len_code de tabla lenguas o vacío',
-            'Reload'=> '1',     #'0 o 1. Al cerrar, se recarga (1) o no (0) la pag'
-        ];
-        $this->dispatch('abreModalDeImagen', $data);
-    }
+    // public function AbreModalObjetoEnCedula($id,$tipo){
+    //     #####<livewire:web.modal-imagen-controller />
+    //     $data=[
+    //         'ImgId'=>$id,
+    //         'SiglasJardin'=>$this->url->url_cjarsiglas,
+    //         'ModuloCatImg'=>'cedula',
+    //         'TipoCatImg'=>$tipo,  #'Obligatorio: cimg_tipo de tabla cat_imgs'
+    //         'Url'=>$this->url->url_url,
+    //         'Lengua'=>$this->url->url_lencode,      #'len_code de tabla lenguas o vacío',
+    //         'Reload'=> '1',     #'0 o 1. Al cerrar, se recarga (1) o no (0) la pag'
+    //     ];
+    //     $this->dispatch('abreModalDeImagen', $data);
+    // }
 
     ############################################################
     ############################## Modal Traduce Titulo
@@ -299,6 +298,22 @@ class CedulasController extends Component
     public function AbrirModalYoTengoAlgoQueAportar(){
         ##### <livewire:web.modal-cedula-yo-tengo-que-aportar />
         $this->dispatch('AbreModalYoTengoQueAportar');
+    }
+
+    ###########################################################
+    ################## Modal externo abrir buscar objeto
+    // public function AbrirModalPaIncertarObjeto($tipo){
+    public function AbrirModalPaIncertarObjeto($imgId, $cimgmodulo, $cimgtipo, $imgkey, $reload){
+        #####<livewire:sistema.modal-inserta-objeto-component />
+        if($imgkey==''){$imgkey=$this->url->url_key;}
+        $datos=[
+            'imgId'=>$imgId,           ### img_id o 0 para nuevo
+            'cimgmodulo'=>$cimgmodulo,     ### cimg_modulo de cat_img (cedula,jardin,autor) o null
+            'cimgtipo'=>$cimgtipo,          ###cimg_tipo de cat_img (web, portada, ppal,lat, etc...)  o null
+            'imgkey'=>$imgkey,      #### key: Jardin@urltxt (sin traduccción)  o null
+            'reload'=>$reload,          ##### indica si hace reload(1) o no(0) al guardar
+        ];
+        $this->dispatch('AbreModalIncertaObjeto',$datos);
     }
 }
 

@@ -221,11 +221,16 @@
             <div class="col-12 col-md-5 col-lg-6 ced-Portada">
                 <div class="ContendorImg" style="width:100%">
                     <!-- muestra portada -->
-                    @if($objs->where('img_cimgtipo','portada')->count() > '0' AND $editMaster=='1')
+                    @if($objs->where('img_cimgtipo','portada')->count() >'0')
                         @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','portada'),'TipoDeObjeto'=>'portada'])
                     @else
-                        <i class="bi bi-person"></i>
+                        @if($editMaster=='1')
+                            <i wire:click="AbrirModalPaIncertarObjeto('0','cedula','portada','','1')" class="bi bi-file-image PaClick" style="color:#87796d">portada</i>
+                        @endif
                     @endif
+
+
+
                 </div>
             </div>
 
@@ -239,21 +244,20 @@
                 </div> -->
 
                 <!-- imagenes laterales ppal1, ppal2 y ppal3 -->
-                @foreach (['ppal1','ppal2','ppal3'] as $ppal)
-                    @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo',$ppal),'TipoDeObjeto'=>$ppal])
+                @foreach (['ppal1','ppal2','ppal3','ppal'] as $ppal)
+                    @if($objs->where('img_cimgtipo',$ppal)->count() >'0')
+                        @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo',$ppal),'TipoDeObjeto'=>$ppal])
+                    @else
+                        @if($editMaster=='1')
+                            <div wire:click="AbrirModalPaIncertarObjeto('0','cedula','{{ $ppal }}','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">{{ $ppal }}
+                            </div>
+                        @endif
+                    @endif
                 @endforeach
-
-                <!-- demás imágenes laterales ppal -->
-                @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','ppal'),'TipoDeObjeto'=>'ppal'])
-                @if($edit=='1')
-                    <div class="margin:20px; text-align:center;">
-                        <center>
-                            <button class="btn" wire:click="AbreModalObjetoEnCedula('0','{{ 'ppal' }}')" style="margin-top:30px;">
-                                <i class="bi bi-image" style="color:#87796d;">ppal</i>
-                            </button>
-                        </center>
-                    </div>
+                @if($editMaster=='1')
+                    <div wire:click="AbrirModalPaIncertarObjeto('0','cedula','ppal','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">ppal</div>
                 @endif
+
                 <!-- flecha -->
                 <!-- <div class="center" style="text-align: center;">
                     <i class="bi bi-arrow-down-circle" style="font-size: 170%; color:#87796d;; cursor: pointer;"></i>
@@ -280,7 +284,7 @@
                         <span style="font-size:50%;"></span><span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <!-- Menú hamb desplegado-->
+                    <!-- Menú hamb desplegado -->
                     <div class="offcanvas offcanvas-end" tabindex="-1" id="MenuEspecifico">
                         <div class="offcanvas-header">
                             <a class="offcanvas-logo" href="index.html" id="offcanvasNavbar2Label">
@@ -317,7 +321,7 @@
                 <!--  Título de cédula  -->
                 <div class="row" style="">
                     <div class="col-12" style="text-align: center;margin:30px;">
-                        <h2 style="display:inline   ">{{ $url->url_titulo }}</h2>
+                        <h2 style="display:inline">{{ $url->url_titulo }}</h2>
                         @if($edit=='1')
                             <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbirModalTraduceTitulo()">
                                 <i  class="bi bi-pencil-square"></i><sup></sup>
@@ -517,21 +521,19 @@
 
             <!-- -------------- Zona de objetos laterales  ----------------->
             <div class="col-12 col-md-2 col-lg-3" style="background-color:#CDC6B9;">
-                @foreach (['lat1','lat2','lat3','lat4','lat5'] as $posi)
-                    @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo',$posi),'TipoDeObjeto'=>$posi])
+                @foreach (['lat1','lat2','lat3','lat4','lat5','lat'] as $posi)
+                    @if($objs->where('img_cimgtipo',$posi)->count() > '0')
+                        @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo',$posi),'TipoDeObjeto'=>$posi])
+                    @else
+                        @if($editMaster=='1')
+                            <div wire:click="AbrirModalPaIncertarObjeto('0','cedula','{{ $posi }}','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">{{ $posi }}
+                            </div>
+                        @endif
+                    @endif
                 @endforeach
-
-                @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','lat'),'TipoDeObjeto'=>'lat'])
-                @if($edit=='1')
-                    <div class="margin:20px; text-align:center;">
-                        <center>
-                            <button class="btn" wire:click="AbreModalObjetoEnCedula('0','{{ 'lat' }}')" style="margin-top:30px;">
-                                <i class="bi bi-image" style="color:#87796d;">lat</i>
-                            </button>
-                        </center>
-                    </div>
+                @if($editMaster=='1')
+                    <div wire:click="AbrirModalPaIncertarObjeto('0','cedula','{{ $posi }}','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">lat</div>
                 @endif
-
             </div>
         </div>
 
@@ -766,12 +768,14 @@
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
     @if($edit=='1')
-        <livewire:web.modal-imagen-controller />
+
         <livewire:sistema.jardin-web-modal-component />
         <livewire:sistema.modal-cedula-ubicaciones-component />
         <livewire:sistema.modal-cedula-alias-component />
         <livewire:sistema.modal-cedula-cambia-estado-component />
         <livewire:web.modal-cedula-yo-tengo-que-aportar />
+        <livewire:sistema.modal-inserta-objeto-component />
+
     @endif
 
 

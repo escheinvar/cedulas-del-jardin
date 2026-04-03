@@ -1,7 +1,7 @@
 <div>
     <!-- ---------------------- MODAL PARA IMÁGENES ---------------------- -->
     <!-- recibe variables idImg (id de img ó 0) e modImg (módulo a cargar) -->
-    <div wire:ignore.self class="modal fade" id="ModalDeImagen" tabindex="-1" role="dialog">
+    <div wire:ignore.self class="modal fade" id="ModalDeImagen" tabindex="-1" role="dialog" style="z-index:3000">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
@@ -80,7 +80,7 @@
                             <!-- Carga nuevo Objeto -->
                             <div class="col-12 form-group">
                                 @if($ImgMod_file == '')
-                                    <label for="ImgMod_Nvofile" class="form-label">Cargar objeto<red>*</red> </label>
+                                    <label for="ImgMod_Nvofile" class="form-label">Cargar objeto (archivo de imagen, audio o video)<red>*</red> </label>
                                 @endif
                                 <input wire:model="ImgMod_Nvofile" id="ImgMod_Nvofile" class="@error('ImgMod_Nvofile') is-invalid @enderror form-control" type="file">
                                 <div class="form-text">Selecciona el archivo a subir (imagen, audio o video)</div>

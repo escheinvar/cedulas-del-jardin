@@ -19,21 +19,22 @@ class Imagenes extends Model
         'img_act',
         'img_del',
 
+        'img_cjarsiglas',
+        'img_urltxt',
+        'img_key',
+        'img_urlid',
+
         'img_cimgmodulo',
         'img_cimgtipo',
-        'img_cjarsiglas',
 
-        'img_urlid',
-        'img_urlurl',
-        'img_key',
-        'img_urltxt',
-        'img_lencode',
-
-        'img_file',
-        'img_web',
-        'img_html',
+        // 'img_urlurl',
+        // 'img_lencode',
 
         'img_tipo',
+        'img_file',
+        'img_youtube',
+        'img_html',
+
         'img_size',
         'img_resolu',
         'img_titulo',

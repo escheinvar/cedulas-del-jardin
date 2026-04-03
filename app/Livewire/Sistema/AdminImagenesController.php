@@ -4,6 +4,8 @@ namespace App\Livewire\Sistema;
 
 use App\Models\cat_img;
 use App\Models\CatJardinesModel;
+use App\Models\cedulas_url;
+use App\Models\jardin_url;
 use App\Models\Imagenes;
 use App\Models\UserRolesModel;
 use Illuminate\Support\Facades\Auth;
@@ -12,40 +14,8 @@ use Livewire\Component;
 class AdminImagenesController extends Component
 {
     public $edit, $editjar; #### Variables de edición
-    public $ModoTabla, $orden, $sent, $BuscaJardin, $BuscaTxt, $BuscaTipo, $BuscaMod, $BuscaSubMod, $BuscaUrl; #### Variable de tabla
-
-    ########################## inicia imágenes
-    public function AbreModalObjeto($id){
-        if($id=='0'){
-            $data=[
-                'ImgId'=>'0',    # 'Obligatorio: img_id de tabla imagenes ó 0 para nuevo',
-                'SiglasJardin'=>$this->BuscaJardin, #Obligatorio: siglas del jardín al que pertenece',
-                'ModuloCatImg'=>$this->BuscaMod, #Obligatorio: cimg_modulo de tabla cat_imgs',
-                'TipoCatImg'=>$this->BuscaSubMod, #  'Obligatorio: cimg_tipo de tabla cat_imgs'
-                'Url'=>$this->BuscaUrl,        # 'url a la que pertenece o vacío',
-                'Lengua'=>'',     # 'len_code de tabla lenguas o vacío',
-                'Reload'=>'1',
-            ];
-        }else {
-            $ganon=Imagenes::where('img_id',$id)->first();
-            $data=[
-                'ImgId'=>$id,    # 'Obligatorio: img_id de tabla imagenes ó 0 para nuevo',
-                'SiglasJardin'=>$ganon->img_cjarsiglas,
-                'ModuloCatImg'=>$ganon->img_cimgmodulo,
-                'TipoCatImg'=>$ganon->img_cimgtipo,
-                'Url'=>$ganon->img_urlurl,
-                'Lengua'=>$ganon->img_lencode,
-                'Reload'=>'1',
-            ];
-
-        }
-
-        $this->dispatch('abreModalDeImagen', $data);
-
-    } ########################## termina imágenes
-
-
-
+    public $ModoTabla, $orden, $sent, $BuscaJardin, $BuscaTxt, $BuscaTipo;
+    public $BuscaMod, $BuscaSubMod, $BuscaUrl; #### Variable de tabla
 
     public function mount($tipo){
         ### imagenes=Tabla; imagen=Imgs
@@ -53,8 +23,9 @@ class AdminImagenesController extends Component
         $this->orden='img_id';
         $this->sent='asc';
         $this->BuscaJardin='JebOax';
+        $this->BuscaMod='cedula';
+        $this->BuscaSubMod='';
         $this->BuscaTxt='';
-        $this->BuscaMod='jardin';
     }
 
     public function CambiaModo(){
@@ -176,11 +147,81 @@ class AdminImagenesController extends Component
             $submodulos=collect();
         }
 
+        ##### Carga tabla de urls de cédula
+        if($this->BuscaJardin==''){$jardin='%';}else{$jardin=$this->BuscaJardin;}
+        if($this->BuscaMod == 'cedula'){
+            $UrlsDelModulo=cedulas_url::where('url_cjarsiglas','ilike',$jardin)
+                ->where('url_del','0')
+                ->distinct('url_urltxt')
+                ->select('url_urltxt as url')
+                ->get();
+        ##### Carga tabla de urls de autor
+        }elseif($this->BuscaMod == 'autor'){
+            $UrlsDelModulo=collect();
+
+        ##### Carga tabla de urls de jardin
+        }elseif($this->BuscaMod == 'jardin'){
+            $UrlsDelModulo=jardin_url::where('urlj_cjarsiglas','ilike',$jardin)
+                ->where('urlj_del','0')
+                ->distinct('urlj_urltxt')
+                ->select('urlj_urltxt as url')
+                ->get();
+
+        }else{
+            $UrlsDelModulo=collect();
+
+        }
+
+
         return view('livewire.sistema.admin-imagenes-controller',[
             'imagenes'=>$imagenes,
             'jardines'=>$jardines,
             'modulos'=>$modulos,
             'submodulos'=>$submodulos,
+            'UrlsDelModulo'=>$UrlsDelModulo,
         ]);
+    }
+
+    ########################## Abre modal de nueva imágen (VIEJO)
+    public function AbreModalObjeto($id){
+        if($id=='0'){
+            $data=[
+                'ImgId'=>'0',    # 'Obligatorio: img_id de tabla imagenes ó 0 para nuevo',
+                'SiglasJardin'=>$this->BuscaJardin, #Obligatorio: siglas del jardín al que pertenece',
+                'ModuloCatImg'=>$this->BuscaMod, #Obligatorio: cimg_modulo de tabla cat_imgs',
+                'TipoCatImg'=>$this->BuscaSubMod, #  'Obligatorio: cimg_tipo de tabla cat_imgs'
+                'Url'=>$this->BuscaUrl,        # 'url a la que pertenece o vacío',
+                'Lengua'=>'',     # 'len_code de tabla lenguas o vacío',
+                'Reload'=>'1',
+            ];
+        }else {
+            $ganon=Imagenes::where('img_id',$id)->first();
+            $data=[
+                'ImgId'=>$id,    # 'Obligatorio: img_id de tabla imagenes ó 0 para nuevo',
+                'SiglasJardin'=>$ganon->img_cjarsiglas,
+                'ModuloCatImg'=>$ganon->img_cimgmodulo,
+                'TipoCatImg'=>$ganon->img_cimgtipo,
+                'Url'=>$ganon->img_urlurl,
+                'Lengua'=>$ganon->img_lencode,
+                'Reload'=>'1',
+            ];
+
+        }
+
+        $this->dispatch('abreModalDeImagen', $data);
+
+    }
+
+    ########################## Abre modal de nueva imágen
+    public function AbrirModalPaIncertarObjeto($imgId){
+        #####<livewire:sistema.modal-inserta-objeto-component />
+        $datos=[
+            'imgId'=>$imgId,         ### img_id o 0 para nuevo
+            'cimgmodulo'=>$this->BuscaMod,   ### cimg_modulo de cat_img (cedula,jardin,autor) o null
+            'cimgtipo'=>$this->BuscaSubMod,        ###cimg_tipo de cat_img (web, portada, ppal,lat, etc...)  o null
+            'imgkey'=>$this->BuscaUrl, ### key: Jardin@urltxt (sin traduccción)  o null
+            'reload'=>'1',            ### indica si hace reload(1) o no(0) al guardar
+        ];
+        $this->dispatch('AbreModalIncertaObjeto',$datos);
     }
 }

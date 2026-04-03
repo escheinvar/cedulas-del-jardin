@@ -49,7 +49,8 @@ class ModalImagenController extends Component
     public $ImgId; ###### valor de img_id de tabla imagen ó 0 (para nuevo)
     public $ImgMod_jardin,$ImgMod_modulo,$ImgMod_tipomod,$ImgMod_url,$ImgMod_lengua, $ImgMod_reload;##### Vars recibidas desde controlador externo que dispara
     ##### Vars de formulario y BD
-    public $ImgMod_act, $ImgMod_file, $ImgMod_tipo, $ImgMod_titulo, $ImgMod_tituloact;
+    public $ImgMod_tipoDeObjeto;
+    public $ImgMod_act, $ImgMod_file, $ImgMod_urltxt, $ImgMod_key, $ImgMod_tipo, $ImgMod_titulo, $ImgMod_tituloact;
     public $ImgMod_pie, $ImgMod_autor, $ImgMod_fecha, $ImgMod_ubica;
     public $ImgMod_lonx, $ImgMod_laty, $ImgMod_Nvofile, $ImgMod_fileSize, $ImgMod_resol, $ImgMod_NvoAlias;
     public $ImgModalias, $ImgModaliasNvo;
@@ -59,23 +60,13 @@ class ModalImagenController extends Component
 
     #[On('abreModalDeImagen')]
     public function recibeValoresDeFuera($data){
-        // dd($data);
-        ##### Valida recepción de valores obligados
-        if(!is_numeric($data['ImgId']) ){redirect('/errorNo se recibieron los parámetros del objeto');return;}
-        if($data['SiglasJardin'] == '' ){redirect('/errorNo se recibieron los parámetros del objeto');return;}
-        if($data['ModuloCatImg'] == '' ){redirect('/errorNo se recibieron los parámetros del objeto');return;}
-        if($data['TipoCatImg'] == '' ){redirect('/errorNo se recibieron los parámetros del objeto');return;}
-        if($data['ImgId']!='0' and  Imagenes::where('img_id',$data['ImgId'])->where('img_del','0')->count() != '1'){redirect('/errorParámetros de objeto incorrectos');return;}
-        if(CatJardinesModel::where('cjar_siglas',$data['SiglasJardin'])->count() != '1'){redirect('/errorParámetros de objeto incorrectos');return;}
-        if(!isset($data['Reload']) or $data['Reload']=='' or !in_array($data['Reload'], ['0','1']) ){$data['Reload']='0';}
-
         ##### Carga variables enviados desde controlador externo
         $this->ImgId=$data['ImgId'];
         $this->ImgMod_jardin=$data['SiglasJardin'];
         $this->ImgMod_modulo=$data['ModuloCatImg'];
         $this->ImgMod_tipomod=$data['TipoCatImg'];
         $this->ImgMod_url=$data['Url'];
-        $this->ImgMod_lengua=$data['Lengua'];
+        // $this->ImgMod_lengua=$data['Lengua'];
         $this->ImgMod_reload=$data['Reload'];
 
         ##### Carga valores de base de datos
@@ -88,6 +79,8 @@ class ModalImagenController extends Component
             ##### Carga variables
             $this->ImgMod_file=$dato->img_file;
             $this->ImgMod_tipo=$dato->img_tipo;
+            $this->ImgMod_key=$dato->img_key;
+            $this->ImgMod_urltxt=$dato->img_urltxt;
             if($dato->img_act=='1'){$this->ImgMod_act=FALSE;}else{$this->ImgMod_act=TRUE;}
             $this->ImgMod_titulo=$dato->img_titulo;
             if($dato->img_tituloact=='1'){$this->ImgMod_tituloact=TRUE;}else{$this->ImgMod_tituloact=FALSE;}
@@ -99,10 +92,7 @@ class ModalImagenController extends Component
             $this->ImgMod_laty=$dato->img_laty;
             $this->ImgMod_Nvofile = '' ;
             $this->ImgMod_fileSize=$dato->img_size;
-            // $res=explode(',',$dato->img_resolu);
-            // $this->ImgMod_resol=['x'=>$res[0],'y'=>$res[1]];
             $this->ImgMod_resol=$dato->img_resolu;
-        #dd($dato);
         }
     }
 
@@ -110,6 +100,7 @@ class ModalImagenController extends Component
         $this->ImgMod_Nvofile='';
         $this->ImgMod_NvoAlias='';
         $this->ImgModaliasNvo=[];
+        $this->Imgmod_tipoobjeto='rchivo';
     }
 
     public function LimpiarModalImg(){
@@ -141,11 +132,9 @@ class ModalImagenController extends Component
             'img_cimgmodulo'=> $this->ImgMod_modulo,
             'img_cimgtipo'=> $this->ImgMod_tipomod,
             'img_cjarsiglas'=> $this->ImgMod_jardin,
-            'img_urlurl'=> $this->ImgMod_url,
-            'img_lencode'=> $this->ImgMod_lengua,
+            'img_urltxt'=>$this->ImgMod_urltxt,
             'img_tipo'=> $this->ImgMod_tipo,
             'img_size'=> $this->ImgMod_fileSize,
-            // 'img_resolu'=>$this->ImgMod_resol['x'].','.$this->ImgMod_resol['y'],
             'img_resolu'=>$this->ImgMod_resol,
             'img_titulo'=> $this->ImgMod_titulo,
             'img_tituloact'=> $titact,
@@ -168,7 +157,7 @@ class ModalImagenController extends Component
                     alias_img::create([
                         'aimg_imgid'=>$id,
                         'aimg_txt'=>$a,
-                        'aimg_lencode'=>'spa',
+                        // 'aimg_lencode'=>'spa',
                     ]);
                     $this->ImgMod_NvoAlias='';
                     $this->ImgModaliasNvo=[];
@@ -216,7 +205,7 @@ class ModalImagenController extends Component
             alias_img::create([
                 'aimg_imgid'=>$this->ImgId,
                 'aimg_txt'=>$this->ImgMod_NvoAlias,
-                'aimg_lencode'=>'spa',
+                // 'aimg_lencode'=>'spa',
             ]);
             $this->ImgMod_NvoAlias='';
         }
@@ -288,42 +277,42 @@ class ModalImagenController extends Component
         ]);
     }
 
-    ############################## Inicia modal de  Hipervinculos
-    #[On('abreModalDeHipervinculo')]
-    public function recibeValores(){
-        $this->ImgMod_TipoHiper='you';
+    // ############################## Inicia modal de  Hipervinculos
+    // #[On('abreModalDeHipervinculo')]
+    // public function recibeValores(){
+    //     $this->ImgMod_TipoHiper='you';
 
-    }
+    // }
 
-    public function GuardarHipervinculo(){
-        ##### Valida
-        $this->validate([
-            'ImgMod_TipoHiper'=>'required',
-            'ImgMod_hiper'=>'required',
-            'ImgMod_titulo'=>'required',
-        ]);
-        ##### Procesa checkbox
-        if($this->ImgMod_act==TRUE){$act='0';}else{$act='1';}
-        dd($this->ImgMod_modulo);
-        ###### Crea objeto
-        $datos=[
-            'img_act'=> $act,
-            'img_cimgmodulo'=> $this->ImgMod_modulo,
-            'img_cimgtipo'=> $this->ImgMod_tipomod,
-            'img_cjarsiglas'=> $this->ImgMod_jardin,
-            'img_urlurl'=> $this->ImgMod_url,
-            'img_lencode'=> $this->ImgMod_lengua,
-            'img_ulr'=>$this->ImgMod_hiper,
-            'img_tipo'=> $this->ImgMod_TipoHiper,
-            'img_titulo'=> $this->ImgMod_titulo,
-            'img_pie'=> $this->ImgMod_pie,
-            'img_usrid'=> Auth::user()->id,
-        ];
-        ##### Guarda
-        Imagenes::create($datos);
-    }
+    // public function GuardarHipervinculo(){
+    //     ##### Valida
+    //     $this->validate([
+    //         'ImgMod_TipoHiper'=>'required',
+    //         'ImgMod_hiper'=>'required',
+    //         'ImgMod_titulo'=>'required',
+    //     ]);
+    //     ##### Procesa checkbox
+    //     if($this->ImgMod_act==TRUE){$act='0';}else{$act='1';}
+    //     dd($this->ImgMod_modulo);
+    //     ###### Crea objeto
+    //     $datos=[
+    //         'img_act'=> $act,
+    //         'img_cimgmodulo'=> $this->ImgMod_modulo,
+    //         'img_cimgtipo'=> $this->ImgMod_tipomod,
+    //         'img_cjarsiglas'=> $this->ImgMod_jardin,
+    //         // 'img_urlurl'=> $this->ImgMod_url,
+    //         // 'img_lencode'=> $this->ImgMod_lengua,
+    //         'img_ulr'=>$this->ImgMod_hiper,
+    //         'img_tipo'=> $this->ImgMod_TipoHiper,
+    //         'img_titulo'=> $this->ImgMod_titulo,
+    //         'img_pie'=> $this->ImgMod_pie,
+    //         'img_usrid'=> Auth::user()->id,
+    //     ];
+    //     ##### Guarda
+    //     Imagenes::create($datos);
+    // }
 
-    public function cerrarModalHipervinculo(){
-        $this->dispatch('cierraModalDeHipervinculo');
-    }
+    // public function cerrarModalHipervinculo(){
+    //     $this->dispatch('cierraModalDeHipervinculo');
+    // }
 }

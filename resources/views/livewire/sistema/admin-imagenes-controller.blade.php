@@ -8,8 +8,69 @@
 <div>
     <h2>Administración de Imágenes</h2>
     <div  style="font-size: 80%;color:grey;">
-        Este catálogo es administrado por los roles <b>Webmaster</b> y <b>editor</b> en jardin: {{ implode(',',$editjar) }}
+        Este catálogo es administrado por los roles
+        <b style="@if(in_array('webmaster',session('rol'))) color:green; @endif">Webmaster</b> y
+        <b style="@if(in_array('editor',session('rol'))) color:green; @endif">editor</b>
+         en jardin: {{ implode(',',$editjar) }}
         (@if($edit=='0') <error style="font-size: 90%;"> No autorizado</error> @else <span style="font-size:90%;color:green;"> Autorizado </span>@endif)
+    </div>
+
+    <div class="row">
+        <!-- Buscar por Jardín-->
+        <div class="col-6 col-md-2 form-group">
+            <label id="BuscaJardin" class="form-label">Jardín<red>*</red></label>
+            <select wire:model.live="BuscaJardin" id="BuscaJardin" class="@error('BuscaJardin') is-invalid @enderror form-select">
+                <option value="">Todos</option>
+                @foreach ($jardines as $j)
+                    <option value="{{ $j->cjar_siglas }}">{{ $j->cjar_siglas }}</option>
+                @endforeach
+            </select>
+            <div class="form-text"></div>
+            @error('BuscaJardin')<error>{{ $message }}</error>@enderror
+        </div>
+
+        <!-- Buscar por módulo -->
+        <div class="col-6 col-md-2 form-group">
+            <label id="BuscaMod" class="form-label">Módulo<red>*</red></label>
+            <select wire:model.live="BuscaMod" id="BuscaMod" class="@error('BuscaMod') is-invalid @enderror form-select">
+                <option value="">Indicar alguno</option>
+                @foreach ($modulos as $m)
+                    <option value="{{ $m->cimg_modulo }}">{{ $m->cimg_modulo }} </option>
+                @endforeach
+            </select>
+            <div class="form-text"></div>
+            @error('BuscaMod')<error>{{ $message }}</error>@enderror
+        </div>
+
+        <!-- Buscar por Url -->
+        <div class="col-6 col-md-2 form-group">
+            <label id="BuscaUrl" class="form-label">Url<red>*</red></label>
+            <select wire:model.live="BuscaUrl" id="BuscaUrl" class="@error('BuscaUrl') is-invalid @enderror form-select" @if($BuscaMod=='') disabled @endif>
+                    @if($BuscaMod == '') <option value=""> @endif Indica un módulo</option>
+                    <option value="">Todos</option>
+                    @foreach ($UrlsDelModulo as $m)
+                        <option value="{{ $m->url }}"> {{ $m->url }}</option>
+                    @endforeach
+            </select>
+            <div class="form-text"></div>
+            @error('BuscaUrl')<error>{{ $message }}</error>@enderror
+        </div>
+
+        <!-- Buscar por Submódulo -->
+        <div class="col-6 col-md-2 form-group">
+            <label id="BuscaSubMod" class="form-label">Submódulo<red>*</red></label>
+            <select wire:model.live="BuscaSubMod" id="BuscaSubMod" class="@error('BuscaSubMod') is-invalid @enderror form-select" @if($BuscaMod=='') disabled @endif>
+                @if($BuscaMod == '') <option value=""> @endif Indica un módulo</option>
+                @if($BuscaMod != '')
+                    <option value="">Todos</option>
+                    @foreach ($submodulos as $m)
+                        <option value="{{ $m->cimg_tipo }}"> {{ $m->cimg_tipo }}</option>
+                    @endforeach
+                @endif
+            </select>
+            <div class="form-text"></div>
+            @error('BuscaSubMod')<error>{{ $message }}</error>@enderror
+        </div>
     </div>
 
     <div class="row">
@@ -34,73 +95,15 @@
             @error('BuscaTipo')<error>{{ $message }}</error>@enderror
         </div>
 
-
-        <!-- Buscar por Jardín-->
-        <div class="col-6 col-md-2 form-group">
-            <label id="BuscaJardin" class="form-label">Jardín<red>*</red></label>
-            <select wire:model.live="BuscaJardin" id="BuscaJardin" class="@error('BuscaJardin') is-invalid @enderror form-select">
-                <option value="">Todos</option>
-                @foreach ($jardines as $j)
-                    <option value="{{ $j->cjar_siglas }}">{{ $j->cjar_siglas }}</option>
-                @endforeach
-            </select>
-            <div class="form-text"></div>
-            @error('BuscaJardin')<error>{{ $message }}</error>@enderror
-        </div>
-
-        <!-- Buscar por módulo -->
-        <div class="col-6 col-md-2 form-group">
-            <label id="BuscaMod" class="form-label">Módulo<red>*</red></label>
-            <select wire:model.live="BuscaMod" id="BuscaMod" class="@error('BuscaMod') is-invalid @enderror form-select">
-                <option value="">Todos</option>
-                @foreach ($modulos as $m)
-                    <option value="{{ $m->cimg_modulo }}">{{ $m->cimg_modulo }} </option>
-                @endforeach
-            </select>
-            <div class="form-text"></div>
-            @error('BuscaMod')<error>{{ $message }}</error>@enderror
-        </div>
-
-        <!-- Buscar por Submódulo -->
-        <div class="col-6 col-md-2 form-group">
-            <label id="BuscaSubMod" class="form-label">Submódulo<red>*</red></label>
-            <select wire:model.live="BuscaSubMod" id="BuscaSubMod" class="@error('BuscaSubMod') is-invalid @enderror form-select">
-                @if($BuscaMod == '') <option value=""> @endif Módulo primero</option>
-                @if($BuscaMod != '')
-                    <option value="">Todos</option>
-                    @foreach ($submodulos as $m)
-                        <option value="{{ $m->cimg_tipo }}"> {{ $m->cimg_tipo }}</option>
-                    @endforeach
-                @endif
-            </select>
-            <div class="form-text"></div>
-            @error('BuscaSubMod')<error>{{ $message }}</error>@enderror
-        </div>
-
-        <!-- Buscar por Url -->
-        <div class="col-6 col-md-2 form-group">
-            @if($BuscaMod=='cedula')
-                <label id="BuscaUrl" class="form-label">Url</label>
-                <select wire:model.live="BuscaUrl" id="BuscaUrl" class="@error('BuscaUrl') is-invalid @enderror form-select">
-                        <option value="">Todos</option>
-                        {{-- @foreach ($submodulos as $m)
-                            <option value="{{ $m->cimg_tipo }}"> {{ $m->cimg_tipo }}</option>
-                        @endforeach --}}
-                </select>
-                <div class="form-text"></div>
-                @error('BuscaUrl')<error>{{ $message }}</error>@enderror
-            @endif
-        </div>
-
         <!-- Botón para agregar nuevo objeto -->
         <div class="col-6 col-md-6" style="">
-            @if($BuscaJardin != '' AND $BuscaMod != '' AND $BuscaSubMod != '' AND $edit=='1')
+            {{-- @if($BuscaJardin != '' AND $BuscaMod != '' AND $BuscaSubMod != '' AND $edit=='1') --}}
                 <br>
-                <button wire:click="AbreModalObjeto('0','img')" type="button" class="btn btn-primary">Nuevo Objeto</button>
-                <button wire:click="AbreModalObjeto('0','hip')" type="button" class="btn btn-primary">Nuevo Hipervínculo</button>
-            @else
+                <button wire:click="AbrirModalPaIncertarObjeto('0')" type="button" class="btn btn-primary" @if($BuscaJardin == '' OR $BuscaMod == '' OR $BuscaSubMod == '' or $edit=='0') disabled style="color:#64383E;" @endif >Nuevo Objeto</button>
+                {{-- <button wire:click="AbreModalObjeto('0','img')" type="button" class="btn btn-primary" @if($BuscaJardin == '' OR $BuscaMod == '' OR $BuscaSubMod == '' or $edit=='0') disabled style="color:#64383E;" @endif >Nuevo Objeto</button> --}}
+            {{-- @else
                 <span style="font-size:80%; color:gray;"><br>Para agregar una nueva imagen,<br>indica jardin, Modelo y Submodelo</span>
-            @endif
+            @endif --}}
         </div>
     </div>
 
@@ -191,7 +194,12 @@
                                     </a>
                                 @elseif($i->img_tipo=='vid')
                                     <a href="{{ $i->img_file }}" class="nolink" target="img">
-                                        <i class="bi bi-play-btn-fill" style="font-size:300%;"></i>
+                                        <i class="bi bi-camera-reels-fill" style="font-size:300%;"></i>
+                                    </a>
+                                @elseif($i->img_tipo=='you')
+                                    <a href="https://www.youtube.com/watch?v={{ $i->img_youtube }}" class="nolink" target="new">
+                                        <i class="bi bi-youtube" style="font-size:200%;"></i><br>
+                                        <span style="font-size:90%;">Youtube</span>
                                     </a>
                                 @endif
                                 </center>
@@ -199,11 +207,10 @@
 
                             <!-- icono de editar -->
                             <td>
-                                @if($i->img_tipo=='you')
-                                    editeichon
-                                @else
-                                    <i wire:click="AbreModalObjeto('{{ $i->img_id }}')" class="bi bi-pencil-square mx-2 PaClick"></i>
-                                @endif
+
+                                {{-- <i wire:click="AbreModalObjeto('{{ $i->img_id }}')" class="bi bi-pencil-square mx-2 PaClick"></i> --}}
+                                <i wire:click="AbrirModalPaIncertarObjeto('{{ $i->img_id }}')" class="bi bi-pencil-square mx-2 PaClick"></i>
+
                             </td>
                         </tr>
                     @endforeach
@@ -254,5 +261,6 @@
          </div>
         @endif
 
-<livewire:web.modal-imagen-controller/>
+    <livewire:sistema.modal-inserta-objeto-component />
+    {{-- <livewire:web.modal-imagen-controller/> --}}
 </div>
