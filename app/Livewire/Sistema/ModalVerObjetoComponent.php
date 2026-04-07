@@ -39,16 +39,14 @@ class ModalVerObjetoComponent extends Component
     }
 
     public function render() {
-
-
         ################## Descarga objetos
         $this->modver_objetos=Imagenes::where('img_act','1')->where('img_del','0')
             ->where('img_cjarsiglas',$this->modver_jardin)
-            ->where('img_cimgmodulo',$this->modver_modulo)
+            // ->where('img_cimgmodulo',$this->modver_modulo)
             ->where('img_tipo','ilike', $this->modver_tipoSelected)
             ->with('alias')
             ->get();
-#dd($this->modver_objetos,$this->modver_jardin, $this->modver_modulo,$this->modver_tipoSelected);
+
         return view('livewire.sistema.modal-ver-objeto-component');
     }
 

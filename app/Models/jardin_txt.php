@@ -18,15 +18,17 @@ class jardin_txt extends Model
     protected $fillable = [
         'jar_id',
         'jar_urljid',
-        'jar_urljurl',
         'jar_cjarsiglas',
+        'jar_urljurl',
         'jar_act',
         'jar_del',
 
+        'jar_tipo',
         'jar_orden',
         'jar_txt',
         'jar_txtoriginal',
         'jar_audio',
+        'jar_version',
     ];
 
     public function url():BelongsTo {

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Web;
 
+use App\Models\autor_txt;
 use App\Models\cat_autores;
 use App\Models\ced_autores;
 use App\Models\Imagenes;
@@ -40,7 +41,7 @@ class AutoresController extends Component
 
 
     public function render(){
-        ##### Verifica que sí tenga permiso web:
+        ##### Verifica permisos
         if($this->url->caut_web=='0'){
             redirect('/errorLo sentimos, el sitio que buscas no existe.');
         }
@@ -56,6 +57,17 @@ class AutoresController extends Component
                 $this->editMaster='0';
             }
         }
+
+        ##### Carga textos
+        $txt=autor_txt::where('autxt_cjarsiglas',$this->jardin)
+            ->where('autxt_cauturl',$this->url->caut_url)
+            ->where('autxt_act','1')->where('autxt_del','0')
+            ->orderBy('autxt_orden')
+            ->with('cedulas')
+            ->with('url')
+            ->get();
+
+        ##### Carga Objetos
         $objs=Imagenes::where('img_cjarsiglas',$this->jardin)
             ->where('img_urltxt',$this->url->caut_url)
             ->where('img_del','0')
@@ -65,6 +77,7 @@ class AutoresController extends Component
 
         return view('livewire.web.autores-controller',[
             'objs'=>$objs,
+            'txt'=>$txt,
         ]);
     }
 

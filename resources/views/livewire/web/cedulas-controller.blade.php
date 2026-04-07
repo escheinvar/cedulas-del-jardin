@@ -66,6 +66,7 @@
         </div>
     </div>
 
+    <!-- -------------------------------------- PÁGINA NO DISPONIBLE ------------------------------------------ -->
     @if( ($enEdit=='1' or $edit=='0') and !Auth::user())
         <div class="row m-5">
             <div class="col-12">
@@ -226,6 +227,8 @@
                     @else
                         @if($editMaster=='1')
                             <i wire:click="AbrirModalPaIncertarObjeto('0','cedula','portada','','1')" class="bi bi-file-image PaClick" style="color:#87796d">portada</i>
+                            {{-- <i wire:click="AbreModalVerObjetos('img')" class="bi bi-file-image PaClick" style="color:#87796d">portada</i> --}}
+
                         @endif
                     @endif
 
@@ -366,6 +369,9 @@
 
                 <!--  Párrafos de cédula  -->
                 <div class="row" >
+                    <?php $TablaDeTexto=$txt; $modulo='cedula'?>
+                    @include('plantillas.texto')
+                    {{--
                     @foreach($txt as $t)
                         <div class="col-12" style="" wire:key="parr_{{ $t->txt_id }}">
                             <!-- párrafo tipo título 1 -->
@@ -448,6 +454,7 @@
                             @endif
                         </div>
                     @endforeach
+                    --}}
 
                     <!-- muestra último párrafo -->
                     @if($edit=='1')
@@ -455,7 +462,6 @@
                             <i class="bi bi-plus-circle"></i> Nuevo párrafo
                         </span>
                     @endif
-
                 </div>
 
                 <!-- Zona de traductor-->

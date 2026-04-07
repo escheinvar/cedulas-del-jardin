@@ -292,6 +292,19 @@ class CedulasController extends Component
         ];
         $this->dispatch('AbreModalIncertaObjeto',$datos);
     }
+
+
+    public function AbreModalVerObjetos($tipoDato){
+        #####<livewire:sistema.modal-ver-objeto-component />
+        $data=[
+                'jardin'=>$this->url->url_cjarsiglas,
+                'modulo'=>'cedula',
+                'url'=>$this->url->url_url,
+                'tipoDato'=>'',
+            ];
+
+        $this->dispatch('AbreModalDeVerObjetos',$data);
+    }
 }
 
 

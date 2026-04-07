@@ -64,11 +64,8 @@
         <div class="row">
 
             <div class="col-12">
-
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illo natus rerum accusamus eius ea molestias facere velit beatae tenetur quis dicta, repudiandae quasi quos totam recusandae porro minus harum vero.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum nemo quia, consequatur in veritatis totam et ipsum sapiente voluptatibus? Ab autem suscipit quod hic earum minus recusandae excepturi aliquid explicabo!</p>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates obcaecati placeat iste explicabo laboriosam suscipit nesciunt! Officia, excepturi itaque provident, ab dolorem voluptatum cumque praesentium modi architecto expedita fugit laborum.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam ut facere laudantium temporibus tempore earum id eius blanditiis, possimus esse vero at provident. Tempore optio nemo et, ducimus quia omnis?</p>
+                 <?php $TablaDeTexto=$txt; ?>
+                @include('plantillas.texto')
             </div>
         </div>
         <div class="row">

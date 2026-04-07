@@ -17,20 +17,22 @@ return new class extends Migration
 
                 $table->foreignId('jar_urljid')->constrained('jardin_url','urlj_id'); #### ID de la url
 
-                $table->string('jar_urljurl');  ##### Texto de la url
-                // $table->foreign('jar_urljurl')->references('urlj_url')->on('jardin_url')->constrained('jardin_url','urlj_url');
-
-
                 $table->string('jar_cjarsiglas'); #####  siglas del jardín al que pertenece
                 $table->foreign('jar_cjarsiglas')->references('cjar_siglas')->on('cat_jardines')->constrained('cat_jardines','cjar_siglas');
+
+                $table->string('jar_urljurl');  ##### Texto de la url
+                // $table->foreign('jar_urljurl')->references('urlj_url')->on('jardin_url')->constrained('jardin_url','urlj_url');
 
                 $table->enum('jar_act',['0','1'])->default('1');  ##### borrado lógico inactivo
                 $table->enum('jar_del',['0','1'])->default('0'); ##### borrado lógico
 
+                $table->string('jar_tipo')->default('p'); ##### Tipo de elemento (párrafo, h1, h2,autor,traductor)
                 $table->decimal('jar_orden',5,3); #### Número de orden del párrafo (dentro de cada url)
+
                 $table->longText('jar_txt')->nullable(); ##### Código html del texto
                 $table->longText('jar_txtoriginal')->nullable(); ##### Código html del texto
                 $table->string('jar_audio')->nullable();  ##### Ruta al archivo de audio
+                $table->decimal('jar_version',3,1)->default('1.0'); ##### versión del párrafo
                 $table->timestamps();
 
             });

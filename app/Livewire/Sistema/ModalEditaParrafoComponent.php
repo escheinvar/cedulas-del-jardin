@@ -68,8 +68,10 @@ class ModalEditaParrafoComponent extends Component
                     ->max('txt_orden');
                 $this->modJar_orden=$ord+1;
 
+            }elseif($this->modJar_modulo=='autor'){
 
-            }elseif(in_array($this->modJar_modulo,['inicio','autores','cedulas']) ){
+            }else{
+            // }elseif(in_array($this->modJar_modulo,['inicio','autores','cedulas']) ){
                 $ord=jardin_txt::where('jar_cjarsiglas',$this->modJar_cjarsiglas)
                     ->where('jar_urljurl', $this->modJar_url)
                     ->where('jar_act','1')
@@ -77,7 +79,7 @@ class ModalEditaParrafoComponent extends Component
                     ->max('jar_orden');
                 $this->modJar_orden=$ord+1;
 
-            }elseif($this->modJar_modulo=='autor'){
+
                 // $this->modJar_orden=$ord+1;
 
             }
@@ -132,6 +134,7 @@ class ModalEditaParrafoComponent extends Component
         $this->VerOriginal='0';
         $this->modJar_Objetos=collect();
         $this->modJar_VerModulo='web';
+        $this->ValidadorDeTag='0';
     }
 
     public function LimpiarModal(){
@@ -151,6 +154,11 @@ class ModalEditaParrafoComponent extends Component
             'modJar_orden'=>'required',
             'modJar_txt'=>'required',
         ]);
+        ##### Valida código
+        $this->validarHtml();
+        if($this->ValidadorDeTag=='1'){
+            return;
+        }
 
         ######################################################
         ############### Guarda en caso de cedulas (cedulas_txt)
@@ -339,7 +347,7 @@ class ModalEditaParrafoComponent extends Component
         ######## y donde se va a mostrar el @error: $this->variable.
         ######## También utiliza la variable $this->ValidadorDeTag='0';
         ######## como flag de existencia(1) de error o no (0);
-        $variable='Imgmod_nvoobj';
+        $variable='modJar_txt';
 
         ##### Limpia
         $this->resetErrorBag();
