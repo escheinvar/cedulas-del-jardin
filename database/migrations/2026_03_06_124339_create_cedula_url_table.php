@@ -39,7 +39,6 @@ return new class extends Migration
             $table->string('url_cita_aut')->nullable(); ##### Autores en formato de cita
             $table->string('url_cita_trad')->nullable(); ##### Traductores en formato de cita
             $table->string('url_anio')->nullable(); ##### Año de la cédula
-            // $table->integer('url_editor')->nullable(); ##### Id_usr del editor asignado
             $table->decimal('url_version',5 ,2)->default('1.0');
             $table->string('url_doi')->nullable();
 

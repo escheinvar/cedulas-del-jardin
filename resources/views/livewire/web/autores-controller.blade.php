@@ -25,23 +25,46 @@
             Seguramente en breve, habrán terminado y podrás consultarla nuevamente.
         </h3>
     @else
-        <div class="my-4">
-            <h2>{{ $url->caut_nombre}} {{ $url->caut_apellido1}} {{ $url->caut_apellido2}}</h2>
-            @if($url->caut_institu != '') {{ $url->caut_institu }}<br> @endif
-            @if($url->caut_comunidad!='') {{ $url->caut_comunidad }}<br> @endif
-            @if($url->caut_mailpublic =='1') <a href="mailto:{{ $url->caut_correo }}" class="nolink">{{ $url->caut_correo }}</a> <br> @endif
-            Persona autora de cédulas del {{ $url->jardin->cjar_nombre }}<br>
-            </p>
+        <div class="row my-4">
+            <div class="col-12">
+                <h2>{{ $url->caut_nombre}} {{ $url->caut_apellido1}} {{ $url->caut_apellido2}}</h2>
+            </div>
+            <!-- imagen del autor-->
+            <div class="col-6 col-md-2">
+                @if($objs->where('img_cimgtipo','portada')->count() > '0')
+                    @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','portada'),'TipoDeObjeto'=>'portada'])
+                @else
+                    @if($editMaster=='1')
+                        <div wire:click="AbrirModalPaIncertarObjeto('0','autor','portada','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">
+                            Foto del autor
+                        </div>
+                    @endif
+                @endif
+            </div>
+
+            <!-- Datos del autor -->
+            <div class="col-6 col-md-10">
+                <b>{{ $url->caut_nombreautor }}</b><br>
+                @if($url->caut_institu != '') {{ $url->caut_institu }}<br> @endif
+                @if($url->caut_comunidad!='') {{ $url->caut_comunidad }}<br> @endif
+                @if($url->caut_mailpublic =='1') <a href="mailto:{{ $url->caut_correo }}" class="nolink">{{ $url->caut_correo }}</a> <br> @endif
+                @if($url->caut_orcid != '')  <a href="https://orcid.org/{{ $url->caut_orcid }}" target="orcid" class="nolink">ORCID {{ $url->caut_orcid }}</a>@endif<br>
+                Persona autora de cédulas del {{ $url->jardin->cjar_nombre }}<br>
+                @if($edit=='1' and $editMaster=='1')
+                    <i wire:click="AbreModalAutores('{{ $url->caut_id }}')" class="bi bi-pencil-square agregar"> Editar </i>
+                @endif
+            </div>
         </div>
 
 
+
+
+
+
         <div class="row">
-            @if($url->caut_img != '')
-                <div class="@if($url->caut_img == '') col-12 @else col-5 col-md-3 @endif">
-                    <img src='{{ $url->caut_img }}' style="max-width:100%;max-height:300px;">
-                </div>
-            @endif
-            <div class="@if($url->caut_img == '') col-12 @else col-7 col-md-9 @endif">
+
+            <div class="col-12">
+
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illo natus rerum accusamus eius ea molestias facere velit beatae tenetur quis dicta, repudiandae quasi quos totam recusandae porro minus harum vero.</p>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum nemo quia, consequatur in veritatis totam et ipsum sapiente voluptatibus? Ab autem suscipit quod hic earum minus recusandae excepturi aliquid explicabo!</p>
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates obcaecati placeat iste explicabo laboriosam suscipit nesciunt! Officia, excepturi itaque provident, ab dolorem voluptatum cumque praesentium modi architecto expedita fugit laborum.</p>
@@ -57,4 +80,10 @@
             </ul>
         </div>
     @endif
+
+
+    <livewire:sistema.modal-inserta-objeto-component />
+    <livewire:sistema.modal-cedula-autores-component >
+
+    <livewire:sistema.modal-edita-parrafo-component />
 </div>

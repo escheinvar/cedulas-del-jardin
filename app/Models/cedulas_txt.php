@@ -32,4 +32,11 @@ class cedulas_txt extends Model
     ];
 
 
+    public function url():BelongsTo {
+        return $this->belongsTo(cedulas_url::class, 'txt_urlid','url_id');
+    }
+
+    public function jardin():BelongsTo {
+        return $this->belongsTo(CatJardinesModel::class,'txt_cjarsiglas','cjar_siglas');
+    }
 }

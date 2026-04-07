@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cedula_txt', function (Blueprint $table) {
             $table->id('txt_id');
             $table->string('txt_cjarsiglas');     #### Tipo de cédula que se construye
-            // $table->foreign('txt_cjarsiglas')->references('url_cjarsiglas')->on('cedula_url')->constrained('cedula_url','url_cjarsiglas');
+            $table->foreignId('txt_urlid')->constrained('cedula_url','url_id');
             $table->string('txt_urlurl');     #### url de la cédula ej: huaje_huv
             // $table->foreign('txt_urlurl')->references('url_url')->on('cedula_url')->constrained('cedula_url','url_url');
             // $table->string('txt_urlurl');     #### Tipo de cédula que se construye
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->longText('txt_txt')->nullable(); ##### Texto del párrafo
             $table->longText('txt_txtoriginal')->nullable(); ##### Texto original
             $table->string('txt_audio')->nullable();  ##### Liga al audio del párrafo
-            $table->decimal('txt_version',5,2)->default('1.0'); ##### versión del párrafo
+            $table->decimal('txt_version',3,1)->default('1.0'); ##### versión del párrafo
 
             $table->timestamps();
         });

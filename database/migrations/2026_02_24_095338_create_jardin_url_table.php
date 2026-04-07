@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->string('urlj_cjarsiglas'); #####  siglas del jardín al que pertenece
             $table->foreign('urlj_cjarsiglas')->references('cjar_siglas')->on('cat_jardines')->constrained('cat_jardines','cjar_siglas');
+            $table->string('urlj_key')->nullable();  ##### Clave jardin@url (sin traducción)
 
             $table->string('urlj_urltxt'); ##### Nombre de url (sin traducción)
             $table->string('urlj_url'); ##### Nombre de url

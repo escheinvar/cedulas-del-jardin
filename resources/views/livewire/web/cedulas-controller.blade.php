@@ -66,7 +66,7 @@
         </div>
     </div>
 
-    @if($this->url->url_edo < '5' and $edit=='0')
+    @if( ($enEdit=='1' or $edit=='0') and !Auth::user())
         <div class="row m-5">
             <div class="col-12">
                 <div class=" m-6" style="background-color:#CDC6B9; padding:40px; font-size: 120%; text-align:center;">
@@ -368,6 +368,7 @@
                 <div class="row" >
                     @foreach($txt as $t)
                         <div class="col-12" style="" wire:key="parr_{{ $t->txt_id }}">
+                            <!-- párrafo tipo título 1 -->
                             @if($t->txt_tipo == 'h1')
                                 <div style="margin-top: 50px;">
                                     <h3 style="display:inline;">
@@ -381,11 +382,13 @@
                                         <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
                                     @endif
                                     @if($edit=='1')
-                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaTextoWebJardin('{{ $t->txt_id }}',' {{ $t->txt_orden }}')">
+                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaParrafo('{{ $t->txt_id }}',' {{ $t->txt_orden }}', '', '', '', '1')">
                                             <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
                                         </span>
                                     @endif
                                 </div>
+
+                            <!-- párrafo tipo título 2 -->
                             @elseif($t->txt_tipo=='h2')
                                 <div style="margin-top: 30px;">
                                     <h4 style="display:inline;">
@@ -399,11 +402,13 @@
                                         <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
                                     @endif
                                     @if($edit=='1')
-                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaTextoWebJardin('{{ $t->txt_id }}',' {{ $t->txt_orden }}')">
+                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaParrafo('{{ $t->txt_id }}',' {{ $t->txt_orden }}', '', '', '', '1')">
                                             <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
                                         </span>
                                     @endif
                                 </div>
+
+                            <!-- párrafo tipo título 1 -->
                             @elseif($t->txt_tipo=='h3')
                                 <div style="margin-top: 30px;">
                                     <h5 style="display:inline;">
@@ -417,12 +422,13 @@
                                         <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
                                     @endif
                                     @if($edit=='1')
-                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaTextoWebJardin('{{ $t->txt_id }}',' {{ $t->txt_orden }}')">
+                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaParrafo('{{ $t->txt_id }}',' {{ $t->txt_orden }}', '', '', '', '1')">
                                             <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
                                         </span>
                                     @endif
                                 </div>
                             @endif
+                            <!-- párrafo tipo parrafo -->
                             @if($t->txt_tipo=='p')
                                 <div class="my-2" style="display:inline;">
                                     {!! $t->txt_txt !!}
@@ -434,7 +440,7 @@
                                         <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
                                     @endif
                                     @if($edit=='1')
-                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaTextoWebJardin('{{ $t->txt_id }}',' {{ $t->txt_orden }}')">
+                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaParrafo('{{ $t->txt_id }}',' {{ $t->txt_orden }}', '', '', '', '1')">
                                             <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
                                         </span>
                                     @endif
@@ -442,6 +448,14 @@
                             @endif
                         </div>
                     @endforeach
+
+                    <!-- muestra último párrafo -->
+                    @if($edit=='1')
+                        <span class="cedEdo{{ $url->url_edo }} PaClick my-5" wire:click="AbreModalEditaParrafo('0','0', '', '', '', '1')">
+                            <i class="bi bi-plus-circle"></i> Nuevo párrafo
+                        </span>
+                    @endif
+
                 </div>
 
                 <!-- Zona de traductor-->
@@ -769,12 +783,13 @@
     <!-- -------------------------------------------------------------------------------------- -->
     @if($edit=='1')
 
-        <livewire:sistema.jardin-web-modal-component />
+        <livewire:sistema.modal-edita-parrafo-component />
         <livewire:sistema.modal-cedula-ubicaciones-component />
         <livewire:sistema.modal-cedula-alias-component />
         <livewire:sistema.modal-cedula-cambia-estado-component />
         <livewire:web.modal-cedula-yo-tengo-que-aportar />
         <livewire:sistema.modal-inserta-objeto-component />
+
 
     @endif
 

@@ -85,6 +85,7 @@ class ModalInsertaObjetoComponent extends Component
     public function mount(){
         $this->Imgmod_id='0';
         $this->Imgmod_verobjeto='0';
+        $this->ValidadorDeTag='0';
 
         ###### Carga los alias
         if($this->Imgmod_id == '0'){
@@ -125,10 +126,13 @@ class ModalInsertaObjetoComponent extends Component
     public function LeerObjeto(){
         if($this->Imgmod_nvoobj != ''){
             if($this->Imgmod_tipoobjeto=='archivo'){
+
                 ###### Define el tipo de objeto a partir de la extensión
                 $ext=$this->Imgmod_nvoobj->getClientOriginalExtension();
+
                 if(preg_match('/jpg$|png$|jpeg$|tiff$|tif$|svg$/i',$ext)){
                     $this->Imgmod_tipo='img';
+
                 }elseif(preg_match('/MP4$|MOV$|AVI$|WMV$|MKV$|FLV$/i',$ext)){
                     $this->Imgmod_tipo='vid';
                 }elseif(preg_match('/ogg$|mp3$|wav$|flac$|aac$|wma$|m4a$/i',$ext)){
@@ -138,11 +142,17 @@ class ModalInsertaObjetoComponent extends Component
                 }
 
             }elseif($this->Imgmod_tipoobjeto=='youtube'){
+                $this->validarHtml($this->Imgmod_nvoobj);
+                if($this->ValidadorDeTag!='0'){return;}
                 $this->Imgmod_tipo='you';
 
             }elseif($this->Imgmod_tipoobjeto=='codigo'){
+                ##### Verifica errores de código
+                $this->validarHtml($this->Imgmod_nvoobj);
+                if($this->ValidadorDeTag!='0'){return;}
                 $this->Imgmod_tipo='htm';
             }
+
 
             if(in_array($this->Imgmod_tipo,['img','vid','aud'])){
                 ##### Toma objeto
@@ -154,9 +164,12 @@ class ModalInsertaObjetoComponent extends Component
                 list($width, $height) = getimagesize($this->Imgmod_nvoobj->getRealPath());
                 $this->Imgmod_resolu=$width.",".$height;
             }
+
         }
+
         ##### Activa mostrar la sección de datos
         $this->Imgmod_verobjeto='1';
+        // dd($ext, $this->Imgmod_tipo, $this->Imgmod_file,$this->Imgmod_size,$this->Imgmod_resolu, $this->Imgmod_verobjeto);
     }
 
     public function AgregarAlias(){
@@ -199,9 +212,9 @@ class ModalInsertaObjetoComponent extends Component
         if($this->Imgmod_act==TRUE){$act='0';}else{$act='1';}
         if($this->Imgmod_tituloact==TRUE){$titact='1';}else{$titact='0';}
         if($this->Imgmod_fecha==''){$this->Imgmod_fecha=null;}
-        if($this->Imgmod_tipoobjeto=='archivo'){ $youtube=''; $html='';} #$file='subiendo...';
-        if($this->Imgmod_tipoobjeto=='youtube'){$file=''; $youtube=$this->Imgmod_nvoobj; $html='';}
-        if($this->Imgmod_tipoobjeto=='codigo'){$file=''; $youtube=''; $html=$this->Imgmod_nvoobj;}
+        if($this->Imgmod_tipoobjeto=='archivo'){ $youtube=''; $html='';}
+        if($this->Imgmod_tipoobjeto=='youtube'){ $youtube=$this->Imgmod_nvoobj; $html='';}
+        if($this->Imgmod_tipoobjeto=='codigo'){ $youtube=''; $html=$this->Imgmod_nvoobj;}
 
         ##### Genera arreglo de datos
         $datos=[
@@ -267,32 +280,122 @@ class ModalInsertaObjetoComponent extends Component
             imagenes::where('img_id',$id)->update(['img_file'=>'/img/'.$nombre]);
         }
 
+        ##### Envía datos a modal previo (ver objeto)
+        $modver_objetos=Imagenes::where('img_act','1')->where('img_del','0')
+            ->where('img_cjarsiglas', preg_replace('/@.*/','',$this->Imgmod_key))
+            ->where('img_cimgmodulo',$this->Imgmod_cimgmodulo)
+            ->where('img_tipo','ilike',  $this->Imgmod_tipo)
+            ->with('alias')
+            ->get();
+
+        $this->dispatch('RecibeVariables',dato:$modver_objetos);
+
         ##### Finaliza y cierra
         $this->CerrarModalIncertaObjeto($id);
     }
 
-    public function verificarTagsAbiertos($html) {
-        // // Desactivar errores estándar de libxml
-        // libxml_use_internal_errors(true);
 
-        // $dom = new DOMDocument();
-        // // Cargar el HTML
-        // $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
-        // // Obtener los errores generados por etiquetas mal cerradas
-        // $errors = libxml_get_errors();
+    #################################################################
+    ######################################## Verificador de tags html
+    public $ValidadorDeTag;
+    public function validarHtml() {
+        ######################################################
+        ######## Código obtenido por Qwen para revisar. Se debe
+        ######## indicar $variable (nombre de variable $this que
+        ######## contiene el código html que se va a revisar
+        ######## y donde se va a mostrar el @error: $this->variable.
+        ######## También utiliza la variable $this->ValidadorDeTag='0';
+        ######## como flag de existencia(1) de error o no (0);
+        $variable='Imgmod_nvoobj';
 
-        // if (empty($errors)) {
-        //     return "Todos los tags están cerrados correctamente.";
-        // } else {
-        //     foreach ($errors as $error) {
-        //         echo "Error en línea {$error->line}: Tag no cerrado o mal formado.<br>";
-        //     }
+        ##### Limpia
+        $this->resetErrorBag();
+        $this->resetValidation();
+        $this->ValidadorDeTag='0';
+        $html = trim($this->$variable);
+
+        if($html == '') {
+            $this->ValidadorDeTag='1';
+            $this->addError($variable, 'El campo HTML no puede estar vacío.');
+            return;
+        }
+
+        // 1️⃣ Análisis con DOMDocument + libxml
+        libxml_use_internal_errors(true);
+        $dom = new \DOMDocument();
+
+        // Convertimos a HTML-ENTITIES para evitar problemas con UTF-8 en DOMDocument
+        $encodedHtml = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+
+        // Cargamos sin auto-agregar <html>/<body> y en modo compacto
+        @$dom->loadHTML($encodedHtml, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_COMPACT);
+
+        $xmlErrors = libxml_get_errors();
+        libxml_clear_errors();
+
+        $severeErrors = [];
+        foreach ($xmlErrors as $error) {
+            // Nivel 3 = Error, Nivel 4 = Fatal
+            if ($error->level >= LIBXML_ERR_ERROR) {
+                $severeErrors[] = sprintf(
+                    'Línea %d, Col %d: %s',
+                    $error->line,
+                    $error->column,
+                    trim($error->message)
+                );
+            }
+        }
+
+        if (!empty($severeErrors)) {
+            $this->ValidadorDeTag='1';
+            $this->addError($variable, 'Errores de sintaxis detectados:<br>' . implode('<br>', $severeErrors));
+            return;
+        }
+
+        ################### inicia tags no cerrados
+        // Etiquetas void (no requieren cierre) según HTML5
+        $voidTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+
+        // Extrae todas las etiquetas (apertura, cierre o self-closing)
+        preg_match_all('/<(\/?)([a-zA-Z0-9]+)(?:\s[^>]*)?\/?>/', $html, $matches, PREG_SET_ORDER);
+
+        $stack = [];
+        foreach ($matches as $match) {
+            $isClosing  = $match[1] === '/';
+            $tagName    = strtolower($match[2]);
+
+            // Ignoramos etiquetas que no necesitan cierre
+            if (in_array($tagName, $voidTags)) continue;
+
+            if ($isClosing) {
+                if (empty($stack) || end($stack) !== $tagName) {
+                    $this->ValidadorDeTag='1';
+                    $this->addError($variable, "Etiqueta de cierre inesperada o desbalanceada: </$tagName>");
+                    return;
+                }
+                array_pop($stack);
+            } else {
+                $stack[] = $tagName;
+            }
+        }
+
+        if (!empty($stack)) {
+            $unclosed = array_unique($stack);
+            $this->ValidadorDeTag='1';
+            $this->addError($variable, 'Etiquetas abiertas sin cerrar: ' . implode(', ', $unclosed));
+        }
+        ##################### Cierra tags no cerrados
+        // if (!$this->hasErrors()) {
+        //     $this->isValid = true;
+        //     $this->dispatch('html-validated');
         // }
-        // libxml_clear_errors();
     }
 
+
     public function render(){
+        ##### Confirma que el validador de tag no muestre
+        // if($this->ValidadorDeTag!='0'){$this->Imgmod_verobjeto='0';}
         // $apariciones=cedula::where('jar_txt','ilike','%'.$this->Imgmod_file.'%')
         //     ->where('jar_act','1')
         //     ->where('jar_del','0')

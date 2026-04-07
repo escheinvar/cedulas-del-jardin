@@ -33,6 +33,18 @@ class jardin_url extends Model
         'urlj_bannertitle',
     ];
 
+    ################################################################
+    ############# Función que genera automáticamente la columna key
+    ############# a partir de concatenar cjarsiglas y urltxt
+    protected static function boot() {
+        parent::boot();
+        static::saving(function ($registro) {
+            if ($registro->urlj_cjarsiglas && $registro->urlj_urltxt) {
+                $registro->urlj_key = trim($registro->urlj_cjarsiglas . '@' . $registro->urlj_urltxt);
+            }
+        });
+    }
+
     public function jardin(): BelongsTo {
         return $this->belongsTo(CatJardinesModel::class,'urlj_cjarsiglas','cjar_siglas');
     }

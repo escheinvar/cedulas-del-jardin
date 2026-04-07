@@ -34,7 +34,7 @@
                             </div>
                         </div>
 
-                        <!-- ---------- Dependiendo de seleción, carga nuevo archivo ----------- -->
+                        <!-- ---------- Solicita la carga del archivo o código ----------- -->
                         <div class="row">
                             @if($Imgmod_tipoobjeto!='')
                                 <div class="col-9  my-1 form-group">
@@ -53,7 +53,6 @@
                                         <input wire:model="Imgmod_nvoobj" id="Imgmod_nvoobj" class="@error('Imgmod_nvoobj') is-invalid @enderror form-control" type="text">
                                         <div class="form-text">Texto url entre los símbolos '=' y '&' (.../watch?v<b>=</b><span style="color:#CD7B34;">RpbjMcAqKzY</span><b>&</b>t=5s...)</div>
                                         @error('Imgmod_nvoobj')<error>{{ $message }}</error>@enderror
-
 
                                     @elseif($Imgmod_tipoobjeto=='codigo')
                                         <!-- Carga nuevo código -->
@@ -141,7 +140,7 @@
                                 <label for="Imgmod_titulo" class="form-label">Título del objeto<red>*</red></label>
                                 <input wire:model="Imgmod_titulo" id="Imgmod_titulo" class="@error('Imgmod_titulo') is-invalid @enderror form-control" type="text" >
                                 <div class="form-text"></div>
-                                @error('Imgmod_titulo')<error>{{ $message }}@enderror
+                                @error('Imgmo   d_titulo')<error>{{ $message }}@enderror
                             </div>
 
                             <div class="col-6 form-check">
@@ -154,7 +153,6 @@
                                 <input wire:model.live="Imgmod_act" class="form-check-input" type="checkbox" value="" id="forzar">
                                 <label class="form-check-label" for="forzar">Inactivar imagen   </label>
                                 {{-- <div class="form-text"> @if($Imgmod_act==TRUE)<error>La imagen no es visible</error> @endif </div> --}}
-
                             </div>
 
                             <!-- autor -->
@@ -215,7 +213,7 @@
                                     <i wire:click="AgregarAlias()" class="bi bi-plus-square-fill agregar"></i>
                                     @foreach ($Imgmod_alias as $a)
                                         <div class="elemento">
-                                            {{ $a->aimg_txt }} <i wire:click="BorrarAlias('{{ $a->aimg_id }}')" wire:confirm="Vas a eliminar este alias de la imagen. ¿Deseas continuar?" class="bi bi-trash agregar"></i>
+                                            {{ $a->aimg_txt }} <i wire:click="BorrarAlias('{{ $a->aimg_id }}','')" wire:confirm="Vas a eliminar este alias de la imagen. ¿Deseas continuar?" class="bi bi-trash agregar"></i>
                                         </div>
                                     @endforeach
 

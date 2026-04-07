@@ -78,13 +78,11 @@ class JardinController extends Component
             ##### Abre modal
             $data=[
                 'id'=>$id,
-                'orden'=>$orden, '',
-
-                'urljid'=>$this->url->urlj_id,
-                'urljurl'=>$this->url->urlj_url,
-                'urljurltxt'=>$this->url->urlj_urltxt,
-                'cjarsiglas'=>$this->url->urlj_cjarsiglas,
-
+                'orden'=>$orden,
+                'modulo'=>$this->url->urlj_url,
+                'url'=>$this->url->urlj_url,
+                'jardin'=>$this->url->urlj_cjarsiglas,
+                'reload'=>'0',
             ];
             $this->dispatch('AbreModalDeParrafoWebJardin',$data);
         }
@@ -111,7 +109,8 @@ class JardinController extends Component
         }
 
         ##### Carga texto
-        $txt=jardin_txt::where('jar_urljid',$this->url->urlj_id)
+        $txt=jardin_txt::where('jar_cjarsiglas',$this->url->urlj_cjarsiglas)     #where('jar_urljid',$this->url->urlj_id)
+            ->where('jar_urljurl',$this->url->urlj_url)
             ->where('jar_act','1')->where('jar_del','0')
             ->orderBy('jar_orden')
             ->get();

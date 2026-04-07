@@ -41,27 +41,22 @@ class CedulaUrlSeeder extends Seeder
 
         ##################################### Genera contenido de cédulas:
         if(cedulas_txt::count() == 0){
-            foreach(['JebOax'] as $jardin){
-                foreach(['huaje','huaje_xta', 'huaje_zai'] as $url){
-                    $parrafo1=fake()->paragraph();$parrafo3=fake()->paragraph();$parrafo2=fake()->paragraph();
-                    $events=[
-                        ['txt_cjarsiglas'=>$jardin, 'txt_urlurl'=>$url,'txt_tipo'=>'h1','txt_orden'=>'1', 'txt_txt'=>'El título primero', 'txt_txtoriginal'=>'El título primero', 'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
-                        ['txt_cjarsiglas'=>$jardin, 'txt_urlurl'=>$url,'txt_tipo'=>'p', 'txt_orden'=>'2', 'txt_txt'=>$parrafo1,           'txt_txtoriginal'=>$parrafo1,           'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
-                        ['txt_cjarsiglas'=>$jardin, 'txt_urlurl'=>$url,'txt_tipo'=>'h2','txt_orden'=>'3', 'txt_txt'=>'El título segundo', 'txt_txtoriginal'=>'El título primero', 'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
-                        ['txt_cjarsiglas'=>$jardin, 'txt_urlurl'=>$url,'txt_tipo'=>'p', 'txt_orden'=>'4', 'txt_txt'=>$parrafo2,           'txt_txtoriginal'=>$parrafo2,           'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
-                        ['txt_cjarsiglas'=>$jardin, 'txt_urlurl'=>$url,'txt_tipo'=>'h3','txt_orden'=>'5', 'txt_txt'=>'El título tercero', 'txt_txtoriginal'=>'El título primero', 'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
-                        ['txt_cjarsiglas'=>$jardin, 'txt_urlurl'=>$url,'txt_tipo'=>'p', 'txt_orden'=>'6', 'txt_txt'=>$parrafo3,           'txt_txtoriginal'=>$parrafo3,           'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
-                    ];
-                    foreach ($events as $event){
-                        cedulas_txt::create($event);
-                    }
+            $cedulas=cedulas_url::all();
+
+            foreach($cedulas as $url){
+                $parrafo1=fake()->paragraph();$parrafo3=fake()->paragraph();$parrafo2=fake()->paragraph();
+                $events=[
+                    ['txt_cjarsiglas'=>$url->url_cjarsiglas, 'txt_urlurl'=>$url->url_url, 'txt_urlid'=>$url->url_id, 'txt_tipo'=>'h1','txt_orden'=>'1', 'txt_txt'=>'El título primero', 'txt_txtoriginal'=>'El título primero', 'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
+                    ['txt_cjarsiglas'=>$url->url_cjarsiglas, 'txt_urlurl'=>$url->url_url, 'txt_urlid'=>$url->url_id, 'txt_tipo'=>'p', 'txt_orden'=>'2', 'txt_txt'=>$parrafo1,           'txt_txtoriginal'=>$parrafo1,           'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
+                    ['txt_cjarsiglas'=>$url->url_cjarsiglas, 'txt_urlurl'=>$url->url_url, 'txt_urlid'=>$url->url_id, 'txt_tipo'=>'h2','txt_orden'=>'3', 'txt_txt'=>'El título segundo', 'txt_txtoriginal'=>'El título primero', 'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
+                    ['txt_cjarsiglas'=>$url->url_cjarsiglas, 'txt_urlurl'=>$url->url_url, 'txt_urlid'=>$url->url_id, 'txt_tipo'=>'p', 'txt_orden'=>'4', 'txt_txt'=>$parrafo2,           'txt_txtoriginal'=>$parrafo2,           'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
+                    ['txt_cjarsiglas'=>$url->url_cjarsiglas, 'txt_urlurl'=>$url->url_url, 'txt_urlid'=>$url->url_id, 'txt_tipo'=>'h3','txt_orden'=>'5', 'txt_txt'=>'El título tercero', 'txt_txtoriginal'=>'El título primero', 'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
+                    ['txt_cjarsiglas'=>$url->url_cjarsiglas, 'txt_urlurl'=>$url->url_url, 'txt_urlid'=>$url->url_id, 'txt_tipo'=>'p', 'txt_orden'=>'6', 'txt_txt'=>$parrafo3,           'txt_txtoriginal'=>$parrafo3,           'txt_audio'=>'/aud/JebOax_inicio1.000.ogg'],
+                ];
+                foreach ($events as $event){
+                    cedulas_txt::create($event);
                 }
             }
-
-
-
-
-
         }
     }
 }

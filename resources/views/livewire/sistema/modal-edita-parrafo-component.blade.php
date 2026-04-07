@@ -1,5 +1,4 @@
 <div>
-
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- ---------------------------- INICIA MODAL EDICIÓN DE PÁGINA --------------------------- -->
@@ -21,11 +20,24 @@
                     <div class="row">
                         <!-- orden -->
                         <div class="col-6 col-md-3 form-group">
-                            <label for="modJar_orden" class="form-label">Orden</label>
+                            <label for="modJar_orden" class="form-label">Orden<red>*</red></label>
                             <input wire:model="modJar_orden" id="modJar_orden" class="@error('modJar_orden') is-invalid @enderror form-control" type="number">
                             <div class="form-text"></div>
                             @error('modJar_orden')<error>{{ $message }}</error> @enderror
                         </div>
+                        <!-- tipo -->
+                        <div class="col- col-md-3 form-group">
+                            <label for="modJar_tipo" class="form-label">Tipo de elemento<red>*</red></label>
+                            <select wire:model="modJar_tipo" id="modJar_tipo" class="@error('modJar_tipo') is-invalid @enderror form-select">
+                                <option value="">Indicar...</option>
+                                @foreach(['p','h1','h2','h3'] as $tipo)
+                                    <option value="{{ $tipo }}">{{ $tipo }}</option>
+                                @endforeach
+                            </select>
+                            <div class="form-text">h1, h2 y h3 ya traen su propio formato</div>
+                            @error('modJar_tipo')<error>{{ $message }}</error>@enderror
+                        </div>
+
                     </div>
 
                     <div class="row">
@@ -49,7 +61,7 @@
                             @endif
                         </div>
 
-                        <!-- Textarea de código nuevo -->
+                        <!-- Botones para incertar código nuevo -->
                         <div class="col-12 form-group" wire:ignore.self>
                             <!-- iconos para escritura-->
                             <div style="margin:7px;">
@@ -63,20 +75,21 @@
                                 <button onclick="insertarTexto('<sup>','</sup>')" class="lenguas" title="Superíndice">  a<sup>s</sup>   </button>
                                 <button onclick="insertarTexto('<s>','</s>')" class="lenguas" title="Tachado">  <s>S</s>    </button>
                                 &nbsp; | &nbsp;
-                                <button onclick="insertarTexto('<span style=&quot;text-align:left;&quot;>','</span>')" class="lenguas" title="Alinear a izquierda">  <i class="bi bi-text-left"></i>    </button>
-                                <button onclick="insertarTexto('<span style=&quot;text-align:center;&quot;>','</span>')" class="lenguas" title="Centrar">  <i class="bi bi-text-center"></i>    </button>
-                                <button onclick="insertarTexto('<span style=&quot;text-align:right;&quot;>','</span>')" class="lenguas" title="Alinear a derecha">  <i class="bi bi-text-right"></i>    </button>
+                                <button onclick="insertarTexto('<div style=&quot;text-align:left;&quot;>','</div>')" class="lenguas" title="Alinear a izquierda">  <i class="bi bi-text-left"></i>    </button>
+                                <button onclick="insertarTexto('<div style=&quot;text-align:center;&quot;>','</div>')" class="lenguas" title="Centrar">  <i class="bi bi-text-center"></i>    </button>
+                                <button onclick="insertarTexto('<div style=&quot;text-align:right;&quot;>','</div>')" class="lenguas" title="Alinear a derecha">  <i class="bi bi-text-right"></i>    </button>
                                 <button onclick="insertarTexto('<ul><li></li>','<li></li></ul>')" class="lenguas" title="Lista">  <i class="bi bi-list-task"></i>    </button>
                                 <button onclick="insertarTexto('<ol><li></li>','<li></li></ol>')" class="lenguas" title="Lista">  <i class="bi bi-list-ol"></i>    </button>
                                 <button onclick="insertarTexto('<h2>','</h2>')" class="lenguas" title="Titulo">  H2  </button>
                                 <button onclick="insertarTexto('<h3>','</h3>')" class="lenguas" title="Título">  H3  </button>
                                 <button onclick="insertarTexto('<h4>','</h4>')" class="lenguas" title="Título">  H4  </button>
                                 &nbsp; | &nbsp;<br>
+                                <button onclick="insertarTexto('<a href=&quot;&quot; target=&quot;new_&quot; class=&quot;nolink&quot;>','</a>')"  class="lenguas" title="Hipervínculo"> <i class="bi bi-link"></i>    </button>
                                 <button wire:click="AbreModalVerObjetos('img')" class="lenguas" title="Imágen"> <i class="bi bi-image"></i>   </button>
                                 <button wire:click="AbreModalVerObjetos('aud')" class="lenguas" title="Audio"> <i class="bi bi-file-earmark-music"></i>    </button>
                                 <button wire:click="AbreModalVerObjetos('vid')" class="lenguas" title="Video"> <i class="bi bi-film"></i>    </button>
-                                <button wire:click="AbreModalVerObjetos('vid')" class="lenguas" title="Youtube" disabled> <i class="bi bi-youtube"></i>    </button>
-                                <button wire:click="AbreModalVerObjetos('vid')" class="lenguas" title="Hipervínculo" disabled> <i class="bi bi-link"></i>    </button>
+                                <button wire:click="AbreModalVerObjetos('you')" class="lenguas" title="Youtube"> <i class="bi bi-youtube"></i>    </button>
+                                <button wire:click="AbreModalVerObjetos('htm')" class="lenguas" title="Código"> <i class="bi bi-code-slash"></i>    </button>
                                 &nbsp; | &nbsp;
                                 <button  wire:click="VerOnoVerCodigoHtml()" class="lenguas" title="ver código" style="@if($VerHtml=='1') background-color:#CD7B34; @endif width:100px;">
                                     <small>html</small>
@@ -89,7 +102,7 @@
                                 <div class="form-text"></div>
                                 @error('modJar_txt')<error>{{ $message }}</error>@enderror
                             @else
-                                <div class="m-1" style="min-height: 95px; border:1px solid gray;  border-radius:4px;">
+                                <div class="m-1 p-2" style="min-height: 95px; border:1px solid gray;  border-radius:4px;">
                                     {!! $modJar_txt !!}
                                 </div>
                             @endif
@@ -121,7 +134,7 @@
                             <div class="col-4 form-group">
                                 <br><br>
                                 @if($modJar_id != '0')
-                                    <i wire:click="EliminarParrafo()" wire:confirm="Estás por eliminar todo el texto del párrafo. ¿Seguro que quieres continuar?" class="bi bi-trash agregar"> Eliminar párrafo</i>
+                                    <i wire:click="EliminarParrafo()" wire:confirm="Estás por eliminar todo el texto del párrafo y su audio. ¿Seguro que quieres continuar?" class="bi bi-trash agregar"> Eliminar párrafo</i>
                                 @endif
                             </div>
                         </div>
@@ -137,7 +150,9 @@
                 </div>
             </div>
         </div>
+
     </div>
+    <livewire:sistema.modal-ver-objeto-component />
     <!-- ---------------------------- TERMINA MODAL EDICIÓN DE PÁGINA ------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
@@ -148,7 +163,8 @@
 
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
-    <!-- ------------------------------ INICIA MODAL VER OBJETOS  ------------------------------ -->
+    <!-- ------------------------------ INICIA MODAL VER OBJETO  ------------------------------ -->
+    {{--
     <div wire:ignore.self class="modal fade" id="ModalVerImagenParrafo" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -156,21 +172,16 @@
                     <h3 class="modal-title">
                         Objetos
                     </h3>
-                    <button wire:click="CierraModalVerImagenParrafo()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
+                    <button wire:click="CierraModalVerObjetos()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
                 </div>
                 <!-- ----------------------------  cuerpo del modal --------------------------->
-                <div class="modal-body" >
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-3">
                             <!-- Nueva imágen -->
-                            <button wire:click="AbreModalNuevoObjeto('0')" class="btn btn-secondary"> <bi class="bi bi-plus-square"></bi> Nueva   </button>
+                            <button wire:click="AbrirModalPaIncertarObjeto('0', 'cedula', 'web', '' ,'0')" class="btn btn-secondary"> <i class="bi bi-plus-square"></i> Nuevo objeto </button>
                         </div>
-                        {{-- <div class="col-3 form-group">
-                            <label for="modJar_VerModulo" class="form-label">De los módulos</label>
-                            <select wire:model="modJar_VerModulo" class="form-select">
-                                <option value=""> Todos</option>
-                            </select>
-                        </div> --}}
+                        {
                     </div>
                     <!-- muestra imágenes -->
                     <div class="row">
@@ -178,8 +189,8 @@
                             @foreach ($modJar_Objetos as $o)
                                 <!-- ---------------- Muestra Imágenes para insertar ------------------------- -->
                                 @if($o->img_tipo =='img')
-                                    <div  onclick="insertarTexto('<a href=&quot;{{ $o->img_file }}&quot; target=&quot;_new&quot;><img src=&quot;{{ $o->img_file }}&quot; style=&quot;max-width:200px; max-height:200px;&quot;>','')"
-                                        wire:click="CierraModalVerImagenParrafo()"
+                                    <div  onclick="insertarTexto('<a href=&quot;{{ $o->img_file }}&quot; target=&quot;_new&quot;><img src=&quot;{{ $o->img_file }}&quot; style=&quot;max-width:200px; max-height:200px;&quot;>','</a>')"
+                                        wire:click="CierraModalVerObjetos()"
                                         wire:key="img_{{ $o->img_id }}"
                                         style="max-height:100px; max-width: 100px; display:inline-block; margin:7px;"
                                         class="PaClick">
@@ -207,7 +218,7 @@
                                 <!-- ---------------- Muestra Audios para insertar ------------------------- -->
                                 @elseif($o->img_tipo =='aud')
                                     <div  onclick="insertarTexto('<audio class=&quot;web&quot; controls>  <source src=&quot;{{ $o->img_file }}&quot; type=&quot;audio/ogg&quot;>  <source src=&quot;{{ $o->img_file }}&quot; type=&quot;audio/mpeg&quot;> Tu navegador no soporta archivos de audio','</audio>')"
-                                        wire:click="CierraModalVerImagenParrafo()"
+                                        wire:click="CierraModalVerObjetos()"
                                         wire:key="img_{{ $o->img_id }}"
                                         style="max-height:100px; max-width: 100px; display:inline-block; margin:7px;"
                                         class="PaClick">
@@ -238,7 +249,7 @@
                                 <!-- ---------------- Muestra Videos para insertar ------------------------- -->
                                 @elseif($o->img_tipo =='vid')
                                     <div  onclick="insertarTexto('<video style=&quot; max-width:100%; max-height:200px;&quot; controls>  <source src=&quot;{{ $o->img_file }}&quot; type=&quot;video/mp4&quot;>  <source src=&quot;{{ $o->img_file }}&quot; type=&quot;video/ogg&quot;>  Tu navegador no soporta el video.','</video>')"
-                                        wire:click="CierraModalVerImagenParrafo()"
+                                        wire:click="CierraModalVerObjetos()"
                                         wire:key="img_{{ $o->img_id }}"
                                         style="max-height:100px; max-width: 100px; display:inline-block; margin:7px;"
                                         class="PaClick">
@@ -266,6 +277,41 @@
                                             </div>
                                         @endforeach
                                     </div>
+
+                                <!-- ---------------- Muestra liga Youtube para insertar ------------------------- -->
+                                @elseif($o->img_tipo =='you')
+                                    <div  onclick="insertarTexto('<div class=&quot;ratio ratio-16x9&quot; style=&quot;width:95%;&quot;> <iframe width=&quot;100%;&quot; src=&quot;https://www.youtube.com/embed/{{ $o->img_youtube }}&quot; title=&quot;{{ $o->img_titulo }}&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; referrerpolicy=&quot;strict-origin-when-cross-origin&quot; allowfullscreen>','</iframe> </div>')"
+                                        wire:click="CierraModalVerObjetos()"
+                                        wire:key="img_{{ $o->img_id }}"
+                                        style="display:inline-block;"
+                                        class="PaClick">
+
+                                        <!-- titulo-->
+                                        <div style="font-size:80%;">
+                                            <center>{{ $o->img_titulo }}</center>
+                                        </div>
+
+                                        <!-- OBJETO VIDEO -->
+                                        <div class="ratio ratio-16x9" style="width:200px;">
+                                            <iframe
+                                                width="100%;"
+                                                src="https://www.youtube.com/embed/{{ $o->img_youtube }}"
+                                                title="{{ $o->img_titulo }}"
+                                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                                            </iframe>
+                                        </div>
+
+                                        <!-- pie -->
+                                        <div style="font-size:60%">
+                                            {{ $o->img_pie }}
+                                        </div>
+                                        <!-- palabras clave-->
+                                        @foreach ($o->alias as $a)
+                                            <div style="font-size:60%" class="elemento">
+                                                {{ $a->aimg_txt }}
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 @endif
                             @endforeach
 
@@ -274,7 +320,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button  wire:click="CierraModalVerImagenParrafo()" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <button  wire:click="CierraModalVerObjetos()" class="btn btn-secondary" data-bs-dismiss="modal">
                         Cerrar
                     </button>
 
@@ -286,14 +332,16 @@
                 </div>
             </div>
         </div>
+
     </div>
+    --}}
     <!-- ------------------------------ TERMINA MODAL VER OBJETOS ------------------------------ -->
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
 
+{{-- <livewire:sistema.modal-inserta-objeto-component /> --}}
 
 
-    <livewire:Web.ModalImagenController  />
 
     <script>
         /* ### Script para botones de editor de texto */
@@ -339,17 +387,17 @@
             }
         });
 
-        /* ### Script para abrir y cerrar modal */
-        Livewire.on('AbreModalDeVerImagenParrafo', () => {
-            $('#ModalVerImagenParrafo').modal('show');
-        });
+        // /* ### Script para abrir y cerrar modal */
+        // Livewire.on('AbreModalDeVerObjetos', () => {
+        //     $('#ModalVerImagenParrafo').modal('show');
+        // });
 
-        Livewire.on('CierraModalDeVerImagenParrrafo', () => {
-            $('#ModalVerImagenParrafo').modal('hide');
-            if(event.detail.reload == '1'){
-                window.location.reload();
-            }
-        });
+        // Livewire.on('CierraModalDeVerObjetos', () => {
+        //     $('#ModalVerImagenParrafo').modal('hide');
+        //     if(event.detail.reload == '1'){
+        //         window.location.reload();
+        //     }
+        // });
 
     </script>
 </div>

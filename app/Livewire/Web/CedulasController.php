@@ -110,7 +110,6 @@ class CedulasController extends Component
     public function render(){
         ##### Revisa permisos del usuario (rol)
         $this->edit='0';
-        // dd(Auth::user()->id, $this->url->autores->pluck('caut_usrid')->toArray(),   $this->url->traductores->pluck('caut_usrid')->toArray() );
         if(session('rol')){
             if(array_intersect(['editor','admin'], session('rol')) AND
                 $this->url->url_edit=='1'){
@@ -135,6 +134,7 @@ class CedulasController extends Component
                 $this->edit='0';
             }
         }
+
 
         ##### Revisa si la página es pública:
         if($this->url->url_edo <= '4'){
@@ -201,45 +201,22 @@ class CedulasController extends Component
 
     ############################################################
     ############################## Abre modal de editor de texto
-    public function AbreModalEditaTextoWebJardin($id, $orden){
+    public function AbreModalEditaParrafo($id, $orden, $modulo, $jardin, $url,$reload){
         #####<livewire:sistema.jardin-web-modal-component />
         if($this->edit=='1'){
-            ###### Si es nuevo, calcula el orden
-            if($id=='0'){
-                // $orden=jardin_txt::where('jar_urljid',$this->url->urlj_id)
-                //     ->where('jar_act','1')->where('jar_del','0')
-                //     ->max('jar_orden') + 1;
-            }
             ##### Abre modal
             $data=[
                 'id'=>$id,
-                'orden'=>$orden, '',
-
-                'urljid'=>$this->url->urlj_id,
-                'urljurl'=>$this->url->urlj_url,
-                'urljurltxt'=>$this->url->urlj_urltxt,
-                'cjarsiglas'=>$this->url->urlj_cjarsiglas,
-
+                'orden'=>$orden,
+                'modulo'=>'cedula',
+                'jardin'=>$this->url->url_cjarsiglas,
+                'url'=>$this->url->url_url,
+                'reload'=>$reload,
             ];
             $this->dispatch('AbreModalDeParrafoWebJardin',$data);
         }
     }
 
-    ############################################################
-    ############################## Modal Objeto en ćedula
-    // public function AbreModalObjetoEnCedula($id,$tipo){
-    //     #####<livewire:web.modal-imagen-controller />
-    //     $data=[
-    //         'ImgId'=>$id,
-    //         'SiglasJardin'=>$this->url->url_cjarsiglas,
-    //         'ModuloCatImg'=>'cedula',
-    //         'TipoCatImg'=>$tipo,  #'Obligatorio: cimg_tipo de tabla cat_imgs'
-    //         'Url'=>$this->url->url_url,
-    //         'Lengua'=>$this->url->url_lencode,      #'len_code de tabla lenguas o vacío',
-    //         'Reload'=> '1',     #'0 o 1. Al cerrar, se recarga (1) o no (0) la pag'
-    //     ];
-    //     $this->dispatch('abreModalDeImagen', $data);
-    // }
 
     ############################################################
     ############################## Modal Traduce Titulo
@@ -310,7 +287,7 @@ class CedulasController extends Component
             'imgId'=>$imgId,           ### img_id o 0 para nuevo
             'cimgmodulo'=>$cimgmodulo,     ### cimg_modulo de cat_img (cedula,jardin,autor) o null
             'cimgtipo'=>$cimgtipo,          ###cimg_tipo de cat_img (web, portada, ppal,lat, etc...)  o null
-            'imgkey'=>$imgkey,      #### key: Jardin@urltxt (sin traduccción)  o null
+            'imgkey'=>$imgkey,  #### key: Jardin@urltxt (sin traduccción)  o null
             'reload'=>$reload,          ##### indica si hace reload(1) o no(0) al guardar
         ];
         $this->dispatch('AbreModalIncertaObjeto',$datos);
