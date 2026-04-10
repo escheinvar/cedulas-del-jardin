@@ -31,9 +31,14 @@
                 @endif
             </select>
         </div>
-        <div class="col-6 col-md-2">
+        <div class="col-6 col-md-3">
             <br>
-            @if($abiertos > '0')<error> @endif Hay {{ $abiertos }} @if($abiertos =='1' ) página @else páginas  @endif <br>en edición</error>
+            @if($abiertos > '0')<error> @endif
+                Hay {{ $abiertos }} @if($abiertos =='1' ) página @else páginas  @endif del jardin<br>
+                y
+                {{ $abiertosAutor }} @if($abiertosAutor =='1' ) página @else páginas  @endif de autor
+                en edición
+            @if($abiertos > '0')</error> @endif
         </div>
     </div>
 
@@ -121,8 +126,8 @@
                         <td>
                             @if($edit=='1')
                                 <div class="form-check form-switch">
-                                    <input  wire:change="CambiaEstadoEdicion('{{ $u->urlj_id }}')" class="form-check-input" value="1" type="checkbox" role="switch" id="flexSwitchCheckDefault" @if($u->urlj_edit=='1') checked @endif style="@if($u->urlj_edit=='1')background-color:red; @endif">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">@if($u->urlj_edit=='0')Off @else Editando @endif</label>
+                                    <input  wire:change="CambiaEstadoEdicion('{{ $u->urlj_id }}')" class="form-check-input" value="1" type="checkbox" role="switch" id="flexSwitchCheckDefault{{ $u->urlj_id }}" @if($u->urlj_edit=='1') checked @endif style="@if($u->urlj_edit=='1')background-color:red; @endif">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault{{ $u->urlj_id }}">@if($u->urlj_edit=='0')Off @else Editando @endif</label>
                                 </div>
                             @endif
                         </td>
@@ -151,13 +156,33 @@
     </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- ------------------------------------------------------------------------------------ -->
     <!-- ------------------------ CAMPOS DE BÚSQUEDA DE AUTORES ----------------------------- -->
     <!-- ------------------------------------------------------------------------------------ -->
     <div class="row my-4">
         <h3>Autores</h3>
 
-        <!-- buscar por rol -->
+        {{-- <!-- buscar por rol -->
         <div class="col-12 col-md-3 form-group">
             <label class="form-label">Con el rol</label>
             <select wire:model.live="rolSel" class="form-select">
@@ -166,52 +191,156 @@
                 <option value="Traductor">Traductor</option>
                 <option value="AutorTraductor">Autor/Traductor</option>
             </select>
-        </div>
+        </div> --}}
 
         <!-- buscar por nombre o correo -->
-        <div class="col-12 col-md-3 form-group">
+        {{-- <div class="col-12 col-md-3 form-group">
             <label class="form-label">Con nombre o correo</label>
             <input wire:model.live="nombreSel" class="form-control">
-        </div>
+        </div> --}}
     </div>
 
     <!-- ---------------------------------------------  --------------------------------------- -->
-    <!-- ----------------------------- TABLA DE USUARIOS ------------------------------------ -->
+    <!-- ----------------------------- TABLA DE AUTORES ------------------------------------ -->
     <!-- ------------------------------------------------------------------------------------ -->
     <div class="table-responsive-sm">
         <table class="table table-striped table-sm">
             <thead>
                 <tr>
                     <th wire:click="ordenaTabla('id')" class="PaClick">Id</th>
-                    <th wire:click="ordenaTabla('email')" class="PaClick">email</th>
-                    <th wire:click="ordenaTabla('usrname')" class="PaClick">usr</th>
-                    <th wire:click="ordenaTabla('nombre')" class="PaClick">Nombre</th>
-                    <th >Rol (jardin)</th>
-                    <th></th>
+                    <th wire:click="ordenaTabla('id')" class="PaClick">Jardin</th>
+                    <th wire:click="ordenaTabla('email')" class="PaClick">Nombre</th>
+                    <th wire:click="ordenaTabla('usrname')" class="PaClick">Apellidos</th>
+                    <th wire:click="ordenaTabla('usrname')" class="PaClick">Lengua</th>
+                    <th wire:click="ordenaTabla('nombre')" class="PaClick">Institución</th>
+                    <th wire:click="ordenaTabla('nombre')" class="PaClick">Comunidad</th>
+                    <th >Edición</th>
+                    <th wire:click="ordenaTabla('usrname')" class="PaClick">Dirección</th>
                 </tr>
             </thead>
             <tbody>
-                {{-- @foreach ($usuarios as $usr)
-                    <tr class="PaClick @if($usr->act=='0') inact @endif" wire:click="AbreModal('{{ $usr->id }}')">
-                        <td> {{ $usr->id }} </td>
-                        <td> {{ $usr->email }}  </td>
-                        <td> {{ $usr->usrname }}  </td>
-                        <td> {{ $usr->nombre }} {{ $usr->apellido }}  </td>
+                @foreach ($autores as $a)
+                    <tr class="@if($a->caut_act=='0') inact @endif">
+                        <!-- id autores -->
                         <td>
-                            @foreach ($usr->roles as $rol)
-                                <b>{{ $rol->rol_crolrol }}</b> ({{ $rol->rol_cjarsiglas }}), &nbsp;
-                            @endforeach
+                            {{ $a->aurl_id }}
                         </td>
+
+                        <!-- jardin -->
                         <td>
-                            <i class="bi bi-pencil-square PaClick"  ></i>
-                            @if($usr->act=='0') X @endif
+                            {{ $a->aurl_cjarsiglas }}
+                        </td>
+                        <!-- nombre autores  -->
+                        <td>
+                            {{ $a->autor->caut_nombre }}
+                        </td>
+
+                        <!-- Apellidos autores  -->
+                        <td>
+                            {{ $a->autor->caut_apellido1 }}
+                            {{ $a->autor->caut_apellido2 }}
+                        </td>
+
+                        <!-- Lengua autores  -->
+                        <td>
+                            {{ $a->aurl_lencode }}
+                            @if($a->aurl_tradid=='0')
+                                <div class="form-text">original</div>
+                            @else
+                                <div class="form-text">traducción</div>
+                            @endif
+
+
+                        <!-- institución autores  -->
+                        <td>
+                            {{ $a->autor->caut_institu }}
+                        </td>
+
+                        <!-- comunidad autores  -->
+                        <td>
+                            {{ $a->autor->caut_comunidad }}
+                        </td>
+
+                        <!-- switch de edición autores -->
+                        <td>
+                            <div class="form-check form-switch">
+                                <input  wire:change="CambiaEdoEdicionAutor('{{ $a->aurl_id }}')" class="form-check-input" value="1" type="checkbox" role="switch" id="flexSwitchCheckDefault{{ $a->aurl_id }}" @if($a->aurl_edit=='1') checked @endif style="@if($a->aurl_edit=='1')background-color:red; @endif">
+                                <label class="form-check-label" for="flexSwitchCheckDefault{{ $a->aurl_id }}">@if($a->aurl_edit=='0')Off @else Editando @endif</label>
+                            </div>
+                        </td>
+                        <!-- url autores  -->
+                        <td>
+                            <a href="{{ url('/autor') }}/{{ $a->aurl_cjarsiglas }}/{{ $a->aurl_url }}" id="sale_autor{{ $a->aurl_id }}" target="new" class="nolink">
+                                {{ url('/autor') }}/{{ $a->aurl_cjarsiglas }}/{{ $a->aurl_url }}
+                            </a>
+                            <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('autor','{{ $a->aurl_id }}')"></i>
                         </td>
                     </tr>
-                @endforeach --}}
+                @endforeach
             </tbody>
         </table>
+        <div>
+            <button wire:click="VerNoVerNuevoAutor()" class="btn btn-secondary">@if($verNvoAutor=='1')Ocultar nueva @else Nueva @endif página autor</button>
+        </div>
 
-        <!-- menú de paginación -->
+
+        <!--- ------------------------------ Nuevo autor -------------------------- -->
+        @if($verNvoAutor=='1')
+            <div class="row my-5">
+                <div class="col-12 col-md-2 my-1 form-group">
+                    <div class="form-check">
+                        <input wire:model="NvoAutorTipo" wire:change="SeleccionaNuevoAutor()" value="autor" class="form-check-input" type="radio" name="radioDefault" id="radioDefault1">
+                        <label class="form-check-label" for="radioDefault1">
+                            Nuevo autor
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input wire:model="NvoAutorTipo" wire:change="SeleccionaNuevoAutor()" value="traduccion" class="form-check-input" type="radio" name="radioDefault" id="radioDefault2" checked>
+                        <label class="form-check-label" for="radioDefault2">
+                            Nueva traducción
+                        </label>
+                    </div>
+                    @error('NvoAutorTipo')<error>{{ $message }}</error>@enderror
+                </div>
+
+                <!-- Autor -->
+                <div class="col-12 col-md-3 my-1 form-group">
+                    <label for="NvoAutor" class="form-label">Indica al autor<red>*</red></label>
+                    <select wire:model="NvoAutor" id="NvoAutor" class="@error('NvoAutor') is-invalid @enderror form-select">
+                        <option value="">Indicar autor...</option>
+                        @foreach($NvosAutores as $a)
+                            <option value="{{ $a->caut_id }}">{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</option>
+                        @endforeach
+                    </select>
+                    <div class="form-text"></div>
+                    @error('NvoAutor')<error>{{ $message }}</error>@enderror
+                </div>
+
+                <!-- Lengua -->
+                <div class="col-12 col-md-3 my-1 form-group">
+                    <label for="NvaLengua" class="form-label">Indica la lengua<red>*</red></label>
+                    <select wire:model="NvaLengua" id="NvaLengua" class="@error('NvaLengua') is-invalid @enderror form-select">
+                        <option value="">Indicar lengua...</option>
+                        @foreach($NvasLenguas as $l)
+                            <option value="{{ $l->len_code }}">{{ $l->len_autonimias }} ({{ $l->len_lengua }}) {{ $l->len_code }}</option>
+                        @endforeach
+                    </select>
+                    <div class="form-text"></div>
+                    @error('NvaLengua')<error>{{ $message }}</error>@enderror
+                </div>
+
+                <!-- botones cancelar y crear -->
+                <div class="col-12 col-md-3 my-1 form-group">
+                    <br><br>
+
+                    <button wire:click="VerNoVerNuevoAutor()" class="btn btn-secondary">Cancelar</button>
+                    <button wire:click="CrearNuevaPaginaDeAutor()"class="btn btn-primary">Crear</button>
+                </div>
+
+            </div>
+        @endif
+
+        <!-- menú de paginación autores  -->
         {{-- @if($usuarios->hasPages())
          <div class="">
             <div class="paginador">
@@ -383,6 +512,9 @@
     <!-- ----------------------------- TERMINA MODAL ROLES DE USUARIO ------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
     <!-- -------------------------------------------------------------------------------------- -->
+
+
+
 
     <script>
         /* ### Script para abrir y cerrar modal */

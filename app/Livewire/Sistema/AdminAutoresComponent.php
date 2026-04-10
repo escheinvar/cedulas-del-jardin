@@ -92,20 +92,13 @@ class AdminAutoresComponent extends Component
                 ->get();
         }
 
-        ##### Obtiene cantidad de urls en edición:
-        $this->abiertos=cat_autores::whereIn('caut_cjarsiglas',$JardsUsr->pluck('cjar_siglas')->toArray())
-            ->where('caut_web','1')
-            ->where('caut_edit','1')
-            ->where('caut_act','1')->where('caut_del','0')
-            ->count();
-
-
-
         ######################## Obtiene lista de autores
         $autores=cat_autores::query();
         $autores=$autores->where('caut_del','0')
-            ->where('caut_cjarsiglas','ilike',$this->jardinSel);
-        $autores=$autores->orderBy($this->orden,$this->sent)->get();
+            ->orderBy($this->orden,$this->sent)
+            ->with('urlautor')
+            ->with('cedulas')
+            ->get();
 
         return view('livewire.sistema.admin-autores-component',[
             'autores'=>$autores,

@@ -13,3 +13,18 @@
 En modal del módulo de Administración de sitios web del jardín, tiene un botón para "eliminar página completa" que al picar, debe de:
 eliminar la página y todos sus textos y archivos.
 ---------------------------------------------------
+Middle o función en cada página que solicita jardin a ver, para que
+se guarde en sesión el jardín en el que se trabaja y que el mount del jardín
+inicie con el predilecto. (para evitar que al reiniciar, se cambie de jardín.)
+---------------------------------------------------
+Modulo de listas (planteado por Niza)
+---------------------------------------------------
+Botón en párrafo (igual que audio en párrafo) para visualizar versión original
+del párrafo (en caso de traducciones)
+---------------------------------------------------
+
+---------------------------------------------------
+
+---------------------------------------------------
+
+---------------------------------------------------

@@ -310,12 +310,13 @@ class ModalInsertaObjetoComponent extends Component
         $variable='Imgmod_nvoobj';
 
         ##### Limpia
-        $this->resetErrorBag();
         $this->resetValidation();
+        $this->resetErrorBag();
+        // $this->errorMessages = [];
         $this->ValidadorDeTag='0';
-        $html = trim($this->$variable);
 
-        if($html == '') {
+        $html = trim($this->$variable);
+        if($html === '') {
             $this->ValidadorDeTag='1';
             $this->addError($variable, 'El campo HTML no puede estar vacío.');
             return;
@@ -323,35 +324,62 @@ class ModalInsertaObjetoComponent extends Component
 
         // 1️⃣ Análisis con DOMDocument + libxml
         libxml_use_internal_errors(true);
+        libxml_clear_errors();
         $dom = new \DOMDocument();
 
-        // Convertimos a HTML-ENTITIES para evitar problemas con UTF-8 en DOMDocument
-        $encodedHtml = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+        // Prependimos DOCTYPE para mejorar el comportamiento del parser
+        $htmlToParse = '<!DOCTYPE html>' . $html;
+        $encodedHtml = mb_convert_encoding($htmlToParse, 'HTML-ENTITIES', 'UTF-8');
 
-        // Cargamos sin auto-agregar <html>/<body> y en modo compacto
+        // Cargamos con el DOCTYPE incluido
         @$dom->loadHTML($encodedHtml, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_COMPACT);
 
         $xmlErrors = libxml_get_errors();
         libxml_clear_errors();
 
         $severeErrors = [];
+        $ignorePatterns = [
+            '/^Tag\s+\S+\s+invalid$/i',           // "Tag audio invalid"
+            '/^htmlParseStartTag:\s+invalid\s+name/i', // "htmlParseStartTag: invalid name in audio"
+            '/^Unknown\s+tag/i',                   // "Unknown tag"
+            '/^htmlParseEntityRef:\s+no\s+name/i'  // Entidades HTML5 que libxml no conoce
+        ];
         foreach ($xmlErrors as $error) {
-            // Nivel 3 = Error, Nivel 4 = Fatal
             if ($error->level >= LIBXML_ERR_ERROR) {
-                $severeErrors[] = sprintf(
-                    'Línea %d, Col %d: %s',
-                    $error->line,
-                    $error->column,
-                    trim($error->message)
-                );
+                $msg = trim($error->message);
+                $isIgnored = false;
+
+                foreach ($ignorePatterns as $pattern) {
+                    if (preg_match($pattern, $msg)) {
+                        $isIgnored = true;
+                        break;
+                    }
+                }
+
+                if (!$isIgnored) {
+                    $severeErrors[] = sprintf(
+                        'Línea %d, Col %d: %s',
+                        $error->line,
+                        $error->column,
+                        $msg
+                    );
+                }
             }
         }
 
         if (!empty($severeErrors)) {
             $this->ValidadorDeTag='1';
-            $this->addError($variable, 'Errores de sintaxis detectados:<br>' . implode('<br>', $severeErrors));
+            $this->addError($variable, 'Errores de sintaxis detectados:' . implode(' || ', $severeErrors));
             return;
         }
+
+        // 2️⃣ Verificación adicional de etiquetas sin cerrar (HTML5 compatible)
+        #$this->checkForUnclosedTags($html);
+
+        // if (!$this->hasErrors()) {
+        //     // $this->isValid = true;
+        //     $this->dispatch('html-validated');
+        // }
 
         ################### inicia tags no cerrados
         // Etiquetas void (no requieren cierre) según HTML5
@@ -360,13 +388,20 @@ class ModalInsertaObjetoComponent extends Component
         // Extrae todas las etiquetas (apertura, cierre o self-closing)
         preg_match_all('/<(\/?)([a-zA-Z0-9]+)(?:\s[^>]*)?\/?>/', $html, $matches, PREG_SET_ORDER);
 
+         // 🧹 Limpiamos comentarios y bloques de código para evitar falsos positivos
+        $cleanHtml = preg_replace('/<!--.*?-->/s', '', $html);
+        $cleanHtml = preg_replace('/<script[^>]*>.*?<\/script[^>]*>/si', '', $cleanHtml);
+        $cleanHtml = preg_replace('/<style[^>]*>.*?<\/style[^>]*>/si', '', $cleanHtml);
+
         $stack = [];
         foreach ($matches as $match) {
             $isClosing  = $match[1] === '/';
             $tagName    = strtolower($match[2]);
 
             // Ignoramos etiquetas que no necesitan cierre
-            if (in_array($tagName, $voidTags)) continue;
+            if (in_array($tagName, $voidTags)) {
+                continue;
+            }
 
             if ($isClosing) {
                 if (empty($stack) || end($stack) !== $tagName) {
@@ -375,9 +410,10 @@ class ModalInsertaObjetoComponent extends Component
                     return;
                 }
                 array_pop($stack);
-            } else {
-                $stack[] = $tagName;
+                continue;
             }
+            $stack[] = $tagName;
+
         }
 
         if (!empty($stack)) {

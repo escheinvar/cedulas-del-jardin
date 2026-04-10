@@ -3,7 +3,8 @@
 namespace App\Livewire\Sistema;
 
 use App\Models\cat_autores;
-use App\Models\Imagenes;
+use App\Models\autor_url;
+use App\Models\autor_txt;
 use App\Models\cedulas_txt;
 use App\Models\cedulas_url;
 use App\Models\jardin_txt;
@@ -66,9 +67,13 @@ class ModalEditaParrafoComponent extends Component
                     ->where('txt_act','1')
                     ->where('txt_del','0')
                     ->max('txt_orden');
-                $this->modJar_orden=$ord+1;
 
             }elseif($this->modJar_modulo=='autor'){
+                $ord=autor_txt::where('autxt_cjarsiglas',$this->modJar_cjarsiglas)
+                    ->where('autxt_aurlurltxt', $this->modJar_url)
+                    ->where('autxt_act','1')
+                    ->where('autxt_del','0')
+                    ->max('autxt_orden');
 
             }else{
             // }elseif(in_array($this->modJar_modulo,['inicio','autores','cedulas']) ){
@@ -77,19 +82,14 @@ class ModalEditaParrafoComponent extends Component
                     ->where('jar_act','1')
                     ->where('jar_del','0')
                     ->max('jar_orden');
-                $this->modJar_orden=$ord+1;
-
-
-                // $this->modJar_orden=$ord+1;
-
             }
+            $this->modJar_orden=round($ord+1,0);
 
         ############# Carga variables cuando id > 0
         }else{
             #######################################################
             ################ Carga variables de cedula (cedulas_txt)
             if($this->modJar_modulo=='cedula'){
-
                 $dato=cedulas_txt::where('txt_id',$this->modJar_id)
                     ->with('url')
                     ->first();
@@ -103,6 +103,16 @@ class ModalEditaParrafoComponent extends Component
             #######################################################
             ############################ Carga variables de autor
             }elseif($this->modJar_modulo=='autor'){
+                $dato=autor_txt::where('autxt_id',$this->modJar_id)
+                    ->with('url')
+                    ->with('cedulas')
+                    ->with('jardin')
+                    ->first();
+                $this->modJar_tipo=$dato->autxt_tipo;
+                $this->modJar_orden=$dato->autxt_orden;
+                $this->modJar_txt=$dato->autxt_txt;
+                $this->modJar_Audio=$dato->autxt_audio;
+                $copiaUorig= $dato->url->url_tradid;
 
 
             #######################################################
@@ -115,6 +125,8 @@ class ModalEditaParrafoComponent extends Component
                     ->first();
                 $this->modJar_txt=$dato->jar_txt;
                 $this->modJar_Audio=$dato->jar_audio;
+                $this->modJar_tipo=$dato->jar_tipo;
+                $this->modJar_orden=$dato->jar_orden;
                 $copiaUorig= $dato->url->urlj_tradid;
             }
 
@@ -172,12 +184,12 @@ class ModalEditaParrafoComponent extends Component
                 'txt_tipo'=>$this->modJar_tipo,
                 'txt_orden'=>$this->modJar_orden,
                 'txt_txt'=>$this->modJar_txt,
-
             ];
 
             ##### Guarda BD
             if($this->modJar_id == '0'){
                 // $dato['txt_id']=$this->modJar_id;
+                $dato['txt_txtoriginal']=$this->modJar_txt;
                 $bla=cedulas_txt::create($dato);
                 $id=$bla->txt_id;
             }else{
@@ -203,6 +215,42 @@ class ModalEditaParrafoComponent extends Component
         ############### Guarda en caso de autor (autor_txt)
         }elseif($this->modJar_modulo=='autor'){
 
+            ##### Genera arreglo de datos
+            $dato=[
+                // 'url_id'=>$this->modJar_id,
+                'autxt_cjarsiglas'=>$this->modJar_cjarsiglas,
+                'autxt_aurlid'=>autor_url::where('aurl_cjarsiglas',$this->modJar_cjarsiglas)->where('aurl_url',$this->modJar_url)->first()->value('aurl_id'),
+                'autxt_aurlurltxt'=>$this->modJar_url,
+                'autxt_tipo'=>$this->modJar_tipo,
+                'autxt_orden'=>$this->modJar_orden,
+                'autxt_txt'=>$this->modJar_txt,
+            ];
+
+            ##### Guarda BD
+            if($this->modJar_id == '0'){
+                // $dato['txt_id']=$this->modJar_id;
+                $dato['autxt_txtoriginal']=$this->modJar_txt;
+                $bla=autor_txt::create($dato);
+                $id=$bla->autxt_id;
+            }else{
+                autor_txt::where('autxt_id', $this->modJar_id)->update($dato);
+                $id=$this->modJar_id;
+            }
+            ##### Guarda archivo de audio
+            if($this->modJar_NvoAudio != ''){
+                ##### Construye nombre
+                $nombre=$this->modJar_cjarsiglas . "_" . $this->modJar_url . str_pad($this->modJar_orden,3,"0",STR_PAD_LEFT) . "." . $this->modJar_NvoAudio->getClientOriginalExtension();
+                $ruta="/aud/";
+                ##### Guarda archivo
+                $this->modJar_NvoAudio->storeAs(path:'/public/'.$ruta, name:$nombre);
+                ##### Guarda en BD
+                autor_txt::where('autxt_id',$id)->update([
+                    'autxt_audio'=>$ruta.$nombre
+                ]);
+                ##### hace log
+                paLog('Se agrega nuevo audio','cedula_txt',$id);
+            }
+
         ######################################################
         ############### Guarda en caso de inicio, autores,
         ############### cedulas u otros (cedulas_txt)
@@ -218,12 +266,13 @@ class ModalEditaParrafoComponent extends Component
                 'jar_urljurl'=>$this->modJar_url,
                 'jar_cjarsiglas'=>$this->modJar_cjarsiglas,
                 'jar_orden'=>$this->modJar_orden,
+                'jar_tipo'=>$this->modJar_tipo,
                 'jar_txt'=>$this->modJar_txt,
-                'jar_txtoriginal'=>$this->modJar_txt,
             ];
 
             ##### Guarda BD
             if($this->modJar_id == '0'){
+                $dato['jar_txtoriginal']=$this->modJar_txt;
                 $bla=jardin_txt::create($dato);
                 $id=$bla->jar_id;
             }else{
@@ -297,6 +346,13 @@ class ModalEditaParrafoComponent extends Component
         ########################################
         ############### Borra en caso de autor
         }elseif($this->modJar_modulo=='autor'){
+            autor_txt::where('autxt_id',$this->modJar_id)->update([
+                'autxt_audio'=>null,
+            ]);
+            $this->modJar_NvoAudio='';
+            $this->modJar_Audio='';
+            ##### log
+            paLog('Se eliminó el audio','autor_txt',$this->modJar_id);
 
         ########################################
         ############### Borra en caso de jardín
@@ -323,6 +379,9 @@ class ModalEditaParrafoComponent extends Component
         ########################################
         ############### Guarda en caso de autor
         }elseif($this->modJar_modulo=='autor'){
+            autor_txt::where('autxt_id',$this->modJar_id)->update([
+                'autxt_del'=>'1',
+            ]);
 
         ########################################
         ############### Guarda en caso de jardin

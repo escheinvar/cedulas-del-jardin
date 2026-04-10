@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class cat_autores extends Model
 {
@@ -19,7 +20,7 @@ class cat_autores extends Model
         'caut_act',
         'caut_del',
         'caut_edit',
-        'caut_cjarsiglas',
+        // 'caut_cjarsiglas',
         'caut_nombre',
         'caut_apellido1',
         'caut_apellido2',
@@ -27,15 +28,27 @@ class cat_autores extends Model
         'caut_url',
         'caut_correo',
         'caut_institu',
+        'caut_comunidad',
+        'caut_tel',
         'caut_usrid',
-        'caut_lenguas',
-        'caut_web',
+        // 'caut_lenguas',
+        // 'caut_web',
         'caut_mailpublic',
         'caut_orcid',
-        'caut_img',
+        'caut_scopus',
+        'caut_researchid',
+        'caut_isni',
+        'caut_otrosid',
+        // 'caut_img',
     ];
 
-    public function jardin():BelongsTo{
-        return $this->belongsTo(CatJardinesModel::class,'caut_cjarsiglas','cjar_siglas');
+    public function cedulas():HasMany{
+        return $this->hasMany(ced_autores::class, 'aut_cautid','caut_id')
+            ->join('cedula_url','url_id','=','aut_urlid');
     }
+
+    public function urlautor():HasMany{
+        return $this->hasMany(autor_url::class, 'aurl_cautid','caut_id');
+    }
+
 }

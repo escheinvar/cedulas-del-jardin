@@ -6,7 +6,7 @@
 @section('MenuPrivado') x @endsection
 
 <div>
-    <h2>Administración de Autores</h2>
+    <h2>Catálogo de Autores</h2>
 
     <div style="font-size: 80%;color:grey;">
         Este catálogo es administrado por el rol
@@ -16,7 +16,7 @@
 
     <!-------------------------- BUSCADOR DE JARDINES ----------------------------------------------------------->
     <!-- buscar por jardín -->
-    <div class="row my-3">
+    {{-- <div class="row my-3">
         <div class="col-6 col-md-3 form-group">
             <label class="form-label">Jardin<red>*</red></label>
             <select wire:model.live="jardinSel" class="form-select">
@@ -33,7 +33,7 @@
             <br>
             @if($abiertos > '0')<error> @endif Hay {{ $abiertos }} @if($abiertos =='1' ) página @else páginas  @endif <br>en edición</error>
         </div>
-    </div>
+    </div> --}}
 
     <!--------------------------------------------------------------------------------------------->
     <!--------------------------------- Botón de nuevo autor ----------------------------------------->
@@ -56,86 +56,98 @@
                 <thead>
                     <tr style="vertical-align: middle;">
                         <th>Id</th>
-                        <th>Url / Nombre</th>
-                        <th>Nombre de autor<br>Orcid</th>
-                        <th>Institucion/Comunidad<br>Correo</th>
 
-                        <th>Web</th>
-                        <th>Edit</th>
-                        <th>Autorias</th>
-                        <th>Traducciones</th>
-                        <th></th>
+                        <th>Nombre</th>
+                        <th>Nombre de autor</th>
+                        <th>Institucion</th>
+                        <th>Comunidad</th>
+                        <th>Correo</th>
+                        <th>Autoria(s)</th>
+                        <th>Editor</th>
+                        <th>Semblanza(s)</th>
+                        <th>Identificador(es)</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($autores as $a)
                         <tr>
-                            <!-- ID -->
-                            <td> {{ $a->caut_id }} </td>
+                            <!-- ID, ícono de edición y usuario asignado -->
+                            <td style="width:65px;">
+                                <sub>{{ $a->caut_id }}</sub>
+                                <i wire:click="AbreModalAutores({{ $a->caut_id }})"  class="bi bi-pencil-square PaClick" wire:click="AbreModalAutores({{ $a->caut_id }})">
+                                    @if($a->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
+                                </i>
+                            </td>
 
                             <!-- Nombre, Apellidos -->
                             <td>
-                                <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('Autor','{{ $a->caut_id }}')"></i> &nbsp;
-                                <a href="/autor/{{ $a->caut_cjarsiglas }}/{{ $a->caut_url }}" target="autor" class="nolink">
-                                    {{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}
-                                </a>
-                                <span id="sale_Autor{{ $a->caut_id }}" style="display:none">{{ url('/') }}/autor/{{ $a->caut_cjarsiglas }}/{{ $a->caut_url }}</span>
+                                {{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}
                             </td>
 
                             <!-- url -->
                             <td>
                                 {{ $a->caut_nombreautor }}
-                                @if($a->caut_orcid != '') <br> <a href="https://orcid.org/{{ $a->caut_orcid }}" target="new" style="font-size: 80%;" class="nolink">{{ $a->caut_orcid }}</a> @endif
                             </td>
 
-                            <!-- Institución /comunidad Correo-->
+                            <!-- Institución-->
                             <td>
-                                {{ $a->caut_institu }} {{ $a->caut_comunidad }}<br>
+                                {{ $a->caut_institu }}
+                            </td>
+
+                            <!-- Comunidad -->
+                            <td>
+                                {{ $a->caut_comunidad }}
+                            </td>
+
+                            <!-- Correo -->
+                            <td>
                                 {{ $a->caut_correo }}
                             </td>
 
 
-
-                            <!-- Si o no hacer Web -->
-                            <td>
-                                @if($edit=='1')
-                                    <div class="form-check form-switch">
-                                        <input  wire:change="CambiaConOsinWeb('{{ $a->caut_id }}')"
-                                            class="form-check-input"
-                                            value="1" type="checkbox" role="switch"
-                                            id="flexSwitchCheckDefault"
-                                            @if($a->caut_web=='1') checked @endif
-                                            style="@if($a->caut_web=='1')background-color:darkgreen; @endif">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">@if($a->caut_web=='0')Sin web @else Con Web @endif</label>
-                                    </div>
-                                @endif
-                            </td>
-
-                            <!--  Editar o no web -->
-                            <td>
-                                @if($edit=='1' AND $a->caut_web=='1')
-                                    <div class="form-check form-switch">
-                                        <input  wire:change="CambiaEditNoEdit('{{ $a->caut_id }}')"
-                                            class="form-check-input"
-                                            value="1" type="checkbox" role="switch"
-                                            id="flexSwitchCheckDefault"
-                                            @if($a->caut_edit=='1') checked @endif
-                                            style="@if($a->caut_edit=='1')background-color:red; @endif">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">@if($a->caut_edit=='0')Público @else En edición @endif</label>
-                                    </div>
-                                @endif
-                            </td>
-
                             <!-- Cédulas de las que es autor -->
-                            <td> <div class="elemento">Cedula</div> </td>
-
-                            <!--  Cédulas de las que es traductor -->
-                            <td> <div class="elemento">Cedula</div> </td>
-
-                            <!-- Ícono de edición -->
                             <td>
-                                <i wire:click="AbreModalAutores({{ $a->caut_id }})"  class="bi bi-pencil-square PaClick" wire:click="AbreModalAutores({{ $a->caut_id }})"></i>
-                                @if($a->caut_usrid > '0') <i class="bi bi-person-check"><sub>{{ $a->caut_usrid }}</sub></i>@endif
+                                @foreach ($a->cedulas as $c)
+                                    @if($c->aut_tipo != 'Editor')
+                                        <div class="elemento" style="font-size: 70%;">
+                                            @if($c->aut_tipo=='Traductor')<b><sup>T</sup></b>@endif
+                                            {{ $c->aut_key }}
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </td>
+
+                            <!-- Cédulas de las que es editor -->
+                            <td>
+                                @foreach ($a->cedulas as $c)
+                                    @if($c->aut_tipo == 'Editor')
+                                        <div class="elemento" style="font-size: 70%;">
+                                            @if($c->aut_tipo=='Traductor')<b><sup>T</sup></b>@endif
+                                            {{ $c->aut_key }}
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </td>
+
+
+
+                            <!-- Semblanzas -->
+                            <td>
+                                @foreach ($a->urlautor as $u)
+                                    <div class="elemento" style="font-size: 70%;">
+                                        {{ $u->aurl_cjarsiglas }}
+                                    </div>
+                                @endforeach
+                            </td>
+
+                            <!--  Identificadores -->
+                            <td>
+                                @if($a->caut_orcid != '')
+                                    <div class="elemento" style="font-size:70%;">
+                                        <a href="https://orcid.org/{{ $a->caut_orcid }}" target="new" class="nolink">Orcid</a>
+                                    </div>
+                                @endif
+
                             </td>
                         </tr>
                     @endforeach

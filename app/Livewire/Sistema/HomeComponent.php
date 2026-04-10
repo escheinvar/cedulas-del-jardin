@@ -50,7 +50,7 @@ class HomeComponent extends Component
 
         }else{
             $this->edit='0';
-            redirect('/noauth/Solo accede rol '.implode(',',$auts));
+            // redirect('/noauth/Solo accede rol '.implode(',',$auts));
         }
 
         ##### Distingue permisos superiores
@@ -94,6 +94,8 @@ class HomeComponent extends Component
                 ->where('caut_del','0')->where('caut_act','1')
                 ->where('caut_usrid',Auth::user()->id)
                 ->get();
+        }else{
+            $cedulas=collect();
         }
 
 

@@ -4,7 +4,8 @@ namespace App\Livewire\Sistema;
 
 use App\Models\cat_autores;
 use App\Models\CatJardinesModel;
-use App\Models\CatRolesModel;
+use App\Models\autor_url;
+use App\Models\ced_autores;
 use App\Models\jardin_txt;
 use App\Models\jardin_url;
 use App\Models\lenguas;
@@ -24,8 +25,10 @@ class AdminWebComponent extends Component
 
     public $edit,$editjar; ##### Variables de permisos del usuario
     public $jardinSel, $sentido, $orden, $edoEdit; ##### Vars de formulario de búsqueda y de tabla
-    public $abiertos; ##### vars de info. al usuario
-    public $tipo, $jardinId; ##### Variables de modal
+    public $abiertos, $abiertosAutor; ##### vars de info. al usuario
+    public $verNvoAutor, $NvoAutorTipo, $NvoAutor, $NvaLengua, $NvosAutores, $NvasLenguas;
+    ############# variables de modal
+    public $tipo, $jardinId;
     ##### Variables de formulario de modal
     public $NvoBanner, $origtrad, $copiade, $lengua, $url, $act, $titulo, $descrip, $bannerimg, $bannertitle;
 
@@ -34,6 +37,10 @@ class AdminWebComponent extends Component
         $this->orden='_id';
         $this->sentido='asc';
         $this->origtrad='original';
+        $this->verNvoAutor='0';
+        $this->NvoAutorTipo='';
+        $this->NvosAutores=collect();
+        $this->NvasLenguas=collect();
     }
 
     public function ordenaTabla($ord){
@@ -49,6 +56,184 @@ class AdminWebComponent extends Component
         $estado=jardin_url::where('urlj_id',$id)->value('urlj_edit');
         if($estado=='0'){$edo='1';}else{$edo='0';}
         jardin_url::where('urlj_id',$id)->update(['urlj_edit'=>$edo]);
+    }
+
+    public function CambiaEdoEdicionAutor($id){
+        $estado=autor_url::where('aurl_id',$id)->value('aurl_edit');
+        if($estado=='0'){$edo='1';}else{$edo='0';}
+        autor_url::where('aurl_id',$id)->update(['aurl_edit'=>$edo]);
+    }
+
+    public function VerNoVerNuevoAutor(){
+        $this->NvoAutorTipo='';
+        $this->NvoAutor='';
+        $this->NvaLengua='';
+        if($this->verNvoAutor=='0'){
+            $this->verNvoAutor='1';
+        }else{
+            $this->verNvoAutor='0';
+        }
+    }
+
+    public function SeleccionaNuevoAutor(){
+        $this->NvoAutor='';
+        $this->NvaLengua='';
+
+        $autsConWeb=autor_url::where('aurl_cjarsiglas',$this->jardinSel)
+            ->where('aurl_del','0')
+            ->pluck('aurl_cautid')
+            ->toArray();
+        $autsDelJardin=ced_autores::where('aut_cjarsiglas',$this->jardinSel)
+            ->where('aut_act','1')->where('aut_del','0')
+            ->whereNotIn('aut_cautid',$autsConWeb)
+            ->distinct('aut_cautid')
+            ->pluck('aut_cautid')
+            ->toArray();
+
+
+        if($this->NvoAutorTipo=='autor'){
+            ##### Selecciona autores que no tiene página
+            $this->NvosAutores=cat_autores::whereIn('caut_id',$autsDelJardin)->get();
+        }elseif($this->NvoAutorTipo=='traduccion'){
+            ##### Selecciona autores que sí tienen página
+            $this->NvosAutores=cat_autores::whereIn('caut_id',$autsConWeb)->get();;
+        }
+        $this->NvasLenguas=lenguas::get();
+
+    }
+
+    public function CrearNuevaPaginaDeAutor(){
+        ##### Valida campos
+        $this->validate([
+            'NvoAutorTipo'=>'required',
+            'NvoAutor'=>'required',
+            'NvaLengua'=>'required',
+        ]);
+
+        #### Si es traducción, valida que no exista la lengua
+        if($this->NvoAutorTipo=='traduccion'){
+            $ganon=autor_url::where('aurl_cjarsiglas',$this->jardinSel)
+                ->where('aurl_cautid',$this->NvoAutor)
+                ->where('aurl_lencode',$this->NvaLengua)
+                ->count();
+            if($ganon > '0'){
+                $this->addError('NvaLengua', 'Ya existe una página del autor en esta lengua');
+                return;
+            }
+        }
+
+        ##### Obtiene valores del autor seleccionado
+        $autor=cat_autores::where('caut_id',$this->NvoAutor)->first();
+
+        ##### Crea variables
+        if($this->NvoAutorTipo=='traduccion'){
+            $url=$autor->caut_url.'_'.$this->NvaLengua;
+            $tradid='1';
+        }else{
+            $url=$autor->caut_url;
+            $tradid='0';
+        }
+
+        ##### Crea la nueva página
+        $data=[
+            'aurl_edit'=>'1',
+            'aurl_cautid'=>$this->NvoAutor,
+            'aurl_cjarsiglas'=>$this->jardinSel,
+            'aurl_urltxt'=>$autor->caut_url,
+            'aurl_url'=>$url,
+            'aurl_lencode'=>$this->NvaLengua,
+            'aurl_tradid'=>$tradid,
+            'aurl_titulo'=>$autor->caut_nombre.' '.$autor->caut_apellido1.' '.$autor->caut_apellido2,
+            'aurl_tituloorig'=>$autor->caut_nombre.' '.$autor->caut_apellido1.' '.$autor->caut_apellido2,
+        ];
+        $nva=autor_url::create($data);
+        ##### Crea log
+        paLog('Se genera pagina web de autor','autor_url',$nva->aurl_id);
+        redirect('/admin_web');
+    }
+
+    public function render() {
+        ##### Revisa permisos del usuario
+        $auts=['webmaster'];
+        if(array_intersect($auts,session('rol'))){
+            $this->edit='1';
+        }else{
+            $this->edit='0';
+            redirect('/noauth/Solo accede rol '.implode(',',$auts));
+        }
+
+        ##### jardines autorizados al usuario
+        $this->editjar = UserRolesModel::where('rol_usrid',Auth::user()->id)
+            ->whereIn('rol_crolrol',$auts)
+            ->where('rol_act','1')->where('rol_del','0')
+            ->distinct('rol_cjarsiglas')
+            ->pluck('rol_cjarsiglas')->toArray();
+
+        #### Genera lista de jardines autorizados al usuario
+        if(in_array('todos',$this->editjar)){
+            $JardsUsr=CatJardinesModel::where('cjar_act','1')->where('cjar_del','0')
+                ->orderBy('cjar_siglas')
+                ->orderBy('cjar_name')
+                ->get();
+        }else{
+            $JardsUsr=CatJardinesModel::where('cjar_act','1')->where('cjar_del','0')
+                ->whereIn('cjar_siglas',$this->editjar)
+                ->orderBy('cjar_siglas')
+                ->orderBy('cjar_name')
+                ->get();
+        }
+
+        ##### Obtiene cantidad de urls en edición:
+        $this->abiertos=jardin_url::whereIn('urlj_cjarsiglas',$JardsUsr->pluck('cjar_siglas')->toArray())
+            ->where('urlj_edit','1')
+            ->where('urlj_act','1')->where('urlj_del','0')
+            ->count();
+
+        $this->abiertosAutor=autor_url::whereIn('aurl_cjarsiglas',$JardsUsr->pluck('cjar_siglas')->toArray())
+            ->where('aurl_edit','1')
+            ->where('aurl_act','1')->where('aurl_del','0')
+            ->count();
+
+
+        ##### Obtiene lista de url's accesibles por usuario
+        if($this->jardinSel != ''){
+            $urls=jardin_url::query();
+            $urls=$urls->where('urlj_cjarsiglas','ilike',$this->jardinSel);
+            $urls=$urls->orderBy('urlj_cjarsiglas','asc')
+                ->orderBy('urlj_urltxt','asc')
+                ->orderBy('urlj_tradid','asc')
+                ->where('urlj_del','0')
+                ->with('jardin')
+                ->with('lenguas')
+                ->get();
+        }else{
+            $urls=collect();
+        }
+
+        ##### Obtiene total de url's originales
+        $originales= jardin_url::where('urlj_cjarsiglas','ilike',$this->jardinSel)
+            ->where('urlj_tradid', '0')
+            ->where('urlj_del','0')
+            ->orderBy('urlj_tradid','asc')
+            ->orderBy('urlj_id','asc')
+            ->get();
+
+        ##### Obtiene lista de autores con página
+        $autores=autor_url::where('aurl_cjarsiglas','ilike',$this->jardinSel)
+            ->where('aurl_del','0')
+            ->with('autor')
+            ->with('lengua')
+            ->orderBy('aurl_url')
+            // ->with('jardin')#
+            ->get();
+
+        return view('livewire.sistema.admin-web-component',[
+            'JardsDelUsr'=>$JardsUsr,
+            'lenguas'=>lenguas::get(),
+            'originales'=>$originales,
+            'urls'=>$urls,
+            'autores'=>$autores,
+        ]);
     }
 
     ###################################################
@@ -238,80 +423,6 @@ class AdminWebComponent extends Component
     }
     ###################################################
     ####################  Terminamos funciones de modal
-
-    public function render() {
-        ##### Revisa permisos del usuario
-        $auts=['webmaster'];
-        if(array_intersect($auts,session('rol'))){
-            $this->edit='1';
-        }else{
-            $this->edit='0';
-            redirect('/noauth/Solo accede rol '.implode(',',$auts));
-        }
-
-        ##### jardines autorizados al usuario
-        $this->editjar = UserRolesModel::where('rol_usrid',Auth::user()->id)
-            ->whereIn('rol_crolrol',$auts)
-            ->where('rol_act','1')->where('rol_del','0')
-            ->distinct('rol_cjarsiglas')
-            ->pluck('rol_cjarsiglas')->toArray();
-
-        #### Genera lista de jardines autorizados al usuario
-        if(in_array('todos',$this->editjar)){
-            $JardsUsr=CatJardinesModel::where('cjar_act','1')->where('cjar_del','0')
-                ->orderBy('cjar_siglas')
-                ->orderBy('cjar_name')
-                ->get();
-        }else{
-            $JardsUsr=CatJardinesModel::where('cjar_act','1')->where('cjar_del','0')
-                ->whereIn('cjar_siglas',$this->editjar)
-                ->orderBy('cjar_siglas')
-                ->orderBy('cjar_name')
-                ->get();
-        }
-
-        ##### Obtiene cantidad de urls en edición:
-        $this->abiertos=jardin_url::whereIn('urlj_cjarsiglas',$JardsUsr->pluck('cjar_siglas')->toArray())
-            ->where('urlj_edit','1')
-            ->where('urlj_act','1')->where('urlj_del','0')
-            ->count();
-
-
-        ##### Obtiene lista de url's accesibles por usuario
-        if($this->jardinSel != ''){
-            $urls=jardin_url::query();
-            $urls=$urls->where('urlj_cjarsiglas','ilike',$this->jardinSel);
-            $urls=$urls->orderBy('urlj_cjarsiglas','asc')
-                ->orderBy('urlj_urltxt','asc')
-                ->orderBy('urlj_tradid','asc')
-                ->where('urlj_del','0')
-                ->with('jardin')
-                ->with('lenguas')
-                ->get();
-        }else{
-            $urls=collect();
-        }
-
-        ##### Obtiene total de url's originales
-        $originales= jardin_url::where('urlj_cjarsiglas','ilike',$this->jardinSel)
-            ->where('urlj_tradid', '0')
-            ->where('urlj_del','0')
-            ->orderBy('urlj_tradid','asc')
-            ->orderBy('urlj_id','asc')
-            ->get();
-
-        ##### Obtiene lista de autores
-        $auts=cat_autores::query();
-        $auts=$auts->get();
-
-        return view('livewire.sistema.admin-web-component',[
-            'JardsDelUsr'=>$JardsUsr,
-            'lenguas'=>lenguas::get(),
-            'originales'=>$originales,
-            'urls'=>$urls,
-            'auts'=>$auts,
-        ]);
-    }
 }
 
 

@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('autor_txt', function (Blueprint $table) {
             $table->id('autxt_id');
             $table->string('autxt_cjarsiglas');     #### Tipo de cédula que se construye
-            $table->foreignId('autxt_cautid')->constrained('cat_autores','caut_id');
-            $table->string('autxt_cauturl');     #### url de la cédula ej: huaje_huv
-            $table->string('autxt_key')->nullable();
+            $table->foreignId('autxt_aurlid')->constrained('autor_url','aurl_id');
+            $table->string('autxt_aurlurltxt');     #### nombredeautor sin traduccion
+            $table->string('autxt_aurlurl');     #### nombredeautor con trad
+            $table->string('autxt_key')->nullable(); ##### jardin@autorname (sin lengua)
 
             $table->enum('autxt_act',['0','1'])->default('1');  ##### borrado lógico inactivo
             $table->enum('autxt_del',['0','1'])->default('0'); ##### borrado lógico

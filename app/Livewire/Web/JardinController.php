@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Web;
 
+use App\Models\autor_url;
 use App\Models\cat_autores;
+use App\Models\ced_autores;
 use App\Models\cedulas_url;
 use App\Models\jardin_txt;
 use App\Models\jardin_url;
@@ -34,12 +36,14 @@ class JardinController extends Component
                 ->with('jardin')
                 ->with('lenguas')
                 ->first();
+
         }else{
             $this->url=jardin_url::whereRaw('LOWER(urlj_cjarsiglas) = ?', strtolower($jardin))
                 ->where('urlj_url',$pag)
                 ->where('urlj_act','1')->where('urlj_del','0')
                 ->with('jardin')
                 ->first();
+
         }
 
         if($this->url == null){
@@ -67,7 +71,8 @@ class JardinController extends Component
         }
     }
 
-    public function AbreModalEditaTextoWebJardin($id, $orden){
+    // public function AbreModalEditaTextoWebJardin($id, $orden){
+    public function AbreModalEditaParrafo($id, $orden){
         if($this->edit=='1'){
             ###### Si es nuevo, calcula el orden
             if($id=='0'){
@@ -127,16 +132,26 @@ class JardinController extends Component
         ############## Carga cédulas (pag. cédulas)
         $cedulas=cedulas_url::where('url_cjarsiglas',$this->url->urlj_cjarsiglas)
             ->where('url_del','0')
+            ->with('lenguas')
             ->orderBy('url_url')
             ->get();
 
-        ############## Carga autores
-        $autores=cat_autores::where('caut_cjarsiglas',$this->url->urlj_cjarsiglas)
-            ->where('caut_act','1')
-            ->where('caut_del','0')
-            ->orderBy('caut_nombre','asc')
-            ->orderBy('caut_apellido1','asc')
+        ############## Carga lista de autores únicos del jardín (recordar que se puede repetir un autor)
+        $IdDeAutores=ced_autores::where('aut_cjarsiglas',$this->url->urlj_cjarsiglas)
+            ->where('aut_act','1')
+            ->where('aut_del','0')
+            ->distinct('aut_cautid')
+            ->pluck('aut_cautid')
+            ->toArray();
+
+        ###### Obtiene lista de autores
+        $autores=cat_autores::whereIn('caut_id',$IdDeAutores)
+        ->orderBy('caut_nombre','asc')
+        ->orderBy('caut_apellido1','asc')
+        ->with('cedulas')
+        ->with('urlautor')
             ->get();
+// dd($autores);
 
         return view('livewire.web.jardin-controller',[
             'txt'=>$txt,

@@ -57,27 +57,29 @@
 
 
     <!-- ------------- Botones de acción ----------- -->
-    <div class="row" style="display: flex;">
-        <div class="col-4 col-md-2 my-4" style="font-size: 80%;">
-            <b>Mis cédulas</b><br>
-            Total: {{ $cedulas->count() }}<br>
-            Originales: {{ $cedulas->where('url_tradid','0')->count() }}<br>
-            En creación: {{ $cedulas->where('url_ciclo', '<','1')->where('url_edo','0')->count() }}<br>
-        </div>
-        <div class="col-4 col-md-2 my-4" style="font-size: 80%;">
-            <br>
-            En revisión: {{ $cedulas->where('url_edo','>','0')->where('url_edo','<','5')->count() }}<br>
-            Abiertas a edición {{ $cedulas->where('url_edit','1')->count() }}
-            Públicadas {{ $cedulas->where('url_edo','>=','5')->where('url_edit','0')->count() }}
-        </div>
-        <div class="col-4 col-md-2 my-4" style="display:flex; flex-direction:column;justify-content:center;">
-            <!-- Ver cédulas del usuario -->
-            <a href="/admin_cedulas" class="nolink">
-                <button  class="btn btn-primary">
-                    Ver mis cédulas
-                </button>
-            </a>
-        </div>
+    @if($cedulas->count() > '0')
+        <div class="row" style="display: flex;">
+            <div class="col-4 col-md-2 my-4" style="font-size: 80%;">
+                <b>Mis cédulas</b><br>
+                Total: {{ $cedulas->count() }}<br>
+                Originales: {{ $cedulas->where('url_tradid','0')->count() }}<br>
+                En creación: {{ $cedulas->where('url_ciclo', '<','1')->where('url_edo','0')->count() }}<br>
+            </div>
+            <div class="col-4 col-md-2 my-4" style="font-size: 80%;">
+                <br>
+                En revisión: {{ $cedulas->where('url_edo','>','0')->where('url_edo','<','5')->count() }}<br>
+                Abiertas a edición {{ $cedulas->where('url_edit','1')->count() }}
+                Públicadas {{ $cedulas->where('url_edo','>=','5')->where('url_edit','0')->count() }}
+            </div>
+            <div class="col-4 col-md-2 my-4" style="display:flex; flex-direction:column;justify-content:center;">
+                <!-- Ver cédulas del usuario -->
+                <a href="/admin_cedulas" class="nolink">
+                    <button  class="btn btn-primary">
+                        Ver mis cédulas
+                    </button>
+                </a>
+            </div>
+        @endif
 
         <div class="col-4 col-md-2 my-4" style="display:flex; flex-direction:column;justify-content:center;">
             <!-- Ver aportes del usuario -->
@@ -85,7 +87,7 @@
                 Ver mis aportes
             </button>
         </div>
-    </div>
+
 
     <!-- ---------- Módulo de  aportes --------------->
     <div class="m-4">

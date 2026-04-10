@@ -86,8 +86,8 @@
                                 &nbsp; | &nbsp;<br>
                                 <button onclick="insertarTexto('<a href=&quot;&quot; target=&quot;new_&quot; class=&quot;nolink&quot;>','</a>')"  class="lenguas" title="Hipervínculo"> <i class="bi bi-link"></i>    </button>
                                 <button wire:click="AbreModalVerObjetos('img')" class="lenguas" title="Imágen"> <i class="bi bi-image"></i>   </button>
-                                <button wire:click="AbreModalVerObjetos('aud')" class="lenguas" title="Audio"> <i class="bi bi-file-earmark-music"></i>    </button>
-                                <button wire:click="AbreModalVerObjetos('vid')" class="lenguas" title="Video"> <i class="bi bi-film"></i>    </button>
+                                <button wire:click="AbreModalVerObjetos('aud')" class="lenguas" title="Audio" disabled> <i class="bi bi-file-earmark-music"></i>    </button>
+                                <button wire:click="AbreModalVerObjetos('vid')" class="lenguas" title="Video"disabled > <i class="bi bi-film" ></i>    </button>
                                 <button wire:click="AbreModalVerObjetos('you')" class="lenguas" title="Youtube"> <i class="bi bi-youtube"></i>    </button>
                                 <button wire:click="AbreModalVerObjetos('htm')" class="lenguas" title="Código"> <i class="bi bi-code-slash"></i>    </button>
                                 &nbsp; | &nbsp;

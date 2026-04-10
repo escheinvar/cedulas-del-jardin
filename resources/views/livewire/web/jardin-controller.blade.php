@@ -55,12 +55,12 @@
                 <error><i class="bi bi-record-circle" style="font-size:150%;"></i></error>
             @endif
 
-            @if($url->urlj_url=='inicio')
+            @if($url->urlj_urltxt=='inicio')
                 {{ $url->jardin->cjar_nombre }}
-            @elseif($url->urlj_url=='autores')
+            @elseif($url->urlj_urltxt=='autores')
                 Autores del {{ $url->jardin->cjar_siglas }}
 
-            @elseif($url->urlj_url=='cedulas')
+            @elseif($url->urlj_urltxt=='cedulas')
                 Cédulas del {{ $url->jardin->cjar_siglas }}
             @else
                 {{ $url->urlj_titulo }}
@@ -69,74 +69,63 @@
 
 
         <!-- ---------------------------------------------------------------------- -->
-        <!-- --------------------- INICIA TEXTO DEL JARDÍN ------------------------- -->
+        <!-- ------------------- INICIAN TEXTOS DE PÁRRAFOS ----------------------- -->
         <!-- ---------------------------------------------------------------------- -->
         <!-- ---------------------------------------------------------------------- -->
-        @foreach ($txt as $l)
-            <div wire:key="txt{{ $l->jar_id }}">
-                <!-- muestra opción de edición -->
-                @if($edit=='1')
-                    <i wire:click="AbreModalEditaTextoWebJardin('{{ $l->jar_id }}','{{ $l->jar_orden }}')" class="bi bi-pencil-square PaClick agregar" style="display:inline;">
-                        <sup>{{ $l->jar_orden }}</sup>
-                    </i>
-                @endif
 
-                <!-- muestra código html -->
-                {!! $l->jar_txt !!}
-
-                <!-- muestra audio -->
-                @if($l->jar_audio !='')
-                    <audio id="SpAudio{{ $l->jar_id }}" style="display:inline-block;">
-                        <source src="{{ $l->jar_audio }}" type="audio/ogg"> El navegador no soporta el audio
-                    </audio>
-                    <i class="audioTxtPlay" id="IconPlay{{ $l->jar_id }}" onclick="playAudio('{{ $l->jar_id }}')"></i>
-                    <i class="audioTxtStop" id="IconStop{{ $l->jar_id }}" onclick="pauseAudio('{{ $l->jar_id }}')"></i>
-                @endif
-            </div>
-        @endforeach
-        <!-- --------------------- TERMINA TEXTO DEL JARDÍN ------------------------ -->
-        <!-- ----------------------------------------------------------------------- -->
+        <?php $TablaDeTexto=$txt; $modulo='jardin'?>
+        @include('plantillas.texto')
 
 
         <!-- ------------------------------------------------------------------------- -->
         <!-- ---------------------------------------------------------------------------- -->
-        <!-- --------------------- INICIA AGREGAR NUEVO PÁRRAFO ------------------------- -->
+        <!-- --------------------- INICIA BOTÓN AGREGAR NUEVO PÁRRAFO ------------------------- -->
         @if($edit=='1')
             <div class="row my-4" style="background-color: #CDC6B9;">
                 <div class="col-2">
-                    <i wire:click="AbreModalEditaTextoWebJardin('0','')" class="bi bi-plus-square PaClick" style="display:inline;"> Nuevo párrafo</i>
+                    <i wire:click="AbreModalEditaParrafo('0','')" class="bi bi-plus-square PaClick" style="display:inline;"> Nuevo párrafo</i>
                 </div>
             </div>
-            <div class="row my-4" style="background-color: #CDC6B9;">
-
-            </div>
         @endif
-        <!-- --------------------- TERMINA AGREGAR NUEVO PÁRRAFO ------------------------- -->
-        <!-- ----------------------------------------------------------------------------- -->
+
 
 
         <!-- ------------------------------------------------------------------------ -->
        <!-- --------------------- INICIA PAGINA DE AUTORES ------------------------- -->
         <!-- ------------------------------------------------------------------------ -->
         <!-- ------------------------------------------------------------------------ -->
-        @if($url->urlj_url=='autores')
+        @if($url->urlj_urltxt=='autores')
             @foreach ($autores as $a)
                 <ul>
                     <li>
-                        @if($a->caut_web=='1')
-                            <a href="/autor/{{ $a->caut_cjarsiglas }}/{{ $a->caut_url }}" target="autor" class="nolink">
-                        @endif
-                            {{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}
-                        @if($a->caut_web=='1')
-                            </a>
-                        @endif
-                        # cédulas: bla, ble, bli.
+                        @if($a->urlautor->count() > '0')<a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" target="autor" class="nolink"> @endif
+                            <!-- nombre -->
+                            <b>
+                                {{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}
+                                @if($a->urlautor->count() > '0')<i class="bi bi-arrow-up-right-square"></i> @endif.
+                            </b>
+                            <!-- cantidad -->
+                            {{-- {{ $a->cedulas->count() }} @if($a->cedulas->count() == '1')cedula @else cedulas @endif: --}}
+                            <!-- listado de cédulas -->
+                            <?php $num=0; ?>
+                            @foreach($a->cedulas as $ced)
+                                <?php $num++; ?>
+                                <a href="{{ url('/cedula') }}/{{ $ced->url_cjarsiglas }}/{{ $ced->url_url }}" class="nolink">
+                                    {{ $ced->url_titulo }}<sup>{{ substr($ced->aut_tipo,0,1) }}</sup>
+                                    <i>
+                                        {{ $ced->url_lencode }}
+                                        {{ $ced->url_cjarsiglas }}
+                                    </i>
+                                </a>
+                                @if($num < $a->cedulas->count())&nbsp; || &nbsp; @endif
+                            @endforeach
+
+                        @if($a->urlautor->count() > '0')</a>@endif
                     </li>
                 </ul>
             @endforeach
         @endif
-        <!-- --------------------- TERMINA PAGINA DE AUTORES ------------------------- -->
-        <!-- ------------------------------------------------------------------------ -->
+
 
 
 
@@ -144,36 +133,22 @@
        <!-- --------------------- INICIA PAGINA DE CÉDULAS ------------------------- -->
         <!-- ------------------------------------------------------------------------ -->
         <!-- ------------------------------------------------------------------------ -->
-        @if($url->urlj_url=='cedulas')
+        @if($url->urlj_urltxt=='cedulas')
             @foreach ($cedulas as $c)
                 <ul>
                     <li>
                         <a href="/cedula/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}" target="cedula" class="nolink">
-                            {{ $c->url_url }}
+                            <b>{{ $c->url_titulo }}: {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})</b>.
+                            <span id="sale_copiaurl">
+                                {{ url('/cedula') }}/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}
+                            </span>
                         </a>
+                        <i onclick="CopiarContenido('copia','url')" class="bi bi-clipboard PaClick"></i>
                     </li>
                 </ul>
             @endforeach
         @endif
-        <!-- --------------------- TERMINA PAGINA DE CÉDULAS ------------------------- -->
-        <!-- ------------------------------------------------------------------------ -->
 
-
-        <!-- ------------------------------------------------------------------------- -->
-        <!-- ---------------------------------------------------------------------------- -->
-        <!-- --------------------- INICIA AGREGAR NUEVO PÁRRAFO ------------------------- -->
-        {{-- @if($edit=='1')
-            <div class="row my-4" style="background-color: #CDC6B9;">
-                <div class="col-2">
-                    <i wire:click="AbreModalEditaTextoWebJardin('0','')" class="bi bi-plus-square PaClick" style="display:inline;"> Nuevo párrafo</i>
-                </div>
-            </div>
-            <div class="row my-4" style="background-color: #CDC6B9;">
-
-            </div>
-        @endif --}}
-        <!-- --------------------- TERMINA AGREGAR NUEVO PÁRRAFO ------------------------- -->
-        <!-- ----------------------------------------------------------------------------- -->
 
         <livewire:sistema.modal-edita-parrafo-component />
         <livewire:sistema.modal-inserta-objeto-component />

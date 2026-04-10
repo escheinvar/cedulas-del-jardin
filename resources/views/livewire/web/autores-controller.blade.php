@@ -1,10 +1,10 @@
 @section('MenuPublico') x @endsection
-@section('title') {{ $url->caut_nombre}} {{ $url->caut_apelldo1}} @endsection
-@section('meta-description') {{ $url->caut_nombre}} {{ $url->caut_apellido1}}, autor de cédulas del jardín @endsection
+@section('title') {{ $url->autor->caut_nombre}} {{ $url->autor->caut_apelldo1}} @endsection
+@section('meta-description') {{ $url->autor->caut_nombre}} {{ $url->autor->caut_apellido1}}, autor de cédulas del jardín @endsection
 
 @section('logo') {{ $url->jardin->cjar_logo }} @endsection
-@section('siglas') {{ $url->caut_cjarsiglas }} @endsection
-@section('siglasMin'){{ strtolower($url->caut_cjarsiglas) }}@endsection
+@section('siglas') {{ $url->aurl_cjarsiglas }} @endsection
+@section('siglasMin'){{ strtolower($url->aurl_cjarsiglas) }}@endsection
 @section('jardin') {{ $url->jardin->cjar_nombre }} @endsection
 
 @section('red_facebook') {{ $url->jardin->cjar_face }} @endsection
@@ -17,19 +17,49 @@
 
 
 <div>
-    @if($edit=='0' and $url->caut_edit=='1')
-        <h3 style="text-align: center;">
-            ¡ Lo sentimos !<br>
-            La página de nuestr@ autor@<br>{{ $url->caut_nombre }} {{ $url->caut_apellido1 }}<br> se encuentra en mantenimiento.<br>
-            <br>
-            Seguramente en breve, habrán terminado y podrás consultarla nuevamente.
-        </h3>
+    <!-- --------------------- Menú de traducciones ------------------------------ -->
+    @if($traducciones->count() > 0)
+        <div class="row">
+            <div class="col-4 col-md-6 "> &nbsp; </div>
+
+            <div class="col-4 col-md-3 form-group" style="text-align:right;">
+                <div>
+                    <h3>{{ $url->lengua->len_autonimias }}</h3>
+                    <span style="font-size: 70%;">{{ $url->lengua->len_lengua }}</span>
+                </div>
+            </div>
+
+            <div class="col-4 col-md-3 form-group">
+                <label class="form-label">Hay {{ $traducciones->count() }} @if($traducciones->count()=='1') traducción @else traducciones @endif</label>
+                <select wire:change="CambiaAunaTraduccion()" wire:model.live="traduccion" class="form-select">
+                    <option value="">Selecciona ...</option>
+                    @foreach ($traducciones as $t)
+                        <option value="{{ $t->aurl_id }}">{{ $t->lengua->len_autonimias }} ({{ $t->lengua->len_lengua }}) {{ $t->lengua->len_code }}</optio>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    @endif
+
+    <!-- ---------------------------- inicia página de autor ------------------------ -->
+     <div class="row my-4">
+            <div class="col-12">
+                <h2> {{ $url->autor->caut_nombre}} {{ $url->autor->caut_apellido1}} {{ $url->autor->caut_apellido2}}</h2>
+            </div>
+     </div>
+    @if(!Auth::user() AND ($enEdit=='1' ))
+        <div class="col-6 col-md-10">
+            <b>{{ $url->autor->caut_nombreautor }}</b><br>
+        </div>
+        @include('plantillas.PaginaEnMtto')
+
     @else
         <div class="row my-4">
-            <div class="col-12">
-                <h2>{{ $url->caut_nombre}} {{ $url->caut_apellido1}} {{ $url->caut_apellido2}}</h2>
-            </div>
+            {{-- <div class="col-12">
+                <h2>{{ $url->autor->caut_nombre}} {{ $url->autor->caut_apellido1}} {{ $url->autor->caut_apellido2}}</h2>
+            </div> --}}
             <!-- imagen del autor-->
+
             <div class="col-6 col-md-2">
                 @if($objs->where('img_cimgtipo','portada')->count() > '0')
                     @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','portada'),'TipoDeObjeto'=>'portada'])
@@ -44,14 +74,29 @@
 
             <!-- Datos del autor -->
             <div class="col-6 col-md-10">
-                <b>{{ $url->caut_nombreautor }}</b><br>
-                @if($url->caut_institu != '') {{ $url->caut_institu }}<br> @endif
-                @if($url->caut_comunidad!='') {{ $url->caut_comunidad }}<br> @endif
-                @if($url->caut_mailpublic =='1') <a href="mailto:{{ $url->caut_correo }}" class="nolink">{{ $url->caut_correo }}</a> <br> @endif
-                @if($url->caut_orcid != '')  <a href="https://orcid.org/{{ $url->caut_orcid }}" target="orcid" class="nolink">ORCID {{ $url->caut_orcid }}</a>@endif<br>
+                <b>{{ $url->autor->caut_nombreautor }}</b><br>
+                @if($url->autor->caut_institu != '')Institución: {{ $url->autor->caut_institu }}<br> @endif
+                @if($url->autor->caut_comunidad!='')Comunidad: {{ $url->autor->caut_comunidad }}<br> @endif
+                @if($url->autor->caut_mailpublic =='1')Correo: <a href="mailto:{{ $url->autor->caut_correo }}" class="nolink">{{ $url->autor->caut_correo }}</a> <br> @endif
+                @if($url->autor->caut_orcid != '')  <a href="https://orcid.org/{{ $url->autor->caut_orcid }}" target="orcid" class="nolink">ORCID: {{ $url->autor->caut_orcid }}</a><br>@endif
+                @if($url->autor->caut_scopus != '')  <a href="https://scopus.com/authid/detail.uri?authorId={{ $url->autor->caut_scopus }}" target="orcid" class="nolink">Scopus: {{ $url->autor->caut_scopus }}</a><br>@endif
+                @if($url->autor->caut_isni != '')  <a href="https://isni.org/isni/{{ $url->autor->caut_isni }}" target="orcid" class="nolink">ISNI: {{ $url->autor->caut_isni }}</a><br>@endif
+                Cédulas del Jardín: {{ STR_PAD($url->autor->caut_id, 4,"0",STR_PAD_LEFT) }}<br>
+                <br>
                 Persona autora de cédulas del {{ $url->jardin->cjar_nombre }}<br>
+
+                <b>{{ $url->lengua->len_autonimias }}</b>  &nbsp; ({{ $url->lengua->len_lengua }})
+
+
                 @if($edit=='1' and $editMaster=='1')
-                    <i wire:click="AbreModalAutores('{{ $url->caut_id }}')" class="bi bi-pencil-square agregar"> Editar </i>
+                    <i wire:click="AbreModalAutores('{{ $url->autor->caut_id }}')" class="bi bi-pencil-square cedEdo{{ $url->aurl_edo }} PaClick"> Datos de autor </i>
+                @endif
+                <!-- Indicador de edición y rol -->
+                @if(Auth::user())
+                    <div class="cedEdoIcon{{ $url->aurl_edo }}">
+                        @if($enEdit=='0') <b>No en edición</b> @endif
+                       {{ implode(', ',session('rol')) }}
+                    </div>
                 @endif
             </div>
         </div>
@@ -60,21 +105,31 @@
 
 
 
-
+        <!-- Texto de semblanza-->
         <div class="row">
-
             <div class="col-12">
-                 <?php $TablaDeTexto=$txt; ?>
+                <?php $TablaDeTexto=$txt; $modulo='autor';?>
                 @include('plantillas.texto')
             </div>
+            <!-- muestra último párrafo -->
+            @if($edit=='1')
+                <div class="row my-4" style="background-color: #CDC6B9;">
+                    <div class="col-2">
+                        <i wire:click="AbreModalEditaParrafo('0','0', '', '', '', '1')" class="bi bi-plus-square PaClick" style="display:inline;"> Nuevo párrafo</i>
+                    </div>
+                </div>
+
+            @endif
         </div>
+
+        <!-- Cédulas en las que participa -->
         <div class="row">
-            <h3>Cédulas</h3>
-            <ul>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
+            <h3>Cédulas en las que participa:</h3>
+            <ol >
+                @foreach ($ceds as $c)
+                    <li class="my-2"><a href="{{ url('/cedula') }}/{{ $c->cedula->url_cjarsiglas }}/{{ $c->cedula->url_url }}" class="nolink">{{ $c->cedula->url_titulo }}<sup>{{ substr($c->aut_tipo,0,1) }}</sup> ({{ $c->cedula->url_lencode }}), {{ $c->cedula->url_cjarsiglas }} </a></li>
+                @endforeach
+            </ol>
         </div>
     @endif
 
