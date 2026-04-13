@@ -2,29 +2,28 @@
 
 namespace App\Livewire\Sistema;
 
-use App\Models\buzon;
 use App\Models\CatJardinesModel;
 use App\Models\ced_aporteusrs;
-use App\Models\ced_autores;
-use App\Models\cedulas_url;
-use App\Models\Imagenes;
-use App\Models\SpAporteUsrsModel;
 use App\Models\UserRolesModel;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-
-// #[Layout('components.layouts.SistemaBase')]
-class HomeComponent extends Component
+class AdminAportesPublicoComponent extends Component
 {
-    public $edit, $editMaster, $editjar, $JardUsr; ##### Variables de autorización de nivel de privilegio
-    public $MisAportes;
-    public $IdTemp, $IdTemp2, $IdTemp3; #### Temporal: para cargar algo de prueba
 
+    public $edit, $editMaster,$editjar;
 
+    public function mount(){
 
+    }
 
-    ##### Termina imágens
+    public function CambiaEdoMsg($idmsg,$edo){
+        ced_aporteusrs::where('msg_id',$idmsg)->update(['msg_edo'=>$edo]);
+    }
+
+    public function BorrarMsg($idmsg){
+        ced_aporteusrs::where('msg_id',$idmsg)->update(['msg_act'=>'0']);
+    }
     public function render(){
         ##### Revisa permisos del usuario
         $auts=['editor','admin','autor','traductor']; ##### array de roles autorizados a editar
@@ -64,48 +63,28 @@ class HomeComponent extends Component
                 ->get();
         }
 
-
-        ##### Obtiene cantidad de cedulas en edición
-        if( array_intersect(['editor','admin'], session('rol'))  ){
-            $cedulas=cedulas_url::whereIn('url_cjarsiglas', $JardsUsr->pluck('cjar_siglas')->toArray())
-                ->where('url_act','1')->where('url_del','0')
-                ->get();
-        }elseif((array_intersect(['autor','traductor'],session('rol'))) ){
-            $cedulas=cedulas_url::whereIn('url_cjarsiglas', $JardsUsr->pluck('cjar_siglas')->toArray())
-                ->where('url_act','1')->where('url_del','0')
-                ->join('ced_autores','aut_urlid','=','url_id')
-                ->join('cat_autores','aut_cautid','=','caut_id')
-                ->where('aut_del','0')->where('aut_act','1')
-                ->where('caut_del','0')->where('caut_act','1')
-                ->where('caut_usrid',Auth::user()->id)
-                ->get();
-        }else{
-            $cedulas=collect();
-        }
-
-        ##### Obtiene datos de buzón
-        $buzon=buzon::where('buz_to',Auth::user()->id)
-            // ->orWhere('buz_from',Auth::user()->id)
-            ->where('buz_del','0')
-            ->get();
-
-
         ##### Recupera aportaciones a revisar
         $aporta=ced_aporteusrs::where('msg_act','1')
             ->whereIn('msg_cjarsiglas', $JardsUsr->pluck('cjar_siglas')->toArray())
             ->orderBy('msg_date','desc')
             ->with('jardin')
             ->with('cedula')
+            ->orderBy('msg_edo')
+            ->orderBy('msg_date')
             ->get();
 
-        ##### Enlista roles del usuario
-        $MisRoles=UserRolesModel::where('rol_usrid',Auth::user()->id)->where('rol_act','1')->where('rol_del','0')->get();
-// dd($aporta);
-        return view('livewire.sistema.home-component',[
-            'cedulas'=>$cedulas,
+        return view('livewire.sistema.admin-aportes-publico-component',[
             'aporta'=>$aporta,
-            'roles'=>$MisRoles,
-            'buzon'=>$buzon,
         ]);
+    }
+
+    ####################################################################
+    ############### Modal para editar aporte
+    public function AbrirModalParaEditarAporteDeVisitante($id){
+        #####<livewire:sistema.modal-admin-aportes-publico-component />
+        $dato=[
+            'msgId'=>$id,
+        ];
+        $this->dispatch('AbreModalParaEditarAporteDeVisitante', $dato);
     }
 }

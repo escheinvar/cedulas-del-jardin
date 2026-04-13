@@ -10,13 +10,14 @@ use App\Http\Middleware\UsuarioLogeadoConRolMiddle;
 use App\Http\Middleware\VerificaUrlCedula;
 use App\Livewire\Admin\Nuevousuario01Controller;
 use App\Livewire\Admin\NuevoUsuarioController;
-use App\Livewire\Cedulas\AportesComponent;
-use App\Livewire\Cedulas\CatalogoDeCedulasComponent;
-use App\Livewire\Cedulas\DistribuidorDeCedulasComponent;
-use App\Livewire\Cedulas\EditaCedulasComponent;
-use App\Livewire\Cedulas\EspeciesComponent;
+// use App\Livewire\Cedulas\AportesComponent;
+// use App\Livewire\Cedulas\CatalogoDeCedulasComponent;
+// use App\Livewire\Cedulas\DistribuidorDeCedulasComponent;
+// use App\Livewire\Cedulas\EditaCedulasComponent;
+// use App\Livewire\Cedulas\EspeciesComponent;
 use App\Livewire\Login\RecuperaPasswd01Controller;
 use App\Livewire\Login\RecuperaPasswdController;
+use App\Livewire\Sistema\AdminAportesPublicoComponent;
 use App\Livewire\Sistema\AdminCedulasComponent;
 use App\Livewire\Sistema\AdminImagenesController;
 use App\Livewire\Sistema\AdminJardinesController;
@@ -31,7 +32,6 @@ use App\Livewire\Sistema\VisitasComponent;
 use App\Livewire\Sistema\AdminWebComponent;
 use App\Livewire\Web\AutoresController;
 use App\Livewire\Web\CedulasController;
-use App\Livewire\Web\JardinController2;
 use App\Livewire\Web\JardinController;
 use App\Livewire\Web\ListaController;
 use App\Livewire\Web\NoauthController;
@@ -87,13 +87,14 @@ Route::middleware([UsuarioLogeadoConRolMiddle::class,Authenticate::class])->grou
     Route::get('/admin_web',AdminWebComponent::class)->name('AdminWeb');
     Route::get('/admin_image{tipo}',AdminImagenesController::class)->name('AdminImg');
     Route::get('/admin_cedulas',AdminCedulasComponent::class)->name('AdminCedulas');
-    Route::get('/admin_aportes',AportesComponent::class)->name('aportes');
     Route::get('/admin_visitas',VisitasComponent::class)->name('visitas');
+    Route::get('/admin_aportes',AdminAportesPublicoComponent::class)->name('aportes');
+
 
     /* --------------------------- SECCION CÉDULAS -------------------------------- */
     /* ---------------------------------------------------------------------------- */
-    Route::get('/catCedulas',CatalogoDeCedulasComponent::class)->name('catCedulas');
-    Route::get('/editaCedula/{cedID}',EditaCedulasComponent::class)->name('editorCedulas')->middleware(([EditaCedulasMiddle::class]));
+    // Route::get('/catCedulas',CatalogoDeCedulasComponent::class)->name('catCedulas');
+    // Route::get('/editaCedula/{cedID}',EditaCedulasComponent::class)->name('editorCedulas')->middleware(([EditaCedulasMiddle::class]));
 });
 
 /* ------------------------------------ PÁGINA WEB PÚBLICA ------------------------ */

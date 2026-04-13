@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
             CedulaUrlSeeder::class,
             CatUsosSeeder::class,
             CedCatalogos::class,
+            CatRedesSeeder::class,
         ]);
     }
 }

@@ -36,6 +36,9 @@
                         @foreach ($roles as $i)
                             {{ $i->rol_crolrol.'@'.$i->rol_cjarsiglas }}, &nbsp; &nbsp; &nbsp;
                         @endforeach
+                        @if(count($roles)< '1')
+                            Usuario General
+                        @endif
                     </div>
                 </div>
                 <div style="width:13%; display:inline-block; vertical-align:top; text-align:right;padding:5px;" class="d-none d-sm-inline-block">
@@ -56,106 +59,85 @@
     <!-- ------------------------------------------- -->
 
 
-    <!-- ------------- Botones de acción ----------- -->
-    @if($cedulas->count() > '0')
-        <div class="row" style="display: flex;">
-            <div class="col-4 col-md-2 my-4" style="font-size: 80%;">
-                <b>Mis cédulas</b><br>
-                Total: {{ $cedulas->count() }}<br>
-                Originales: {{ $cedulas->where('url_tradid','0')->count() }}<br>
-                En creación: {{ $cedulas->where('url_ciclo', '<','1')->where('url_edo','0')->count() }}<br>
-            </div>
-            <div class="col-4 col-md-2 my-4" style="font-size: 80%;">
-                <br>
-                En revisión: {{ $cedulas->where('url_edo','>','0')->where('url_edo','<','5')->count() }}<br>
-                Abiertas a edición {{ $cedulas->where('url_edit','1')->count() }}
-                Públicadas {{ $cedulas->where('url_edo','>=','5')->where('url_edit','0')->count() }}
-            </div>
-            <div class="col-4 col-md-2 my-4" style="display:flex; flex-direction:column;justify-content:center;">
-                <!-- Ver cédulas del usuario -->
-                <a href="/admin_cedulas" class="nolink">
-                    <button  class="btn btn-primary">
-                        Ver mis cédulas
-                    </button>
-                </a>
+    <!-- ------------- Informe de asuntos pendientes ----------- -->
+    <div class="row my-3">
+        <!-- mensajes de buzón -->
+        @if($buzon->where('buz_act','1')->count() > '0')
+            <div class="col-12 col-md-4" style="border-radius:5px;">
+                <div class="align-middle align-content-center" style="display:flex; flex-direction:row; flex-wrap:nowrap; padding:20px; margin:10px; background-color: #CDC6B9; border-radius:7px; height:130px;">
+                    <div style="transform:rotate(-90deg); width:110px; text-align:center;">
+                        <a href="/buzon" class="nolink">
+                            <button  class="btn btn-primary">
+                                Ver mi buzón
+                            </button>
+                        </a>
+                    </div>
+                    <div style="width:150px;">
+                        <b style="color:#CD7B34">Sin leer: {{ $buzon->where('buz_act','1')->count() }}</b><br>
+                        Leídos: {{ $buzon->where('buz_act','0')->count() }}<br>
+                        Total: {{ $buzon->count() }}
+                    </div>
+                    <div class="align-middle align-content-center">
+                        <b class="bi bi-envelope" style="color:#87796d; font-size:300%;"></b>
+                    </div>
+                </div>
             </div>
         @endif
 
-        <div class="col-4 col-md-2 my-4" style="display:flex; flex-direction:column;justify-content:center;">
-            <!-- Ver aportes del usuario -->
-            <button wire:click="VerNoverAportes()" class="btn btn-primary">
-                Ver mis aportes
-            </button>
-        </div>
+        <!-- Aportes del público -->
+        @if($aporta->count() > '0')
+            <div class="col-12 col-md-4" style="border-radius:5px;">
+                <div style="display:flex; flex-direction:row; flex-wrap:nowrap; padding:20px; margin:10px; background-color: #CDC6B9; border-radius:7px; height:130px;">
 
+                    <div style="transform:rotate(-90deg); width:110px; text-align:center;">
+                        <a href="/admin_aportes" class="nolink">
+                            <button  class="btn btn-primary">
+                                Aportes<br>externos
+                            </button>
+                        </a>
+                    </div>
+                    <div style="width:150px;">
+                        {{-- ##0:enviado x usr 1:pausado x admin, 2:canceladox admin, 3:publico --}}
+                        <b style="color:#CD7B34">Nuevos: {{ $aporta->where('msg_edo','0')->count() }}</b><br>
+                        Pausados: {{ $aporta->where('msg_edo','1')->count() }}<br>
+                        Cancelados: {{ $aporta->where('msg_edo','2')->count() }}<br>
+                    </div>
+                    <div style="width:200px;">
+                        <b class="bi bi-people" style="color:#87796d; font-size:300%;"></b>
+                    </div>
+                </div>
+            </div>
+        @endif
 
-    <!-- ---------- Módulo de  aportes --------------->
-    <div class="m-4">
-        @if($MisAportes=='1')
-            <h3 wire:click="VerNoverAportes()" class="PaClick"><img src="/cedulas/BotonAportar.png" style="width:90px;border:2px solid rgb(61, 41, 33);border-radius:15px;">
-                &nbsp; Mis aportes
-            </h3>
-            @if($aporta->count()> 0)
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th> Jardín / Tema / lengua</th>
-                            <th>Fecha | Estado</th>
-                            <th>Mensaje [Origen, Edad]</th>
-                            <th></th><th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($aporta as $a)
-                            <tr>
-                                <td>
-                                    {{ $a->ced_cjarsiglas }} / {{ $a->ced_urlurl }} / {{ $a->ced_clencode }}
-                                </td>
-                                <td>
-                                    {{ $a->msg_date }}  |
-                                    @if($a->msg_edo=='0')
-                                        <i class="bi bi-0-circle-fill" style="color:#CD7B34"></i> En revisión
-                                    @elseif($a->msg_edo=='1')
-                                        <i class="bi bi-1-circle-fill" style="color:rgb(0, 162, 255)"></i> Pausado por usuario
+        <!-- cédulas del usuario -->
+        @if($cedulas->count() > '0')
+            <div class="col-12 col-md-4" style="">
+                <div style="display:flex; flex-direction:row; flex-wrap:nowrap; padding:20px; margin:10px; background-color: #CDC6B9; border-radius:7px; height:130px;">
 
-                                    @elseif($a->msg_edo=='2')
-                                        <i class="bi bi-2-circle-fill" style="color:red"></i> Cancelado por admin.
-                                    @elseif($a->msg_edo=='3')
-                                        <i class="bi bi-3-circle-fill"  style="color:darkgreen"></i> Publicado
-
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ $a->msg_mensaje }} [Origen: {{ $a->msg_origen }}; Edad: {{ $a->msg_edad }}]
-                                </td>
-                                <td>
-                                    <!-- Pausar / Publicar (por el pripietario de mensajes) -->
-                                    @if($a->msg_edo=='3' )
-                                        <span class="PaClick">
-                                            <i wire:click="CambiaEdoMsg('{{ $a->msg_id }}','1')" class="bi bi-pause-circle mx-3"> Pausar</i>
-                                        </span>
-                                    @elseif($a->msg_edo=='1' )
-                                        <span class="PaClick">
-                                            <i wire:click="CambiaEdoMsg('{{ $a->msg_id }}','3')" class="bi bi-play-btn mx-3"> Publicar</i>
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if( $a->msg_usr == Auth::user()->id  )
-                                        <span class="PaClick">
-                                            <i wire:click="BorrarMsg('{{ $a->msg_id }}')" wire:confirm="Estás por eliminar tu aportación del sistema y no se podrá recuperar ¿Seguro que quieres continuar?" class="bi bi-trash m-2"> Borrar</i>
-                                        </span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @else
-                -- Aún no tengo aportes -->
-            @endif
+                    <div style="transform:rotate(-90deg); width:110px; text-align:center;">
+                        <a href="/admin_cedulas" class="nolink">
+                            <button  class="btn btn-primary">
+                                Ver mis cédulas
+                            </button>
+                        </a>
+                    </div>
+                    <div style="width:180px;">
+                        <b style="color:#CD7B34">Creando: {{ $cedulas->where('url_ciclo', '<','1')->where('url_edo','0')->count() }}</b><br>
+                        <b style="color:#CD7B34">Revisando: {{ $cedulas->where('url_edo','>','0')->where('url_edo','<','5')->count() }}</b><br>
+                        <b style="color:#CD7B34">Editando: {{ $cedulas->where('url_edit','1')->count() }}</b>
+                    </div>
+                    <div style="width:200px;">
+                        Total: {{ $cedulas->count() }}<br>
+                        Originales: {{ $cedulas->where('url_tradid','0')->count() }}<br>
+                        Públicadas {{ $cedulas->where('url_edo','>=','5')->where('url_edit','0')->count() }}
+                    </div>
+                </div>
+            </div>
         @endif
     </div>
+
+
+
 
 
 

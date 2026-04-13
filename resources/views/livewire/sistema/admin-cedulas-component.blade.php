@@ -295,9 +295,9 @@
                                     <input  wire:change="CambiaAmodoEdicion('{{ $u->url_id }}')"
                                         @if($u->url_edit=='0' and $u->url_doi != '') wire:confirm="Esta cédula cuenta con DOI. Se recomienda NO EDITAR las cédulas con doi. ¿Seguro que quieres comenzar la edición ?" @else  @endif
                                         class="form-check-input" value="1" type="checkbox" role="switch"
-                                        id="flexSwitchCheckDefault" @if($u->url_edit=='1') checked @endif
+                                        id="flexSwitchCheckDefault{{ $u->url_id }}" @if($u->url_edit=='1') checked @endif
                                         style="@if($u->url_edit=='1')background-color:red; @endif">
-                                    <label class="form-check-label" style="font-size:90%;" for="flexSwitchCheckDefault">@if($u->url_edit=='0') off @else on @endif</label>
+                                    <label class="form-check-label" style="font-size:90%;" for="flexSwitchCheckDefault{{ $u->url_id }}">@if($u->url_edit=='0') off @else on @endif</label>
                                     @if($u->url_doi != '')<b>DOI</b> @endif
                                 </div>
                             @endif

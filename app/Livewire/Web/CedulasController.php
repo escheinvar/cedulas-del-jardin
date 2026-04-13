@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Web;
 
+use App\Models\ced_aporteusrs;
 use App\Models\ced_autores;
+use App\Models\ced_externos;
 use App\Models\ced_sp;
 use App\Models\ced_ubica;
 use App\Models\ced_usos;
@@ -165,11 +167,6 @@ class CedulasController extends Component
             ->with('alias')
             ->first();
 
-        // $objsPpal=Imagenes::where('img_key',$this->url->url_key)
-        //     ->where('img_act','1')->where('img_del','0')
-        //     ->where('img_cimgtipo','ppal1')
-        //     ->get();
-
         $especies=ced_sp::where('sp_cjarsiglas',$this->url->url_cjarsiglas)
             ->where('sp_urltxt',$this->url->url_urltxt)
             ->where('sp_act','1')->where('sp_del','0')
@@ -186,15 +183,26 @@ class CedulasController extends Component
         $this->ubicaciones=$cedula->ubicaciones;
 
         ##### Obtiene aportes
-        $this->aportes=collect();
+        $this->aportes=ced_aporteusrs::where('msg_cjarsiglas',$this->url->url_cjarsiglas)
+            ->where('msg_urltxt',$this->url->url_urltxt)
+            ->where('msg_del','0')->where('msg_act','1')
+            ->where('msg_edo','3')
+            ->get();;
 
         ##### Obtiene ligas
-        $this->ligas=collect();
+        $this->ligas=ced_externos::where('ext_jardin',$this->url->url_cjarsiglas)
+            ->where('ext_urltxt',$this->url->url_urltxt)
+            ->where('ext_act','1')
+            ->where('ext_del','0')
+            ->orderBy('ext_id')
+            ->with('red')
+            ->get();
+// dd($this->url->url_cjarsiglas, $this->url->url_urltxt, $this->ligas);
 
         return view('livewire.web.cedulas-controller',[
             'cedula'=>$cedula,
-            // 'objsPpal'=>$objsPpal,
             'especies'=>$especies,
+
         ]);
     }
 
@@ -274,7 +282,10 @@ class CedulasController extends Component
     ################## Modal externo Yo tengo algo que aportar
     public function AbrirModalYoTengoAlgoQueAportar(){
         ##### <livewire:web.modal-cedula-yo-tengo-que-aportar />
-        $this->dispatch('AbreModalYoTengoQueAportar');
+        $dato=[
+            'urlId'=>$this->url->url_id,
+        ];
+        $this->dispatch('AbreModalYoTengoQueAportar',$dato);
     }
 
     ###########################################################
@@ -293,7 +304,8 @@ class CedulasController extends Component
         $this->dispatch('AbreModalIncertaObjeto',$datos);
     }
 
-
+    ####################################################################
+    ############### Modal para ver objetos
     public function AbreModalVerObjetos($tipoDato){
         #####<livewire:sistema.modal-ver-objeto-component />
         $data=[
@@ -304,6 +316,29 @@ class CedulasController extends Component
             ];
 
         $this->dispatch('AbreModalDeVerObjetos',$data);
+    }
+
+    ####################################################################
+    ############### Modal para editar aporte
+    public function AbrirModalParaEditarAporteDeVisitante($id){
+        #####<livewire:sistema.modal-admin-aportes-publico-component />
+        $dato=[
+            'msgId'=>$id,
+        ];
+        $this->dispatch('AbreModalParaEditarAporteDeVisitante', $dato);
+    }
+
+    ####################################################################
+    ############### Modal para abrir fuente externa
+    public function AbrirModalDeFuenteExterna($extid, $jardin, $urltxt){
+        #####<livewire:sistema.modal-cedula-fuente-externa-componennt />
+        $datos=[
+            'extid'=>$extid,  #### id de ext_id o 0 para nuevo
+            'jardin'=>$jardin, #### Jardín al que pertenece
+            'urltxt'=>$urltxt,  ####urltxt (sin lengua) al que pertenece
+        ];
+
+        $this->dispatch('AbreModalFuenteExterna',$datos);
     }
 }
 

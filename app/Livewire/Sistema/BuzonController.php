@@ -68,6 +68,58 @@ class BuzonController extends Component
         }
     }
 
+
+
+    ###########################################################
+    ########################################### Inicia render
+    public function render(){
+        $buzonSesion= buzon::where('buz_act','1')
+            ->where('buz_del','0')
+            ->where('buz_to',Auth::user()->id)
+            ->count();
+        session([
+            'buzon'=>$buzonSesion,
+        ]);
+
+        $paginas='5';
+        if($this->verLeidos==TRUE){$leidos='<=';}else{$leidos='=';}
+        if($this->verEnviados==TRUE){
+            $this->buzon= buzon::where('buz_del','0')
+            ->where('buz_act',$leidos,'1')
+            ->where('buz_to',Auth::user()->id)
+            ->orWhere('buz_from',Auth::user()->id)
+            ->leftJoin('users','buz_from','=','id')
+            ->orderBy('buz_date','desc')
+            ->orderBy('buz_hora','desc')
+            // ->paginate($paginas);
+            ->get();
+        }else{
+            $this->buzon= buzon::where('buz_del','0')
+                ->where('buz_act',$leidos,'1')
+                ->where('buz_to',Auth::user()->id)
+                ->leftJoin('users','buz_from','=','id')
+                ->orderBy('buz_date','desc')
+                ->orderBy('buz_hora','desc')
+                // ->paginate($paginas);
+                ->get();
+        }
+
+        ##### Lista de destinatarios en "enviar mensaje a..."
+        $destinatarios=UserRolesModel::where('rol_act','1')
+            ->select('rol_usrid','rol_tipo1','rol_crolrol','usrname')
+            ->where('rol_usrid','!=',Auth::user()->id)
+            ->leftJoin('users','rol_usrid','=','id')
+            ->orderBy('rol_tipo1','asc')
+            ->orderBy('rol_crolrol','asc')
+            ->get();
+
+        return view('livewire.sistema.buzon-controller',[
+            // 'buzon'=>$buzon,
+            'destinatarios'=>$destinatarios,
+        ]);
+    }
+
+
     ###########################################################
     ##################################### Inicia zona de modal
     public function AbreModal($buzId){
@@ -121,53 +173,4 @@ class BuzonController extends Component
         $this->CierraModal();
     }
 
-
-    ###########################################################
-    ########################################### Inicia render
-    public function render(){
-        $buzonSesion= buzon::where('buz_act','1')
-            ->where('buz_del','0')
-            ->where('buz_to',Auth::user()->id)
-            ->count();
-        session([
-            'buzon'=>$buzonSesion,
-        ]);
-
-        $paginas='5';
-        if($this->verLeidos==TRUE){$leidos='<=';}else{$leidos='=';}
-        if($this->verEnviados==TRUE){
-            $this->buzon= buzon::where('buz_del','0')
-            ->where('buz_act',$leidos,'1')
-            ->where('buz_to',Auth::user()->id)
-            ->orWhere('buz_from',Auth::user()->id)
-            ->leftJoin('users','buz_from','=','id')
-            ->orderBy('buz_date','desc')
-            ->orderBy('buz_hora','desc')
-            // ->paginate($paginas);
-            ->get();
-        }else{
-            $this->buzon= buzon::where('buz_del','0')
-                ->where('buz_act',$leidos,'1')
-                ->where('buz_to',Auth::user()->id)
-                ->leftJoin('users','buz_from','=','id')
-                ->orderBy('buz_date','desc')
-                ->orderBy('buz_hora','desc')
-                // ->paginate($paginas);
-                ->get();
-        }
-
-        ##### Lista de destinatarios en "enviar mensaje a..."
-        $destinatarios=UserRolesModel::where('rol_act','1')
-            ->select('rol_usrid','rol_tipo1','rol_crolrol','usrname')
-            ->where('rol_usrid','!=',Auth::user()->id)
-            ->leftJoin('users','rol_usrid','=','id')
-            ->orderBy('rol_tipo1','asc')
-            ->orderBy('rol_crolrol','asc')
-            ->get();
-
-        return view('livewire.sistema.buzon-controller',[
-            // 'buzon'=>$buzon,
-            'destinatarios'=>$destinatarios,
-        ]);
-    }
 }

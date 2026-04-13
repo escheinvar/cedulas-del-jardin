@@ -567,7 +567,7 @@
         <!-- -------------------------------------- BLOQUE INFERIOR AUTORÍAS ----------------------------------------------->
         <div class="row my-4" style="margin-top:5px; border-radius:8px; background-color:#87796d;">
             <!-- Cita -->
-            <div class="col-10 p-3">
+            <div class="col-12 p-3">
                 <h4>Forma de citar:</h4>
                     <b>{{ $url->url_cita_aut }}</b> {{ $url->url_anio }}. <u>{{ $url->url_titulo }}</u>
                     @if($url->url_tradid > '0')
@@ -606,6 +606,11 @@
 
             <!-- Redes sociales,  QR y licencia-->
             <div class="col-12 p-3" style="margin:20px;">
+                <!-- Yo tengo algo que aportar -->
+                <div wire:click="AbrirModalYoTengoAlgoQueAportar()" style="margin-left:20px; display:inline-block;" >
+                    <img src="/imagenes/BotonAportar.png" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px;">
+                </div>
+
                 <!-- Redes sociales-->
                 <div style="width:300px; display:inline-block;margin:15px;vertical-align:middle;text-align:center;">
                     <div style="background-color: rgb(66, 42, 20);color:white;padding:4px;padding:2px; font-size:90%;text-align:center;" class="center">
@@ -663,14 +668,15 @@
                             ->size($qrSize)
                             ->backgroundColor(205,198,185)
                             ->color(32,45,45)
-                            ->generate({{ $UrlRedes }})
+                            ->generate({{ $UrlRedes }});
                             !!} --}}
                     </span>
                     <span wire:click="BajarQR()" class="PaClick" style="margin:5px;vertical-align:bottom;">
                         <i class="bi bi-cloud-download"> </i>
                     </span>
                 </div>
-
+            {{-- </div>
+            <div class="col-12 p-3" style="margin:20px;"> --}}
                 <!-- Licencia GNU -->
                 <div class="col-12" style="margin:20px; font-size:80%;">
                     {{-- Copyright(C), {{ date('Y', strtotime($version['ced_versiondate'])) }} @if($version['ced_cita']!=''){{ $version['ced_cita'] }} @else {{ $version['jardin'] }}@endif. --}}
@@ -687,49 +693,67 @@
         <!-- -------------------------------------- BLOQUE EXTRA DE EXTERNOS  ----------------------------------------------->
         <!-- -------------------------------------- BLOQUE EXTRA DE EXTERNOS  ----------------------------------------------->
         <!-- -------------------------------------- BLOQUE EXTRA DE EXTERNOS  ----------------------------------------------->
-        <div @if($aportes->count() > 0)style="border:1px solid #64383E; border-radius:8px;padding:10px;" @endif>
+
+        {{-- <div class="row my-3" @if($aportes->count() > '0')style="border:1px solid #87796d;; border-radius:8px;padding:10px;" @endif> --}}
+        <div class="row my-3">
             <!-- Yo tengo algo que aportar -->
-            <a href="#AporteUsrs" class="nolink">
-                <div wire:click="AbrirModalYoTengoAlgoQueAportar()" class="" style="margin-left:20px; display:inline-block;" >
-                    <img src="/imagenes/BotonAportar.png" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px;">
-                </div>
-            </a>
+            {{-- <div class="col-12 " wire:click="AbrirModalYoTengoAlgoQueAportar()" style="margin-left:20px; display:inline-block;" >
+                <img src="/imagenes/BotonAportar.png" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px;">
+            </div> --}}
 
-            @if($aportes->count() > 0)
-                <h3>Aporte de visitantes</h3>
+            <!-- muestra APORTES DE VISITANTES -->
+            @if($aportes->count() > '0')
                 @foreach ($aportes as $a)
-                    <div style="padding:15px;">
-                        @if($a->msg_edo < '3')
-                            <span style="color:red">En espera de autorización</span>
-                        @endif
-                        <p style="@if($a->msg_edo <'3') color:gray; @endif">
-                            {{ $a->msg_mensaje }}<br>
-                            <b>{{ $a->msg_usuario }}</b>
-
-                            @if($a->msg_origen != '') de {{ $a->msg_origen }} @endif
-                            @if($a->msg_edad != '') ({{ $a->msg_edad }} años) @endif
-                            <span style="font-size:90%;">{{ $a->msg_date }}</span>
-                        </p>
-                        <hr>
+                    <div class="col-12 col-md-6 my-2" style="padding:15px;">
+                        <div class="truncarTexto PaClick" style="width:100%;" onclick="Destruncar('mensaje','{{ $a->msg_id }}')" id="sale_mensaje{{ $a->msg_id }}">
+                            {{ $a->msg_mensaje }}
+                        </div>
+                        <span class="form-text">
+                            <b>{{ $a->msg_usuario }}</b> &nbsp; {{ $a->msg_estado }} {{ $a->msg_mpio }}, {{ $a->msg_comunidad }} ({{ $a->msg_lengua }})
+                        </span>
+                        @if($editMaster=='1') <i class="bi bi-pencil-square PaClick cedEdo{{ $url->url_edo }}" wire:click="AbrirModalParaEditarAporteDeVisitante('{{ $a->msg_id }}')"> <sup>edo{{ $a->msg_edo }}</sup></i>@endif
                     </div>
                 @endforeach
             @endif
 
-            @if($cedula->autores->count() > 0)
-                <div class="my-4">
-                    <h3>Otras ligas</h3>
-                    <table class="table table-striped">
-                        <thead>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    @foreach($cedula->autores as $a)
-                        <tr>
-                            <td>{{ $a->aut_correo }}</td>
-                        </tr>
-                    @endforeach
-                    </table>
-                </div>
+            <!-- muestra FUENTES EXTERNAS-->
+            @if($ligas->count() > '0')
+                @foreach($ligas as $l)
+                    <div class="col-12 col-md-4 my-2">
+                        <div style="width:100%; font-size:80%; display:inline-block;">
+                            <a href="{{ $l->ext_url }}" target="new_" class="nolink">
+                                <img class="m-1" src="{{ $l->ext_caratula}}" style="max-width:200px; max-height:100px; border-radius:7px; float:left;">
+                            </a>
+                            <div class="m-1">
+                                <!-- fuente -->
+                                Fuente
+                                    @if($l->red->red_url != '')<a href="{{ $l->red->red_url }}" class="nolink"> @endif
+                                        {!! $l->red->red_icon !!} {{ $l->red->red_name }}<br>
+                                    @if($l->red->red_url != '')</a> @endif
+                                <!-- explicación -->
+                                <div class="truncarTexto PaClick" onclick="Destruncar('externo','{{ $l->ext_id }}')" id="sale_externo{{ $l->ext_id }}" style="width:190px;">{{ $l->ext_explica }}</div>
+                                <!-- icono ir -->
+                                <a href="{{ $l->ext_url }}" target="new_" class="nolink"><i class="bi bi-arrow-up-right-square"></i> Ir a referencia</a><br>
+                                <!-- fecha -->
+                                @if($l->ext_fecha != '') Fecha: {{ $l->ext_fecha }}@endif
+                            </div>
+                            <!-- nombre de autor -->
+                            @if($l->ext_autorname != '')
+                                Autor
+                                @if($l->ext_autorurl != '')<a href="{{ $l->ext_autorurl }}" target="new_">@endif
+                                    {{ $l->ext_autorname }}
+                                @if($l->ext_autorurl != '')</a>@endif
+                                <br>
+                            @endif
+                            @if($edit=='1')
+                                <i wire:click="AbrirModalDeFuenteExterna('{{ $l->ext_id }}','{{ $url->url_cjarsiglas }}','{{ $url->url_urltxt }}')" class="bi bi-pencil-square cedEdo{{ $url->url_edo }} PaClick"> editar</i>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+            @if($edit=='1')
+                <i wire:click="AbrirModalDeFuenteExterna('0','{{ $url->url_cjarsiglas }}','{{ $url->url_urltxt }}')" class="bi bi-plus-circle cedEdo{{ $url->url_edo }} PaClick"> Agregar fuente externa</i>
             @endif
         </div>
     @endif
@@ -742,62 +766,58 @@
 
 
 
-
-
-
-
-    <!-- ------------------------------------------------------------------------------------------ -->
-    <!-- ----------------------------------- MODAL DE TRADUCCIÓN DE TÍTULO ------------------------ -->
-    <!-- ------------------------------------------------------------------------------------------ -->
-    <!-- ------------------------------------------------------------------------------------------ -->
-    <div wire:ignore.self class="modal fade" id="ModalTraduceTitulo" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Traduce el título</h3>
-                    <button wire:click="CerrarModalTraduceTitulo()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
-                </div>
-                <!-- ----------------------------  cuerpo del modal --------------------------->
-                <div class="modal-body" style="">
-                    <div class="form-group">
-                        <b>Título original:</b>
-                        <input type="text" class="form-control" value="{{ $url->url_tituloorig }}" readonly>
+    @if($edit=='1')
+        <!-- ------------------------------------------------------------------------------------------ -->
+        <!-- ----------------------------------- MODAL DE TRADUCCIÓN DE TÍTULO ------------------------ -->
+        <!-- ------------------------------------------------------------------------------------------ -->
+        <!-- ------------------------------------------------------------------------------------------ -->
+        <div wire:ignore.self class="modal fade" id="ModalTraduceTitulo" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Traduce el título</h3>
+                        <button wire:click="CerrarModalTraduceTitulo()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
                     </div>
+                    <!-- ----------------------------  cuerpo del modal --------------------------->
+                    <div class="modal-body" style="">
+                        <div class="form-group">
+                            <b>Título original:</b>
+                            <input type="text" class="form-control" value="{{ $url->url_tituloorig }}" readonly>
+                        </div>
 
-                    <div class="form-group">
-                        <b>Título en {{ $url->lenguas->len_autonimias }}</b>:<br>
-                        <input  wire:model="NuevoTituloTraducido" type="text" class="@error('NuevoTituloTraducido') is-invalid @enderror form-control" >
-                        @error('NuevoTituloTraducido')<error>{{ $message }}</error>@enderror
+                        <div class="form-group">
+                            <b>Título en {{ $url->lenguas->len_autonimias }}</b>:<br>
+                            <input  wire:model="NuevoTituloTraducido" type="text" class="@error('NuevoTituloTraducido') is-invalid @enderror form-control" >
+                            @error('NuevoTituloTraducido')<error>{{ $message }}</error>@enderror
+                        </div>
+
                     </div>
+                    <div class="modal-footer">
+                        <button wire:click="CerrarModalTraduceTitulo()" class="btn btn-secondary">
+                            Cerrar
+                        </button>
 
-                </div>
-                <div class="modal-footer">
-                    <button wire:click="CerrarModalTraduceTitulo()" class="btn btn-secondary">
-                        Cerrar
-                    </button>
-
-                    <button wire:click="GuardaTituloTraducido()" wire:loading.attr="disabled" class="btn btn-primary">
-                        Guardar
-                    </button>
-                    <span wire:loading style="display:none;"> <red>..guardando...</red> </span>
+                        <button wire:click="GuardaTituloTraducido()" wire:loading.attr="disabled" class="btn btn-primary">
+                            Guardar
+                        </button>
+                        <span wire:loading style="display:none;"> <red>..guardando...</red> </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- ---------------------- TERMINA MODAL DE TRADUCCIÓN DE TÍTULO ------------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- -------------------------------------------------------------------------------------- -->
-    @if($edit=='1')
+        <!-- ---------------------- TERMINA MODAL DE TRADUCCIÓN DE TÍTULO ------------------------- -->
+        <!-- -------------------------------------------------------------------------------------- -->
+        <!-- -------------------------------------------------------------------------------------- -->
 
         <livewire:sistema.modal-edita-parrafo-component />
         <livewire:sistema.modal-cedula-ubicaciones-component />
         <livewire:sistema.modal-cedula-alias-component />
         <livewire:sistema.modal-cedula-cambia-estado-component />
-        <livewire:web.modal-cedula-yo-tengo-que-aportar />
         <livewire:sistema.modal-inserta-objeto-component />
-
-
+        <livewire:sistema.modal-admin-aportes-publico-component />
+        <livewire:sistema.modal-cedula-fuente-externa-componennt />
     @endif
+    <livewire:web.modal-cedula-yo-tengo-que-aportar />
 
 
 
@@ -823,6 +843,12 @@
             location.reload();
             // window.location.href;
         });
+
+
+        function Destruncar($tipo,$id){
+            var obj = document.getElementById('sale_' + $tipo + $id);
+            obj.classList.toggle('truncarTexto')
+        }
 
     </script>
 </div>

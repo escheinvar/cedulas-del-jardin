@@ -217,11 +217,13 @@
                                         </li>
                                     @endif
 
-                                    <li class="nav-item">
-                                        <a class="nav-link  @if(request()->path() == 'admin_cedulas') active @endif" href="/admin_cedulas">
-                                            Admin Cedulas
-                                        </a>
-                                    </li>
+                                    @if(count(session('rol')) > '0')
+                                        <li class="nav-item">
+                                            <a class="nav-link  @if(request()->path() == 'admin_cedulas') active @endif" href="/admin_cedulas">
+                                                Admin Cedulas
+                                            </a>
+                                        </li>
+                                    @endif
 
                                     <!-- Salir de sistema -->
                                     <li class="nav-item">
