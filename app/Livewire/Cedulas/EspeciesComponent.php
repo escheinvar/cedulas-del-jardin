@@ -52,8 +52,8 @@ class EspeciesComponent extends Component
     }
 
     public function VerQR(){
-        if( $this->qrSize=='80'){
-        $this->qrSize='200';
+        if($this->qrSize=='80'){
+            $this->qrSize='200';
         }elseif( $this->qrSize=='200'){
             $this->qrSize='600';
         }elseif( $this->qrSize=='600'){
@@ -65,7 +65,7 @@ class EspeciesComponent extends Component
         return response()->streamDownload(
             function(){
                 echo QrCode::size($this->qrSize)->margin(2)
-                    ->generate( url('/').'/sp/'.$this->url.'/'.$this->jardin );
+                    ->generate( url('/').'/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url );
             },
             'CodigoQR.png',
             [

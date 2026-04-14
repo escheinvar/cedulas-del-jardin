@@ -53,6 +53,7 @@
                     <h3 style="display:inline;">
                         <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
                     </h3>
+                    <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
                     @if($txt_audio != '')
                         <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
                             <source src="{{ $txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
@@ -65,6 +66,10 @@
                             <i  class="bi bi-pencil-square"></i><sup>{{ $txt_orden }}</sup>
                         </span>
                     @endif
+                    <!-- texto original -->
+                    <div class="" style="color:#87796d; display:none;" id="sale_parrafo{{ $txt_id }}">
+                        {!!  $txt_txtoriginal !!}
+                    </div>
                 </div>
 
             <!-- párrafo tipo título 2 -->
@@ -73,6 +78,7 @@
                     <h4 style="display:inline;">
                         <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
                     </h4>
+                    <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
                     @if($txt_audio != '')
                         <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
                             <source src="{{ $txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
@@ -85,6 +91,10 @@
                             <i  class="bi bi-pencil-square"></i><sup>{{ $txt_orden }}</sup>
                         </span>
                     @endif
+                    <!-- texto original -->
+                    <div class="" style="color:#87796d; display:none;" id="sale_parrafo{{ $txt_id }}">
+                        {!!  $txt_txtoriginal !!}
+                    </div>
                 </div>
 
             <!-- párrafo tipo título 1 -->
@@ -93,6 +103,7 @@
                     <h5 style="display:inline;">
                         <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
                     </h5>
+                    <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
                     @if($txt_audio != '')
                         <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
                             <source src="{{ $txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
@@ -105,12 +116,18 @@
                             <i  class="bi bi-pencil-square"></i><sup>{{ $txt_orden }}</sup>
                         </span>
                     @endif
+                    <!-- texto original -->
+                    <div class="" style="color:#87796d; display:none;" id="sale_parrafo{{ $txt_id }}">
+                        {!!  $txt_txtoriginal !!}
+                    </div>
                 </div>
             @endif
             <!-- párrafo tipo parrafo -->
             @if($txt_tipo=='p')
                 <div class="my-2" style="display:inline;">
                     {!! $txt_txt !!}
+                    <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
+
                     @if($txt_audio != '')
                         <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
                             <source src="{{ $txt_audio }}" type="audio/ogg"> El navegador no soporta el audio
@@ -123,6 +140,10 @@
                             <i  class="bi bi-pencil-square"></i><sup>{{ $txt_orden }}</sup>
                         </span>
                     @endif
+                    <!-- texto original -->
+                    <div class="" style="color:#87796d; display:none;" id="sale_parrafo{{ $txt_id }}">
+                        {!!  $txt_txtoriginal !!}
+                    </div>
                 </div>
             @endif
         </div>

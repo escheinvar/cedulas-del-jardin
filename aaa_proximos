@@ -1,21 +1,19 @@
 -------------------------------------------
-- Módulo de búsqueda de cédulas. Que al iniciar, se vea tabla de temas con traducciones y buscador por tema (incluyendo todos los nombres en lengua dentro de la búsqueda)
+- Módulo de búsqueda de cédulas.
+Que al iniciar, se vea tabla de temas con traducciones
+y buscador por tema (incluyendo todos los nombres en lengua
+dentro de la búsqueda)
 -------------------------------------------
 - Administrador y editor de temas
 -------------------------------------------
-- Cambiar la tabla de adminsitrador de cédulas por una tabla con estados que no se tenga que abrir
--------------------------------------------
-- Modificar estados: que el traductor primero solicite editar y que el administrador autorice iniciar edición.
--------------------------------------------
-- Que al guardar nueva versión, se genere el pdf y ése sea consultado (no al vuelo)
+- Que al guardar nueva versión, se genere el pdf y
+ése sea consultado (no al vuelo)
 ---------------------------------------------------
 - Generar función para eliminar página web de jardín.
-En modal del módulo de Administración de sitios web del jardín, tiene un botón para "eliminar página completa" que al picar, debe de:
+En modal del módulo de Administración de sitios web
+del jardín, tiene un botón para "eliminar página completa"
+ que al picar, debe de:
 eliminar la página y todos sus textos y archivos.
----------------------------------------------------
-Middle o función en cada página que solicita jardin a ver, para que
-se guarde en sesión el jardín en el que se trabaja y que el mount del jardín
-inicie con el predilecto. (para evitar que al reiniciar, se cambie de jardín.)
 ---------------------------------------------------
 Modulo de listas (planteado por Niza)
 ---------------------------------------------------
@@ -26,6 +24,16 @@ Reactivar módulo de  estadísticas de visitas, registrar visitas a cada cédula
 y poner en cada cédula el número de visualizaciones.
 ---------------------------------------------------
 Poner código QR
+---------------------------------------------------
+
+---------------------------------------------------
+
+---------------------------------------------------
+
+---------------------------------------------------
+
+---------------------------------------------------
+
 ---------------------------------------------------
 
 ---------------------------------------------------

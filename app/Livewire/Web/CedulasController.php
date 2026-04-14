@@ -15,7 +15,7 @@ use App\Models\nom054semarnat;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use SimpleSoftwareIO\QrCode\Image;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CedulasController extends Component
 {
@@ -66,10 +66,9 @@ class CedulasController extends Component
 
         ##### Carga todas las traducciones de la url
         $this->traducciones=cedulas_url::where('url_key', $this->url->url_key)
-            // ->where('url_urltxt',$this->url->url_urltxt)
             ->where('url_id','!=',$this->url->url_id)
             ->where('url_act','1')->where('url_del','0')
-            ->where('url_ciclo','>','0')
+            // ->where('url_ciclo','>','0')
             ->with('lenguas')
             ->with('jardin') ##quitar cuando quite $traducciones en lína 169 de la vista
             ->orderBy('url_lencode')
@@ -81,7 +80,7 @@ class CedulasController extends Component
         $this->verAlias='0';
         $this->meses=['0','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','dieciembre'];
         $this->UrlRedes=url('/').'/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url;
-        $this->qrSize='20';
+        $this->qrSize='80';
 
     }
 
@@ -197,7 +196,7 @@ class CedulasController extends Component
             ->orderBy('ext_id')
             ->with('red')
             ->get();
-// dd($this->url->url_cjarsiglas, $this->url->url_urltxt, $this->ligas);
+
 
         return view('livewire.web.cedulas-controller',[
             'cedula'=>$cedula,
@@ -205,6 +204,32 @@ class CedulasController extends Component
 
         ]);
     }
+
+
+    public function VerQR(){
+        if( $this->qrSize=='80'){
+        $this->qrSize='200';
+        }elseif( $this->qrSize=='200'){
+            $this->qrSize='600';
+        }elseif( $this->qrSize=='600'){
+            $this->qrSize='80';
+        }
+    }
+
+    public function BajarQR(){
+        return response()->streamDownload(
+            function(){
+                echo QrCode::size($this->qrSize)->margin(2)
+                    ->generate( url('/').'/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url );
+            },
+            'CodigoQR.png',
+            [
+                'Content-Type'=>'image/png'
+            ]
+            );
+    }
+
+
 
 
     ############################################################

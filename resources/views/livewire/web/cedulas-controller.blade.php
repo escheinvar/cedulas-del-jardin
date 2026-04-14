@@ -67,7 +67,6 @@
     </div>
 
     <!-- -------------------------------------- PÁGINA NO DISPONIBLE ------------------------------------------ -->
-
     @if( ($enEdit=='1' or $edit=='0') and !Auth::user() and $url->url_edo < '5')
         <div class="row m-5">
             <div class="col-12">
@@ -665,16 +664,17 @@
                 <!-- Código QR -->
                 <div  style="display: inline;">
                     <span wire:click="VerQR()" class="PaClick">
-                        {{-- {!! QrCode::margin(2)
+                        {!! QrCode::margin(2)
                             ->size($qrSize)
                             ->backgroundColor(205,198,185)
                             ->color(32,45,45)
-                            ->generate({{ $UrlRedes }});
-                            !!} --}}
+                            ->generate( url('/').'/cedula/'.$url->url_cjarsiglas.'/'.$url->url_url)
+                            !!}
                     </span>
                     <span wire:click="BajarQR()" class="PaClick" style="margin:5px;vertical-align:bottom;">
                         <i class="bi bi-cloud-download"> </i>
                     </span>
+
                 </div>
             {{-- </div>
             <div class="col-12 p-3" style="margin:20px;"> --}}
@@ -698,9 +698,9 @@
         {{-- <div class="row my-3" @if($aportes->count() > '0')style="border:1px solid #87796d;; border-radius:8px;padding:10px;" @endif> --}}
         <div class="row my-3">
             <!-- Yo tengo algo que aportar -->
-            {{-- <div class="col-12 " wire:click="AbrirModalYoTengoAlgoQueAportar()" style="margin-left:20px; display:inline-block;" >
-                <img src="/imagenes/BotonAportar.png" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px;">
-            </div> --}}
+            <div class="col-12 " wire:click="AbrirModalYoTengoAlgoQueAportar()" style="margin-left:20px; display:inline-block;" >
+                <img src="/imagenes/BotonAportar.png" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px; float: right;">
+            </div>
 
             <!-- muestra APORTES DE VISITANTES -->
             @if($aportes->count() > '0')
