@@ -22,10 +22,14 @@ class AdminImagenesController extends Component
         if($tipo=='nes'){$this->ModoTabla='1';}else{$this->ModoTabla='0';}
         $this->orden='img_id';
         $this->sent='asc';
-        $this->BuscaJardin='JebOax';
+        $this->BuscaJardin=session('jardin');
         $this->BuscaMod='cedula';
         $this->BuscaSubMod='';
         $this->BuscaTxt='';
+    }
+
+    public function DefineJardin(){
+        session(['jardin'=>$this->BuscaJardin]);
     }
 
     public function CambiaModo(){

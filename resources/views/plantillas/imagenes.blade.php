@@ -71,7 +71,7 @@
             <explica class="truncarTexto" id="explica_{{ $o->img_id }}">
                 <div>
                     <span onclick="Destruncar('explica','{{ $o->img_id }}')">
-                        {{ $o->img_pie }}
+                        {{ $o->img_pie }}d
                     </span>
                 </div>
                 <div>

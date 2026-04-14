@@ -8,6 +8,7 @@ use App\Models\SpUrlModel;
 use App\Models\User;
 use App\Models\UserRolesModel;
 use Illuminate\Support\Facades\Auth;
+use \Livewire\Attributes\Session;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
@@ -17,8 +18,9 @@ class UsuariosComponent extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $edit,$editjar; ##### Variables de permisos del usuario
-    public $jardinSel, $rolSel, $nombreSel; ##### Vars de formulario de búsqueda
+    public  $edit,$editjar; ##### Variables de permisos del usuario
+    public  $jardinSel;
+    public  $rolSel, $nombreSel; ##### Vars de formulario de búsqueda
     public  $usrId,$correo,$usrname,$nombre,$apellido,$nace; ##### Vars de formulario de modal
     public  $Inactiva,$mensajes,$avatar,$NvoAvatar,$rolesUsr,$orden,$sentido; #### vars de modal
     public  $NvoRol, $NvoJardin; ##### vars de modal
@@ -27,8 +29,9 @@ class UsuariosComponent extends Component
         $this->rolesUsr=[];
         $this->orden='email';
         $this->sentido='asc';
-        $this->jardinSel='';
+        $this->jardinSel=session('jardin');
         $this->rolSel='';
+        // dd(session()->all());
     }
 
     public function ordenaTabla($ord){
@@ -38,6 +41,11 @@ class UsuariosComponent extends Component
             $this->sentido='asc';
         }
         $this->orden=$ord;
+    }
+
+
+    public function DefineJardin(){
+        session(['jardin'=>$this->jardinSel]);
     }
 
     ###################################################

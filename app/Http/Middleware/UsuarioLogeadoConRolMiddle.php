@@ -49,22 +49,27 @@ class UsuarioLogeadoConRolMiddle
                     $jards=CatJardinesModel::pluck('cjar_siglas')->toArray();
                 }
 
-                ##### Recupera cantidad de aportaciones PENDIENTES DE APROBAR
-                $aportes=SpAporteUsrsModel::leftJoin('sp_urlcedula','ced_id','=','msg_cedid')
-                    ->where('msg_act','1')->where('msg_del','0')
-                    ->where('msg_edo','0')
-                    ->whereIn('ced_cjarsiglas',$jards)
-                    ->count();
+                // ##### Recupera cantidad de aportaciones PENDIENTES DE APROBAR
+                // $aportes=SpAporteUsrsModel::leftJoin('sp_urlcedula','ced_id','=','msg_cedid')
+                //     ->where('msg_act','1')->where('msg_del','0')
+                //     ->where('msg_edo','0')
+                //     ->whereIn('ced_cjarsiglas',$jards)
+                //     ->count();
+
             }else{
                 $aportes='0';
             }
+
 
             ##### Guarda variables de usuario,
             session([
                 'rol'=>$roles,
                 'buzon'=>$buzon,
-                'aportes'=>$aportes,
             ]);
+
+            ##### Define session de jardin
+            if($request->session()->has('jardin')){}else{session(['jardin'=>'a']);}
+
             return $next($request);
         }else{
             #### Redirecciona

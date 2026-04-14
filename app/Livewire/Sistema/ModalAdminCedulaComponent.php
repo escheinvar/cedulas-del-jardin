@@ -63,6 +63,7 @@ class ModalAdminCedulaComponent extends Component
         }else{
             // $this->CedAutores=collect();
             $this->LimpiaModal();
+            $this->act=TRUE;
         }
     }
 
@@ -72,6 +73,7 @@ class ModalAdminCedulaComponent extends Component
         $this->verAutor='1'; $this->verEditor='1'; $this->verTraductor='1';
         $this->verUbicacion='0'; $this->verAlias='0'; $this->verSp='0'; $this->verUso='0';
         $this->verTituloOrig='0'; $this->verResumenOrig='0';
+
     }
 
     public function LimpiaModal(){
@@ -115,11 +117,9 @@ class ModalAdminCedulaComponent extends Component
             'lengua'=>'required',
             'url'=> 'required',
             'titulo'=>'required',
-
         ]);
 
         ##### Valida que haya copia
-        // if($this->origtrad =='traducción' and $this->cedulaId == '0'){
         if($this->origtrad =='traducción' and $this->cedulaId == '0'){
             $this->validate(['copiade'=>'required']);
 
@@ -127,8 +127,9 @@ class ModalAdminCedulaComponent extends Component
             $ja=cedulas_url::where('url_cjarsiglas',$this->jardinSel)
                 ->where('url_urltxt',$urltxt)
                 ->where('url_lencode',$this->lengua)
+                ->where('url_act','1')
                 ->count();
-            if($ja > '0'){$this->addError('lengua','Ya existe una copia en esta lengua');return;}
+           if($ja > '0'){$this->addError('lengua','Ya existe una copia en esta lengua');return;}
         }
 
         #### Valida que no se use nombres reservados o prohibidos
@@ -149,6 +150,7 @@ class ModalAdminCedulaComponent extends Component
         $ja=cedulas_url::where('url_cjarsiglas',$this->jardinSel)
             ->where('url_url',$this->url)
             ->where('url_id','!=',$this->cedulaId)
+            ->where('url_del','1')
             ->count();
         if($ja > '0'){$this->addError('url','Esta url ya existe en tu jardín');return;}
 
@@ -184,7 +186,7 @@ class ModalAdminCedulaComponent extends Component
         ##### Guarda en Base de datos
         if($this->cedulaId=='0'){
             $ja=cedulas_url::create($datos);
-            $id=$ja->urlj_id;
+            $id=$ja->url_id;
             #### Crea log
             paLog('Genera nueva cédula web ('.$this->url.') de '.$this->jardinSel,'cedulas_url',$id);
         }else{
@@ -195,16 +197,49 @@ class ModalAdminCedulaComponent extends Component
         }
         ##### en caso de copias, copia alias, ubicaciones yel contenido de la página,
         if($this->origtrad=='traducción'){
-            ###OJO::: copiar: texto, copiar alias, y copiar ubicaciones de original
-        //     $original=cedulas_txt::where('ced_urlid',$this->copiade)
-        //         ->where('ced_act','1')->where('ced_del','0')
-        //         ->get();
-        //     foreach($original as $or){
-        //         $copia= $or->replicate();
-        //         $copia->ced_urljid = $id;
-        //         $copia->ced_txtoriginal = $or->ced_txt;
-        //         $copia->save();
-        //     }
+            ##### Genera copia de elementos de la cédula
+            ##### $this->copiade =tiene url_id del original, $id=nuevo ID
+            ##### Copia Autores
+            $orig1=ced_autores::where('aut_urlid',$this->copiade)
+                ->where('aut_del','0')
+                ->where('aut_tipo','Autor')
+                ->get();
+            foreach($orig1 as $or){
+                $copia= $or->replicate();
+                $copia->aut_urlid = $id;
+                $copia->save();
+            }
+            ###### Copia Ubicaciones
+            $orig2=ced_ubica::where('ubi_urlid',$this->copiade)
+                ->where('ubi_del','0')
+                ->get();
+            foreach($orig2 as $or){
+                $copia= $or->replicate();
+                $copia->ubi_urlid = $id;
+                $copia->save();
+            }
+            ##### Copia Palabras Clave
+            $orig3=ced_alias::where('ali_urlid',$this->copiade)
+                ->where('ali_del','0')
+                ->get();
+            foreach($orig3 as $or){
+                $copia=$or->replicate();
+                $copia->ali_urlid = $id;
+                $copia->save();
+            }
+            ##### No requiere copiar especies ni usos.
+
+            ##### Copia textos
+            $orig4=cedulas_txt::where('txt_urlid',$this->copiade)
+                ->where('txt_del','0')
+                ->get();
+
+            foreach($orig4 as $or){
+                $copia=$or->replicate();
+                $copia->txt_urlid=$id;
+                $copia->txt_urlurl=$this->url;
+                $copia->save();
+            }
         }
         $this->CierraModalCedula();
     }

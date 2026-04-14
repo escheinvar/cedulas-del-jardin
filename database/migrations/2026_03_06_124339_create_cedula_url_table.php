@@ -43,7 +43,7 @@ return new class extends Migration
             $table->string('url_doi')->nullable();
 
             $table->timestamps();
-            $table->unique(['url_cjarsiglas','url_url']);
+            // $table->unique(['url_cjarsiglas','url_url']);
         });
     }
 

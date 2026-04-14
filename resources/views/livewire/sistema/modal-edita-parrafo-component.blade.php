@@ -67,23 +67,46 @@
                             <div style="margin:7px;">
                                 <button onclick="insertarTexto('<p>','</p>')" class="lenguas" title="Párrafo"> <i class="bi bi-text-paragraph"></i>  </button>
                                 <button onclick="insertarTexto('<br>','')" class="lenguas" title="Salto de línea"> <i class="bi bi-arrow-return-left"></i>  </button>
-                                <button onclick="insertarTexto('<ar>','</ar>')" class="lenguas" title="Línea alta"> <ar>a</ar>  </button>
                                 <button onclick="insertarTexto('<b>','</b>')" class="lenguas" title="Negritas"> <b>B</b>    </button>
-                                <button onclick="insertarTexto('<u>','</u>')" class="lenguas" title="Subrayado">    <u>u</u>    </button>
                                 <button onclick="insertarTexto('<i>','</i>')" class="lenguas" title="Cursivas"> <i>i</i>    </button>
+                                <button onclick="insertarTexto('<s>','</s>')" class="lenguas" title="Tachado">  <s>S</s>    </button>
                                 <button onclick="insertarTexto('<sub>','</sub>')" class="lenguas" title="Subíndice">    a<sub>s</sub>   </button>
                                 <button onclick="insertarTexto('<sup>','</sup>')" class="lenguas" title="Superíndice">  a<sup>s</sup>   </button>
-                                <button onclick="insertarTexto('<s>','</s>')" class="lenguas" title="Tachado">  <s>S</s>    </button>
+                                <button onclick="insertarTexto('<ar>','</ar>')" class="lenguas" title="Línea alta"> <ar>a</ar>  </button>
+                                <button onclick="insertarTexto('<u>','</u>')" class="lenguas" title="Subrayado">    <u>u</u>    </button>
                                 &nbsp; | &nbsp;
                                 <button onclick="insertarTexto('<div style=&quot;text-align:left;&quot;>','</div>')" class="lenguas" title="Alinear a izquierda">  <i class="bi bi-text-left"></i>    </button>
                                 <button onclick="insertarTexto('<div style=&quot;text-align:center;&quot;>','</div>')" class="lenguas" title="Centrar">  <i class="bi bi-text-center"></i>    </button>
                                 <button onclick="insertarTexto('<div style=&quot;text-align:right;&quot;>','</div>')" class="lenguas" title="Alinear a derecha">  <i class="bi bi-text-right"></i>    </button>
-                                <button onclick="insertarTexto('<ul><li></li>','<li></li></ul>')" class="lenguas" title="Lista">  <i class="bi bi-list-task"></i>    </button>
-                                <button onclick="insertarTexto('<ol><li></li>','<li></li></ol>')" class="lenguas" title="Lista">  <i class="bi bi-list-ol"></i>    </button>
+                                <button onclick="insertarTexto('<div style=&quot;text-align:justify;&quot;>','</div>')" class="lenguas" title="Alinear a derecha">  <i class="bi bi-justify"></i>    </button>
+                                <button onclick="insertarTexto('<ul>\n\t<li>','</li>\n</ul>')" class="lenguas" title="Lista">  <i class="bi bi-list-task"></i>    </button>
+                                <button onclick="insertarTexto('<ol>\n\t<li>','</li>\n</ol>')" class="lenguas" title="Lista">  <i class="bi bi-list-ol"></i>    </button>
                                 <button onclick="insertarTexto('<h2>','</h2>')" class="lenguas" title="Titulo">  H2  </button>
                                 <button onclick="insertarTexto('<h3>','</h3>')" class="lenguas" title="Título">  H3  </button>
                                 <button onclick="insertarTexto('<h4>','</h4>')" class="lenguas" title="Título">  H4  </button>
-                                &nbsp; | &nbsp;<br>
+                                {{-- &nbsp; | &nbsp; --}}
+                                <br>
+                                <button onclick="insertarTexto('&Aring;','')" class="lenguas" title="Título"> &Aring;  </button>
+                                <button onclick="insertarTexto('&aring;','')" class="lenguas" title="Título"> &aring;  </button>
+                                <button onclick="insertarTexto('&Atilde;','')" class="lenguas" title="Título">  &Atilde; </button>
+                                <button onclick="insertarTexto('&atilde;','')" class="lenguas" title="Título">  &atilde; </button>
+                                <button onclick="insertarTexto('&AElig;','')" class="lenguas" title="Título"> &AElig;  </button>
+                                <button onclick="insertarTexto('&aelig;','')" class="lenguas" title="Título">  &aelig; </button>
+                                <button onclick="insertarTexto('&ETH;','')" class="lenguas" title="Título"> &ETH;  </button>
+                                <button onclick="insertarTexto('&eth;','')" class="lenguas" title="Título">  &eth; </button>
+                                <button onclick="insertarTexto('&Otilde;','')" class="lenguas" title="Título"> &Otilde;  </button>
+                                <button onclick="insertarTexto('&otilde;','')" class="lenguas" title="Título"> &otilde;  </button>
+                                <button onclick="insertarTexto('&THORN;','')" class="lenguas" title="Título"> &THORN;  </button>
+                                <button onclick="insertarTexto('&thorn;','')" class="lenguas" title="Título"> &thorn;  </button>
+                                <button onclick="insertarTexto('&szlig;','')" class="lenguas" title="Título"> &szlig;  </button>
+                                <!-- https://www.w3schools.com/charsets/ref_html_entities_latin.asp -->
+                                {{-- <button onclick="insertarTexto('','')" class="lenguas" title="Título">   </button>
+                                <button onclick="insertarTexto('','')" class="lenguas" title="Título">   </button>
+                                <button onclick="insertarTexto('','')" class="lenguas" title="Título">   </button>
+                                <button onclick="insertarTexto('','')" class="lenguas" title="Título">   </button>
+                                <button onclick="insertarTexto('','')" class="lenguas" title="Título">   </button> --}}
+                                {{-- &nbsp; | &nbsp; --}}
+                                <br>
                                 <button onclick="insertarTexto('<a href=&quot;&quot; target=&quot;new_&quot; class=&quot;nolink&quot;>','</a>')"  class="lenguas" title="Hipervínculo"> <i class="bi bi-link"></i>    </button>
                                 <button wire:click="AbreModalVerObjetos('img')" class="lenguas" title="Imágen"> <i class="bi bi-image"></i>   </button>
                                 <button wire:click="AbreModalVerObjetos('aud')" class="lenguas" title="Audio" disabled> <i class="bi bi-file-earmark-music"></i>    </button>

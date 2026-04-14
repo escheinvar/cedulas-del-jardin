@@ -21,7 +21,7 @@
         <!-- buscar por jardín -->
         <div class="col-6 col-md-3 form-group">
             <label for="jardinSel" class="form-label">Jardin<red>*</red></label>
-            <select wire:model.live="jardinSel" id="jardinSel" class="form-select">
+            <select wire:model="jardinSel"  wire:change="DefineJardin()" id="jardinSel" class="form-select">
                 <option value="">Indica un jardín</option>
                 @foreach($JardsDelUsr as $jar)
                     <option value="{{ $jar->cjar_siglas }}">{{ $jar->cjar_siglas }} ({{ $jar->cjar_name }})</option>

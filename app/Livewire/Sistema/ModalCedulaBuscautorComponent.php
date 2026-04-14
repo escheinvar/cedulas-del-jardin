@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Sistema;
 
+use App\Models\autor_url;
 use App\Models\cat_autores;
 use App\Models\ced_autores;
 use App\Models\cedulas_url;
@@ -118,11 +119,13 @@ class ModalCedulaBuscautorComponent extends Component
         if($this->BuscaAutor_corresponding == TRUE){$corr='1';}else{$corr='0';}
         ##### Genera array de datos:
         $UrlKey=cedulas_url::where('url_id',$this->cedulaId)->value('url_key');
+        $jardin=cedulas_url::where('url_id',$this->cedulaId)->value('url_cjarsiglas');
+        $urltxt=cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt');
         $datos=[
             'aut_cautid'=>$this->BuscaAutor_id,
             'aut_urlid'=>$this->cedulaId, #### if id != 0
-            'aut_cjarsiglas'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_cjarsiglas'),
-            'aut_urltxt'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt'),
+            'aut_cjarsiglas'=>$jardin,
+            'aut_urltxt'=>$urltxt,
             'aut_key'=>$UrlKey,
             'aut_corresponding'=>$corr,
             'aut_name'=>$this->BuscaAutor_name,
@@ -133,6 +136,7 @@ class ModalCedulaBuscautorComponent extends Component
         ];
 
         if($this->cedulaId > '0'){
+            #### guarda al autor (si es autor, lo copia en copias)
             if($this->BuscaAutor_tipo == 'Autor'){
                 ##### Identifica todas las copias de este key
                 $ganones=cedulas_url::where('url_key',$UrlKey)->get();
@@ -161,6 +165,28 @@ class ModalCedulaBuscautorComponent extends Component
             $ja=$dato->autores;
 
             $this->dispatch('RecibeVariablesDeBuscaAutor',dato:$ja);
+        }
+        ###### Revisa si el autor tiene url en este jardín y en su caso, lo crea
+        $webs=autor_url::where('aurl_cjarsiglas', $jardin)
+            ->where('aurl_cautid',$this->BuscaAutor_id)
+            ->where('aurl_del','0')
+            ->count();
+        if($webs < '1'){
+            $autor=cat_autores::where('caut_id',$this->BuscaAutor_id)->first();
+
+            $nvo=autor_url::create([
+                'aurl_cautid'=>$this->BuscaAutor_id,
+                'aurl_cjarsiglas'=>$jardin,
+                'aurl_urltxt'=>$autor->caut_url,
+                'aurl_url'=>$autor->caut_url,
+                'aurl_lencode'=>'spa',
+                'aurl_tradid'=>'0',
+                // 'aurl_resumen'=>'',
+                // 'aurl_resumenorig'=>'',
+            ]);
+            ##### Palog
+            paLog('se genera página de autor','autor_url',$nvo->aurl_id);
+
         }
 
         ##### Finaliza con mensaje y cierre

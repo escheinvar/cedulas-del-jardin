@@ -21,7 +21,7 @@
     <div class="row my-3">
         <div class="col-6 col-md-3 form-group">
             <label class="form-label">Jardin<red>*</red></label>
-            <select wire:model.live="jardinSel" class="form-select">
+            <select wire:model.live="jardinSel"  wire:change="DefineJardin()"  class="form-select">
                 <option value="">Indica un jardín</option>
                 @foreach($JardsDelUsr as $jar)
                     <option value="{{ $jar->cjar_siglas }}">{{ $jar->cjar_siglas }} ({{ $jar->cjar_name }})</option>

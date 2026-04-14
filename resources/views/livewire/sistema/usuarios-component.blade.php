@@ -23,7 +23,7 @@
         <!-- buscar por jardín -->
         <div class="col-12 col-md-3 form-group">
             <label class="form-label">Jardin</label>
-            <select wire:model.live="jardinSel" class="form-select">
+            <select wire:model.live="jardinSel" wire:change="DefineJardin()" class="form-select">
                 <option value="">Cualquiera</option>
                 @foreach($JardsDelUsr as $jar)
                     <option value="{{ $jar->cjar_siglas }}">{{ $jar->cjar_name }}</option>

@@ -67,7 +67,8 @@
     </div>
 
     <!-- -------------------------------------- PÁGINA NO DISPONIBLE ------------------------------------------ -->
-    @if( ($enEdit=='1' or $edit=='0') and !Auth::user())
+
+    @if( ($enEdit=='1' or $edit=='0') and !Auth::user() and $url->url_edo < '5')
         <div class="row m-5">
             <div class="col-12">
                 <div class=" m-6" style="background-color:#CDC6B9; padding:40px; font-size: 120%; text-align:center;">

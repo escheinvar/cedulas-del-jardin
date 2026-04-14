@@ -85,7 +85,7 @@
         @endif
 
         <!-- Aportes del público -->
-        @if($aporta->count() > '0')
+        @if( $aporta->where('msg_edo','0')->count() > '0')
             <div class="col-12 col-md-4" style="border-radius:5px;">
                 <div style="display:flex; flex-direction:row; flex-wrap:nowrap; padding:20px; margin:10px; background-color: #CDC6B9; border-radius:7px; height:130px;">
 

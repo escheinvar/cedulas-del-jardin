@@ -179,7 +179,7 @@ class ModalEditaParrafoComponent extends Component
             $dato=[
                 // 'url_id'=>$this->modJar_id,
                 'txt_cjarsiglas'=>$this->modJar_cjarsiglas,
-                'txt_urlid'=>cedulas_url::where('url_cjarsiglas',$this->modJar_cjarsiglas)->where('url_url',$this->modJar_url)->first()->value('url_id'),
+                'txt_urlid'=>cedulas_url::where('url_cjarsiglas',$this->modJar_cjarsiglas)->where('url_url',$this->modJar_url)->value('url_id'),
                 'txt_urlurl'=>$this->modJar_url,
                 'txt_tipo'=>$this->modJar_tipo,
                 'txt_orden'=>$this->modJar_orden,

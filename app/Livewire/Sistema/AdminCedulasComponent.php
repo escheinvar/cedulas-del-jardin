@@ -31,7 +31,11 @@ class AdminCedulasComponent extends Component
     */
 
     public function mount(){
-        $this->jardinSel='JebOax';
+        $this->jardinSel=session('jardin');
+    }
+
+    public function DefineJardin(){
+        session(['jardin'=>$this->jardinSel]);
     }
 
     public function ordenaTabla(){

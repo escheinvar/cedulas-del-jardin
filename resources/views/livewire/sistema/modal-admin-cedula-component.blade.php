@@ -27,8 +27,8 @@
                             <label for="origtrad" class="form-label">Original/Traducción<red>*</red></label>
                             <select wire:model.live="origtrad"  wire:change="DeterminaVariablesDeCopia()" id="origtrad" class="@error('origtrad') is-invalid @enderror form-select" @if($cedulaId > '0') disabled @endif>
                                 <option value="">Indica ...</option>
-                                <option value="original">Cédula original</option>
-                                <option value="traducción">Traducción de cédula</option>
+                                <option value="original">Nueva original</option>
+                                <option value="traducción">Nueva traducción</option>
                             </select>
                             <div class="form-text"></div>
                             @error('origtrad') <error> {{ $message }}</error>@enderror

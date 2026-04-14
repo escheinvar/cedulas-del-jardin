@@ -33,7 +33,7 @@ class AdminWebComponent extends Component
     public $NvoBanner, $origtrad, $copiade, $lengua, $url, $act, $titulo, $descrip, $bannerimg, $bannertitle;
 
     public function mount(){
-        $this->jardinSel='';
+        $this->jardinSel=session('jardin');
         $this->orden='_id';
         $this->sentido='asc';
         $this->origtrad='original';
@@ -41,6 +41,10 @@ class AdminWebComponent extends Component
         $this->NvoAutorTipo='';
         $this->NvosAutores=collect();
         $this->NvasLenguas=collect();
+    }
+
+    public function DefineJardin(){
+        session(['jardin'=>$this->jardinSel]);
     }
 
     public function ordenaTabla($ord){

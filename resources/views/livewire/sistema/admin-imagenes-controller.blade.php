@@ -19,7 +19,7 @@
         <!-- Buscar por Jardín-->
         <div class="col-6 col-md-2 form-group">
             <label id="BuscaJardin" class="form-label">Jardín<red>*</red></label>
-            <select wire:model.live="BuscaJardin" id="BuscaJardin" class="@error('BuscaJardin') is-invalid @enderror form-select">
+            <select wire:model.live="BuscaJardin"  wire:change="DefineJardin()" id="BuscaJardin" class="@error('BuscaJardin') is-invalid @enderror form-select">
                 <option value="">Todos</option>
                 @foreach ($jardines as $j)
                     <option value="{{ $j->cjar_siglas }}">{{ $j->cjar_siglas }}</option>

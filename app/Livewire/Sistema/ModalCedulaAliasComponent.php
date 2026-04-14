@@ -57,6 +57,7 @@ class ModalCedulaAliasComponent extends Component
         $this->alias_trad='0';
         $this->alias_url='';
         $this->alias_jardin='';
+        $this->alias_tipo='Palabra clave';
     }
 
     public function LimpiarModalDeAlias(){

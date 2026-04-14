@@ -100,7 +100,7 @@ class HomeComponent extends Component
 
         ##### Enlista roles del usuario
         $MisRoles=UserRolesModel::where('rol_usrid',Auth::user()->id)->where('rol_act','1')->where('rol_del','0')->get();
-// dd($aporta);
+
         return view('livewire.sistema.home-component',[
             'cedulas'=>$cedulas,
             'aporta'=>$aporta,
