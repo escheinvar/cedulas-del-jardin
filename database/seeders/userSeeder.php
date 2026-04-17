@@ -24,6 +24,7 @@ class userSeeder extends Seeder
                 'usrname'=>'admin',
                 'nace'=>'1977-07-22',
                 'cinsid'=>'1',
+                'mensajes'=>'0',
                 'password'=>Hash::make('admin'),
                 'avatar'=>''
             ]);
@@ -35,6 +36,7 @@ class userSeeder extends Seeder
                 'usrname'=>'escheinvar',
                 'nace'=>'1977-07-22',
                 'cinsid'=>'1',
+                'mensajes'=>'1',
                 'password'=>Hash::make('admin'),
                 'avatar'=>''
                 ]);
@@ -46,6 +48,7 @@ class userSeeder extends Seeder
                 'usrname'=>'Tamariz',
                 'nace'=>'1977-07-22',
                 'cinsid'=>'1',
+                'mensajes'=>'1',
                 'password'=>Hash::make('admin'),
                 'avatar'=>''
                 ]);
@@ -57,6 +60,7 @@ class userSeeder extends Seeder
                 'usrname'=>'Bloomberg',
                 'nace'=>'1977-07-22',
                 'cinsid'=>'1',
+                'mensajes'=>'0',
                 'password'=>Hash::make('admin'),
                 'avatar'=>''
                 ]);

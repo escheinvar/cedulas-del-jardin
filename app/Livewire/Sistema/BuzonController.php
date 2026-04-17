@@ -27,8 +27,6 @@ class BuzonController extends Component
         $this->ganonesLee=[];
         $this->ganonesBorra=[];
         $this->SelectTodo=FALSE;
-
-
     }
 
     public function LeerMensajes(){
@@ -44,7 +42,27 @@ class BuzonController extends Component
             ]);
         }
         $this->ganonesLee=[];
-        redirect('/buzon');
+        // redirect('/buzon');
+    }
+
+    public function MarcarComoLeido($id){
+        $estado=buzon::where('buz_id',$id)->value('buz_act');
+        if($estado=='1'){
+            $nuevo='0';
+        }else{
+            $nuevo='1';
+        }
+        buzon::where('buz_id',$id)->update([
+            'buz_act'=>$nuevo,
+        ]);
+        ###### actualiza sesión
+        $buzonSesion= buzon::where('buz_act','1')
+            ->where('buz_del','0')
+            ->where('buz_to',Auth::user()->id)
+            ->count();
+        session([
+            'buzon'=>$buzonSesion,
+        ]);
     }
 
     public function BorrarMensajes(){
@@ -68,11 +86,8 @@ class BuzonController extends Component
         }
     }
 
-
-
-    ###########################################################
-    ########################################### Inicia render
     public function render(){
+
         $buzonSesion= buzon::where('buz_act','1')
             ->where('buz_del','0')
             ->where('buz_to',Auth::user()->id)

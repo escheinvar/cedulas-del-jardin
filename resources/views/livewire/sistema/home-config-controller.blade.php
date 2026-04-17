@@ -44,9 +44,9 @@
                 <div class="col-sm-12 col-md-5">
                     <div class="col-sm-12 form-check  my-2">
                         <input class="form-check-input" value='0' wire:model.live="mensajes" type="checkbox" id="mensajes">
-                        <label class="form-check-label" for="mensajes"> Recibir correos </label>
+                        <label class="form-check-label" for="mensajes"> Reenviar mensajes del buzón a mi correo electrónico </label>
                         @if($mensajes=='0')
-                            <small style="color:#919C1B;;"> Si esta casilla está desmarcada, no recibirás correos electrónicos del sistema. </small>
+                            <small style="color:#919C1B;;"> Si esta casilla está desmarcada, los mensajes sólo llegarán a tu buzón del sistema y ya no se reenviarán a tu correo electrónico. </small>
                         @endif
                         <br>
                     </div>
@@ -76,7 +76,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4 col-md-2 my-4">
+        <div class="col-12 my-4" style="text-align: center;">
             <button wire:click="GuardarCambios()" wire:loading.attr="disabled" class="btn btn-primary">
                 Guardar cambios
             </button>
@@ -122,6 +122,14 @@
         <p>Para cualquier asunto relacionado con los perfiles, dirígete a tu buzón y envía un mensaje al administrador (admin) del sistema</p>
     </div>
 
+    <!-- botones de acción -->
+    <div class="row">
+        <div class="col-12 my-2">
+            <button wire:click="AbrirModalParaPedirNvoRol()" class="btn btn-secondary bi bi-person-gear"> Solicitar rol</button>
+        </div>
+    </div>
+
+    <livewire:sistema.modal-home-solicita-rol-component />
 
     <script>
         /* ### Script para mostrar botón personalizado de input=file */

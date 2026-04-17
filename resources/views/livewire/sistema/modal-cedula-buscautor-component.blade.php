@@ -126,7 +126,8 @@
 
                                     <div class="row my-3">
                                         <div class="col-12">
-                                            <button wire:click="AgregarAutorACedula()" class="btn btn-primary" style="float: right;">
+                                            <error wire:loading wire:target="AgregarAutorACedula" style="display:none;" class="parpadeo">Registrando .... espera...</error>
+                                            <button wire:click="AgregarAutorACedula()" wire:loading.attr="disabled" class="btn btn-primary" style="float: right;">
                                                 <i class="bi bi-plus-circle"></i> Agregar
                                             </button>
                                         </div>

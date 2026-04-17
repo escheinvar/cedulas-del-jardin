@@ -24,7 +24,7 @@ return new class extends Migration
                 $table->string('cinsid');
                 // $table->foreignId('cinsid')->constrained('cat_instituciones','cins_id');
                 $table->string('avatar')->nullable()->default('/avatar/usr.png');
-                $table->string('mensajes')->nullable();
+                $table->enum('mensajes',['1','0'])->default('1');
 
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('password');

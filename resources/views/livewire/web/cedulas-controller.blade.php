@@ -59,10 +59,13 @@
                 @endif
 
                 <!-- Ícono de pdf -->
-                <a href="" target="new" class="nolink mx-1">
-                    <i class="bi bi-filetype-pdf PaClick"></i>
-                </a>
+                @if($url->versiones->count() > '0')
+                    <a href="{{ $url->versiones->where('ver_version','==', $url->url_version)->value('ver_pdf') }}" target="new_" class="nolink mx-1">
+                        <i class="bi bi-filetype-pdf PaClick"></i>
+                    </a>
+                @endif
             </div>
+
         </div>
     </div>
 
@@ -343,7 +346,9 @@
                             <div style="font-weight:700;">
                                 @foreach ($cedula->autores as $a)
                                     <?php $num++; ?>
-                                    {{ $a->autor->caut_nombre }} {{ $a->autor->caut_apellido1 }} {{ $a->autor->caut_apellido2 }}
+                                    <a href="/autor/{{ $url->url_cjarsiglas }}/{{ $a->autor->caut_url }}" class="nolink">
+                                        {{ $a->autor->caut_nombre }} {{ $a->autor->caut_apellido1 }} {{ $a->autor->caut_apellido2 }}
+                                    </a>
                                     @if($total > '1' AND ($a->aut_comunidad != '' OR $a->aut_institucion != '' or $a->aut_corresponding=='1'))
                                         <sup>{{ $num }}</sup>
                                     @endif
@@ -371,90 +376,6 @@
                 <div class="row" >
                     <?php $TablaDeTexto=$txt; $modulo='cedula'?>
                     @include('plantillas.texto')
-                    {{--
-                    @foreach($txt as $t)
-                        <div class="col-12" style="" wire:key="parr_{{ $t->txt_id }}">
-                            <!-- párrafo tipo título 1 -->
-                            @if($t->txt_tipo == 'h1')
-                                <div style="margin-top: 50px;">
-                                    <h3 style="display:inline;">
-                                        <a name="IrA{{ $t->txt_id }}tit">{!! $t->txt_txt !!}</a>
-                                    </h3>
-                                    @if($t->txt_audio != '')
-                                        <audio id="SpAudio{{ $t->txt_id }}" style="display:inline-block;">
-                                            <source src="{{ $t->txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
-                                        </audio>
-                                        <i class="audioTxtPlay" id="IconPlay{{ $t->txt_id }}" onclick="playAudio('{{ $t->txt_id }}')"></i>
-                                        <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
-                                    @endif
-                                    @if($edit=='1')
-                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaParrafo('{{ $t->txt_id }}',' {{ $t->txt_orden }}', '', '', '', '1')">
-                                            <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
-                                        </span>
-                                    @endif
-                                </div>
-
-                            <!-- párrafo tipo título 2 -->
-                            @elseif($t->txt_tipo=='h2')
-                                <div style="margin-top: 30px;">
-                                    <h4 style="display:inline;">
-                                        <a name="IrA{{ $t->txt_id }}tit">{!! $t->txt_txt !!}</a>
-                                    </h4>
-                                    @if($t->txt_audio != '')
-                                        <audio id="SpAudio{{ $t->txt_id }}" style="display:inline-block;">
-                                            <source src="{{ $t->txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
-                                        </audio>
-                                        <i class="audioTxtPlay" id="IconPlay{{ $t->txt_id }}" onclick="playAudio('{{ $t->txt_id }}')"></i>
-                                        <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
-                                    @endif
-                                    @if($edit=='1')
-                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaParrafo('{{ $t->txt_id }}',' {{ $t->txt_orden }}', '', '', '', '1')">
-                                            <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
-                                        </span>
-                                    @endif
-                                </div>
-
-                            <!-- párrafo tipo título 1 -->
-                            @elseif($t->txt_tipo=='h3')
-                                <div style="margin-top: 30px;">
-                                    <h5 style="display:inline;">
-                                        <a name="IrA{{ $t->txt_id }}tit">{!! $t->txt_txt !!}</a>
-                                    </h5>
-                                    @if($t->txt_audio != '')
-                                        <audio id="SpAudio{{ $t->txt_id }}" style="display:inline-block;">
-                                            <source src="{{ $t->txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
-                                        </audio>
-                                        <i class="audioTxtPlay" id="IconPlay{{ $t->txt_id }}" onclick="playAudio('{{ $t->txt_id }}')"></i>
-                                        <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
-                                    @endif
-                                    @if($edit=='1')
-                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaParrafo('{{ $t->txt_id }}',' {{ $t->txt_orden }}', '', '', '', '1')">
-                                            <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
-                                        </span>
-                                    @endif
-                                </div>
-                            @endif
-                            <!-- párrafo tipo parrafo -->
-                            @if($t->txt_tipo=='p')
-                                <div class="my-2" style="display:inline;">
-                                    {!! $t->txt_txt !!}
-                                    @if($t->txt_audio != '')
-                                        <audio id="SpAudio{{ $t->txt_id }}" style="display:inline-block;">
-                                            <source src="{{ $t->txt_audio }}" type="audio/ogg"> El navegador no soporta el audio
-                                        </audio>
-                                        <i class="audioTxtPlay" id="IconPlay{{ $t->txt_id }}" onclick="playAudio('{{ $t->txt_id }}')"></i>
-                                        <i class="audioTxtStop" id="IconStop{{ $t->txt_id }}" onclick="pauseAudio('{{ $t->txt_id }}')"></i>
-                                    @endif
-                                    @if($edit=='1')
-                                        <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbreModalEditaParrafo('{{ $t->txt_id }}',' {{ $t->txt_orden }}', '', '', '', '1')">
-                                            <i  class="bi bi-pencil-square"></i><sup>{{ $t->txt_orden }}</sup>
-                                        </span>
-                                    @endif
-                                </div>
-                            @endif
-                        </div>
-                    @endforeach
-                    --}}
 
                     <!-- muestra último párrafo -->
                     @if($edit=='1')
@@ -471,7 +392,9 @@
                             Traducción y voz en lengua <b>{{ $url->lenguas->len_autonimias }}</b> ({{ $url->lenguas->len_lengua }}):
                             @foreach($cedula->traductores as $trad)
                                 <span wire:key="trad_{{ $trad->autor->caut_id }}">
-                                    <b>{{ $trad->autor->caut_nombre }} {{ $trad->autor->caut_apellido1 }} {{ $trad->autor->caut_apellido2 }}</b>@if($trad->aut_corresponding=='1')*@endif
+                                    <a href="/autor/{{ $url->url_cjarsiglas }}/{{ $trad->autor->caut_url }}" class="nolink">
+                                        <b>{{ $trad->autor->caut_nombre }} {{ $trad->autor->caut_apellido1 }} {{ $trad->autor->caut_apellido2 }}</b>@if($trad->aut_corresponding=='1')*@endif
+                                    </a>
                                     @if($trad->aut_comunidad!='')({{ $trad->aut_comunidad }})@endif<br>
                                     @if($trad->aut_institucion!=''){{ $trad->aut_institucion }}@endif
                                     @if($trad->aut_corresponding=='1')<br>*{{ $trad->aut_correo }}@endif
@@ -487,7 +410,9 @@
                         @if($cedula->editores->count() > '0')
                             @if($cedula->editores->count() =='1')Editor responsable: @else Editores responsables:@endif
                             @foreach ($cedula->editores as $e)
-                                {{ $e->autor->caut_nombre }} {{ $e->autor->caut_apellido1 }} {{ $e->autor->caut_apellido2 }},
+                                <a href="/autor/{{ $url->url_cjarsiglas }}/{{ $e->autor->caut_url }}" class="nolink">
+                                    {{ $e->autor->caut_nombre }} {{ $e->autor->caut_apellido1 }} {{ $e->autor->caut_apellido2 }}
+                                </a>,
                                 {{ $e->aut_correo }}
                             @endforeach
                         @endif
@@ -569,19 +494,20 @@
             <!-- Cita -->
             <div class="col-12 p-3">
                 <h4>Forma de citar:</h4>
+
                     <b>{{ $url->url_cita_aut }}</b> {{ $url->url_anio }}. <u>{{ $url->url_titulo }}</u>
                     @if($url->url_tradid > '0')
                         {{ $url->url_cita_trad }}
                     @endif
                     v.{{ $url->url_version }}
                     <i>Cédulas del Jardín en lenguas originarias</i>.
-                    @if($url->url_doi == '')
+                    @if($url->url_doi != '')
                         <a href="https://doi.org/{{ $url->url_doi }}" target="new" class="nolink">
                             https://doi.org/{{ $url->url_doi }}
                         </a>
                     @else
                         <a href="{{ url('/') }}cedula/{{ $url->url_cjarsiglas }}/{{ $url->url }}" target="new" class="nolink">
-                            {{ url('/') }}cedula/{{ $url->url_cjarsiglas }}/{{ $url->url }}
+                            {{ url('/') }}cedula/{{ $url->url_cjarsiglas }}/{{ $url->url_url }}
                         </a>
                     @endif
                 accesado el {{ date('i') }} de {{ $meses[date('n')] }} de {{ date('Y') }}
@@ -591,16 +517,31 @@
 
             <!-- Versiones -->
             <div class="col-12 p-3">
-                <b>Versiones previas:</b>
-                @if($url->versiones->count() > '0')
-                    @foreach($url->versiones->where('ver_version','!=', $url->url_version) as $v)
-                        <span style="padding:7px;" class="PaClick">
-                            <i class="bi bi-filetype-pdf">v.{{ $v->ver_version }} </i>
+                <div>
+                    <b>Esta versión:</b>
+                    @foreach($url->versiones->where('ver_version','==', $url->url_version) as $v)
+                        <span style="padding:7px;">
+                            <a href="{{ $v->ver_pdf }}" class="nolink">
+                                <i class="bi bi-filetype-pdf">v.{{ $v->ver_version }} </i>
+                            </a>
                         </span>
                     @endforeach
-                @else
-                    No hay versiones previas
-                @endif
+                </div>
+
+                <div>
+                    <b>Versiones previas:</b>
+                    @if($url->versiones->where('ver_version','!=', $url->url_version)->count() > '0')
+                        @foreach($url->versiones->where('ver_version','!=', $url->url_version) as $v)
+                            <span style="padding:7px;">
+                                <a href="{{ $v->ver_pdf }}" class="nolink">
+                                   <i class="bi bi-filetype-pdf">v.{{ $v->ver_version }} </i>
+                                </a>
+                            </span>
+                        @endforeach
+                    @else
+                        Aún no hay versiones previas
+                    @endif
+                </div>
             </div>
 
 
@@ -676,8 +617,7 @@
                     </span>
 
                 </div>
-            {{-- </div>
-            <div class="col-12 p-3" style="margin:20px;"> --}}
+
                 <!-- Licencia GNU -->
                 <div class="col-12" style="margin:20px; font-size:80%;">
                     {{-- Copyright(C), {{ date('Y', strtotime($version['ced_versiondate'])) }} @if($version['ced_cita']!=''){{ $version['ced_cita'] }} @else {{ $version['jardin'] }}@endif. --}}
@@ -686,7 +626,12 @@
                     o cualquier versión posterior publicada por la Free Software Foundation;
                     sin Secciones Invariantes, Textos de Portada y Textos de Contraportada.<br>
                 </div>
+
+                <div class="col-12" style="font-size: 70%; text-align:right;">
+                    Visitas: {{ $NumVisits }} &nbsp; &nbsp;
+                </div>
             </div>
+
         </div>
 
 
@@ -756,6 +701,7 @@
             @if($edit=='1')
                 <i wire:click="AbrirModalDeFuenteExterna('0','{{ $url->url_cjarsiglas }}','{{ $url->url_urltxt }}')" class="bi bi-plus-circle cedEdo{{ $url->url_edo }} PaClick"> Agregar fuente externa</i>
             @endif
+
         </div>
     @endif
 
@@ -836,9 +782,9 @@
             $('#ModalTraduceTitulo').modal('hide');
         });
 
-        Livewire.on('RecibeVariablesDeUbicacion',() => {
-            @this.set('ubicaciones',event.detail.dato, live=true);
-        });
+        // Livewire.on('RecibeVariablesDeUbicacion',() => {
+        //     @this.set('ubicaciones',event.detail.dato, live=true);
+        // });
 
         Livewire.on('RecargarPagina',() => {
             location.reload();

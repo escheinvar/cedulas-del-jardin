@@ -22,7 +22,7 @@ return new class extends Migration
                 $table->string('buz_asunto');   #### Asunto del mensaje
                 $table->longText('buz_mensaje');#### texto del mensaje
                 $table->longText('buz_notas')->nullable();  ### Notas del mensaje
-                $table->string('buz_comp');   ##### Controlador desde el que se generó el mensaje)
+                // $table->string('buz_comp');   ##### Controlador desde el que se generó el mensaje)
 
                 $table->date('buz_date'); ### Fecha en la que se envió
                 $table->time('buz_hora'); ### Hora en la que se envió

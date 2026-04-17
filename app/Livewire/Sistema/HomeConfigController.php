@@ -118,4 +118,11 @@ class HomeConfigController extends Component
 
         return view('livewire.sistema.home-config-controller');
     }
+
+
+    ############### Para abrir el modal de solicitud de nvo rol
+    public function AbrirModalParaPedirNvoRol(){
+        #####<livewire:sistema.modal-home-solicita-rol-component />
+        $this->dispatch('AbreModalPedirNvoRol');
+    }
 }

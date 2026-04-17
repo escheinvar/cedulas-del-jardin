@@ -1,36 +1,65 @@
 <?php
 
+use App\Models\autor_url;
+use App\Models\cedulas_url;
 use App\Models\historial;
-use App\Models\SistVisitasModel;
+use App\Models\sist_visitas;
 use Illuminate\Support\Facades\Auth;
+use Safe\url;
 use Stevebauman\Location\Facades\Location;
+
 
 
 ##### Ejecutar: composer dump-autoload
 
 
 if(! function_exists('MyRegistraVisita')){
-    ##### registra la visita de un usuario
-    ##### en la base de datos. Se ejecuta desde back.
-    function MyRegistraVisita($url2) {
-        ##### Prepara variable
-        if(is_array($url2)){
-            $url3=$url2[1];
-            $url2=$url2[0];
+    /*##### Cuando se ejecuta en mount(), registra en la base de datos
+    ##### sist_visitas, el ingreso de cada visitante a una url.
+    ##### Solo requiere que se invoque y que se indique:
+    ##### el $moduloVis = ['ced','aut','jar','otro'] indicando tabla cedula_url, autor_url o jardin_url
+    ##### el $idVis con el id de la página: url_id, aurl_id o urlj_id (según tabla)
+        MyRegistraVisita( ['ced','aut','jar','otro'][0],  $this->url_id,   'MyFlag');
+    */
+    function MyRegistraVisita($moduloVis, $idVis, $flag) {
+        if($moduloVis=='ced'){
+            $dato=cedulas_url::where('url_id',$idVis)->first();
+            $jardin=$dato->url_cjarsiglas;
+            $modulo='cedula';
+            $urltxt=$dato->url_urltxt;
+            $lengua=$dato->url_lencode;
+        }elseif($moduloVis=='aut'){
+            $dato=autor_url::where('aurl_id',$idVis)->first();
+            $jardin=$dato->aurl_cjarsiglas;
+            $modulo='autor';
+            $urltxt=$dato->aurl_urltxt;
+            $lengua=$dato->aurl_lencode;
+
+        }elseif($moduloVis=='jar'){
+            $dato=autor_url::where('aurl_id',$idVis)->first();
+            $jardin=$dato->urlj_cjarsiglas;
+            $modulo='jardin';
+            $urltxt=$dato->urlj_urltxt;
+            $lengua=$dato->urlj_lencode;
         }else{
-            $url3=null;
+            $jardin=null;
+            $modulo=null;
+            $urltxt=null;
+            $lengua=null;
         }
+
         ##### Revisa si hay token (no token=primera vez)
         if(session('token') !=''){
-            $unico='0';
+            $entrada='0';
         }else{
-            $unico='1';
+            $entrada='1';
             session(['token'=>date('Ymd-His_').request()->ip()]);
         }
         ##### Obtiene datos de ip
         $ip=request()->ip();
 
         $datos=Location::get( $ip );
+
         if($datos != false){
             $pais=$datos->countryName;
             $region=$datos->regionName;
@@ -44,7 +73,7 @@ if(! function_exists('MyRegistraVisita')){
             $x=null;
             $y=null;
         }
-        #dd(session('rol'), is_array(session('rol')), is_null(session('rol')));
+
         if (Auth::user()==true){
             $usr=Auth::user()->id;
             if( is_array(session('rol')) ){
@@ -58,24 +87,29 @@ if(! function_exists('MyRegistraVisita')){
         }
 
         ##### Crea registro por token/url/lenguaLocal (si el usuario cambia una de estas variables, se genera un nuevo registro)
-        SistVisitasModel::firstOrCreate(['vis_url'=>url()->current(),   'vis_tocken'=>session('token'), 'vis_locale2'=>session('locale2')] ,[
-            'vis_id'=>SistVisitasModel::max('vis_id') +1 ,
-            'vis_unique'=>$unico,
-            'vis_ip'=>request()->ip(),
+        sist_visitas::firstOrCreate(['vis_url'=>url()->current(),   'vis_tocken'=>session('token')] ,[
+            'vis_id'=>sist_visitas::max('vis_id') +1 ,
+            'vis_entrada'=>$entrada,
+
+            'vis_jardin'=>$jardin,
+            'vis_modulo'=>$modulo,
+            'vis_urltxt'=>$urltxt,
+            'vis_lengua'=>$lengua,
             'vis_url'=>url()->current(),
-            'vis_url2'=>$url2,
-            'vis_url3'=>$url3,
+            'vis_flag'=>$flag,
+
+            'vis_ip'=>request()->ip(),
             'vis_locale'=>session('locale'),
-            'vis_locale2'=>session('locale2'),
-            'vis_tocken'=>session('token'),
             'vis_pais'=>$pais,
             'vis_regionName'=>$region,
             'vis_ciudad'=>$ciudad,
             'vis_x'=>$x,
             'vis_y'=>$y,
+
             'vis_usr'=>$usr,
             'vis_rol'=>$roles,
-        ]);
+            'vis_tocken'=>session('token'),
+            ]);
     }
 }
 

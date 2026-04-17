@@ -35,7 +35,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files":[
-            "app/Helpers/MisFunciones.php"
+            "app/Helpers/MisFunciones.php",
+            "app/Helpers/EnviaMensajeAbuzon.php"
         ]
     },
     "autoload-dev": {

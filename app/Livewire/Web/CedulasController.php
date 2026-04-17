@@ -6,7 +6,7 @@ use App\Models\ced_aporteusrs;
 use App\Models\ced_autores;
 use App\Models\ced_externos;
 use App\Models\ced_sp;
-use App\Models\ced_ubica;
+use App\Models\sist_visitas;
 use App\Models\ced_usos;
 use App\Models\cedulas_txt;
 use App\Models\cedulas_url;
@@ -64,6 +64,11 @@ class CedulasController extends Component
             }
         }
 
+        ###### Registra estadísticas de visita
+        if($this->url->url_edo >='5' and is_null(session('rol'))){
+            MyRegistraVisita(['ced','aut','jar'][0], $this->url->url_id, 'cedula');
+        }
+
         ##### Carga todas las traducciones de la url
         $this->traducciones=cedulas_url::where('url_key', $this->url->url_key)
             ->where('url_id','!=',$this->url->url_id)
@@ -106,6 +111,29 @@ class CedulasController extends Component
 
     public function VerNoVer($apartado){
         if($this->$apartado =='0'){$this->$apartado='1';}else{$this->$apartado='0';}
+    }
+
+    public function VerQR(){
+        if( $this->qrSize=='80'){
+        $this->qrSize='200';
+        }elseif( $this->qrSize=='200'){
+            $this->qrSize='600';
+        }elseif( $this->qrSize=='600'){
+            $this->qrSize='80';
+        }
+    }
+
+    public function BajarQR(){
+        return response()->streamDownload(
+            function(){
+                echo QrCode::size($this->qrSize)->margin(2)
+                    ->generate( url('/').'/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url );
+            },
+            'CodigoQR.png',
+            [
+                'Content-Type'=>'image/png'
+            ]
+            );
     }
 
     public function render(){
@@ -196,38 +224,20 @@ class CedulasController extends Component
             ->orderBy('ext_id')
             ->with('red')
             ->get();
+        ##### Conteo de visitantes
+        $NumVists=sist_visitas::where('vis_url',url()->current())->count();
 
 
         return view('livewire.web.cedulas-controller',[
             'cedula'=>$cedula,
             'especies'=>$especies,
+            'NumVisits'=>$NumVists,
 
         ]);
     }
 
 
-    public function VerQR(){
-        if( $this->qrSize=='80'){
-        $this->qrSize='200';
-        }elseif( $this->qrSize=='200'){
-            $this->qrSize='600';
-        }elseif( $this->qrSize=='600'){
-            $this->qrSize='80';
-        }
-    }
 
-    public function BajarQR(){
-        return response()->streamDownload(
-            function(){
-                echo QrCode::size($this->qrSize)->margin(2)
-                    ->generate( url('/').'/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url );
-            },
-            'CodigoQR.png',
-            [
-                'Content-Type'=>'image/png'
-            ]
-            );
-    }
 
 
 
@@ -249,7 +259,6 @@ class CedulasController extends Component
             $this->dispatch('AbreModalDeParrafoWebJardin',$data);
         }
     }
-
 
     ############################################################
     ############################## Modal Traduce Titulo

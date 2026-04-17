@@ -43,7 +43,7 @@ class loginController extends Controller
                 'locale'=>'es',
                 'locale2'=>'spa',
             ]);
-            MyRegistraVisita('login');
+
             #### Redirecciona
             return redirect('/home');
 

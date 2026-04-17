@@ -18,9 +18,10 @@
         </div>
         <!-- ----------------------------  cuerpo del modal ------------------------- -->
         <div class="modal-body" wire:loading.attr="disabled">
-            {{-- <div style="background-color:#87796d;text-align:center; width:100%;">
-                <b>El ciclo de publicación de una cédula</b>  <small>({{ implode(', ',session('rol')) }})</small>
-            </div> --}}
+            {{-- <button class="btn btn-secondary" wire:click="GeneraPDF('2.1')">
+                Crear pdf
+            </button> --}}
+
             <div>
                 <b>Indica el paso que sigue</b>
             </div>
@@ -217,7 +218,7 @@
 
                                     <!-- Versión -->
                                     @if($CambiaEdo_version=='1')
-                                        V.{{ $CambiaEdo_ced->url_version + 0.10}}.
+                                        <b>V.{{ $CambiaEdo_ced->url_version + 0.10}}</b>.
                                     @else
                                         V.{{ $CambiaEdo_ced->url_version }}.
                                     @endif
@@ -307,7 +308,7 @@
 
                     <!-- Botón final para publicar -->
                     @if($verDoi=='0')
-                        <div class="row">
+                        <div class="row">where
                             <div class="col-12" style="text-align: center;">
                                 <button wire:click="PublicaCedula()" class="btn btn-primary"> Publicar cédula </button>
                             </div>
@@ -320,9 +321,11 @@
 
         <!-- ---------------------------- pie del modal ----------------------------- -->
         <div class="modal-footer">
-            <button wire:click="CerrarModalDeCambioDeEstado()" class="btn btn-secondary">Cancelar</button>
+            <span wire:loading style="display:none;" class="parpadeo"><red>trabajando... espera...</red> </span>
+            <button wire:click="CerrarModalDeCambioDeEstado()" class="btn btn-secondary">
+                Cancelar
+            </button>
             {{-- <button wire:click="GuardaModal()" wire:loading.attr="disabled" class="btn btn-primary">Guardar</button> --}}
-            {{-- <span wire:loading style="display:none;"><red>pensando...</red> </span> --}}
         </div>
     </div>
 </div>

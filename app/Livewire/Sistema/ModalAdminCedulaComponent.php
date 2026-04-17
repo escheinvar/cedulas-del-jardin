@@ -3,14 +3,16 @@
 namespace App\Livewire\Sistema;
 
 use App\Models\cat_tipocedula;
-use App\Models\cedulas_url;
+use App\Models\cat_autores;
+use App\Models\ced_alias;
 use App\Models\ced_autores;
 use App\Models\ced_sp;
-use App\Models\ced_alias;
 use App\Models\ced_ubica;
 use App\Models\ced_usos;
 use App\Models\cedulas_txt;
+use App\Models\cedulas_url;
 use App\Models\lenguas;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -263,6 +265,7 @@ class ModalAdminCedulaComponent extends Component
     }
 
     public function BorrarAutor($id,$tipo,$key){
+
         if($tipo=='Autor'){
             #### Como el autor es el mismo en las copias, asigna autor a todas las url de la key
             ced_autores::where('aut_key',$key)
@@ -279,6 +282,32 @@ class ModalAdminCedulaComponent extends Component
             ->with('autores')
             ->first();
         $this->CedAutores=$dato->autores;
+
+
+        ##### Revisa si el autor/editor/trad. tiene cuenta de usuario
+        $buscaId1=ced_autores::where('aut_id',$id)
+            ->where('aut_act','1')
+            ->where('aut_del','1')
+            ->value('aut_cautid');
+        $buscaId=cat_autores::where('caut_id',$buscaId1)->value('caut_usrid');
+        ##### Envía el correo
+        if($buscaId > '0'){
+            ##### Envía correo
+            $to=$buscaId;        ##### id de users de destino
+            $from=Auth::user()->id;      ##### id de users de quien escribe o 0 para sistema
+            $ifReply='0';   ##### 0 para mensajes nuevos o msj_id para respuesta a msj previo
+            $asunto="Cambio de privilegios de autor/traductor/editor sobre una cédula del Jardín";
+            $mensaje='Se te retiró el privilegio de <b>'. $tipo .
+                '</b> sobre la cédula <b>'. $key .'</b> '.
+                "</b> (ver el <a href='".url('/admin_cedulas')."'>administrador de cédulas</a>)";
+            $notas='';
+            ##### Envía mensaje con función de helper
+            $a=EnviaMensajeAbuzon($to,$from,$asunto, $mensaje,$notas,$ifReply);
+            if($a > '0'){
+                $this->dispatch('AvisoExitoModalUsuarios', msj:'Error en el envío del mensaje');
+                return;
+            }
+        }
     }
 
     public function AbrirModalDeBuscarEspecie(){

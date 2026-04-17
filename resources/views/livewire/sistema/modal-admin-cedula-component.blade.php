@@ -158,11 +158,12 @@
                             <!-- Autor -->
                             <div class="col-4 form-group">
                                 <div>
-                                    <i wire:click="VerNoVer('verAutor')" class="@if($verAutor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
-                                    <label for="" class="form-label">Autor(es)<red>*</red></label>
                                     @if($CedAutores->count() =='0')
                                         <i wire:click="AbreModalDeBuscarAutor('Autor')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
+                                    @else
+                                        <i wire:click="VerNoVer('verAutor')" class="@if($verAutor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     @endif
+                                    <label for="" class="form-label">Autor(es)<red>*</red></label>
                                 </div>
                                 @if($CedAutores AND $cedulaId > '0' AND $verAutor=='1')
                                     <i wire:click="AbreModalDeBuscarAutor('Autor')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
@@ -184,11 +185,12 @@
                             <div class="col-4 form-group">
                                 @if($this->origtrad=='traducción')
                                     <div>
-                                        <i wire:click="VerNoVer('verTraductor')" class="@if($verTraductor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
-                                        <label for="" class="form-label">Traductor<red>*</red></label>
                                         @if($CedTraductores->count() =='0')
                                             <i wire:click="AbreModalDeBuscarAutor('Traductor')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
+                                        @else
+                                            <i wire:click="VerNoVer('verTraductor')" class="@if($verTraductor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                         @endif
+                                        <label for="" class="form-label">Traductor<red>*</red></label>
                                     </div>
 
                                     @if($CedTraductores AND $cedulaId > '0' and $verTraductor=='1')
@@ -213,11 +215,12 @@
                             <!-- Editor -->
                             <div class="col-4 form-group">
                                 <div>
-                                    <i wire:click="VerNoVer('verEditor')" class="@if($verEditor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
-                                    <label for="" class="form-label">Editor<red>*</red></label>
                                     @if($CedEditores->where('aut_tipo','Editor')->count() =='0')
                                         <i wire:click="AbreModalDeBuscarAutor('Editor')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
+                                    @else
+                                        <i wire:click="VerNoVer('verEditor')" class="@if($verEditor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     @endif
+                                    <label for="" class="form-label">Editor<red>*</red></label>
                                 </div>
                                 @if($CedEditores AND $cedulaId > '0' and $verEditor=='1')
                                     <i wire:click="AbreModalDeBuscarAutor('Editor')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
@@ -243,11 +246,12 @@
                             <!-- Ubicación(es) -->
                             <div class="col-6 form-group">
                                 <div>
-                                    <i wire:click="VerNoVer('verUbicacion')" class="@if($verUbicacion=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
-                                    <label for="" class="form-label">Ubicación(es)<red>*</red></label>
                                     @if($CedUbica->count() =='0')
                                         <i wire:click="AbrirModalDeUbicacion('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
+                                    @else
+                                        <i wire:click="VerNoVer('verUbicacion')" class="@if($verUbicacion=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     @endif
+                                    <label for="" class="form-label">Ubicación(es)<red>*</red></label>
                                 </div>
                                 @if($CedUbica AND $cedulaId > '0' and $verUbicacion=='1')
                                     <i wire:click="AbrirModalDeUbicacion('0')" class="bi bi-plus-circle-fill agregar"> Nuevo</i>
@@ -266,11 +270,12 @@
                             <!-- Palabras clave -->
                             <div class="col-6 form-group">
                                 <div>
-                                    <i wire:click="VerNoVer('verAlias')" class="@if($verAlias=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
-                                    <label for="" class="form-label">Palabras clave<red>*</red></label>
                                     @if($CedAlias->count() =='0')
                                         <i wire:click="AbrirModalDeAlias('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
+                                    @else
+                                        <i wire:click="VerNoVer('verAlias')" class="@if($verAlias=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     @endif
+                                    <label for="" class="form-label">Palabras clave, nombres comunes o alias<red>*</red></label>
                                 </div>
                                 @if($CedAlias AND $cedulaId > '0' AND $verAlias=='1')
                                     <i wire:click="AbrirModalDeAlias('0')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
@@ -358,9 +363,10 @@
 
                 </div>
                 <div class="modal-footer">
+                    <error wire:loading style="display:none" class="parpadeo">Trabajando ... espera....</error>
                     <button wire:click="GuardaCedula()" class="btn btn-primary">
                         <span wire:loading.remove> Guardar </span>
-                        <span wire:loading style="display:none;"> <red> ..guardando...</red> </span>
+                        <span wire:loading style="display:none;" class="parpadeo"> <red> ..guardando...</red> </span>
                     </button>
 
                     <button wire:click="CierraModalCedula()" class="btn btn-secondary">

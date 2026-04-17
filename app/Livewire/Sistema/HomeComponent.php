@@ -4,6 +4,7 @@ namespace App\Livewire\Sistema;
 
 use App\Models\buzon;
 use App\Models\CatJardinesModel;
+use App\Models\CatRolesModel;
 use App\Models\ced_aporteusrs;
 use App\Models\ced_autores;
 use App\Models\cedulas_url;
@@ -17,10 +18,25 @@ use Livewire\Component;
 // #[Layout('components.layouts.SistemaBase')]
 class HomeComponent extends Component
 {
-    public $edit, $editMaster, $editjar, $JardUsr; ##### Variables de autorización de nivel de privilegio
-    public $MisAportes;
-    public $IdTemp, $IdTemp2, $IdTemp3; #### Temporal: para cargar algo de prueba
+    ##### Variables de autorización de nivel de privilegio
+    public $edit, $editMaster, $editjar, $JardUsr;
+    ##### Variables de solicitud de nuevo rol
+    // public $verNvoRol, $jardinesRol, $rolesRol, $jardinRol, $rolRol, $msjRol;
 
+    public function mount(){
+        // $this->verNvoRol='0';
+
+    }
+
+    // public function VerNoVerNvoRol(){
+    //     if($this->verNvoRol=='1'){
+    //         $this->verNvoRol='0';
+    //     }else{
+    //         $this->verNvoRol='1';
+    //     }
+    //     $this->jardinesRol=CatJardinesModel::get();
+    //     $this->rolesRol=CatRolesModel::get();
+    // }
 
 
 
@@ -107,5 +123,11 @@ class HomeComponent extends Component
             'roles'=>$MisRoles,
             'buzon'=>$buzon,
         ]);
+    }
+
+    ############### Para abrir el modal de solicitud de nvo rol
+    public function AbrirModalParaPedirNvoRol(){
+        #####<livewire:sistema.modal-home-solicita-rol-component />
+        $this->dispatch('AbreModalPedirNvoRol');
     }
 }

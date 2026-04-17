@@ -44,11 +44,13 @@
                 <div style="width:13%; display:inline-block; vertical-align:top; text-align:right;padding:5px;" class="d-none d-sm-inline-block">
                     @if(Auth::user()->avatar == '')
                         <a href="/homeConfig" class="nolink" style="">
-                            <img src="/avatar/usr_default.png" class="avatar" style="display: inline;">
+                            <img src="/avatar/usr_default.png" class="avatar"  style="display: inline;">
+                            <i class="@if(Auth::user()->mensajes =='1') bi bi-envelope @else bi bi-envelope-x @endif" style="color:black;"></i>
                         </a>
                     @else
                         <a href="/config" class="nolink" style="">
-                            <img src="{{ Auth::user()->avatar }}" class="avatar">
+                            <img src="{{ Auth::user()->avatar }}" class="avatar ">
+                            <i class="@if(Auth::user()->mensajes =='1') bi bi-envelope @else bi bi-envelope-x @endif" style="color:black;"></i>
                         </a>
                     @endif
                 </div>
@@ -137,6 +139,68 @@
     </div>
 
 
+    <!-- botones de acción -->
+    <div class="row">
+        <div class="col-12 my-2">
+            <button wire:click="AbrirModalParaPedirNvoRol()" class="btn btn-primary bi bi-person-gear"> Solicitar rol</button>
+        </div>
+    </div>
+    <!-- ------------------------------------------------------------------------------------------------------------------- -->
+    <!-- ---------------------------------------------- Solicitud de nuevo rol --------------------------------------------- -->
+    {{-- @if($verNvoRol=='1')
+        <div class="row p-4">
+            <div class="col-12">
+                <h3>Solicitud de nuevo rol</h3>
+                Esta sección es para las personas que van a ser autores, traductores o editores de una o más cédulas dentro de algún jardín registrado en el sistema.
+                <br>
+                Si es tu caso, indica el jardín en el que vas a trabajar y el rol que vas a fungir.
+                El administrador del Jardín va a recibir tu solicitud y deberá aprobarla.
+            </div>
+
+            <!-- Jardín -->
+            <div class="col-12 col-md-3 my-1 form-group">
+                <label for="jardinRol" class="form-label">Jardín en el que va a trabajar<red>*</red></label>
+                <select wire:model="jardinRol" id="jardinRol" class="@error('jardinRol') is-invalid @enderror form-select">
+                    <option value="">Indica el Jardín.</option>
+                    @foreach($jardinesRol as $j)
+                        <option value="{{ $j->cjar_siglas }}">{{ $j->cjar_nombre }} ({{ $j->cjar_siglas }})</option>
+                    @endforeach
+                </select>
+                <div class="form-text"></div>
+                @error('jardinRol')<error>{{ $message }}</error>@enderror
+            </div>
+
+            <!-- Rol -->
+            <div class="col-12 col-md-3 my-1 form-group">
+                <label for="rolRol" class="form-label">Rol solicitado<red>*</red></label>
+                <select wire:model.live="rolRol" id="rolRol" class="@error('rolRol') is-invalid @enderror form-select">
+                    <option value="">Indica el rol que solicitas.</option>
+                    @foreach($rolesRol as $r)
+                        <option value="{{ $r->crol_rol }}">{{ $r->crol_rol }}</option>
+                    @endforeach
+                    <option value="NoClaro">No lo tengo muy claro</option>
+                </select>
+                <div class="form-text">@if($rolRol!='' and $rolRol!='NoClaro') {{ $rolesRol->where('crol_rol',$rolRol)->value('crol_describe') }} @endif</div>
+                @error('rolRol')<error>{{ $message }}</error>@enderror
+            </div>
+
+            <!-- explica -->
+            <div class="col-12 col-md-6 my-1 form-group">
+                <label for="msjRol" class="form-label">Explica la razón de la solicitud<red>*</red></label>
+                <textarea wire:model="msjRol" id="msjRol" class="@error('msjRol') is-invalid @enderror form-control"></textarea>
+                <div class="form-text"></div>
+                @error('msjRol')<error>{{ $message }}</error>@enderror
+            </div>
+
+            <div class="col-12">
+                <div style="float: right;">
+                    <div class="btn btn-secondary" wire:click="VerNoVerNvoRol()">Cancelar</div>
+                    <div class="btn btn-primary" wire:click="SolicitarRol()">Solicitar rol</div>
+                </div>
+            </div>
+        </div>
+    @endif --}}
+
 
 
 
@@ -151,10 +215,18 @@
             <li>Modal-cedula-cambia-edo: Enviar buzón y correo en c/cambio de estado a los involucrados</li>
             <li>Modal-cedula-cambia-edo: Crear PDF con nueva versión</li>
             <li>Cédulas: Buscador de cédulas. Vincular cédulas por tema(s)</li>
-            <br>
-
             <li>Cédulas: Módulo para vaciar imágenes que no estan en sp_cedulas (txt_audio, txt_img1-3, txt_video) o en sp_fotos
             <br>
         </ol>
     @endif
+
+    <livewire:sistema.modal-home-solicita-rol-component />
+
+    <script>
+        /* ### Script para abrir mensaje */
+        Livewire.on('AvisoExitoHome',()=>{
+            alert(event.detail.msj);
+        })
+
+    </script>
 </div>

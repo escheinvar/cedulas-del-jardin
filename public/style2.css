@@ -701,4 +701,14 @@ cada una de las imágenes laterales */
     color:#87796d;
 } */
 
-/*========== Termina estilos de cédulas
+/*========== Termina estilos de cédulas*/
+
+.parpadeo {
+  animation: blinker 1s linear infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0.1;
+  }
+}
+

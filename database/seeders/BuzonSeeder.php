@@ -22,7 +22,7 @@ class BuzonSeeder extends Seeder
                 'buz_from'=>'0',
                 'buz_asunto'=>'Bienvenida 1 del sistema',
                 'buz_mensaje'=>'Hola Mundo!!<br>Mensaje del sistema como bienvenida',
-                'buz_comp'=>'Seeder',
+                // 'buz_comp'=>'Seeder',
                 'buz_date'=>$date,
                 'buz_hora'=>$hora,
             ],[
@@ -31,7 +31,7 @@ class BuzonSeeder extends Seeder
                 'buz_from'=>'2',
                 'buz_asunto'=>'Bienvenida 1',
                 'buz_mensaje'=>'El administrdor automático te manda saludos.',
-                'buz_comp'=>'Seeder',
+                // 'buz_comp'=>'Seeder',
                 'buz_date'=>$date,
                 'buz_hora'=>$hora,
             ],[
@@ -40,7 +40,7 @@ class BuzonSeeder extends Seeder
                 'buz_from'=>'0',
                 'buz_asunto'=>'Bienvenida 2 del sistema',
                 'buz_mensaje'=>'Hola Mundo!!<br>Mensaje del sistema como bienvenida',
-                'buz_comp'=>'Seeder',
+                // 'buz_comp'=>'Seeder',
                 'buz_date'=>$date,
                 'buz_hora'=>$hora,
             ],[
@@ -49,7 +49,7 @@ class BuzonSeeder extends Seeder
                 'buz_from'=>'1',
                 'buz_asunto'=>'Bienvenida 2',
                 'buz_mensaje'=>'El administrdor automático te manda saludos.',
-                'buz_comp'=>'Seeder',
+                // 'buz_comp'=>'Seeder',
                 'buz_date'=>$date,
                 'buz_hora'=>$hora,
             ]

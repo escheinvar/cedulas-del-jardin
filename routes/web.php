@@ -27,7 +27,7 @@ use App\Livewire\Sistema\ErrorComponent;
 use App\Livewire\Sistema\HomeComponent;
 use App\Livewire\Sistema\HomeConfigController;
 use App\Livewire\Sistema\LenguasComponent;
-use App\Livewire\Sistema\UsuariosComponent;
+use App\Livewire\Sistema\AdminUsuariosComponent;
 use App\Livewire\Sistema\VisitasComponent;
 use App\Livewire\Sistema\AdminWebComponent;
 use App\Livewire\Web\AutoresController;
@@ -80,7 +80,7 @@ Route::middleware([UsuarioLogeadoConRolMiddle::class,Authenticate::class])->grou
     Route::get('/homeConfig', HomeConfigController::class)->name('homeConfig');
     Route::get('/buzon',BuzonController::class)->name('buzon');
     /*------------- sección Autorizada de administración --------------------- */
-    Route::get('/admin_usuarios',UsuariosComponent::class)->name('usuarios');
+    Route::get('/admin_usuarios',AdminUsuariosComponent::class)->name('usuarios');
     Route::get('/admin_jardines', AdminJardinesController::class)->name('CatCampus');
     Route::get('/admin_lenguas', LenguasComponent::class)->name('AdminLenguas');
     Route::get('/admin_autores',AdminAutoresComponent::class)->name('AdminAutores');

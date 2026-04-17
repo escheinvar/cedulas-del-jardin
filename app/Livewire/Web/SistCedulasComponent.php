@@ -14,7 +14,6 @@ class SistCedulasComponent extends Component
     public $buscaText, $buscaJardin, $buscaLengua;
 
     public function mount(){
-        MyRegistraVisita('web_buscaCedulas');
         $this->buscaText='';
         $this->buscaJardin='%';
         $this->buscaLengua='%';

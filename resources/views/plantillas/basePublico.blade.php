@@ -220,18 +220,37 @@
                                     @if(count(session('rol')) > '0')
                                         <li class="nav-item">
                                             <a class="nav-link  @if(request()->path() == 'admin_cedulas') active @endif" href="/admin_cedulas">
-                                                Admin Cedulas
+                                                Cedulas
                                             </a>
                                         </li>
                                     @endif
+
+                                    <!-- Usuario -->
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle
+                                            @if(in_array(request()->path(), ['homeConfig','buzon','manuales'] ))  active @endif"
+                                            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Usuario
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item @if(request()->path() == 'home') active @endif" href="/home">My home</a></li>
+                                            <li><a class="dropdown-item @if(request()->path() == 'homeConfig') active @endif" href="/homeConfig">Mis datos</a></li>
+                                            <li><a class="dropdown-item @if(request()->path() == 'buzon') active @endif" href="/buzon">Mi buzón</a></li>
+                                            <li><a class="dropdown-item @if(request()->path() == 'manuales') active @endif" href="/manuales">Ver manuales</a></li>
+                                        </ul>
+                                    </li>
 
                                     <!-- Salir de sistema -->
                                     <li class="nav-item">
                                         <form action="{{route('logout')}}" method="post">
                                             @csrf
-                                            <button type="submit" class="nolink btn" style="padding:0;margin:0;">
-                                                    Salir
-                                            </button>
+                                            <li class="nav-item">
+                                                <a>
+                                                    <button type="submit" class="nav-link nolink btn" style="padding:0;margin:0;">
+                                                        Salir
+                                                    </button>
+                                                </a>
+                                            </li>
                                         </form>
                                     </li>
                                 @else

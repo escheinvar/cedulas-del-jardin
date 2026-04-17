@@ -76,14 +76,16 @@
                                     <!-- cabecera del mensaje -->
                                     <div style="">
                                         @if($b->buz_to==Auth::user()->id)<!-- solo muestra si son recibidos (no enviados) -->
-                                            <div style="display: inline-block;" class="m-1 p-1" >
-                                                <input type="checkbox" wire:model.live="ganonesLee"  id="ch{{ $b->buz_id }}" value="{{ $b->buz_id }}">
-                                                @if( $b->buz_act == '1')
-                                                    <i class="bi bi-envelope-fill"></i>
-                                                @else
-                                                    <i class="bi bi-envelope-open"></i>
-                                                @endif
-                                                <b>{{ $b->buz_asunto }}</b>
+                                            <div style="display: inline-block;" class="m-1 p-1">
+                                                <input type="checkbox" wire:model.live="ganonesLee"  id="ch{{ $b->buz_id }}" value="{{ $b->buz_id }}" >
+                                                <span class="PaClick" wire:click="MarcarComoLeido('{{ $b->buz_id }}')">
+                                                    @if( $b->buz_act == '1')
+                                                        <i class="bi bi-envelope-fill"></i>
+                                                    @else
+                                                        <i class="bi bi-envelope-open"></i>
+                                                    @endif
+                                                    <b>{{ $b->buz_asunto }}</b>
+                                                </span>
                                             </div>
                                         @else
                                             <i class="bi bi-arrow-up-circle"><sub>{{ $b->buz_id }}</sub></i> {{ $b->buz_asunto }}
@@ -126,8 +128,7 @@
                                         @else
                                             Enviado a {{ $b->usrname }}
                                         @endif
-                                        </div>
-
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

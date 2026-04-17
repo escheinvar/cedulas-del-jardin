@@ -15,7 +15,6 @@ class RecuperaPasswdController extends Component
     public $correo, $mensaje, $ver, $ver2;
 
     public function mount(){
-        MyRegistraVisita('web_login-RecuperaPassword');
         $this->ver='1';
 
     }

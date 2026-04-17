@@ -46,6 +46,11 @@
 
         @endif
 
+        <?php
+            //Defino var. para omitir partes en el pdf
+            if(!isset($EsUnPdf)){$EsUnPdf='FALSE';}
+        ?>
+
         <div class="col-12" style="" wire:key="parr_{{ $txt_id }}">
             <!-- párrafo tipo título 1 -->
             @if($txt_tipo == 'h1')
@@ -53,10 +58,12 @@
                     <h3 style="display:inline;">
                         <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
                     </h3>
-                    <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
-                    @if($txt_audio != '')
+                    @if($EsUnPdf=='FALSE')
+                        <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
+                    @endif
+                    @if($txt_audio != '' and $EsUnPdf=='FALSE')
                         <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
-                            <source src="{{ $txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
+                            <source src="{{ $txt_audio }}" type="audio/ogg" /> @if($EsUnPdf=='FALSE')El navegador no soporta el audio @endif
                         </audio>
                         <i class="audioTxtPlay" id="IconPlay{{ $txt_id }}" onclick="playAudio('{{ $txt_id }}')"></i>
                         <i class="audioTxtStop" id="IconStop{{ $txt_id }}" onclick="pauseAudio('{{ $txt_id }}')"></i>
@@ -67,9 +74,11 @@
                         </span>
                     @endif
                     <!-- texto original -->
+
                     <div class="" style="color:#87796d; display:none;" id="sale_parrafo{{ $txt_id }}">
                         {!!  $txt_txtoriginal !!}
                     </div>
+
                 </div>
 
             <!-- párrafo tipo título 2 -->
@@ -78,10 +87,12 @@
                     <h4 style="display:inline;">
                         <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
                     </h4>
-                    <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
-                    @if($txt_audio != '')
+                    @if($EsUnPdf=='FALSE')
+                        <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
+                    @endif
+                    @if($txt_audio != '' and $EsUnPdf=='FALSE')
                         <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
-                            <source src="{{ $txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
+                            <source src="{{ $txt_audio }}" type="audio/ogg" /> @if($EsUnPdf=='FALSE')El navegador no soporta el audio @endif
                         </audio>
                         <i class="audioTxtPlay" id="IconPlay{{ $txt_id }}" onclick="playAudio('{{ $txt_id }}')"></i>
                         <i class="audioTxtStop" id="IconStop{{ $txt_id }}" onclick="pauseAudio('{{ $txt_id }}')"></i>
@@ -103,10 +114,12 @@
                     <h5 style="display:inline;">
                         <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
                     </h5>
-                    <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
-                    @if($txt_audio != '')
+                    @if($EsUnPdf=='FALSE')
+                        <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
+                    @endif
+                    @if($txt_audio != '' and $EsUnPdf=='FALSE')
                         <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
-                            <source src="{{ $txt_audio }}" type="audio/ogg" /> El navegador no soporta el audio
+                            <source src="{{ $txt_audio }}" type="audio/ogg" /> @if($EsUnPdf=='FALSE')El navegador no soporta el audio @endif
                         </audio>
                         <i class="audioTxtPlay" id="IconPlay{{ $txt_id }}" onclick="playAudio('{{ $txt_id }}')"></i>
                         <i class="audioTxtStop" id="IconStop{{ $txt_id }}" onclick="pauseAudio('{{ $txt_id }}')"></i>
@@ -126,11 +139,13 @@
             @if($txt_tipo=='p')
                 <div class="my-2" style="display:inline;">
                     {!! $txt_txt !!}
-                    <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
+                    @if($EsUnPdf=='FALSE')
+                       <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
+                    @endif
 
-                    @if($txt_audio != '')
+                    @if($txt_audio != '' and $EsUnPdf=='FALSE')
                         <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
-                            <source src="{{ $txt_audio }}" type="audio/ogg"> El navegador no soporta el audio
+                            <source src="{{ $txt_audio }}" type="audio/ogg"> @if($EsUnPdf=='FALSE')El navegador no soporta el audio @endif
                         </audio>
                         <i class="audioTxtPlay" id="IconPlay{{ $txt_id }}" onclick="playAudio('{{ $txt_id }}')"></i>
                         <i class="audioTxtStop" id="IconStop{{ $txt_id }}" onclick="pauseAudio('{{ $txt_id }}')"></i>

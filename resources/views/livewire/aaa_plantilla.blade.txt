@@ -81,7 +81,7 @@ document.getElementById('MiBotonPersonalizado').addEventListener('click', functi
 paLog('Mensaje','Modelo-Tabla',Tabla_id);
 
 ##### Registra Visita en tabla sist_visitas
-MyRegistraVisita('NombreURl')
+
 
 ##### Envía mensaje a buzón. (comp=Nombre del componente desde el que se genera;
 ##### ifReply=msj_id del que se responde o vacío para nuevos; $mail=Array de mails a enviar o vacío)

@@ -10,7 +10,7 @@ use Livewire\Component;
 class EspeciesController extends Component
 {
     public function mount(){
-        MyRegistraVisita('web_especies');
+
     }
 
     public function render(){

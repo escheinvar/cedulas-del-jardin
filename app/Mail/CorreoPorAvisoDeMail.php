@@ -5,12 +5,13 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class CorreoPorAvisoDeBuzon extends Mailable
+class CorreoPorAvisoDeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,9 +20,8 @@ class CorreoPorAvisoDeBuzon extends Mailable
      */
     public function __construct( public $Data)
     {
-        // dd('mail',$Data, $Data['de']['email']);
+        //
     }
-
 
     /**
      * Get the message envelope.
@@ -31,7 +31,7 @@ class CorreoPorAvisoDeBuzon extends Mailable
         return new Envelope(
             from: new Address('sistema.automatico@cedulas.deljardin.org','Sistema Cédulas del Jardín'),
             // subject: 'Mensaje en tu buzón del Sistema Gestor de Jardines',
-            subject: $this->Data['datos']['buz_asunto'],
+            subject: $this->Data['asunto'],
         );
     }
 
@@ -41,14 +41,14 @@ class CorreoPorAvisoDeBuzon extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.CorreoDeBuzon',
+            view: 'mail.CorreoDeMail',
         );
     }
 
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

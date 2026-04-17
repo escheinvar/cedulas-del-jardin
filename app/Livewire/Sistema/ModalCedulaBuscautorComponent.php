@@ -6,6 +6,7 @@ use App\Models\autor_url;
 use App\Models\cat_autores;
 use App\Models\ced_autores;
 use App\Models\cedulas_url;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -37,7 +38,7 @@ class ModalCedulaBuscautorComponent extends Component
         // $this->dispatch('AbreModalDeBuscarAutor');
     }
 
-     public function mount(){
+    public function mount(){
         ##### del modal busca autor:
         $this->BuscaAutor_Posibles=collect();
         $this->BuscaAutor_BuscaNombre='';
@@ -118,9 +119,13 @@ class ModalCedulaBuscautorComponent extends Component
         ##### Procesa checkbox
         if($this->BuscaAutor_corresponding == TRUE){$corr='1';}else{$corr='0';}
         ##### Genera array de datos:
-        $UrlKey=cedulas_url::where('url_id',$this->cedulaId)->value('url_key');
-        $jardin=cedulas_url::where('url_id',$this->cedulaId)->value('url_cjarsiglas');
-        $urltxt=cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt');
+        $data=cedulas_url::where('url_id',$this->cedulaId)
+            ->with('lenguas')
+            ->first();
+        $UrlKey=$data->url_key;
+        $jardin=$data->url_cjarsiglas;
+        $urltxt=$data->url_urltxt;
+
         $datos=[
             'aut_cautid'=>$this->BuscaAutor_id,
             'aut_urlid'=>$this->cedulaId, #### if id != 0
@@ -188,6 +193,37 @@ class ModalCedulaBuscautorComponent extends Component
             paLog('se genera página de autor','autor_url',$nvo->aurl_id);
 
         }
+        ##### Revisa si el autor/editor/trad. tiene cuenta de usuario
+        $buscaId=cat_autores::where('caut_id',$this->BuscaAutor_id)->where('caut_del','0')->where('caut_act','1')->value('caut_usrid');
+        ##### Envía el correo
+        if($buscaId > '0'){
+            ##### construye variables
+            if($this->BuscaAutor_tipo =='Autor'){
+                $lengua=' en su lengua original y <b>todas sus traducciones</b> subsecuentes';
+            }else{
+                $lengua=' en lengua <b>'.$data->lenguas->len_autonimias.'</b> ('.$data->lenguas->len_lengua.': '.$data->lenguas->len_code.')';
+            }
+
+            ##### Envía correo
+            $to=$buscaId;        ##### id de users de destino
+            $from=Auth::user()->id;      ##### id de users de quien escribe o 0 para sistema
+            $ifReply='0';   ##### 0 para mensajes nuevos o msj_id para respuesta a msj previo
+            $asunto="Asignación de privilegios de autor/traductor/editor sobre una cédula del Jardín";
+            $mensaje='Se te asignó el privilegio de <b>'. $this->BuscaAutor_tipo .
+                '</b> sobre la cédula <b>'. $urltxt .'</b> ' .$lengua.
+                '</b>  del jardín <b>'.$jardin.
+                '</b>.<br> Ya puedes ingresar al sistema para trabajar en ella.'.
+                "</b> (ver <a href='".url('/cedula')."/".$data->url_cjarsiglas."/".$data->url_url."'>".
+                "cédula</a> o ir al <a href='".url('/admin_cedulas')."'>administrador de cédulas</a>)";
+            $notas='';
+            ##### Envía mensaje con función de helper
+            $a=EnviaMensajeAbuzon($to,$from,$asunto, $mensaje,$notas,$ifReply);
+            if($a > '0'){
+                $this->dispatch('AvisoExitoModalUsuarios', msj:'Error en el envío del mensaje');
+                return;
+            }
+        }
+
 
         ##### Finaliza con mensaje y cierre
         $this->dispatch('AvisoExitoBuscaAutorCedula',msj:'Se agregó correctamente el autor');

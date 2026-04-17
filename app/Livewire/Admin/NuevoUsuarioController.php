@@ -15,7 +15,6 @@ class NuevoUsuarioController extends Component
     public function mount(){
         $this->mensaje='';
         $this->ver='1';
-        MyRegistraVisita('web_nuevoUsuario');
     }
 
     public function validador(){
