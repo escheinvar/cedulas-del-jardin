@@ -2,14 +2,16 @@
 /node_modules
 /public/build
 /public/hot
+/public/aud
 /public/avatar/autores
 /public/avatar/jardines
 /public/avatar/usr
 /public/storage
-/public/cedulas
+/public/cedulas/
 /public/img
 /public/img/
 /public/img_basura/
+/public/jardines/
 /storage/*.key
 /vendor
 .env
