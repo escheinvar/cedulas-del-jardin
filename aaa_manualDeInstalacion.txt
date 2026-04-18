@@ -37,7 +37,7 @@ sudo systemctl enable nginx
 sudo systemctl enable php8.4-fpm
 
 ######### Verificar que ya jala php con nginx
-sudo nano '<?php  phpinfo(); ?>' > /var/Www/html/info.php
+sudo echo '<?php  phpinfo(); ?>' > /var/www/html/info.php
 ######### ver html y luego borrar info.php
 sudo rm /var/www/html/info.php
 
@@ -90,10 +90,14 @@ curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 composer --version
 
-###################################################### Creo proyecto laravel
+sudo apt install npm
+###################################################### Instalo laravel y creo proyecto
+
 cd /var/www/html
 git clone https://git....
 composer install
+npm install
+
 ### copiar archivo .env
 ### Crear bd y usuario de bd.
 php artisan key:generate

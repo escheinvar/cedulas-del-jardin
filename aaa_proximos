@@ -3,24 +3,21 @@
 Que al iniciar, se vea tabla de temas con traducciones
 y buscador por tema (incluyendo todos los nombres en lengua
 dentro de la búsqueda)
--------------------------------------------
-- Administrador y editor de temas para que cada cédula
-de cada jardín se vincule a una plantilla específica.
--------------------------------------------
-- Depurador de archivos de objeto.
- Generar función para eliminar página web de jardín.
-En modal del módulo de Administración de sitios web
-del jardín, tiene un botón para "eliminar página completa"
- que al picar, debe de:
-eliminar la página y todos sus textos y archivos.
----------------------------------------------------
-Modulo de listas (planteado por Niza)
----------------------------------------------------
-Reactivar módulo de  estadísticas de visitas, registrar visitas a cada cédula
-y poner en cada cédula el número de visualizaciones.
 ---------------------------------------------------
 Poner función de reply to (en cada mensaje de buzón)
 (salvo que sea de sistema)
+---------------------------------------------------
+Modulo de listas (planteado por Niza)
+-------------------------------------------
+Administrador y editor de temas para que cada cédula
+de cada jardín se vincule a una plantilla específica.
+-------------------------------------------
+Depurador de archivos de objeto.
+Generar función para eliminar página web de jardín.
+En modal del módulo de Administración de sitios web
+del jardín, tiene un botón para "eliminar página completa"
+ que al picar, debe de: eliminar la página
+ y todos sus textos y archivos.
 ---------------------------------------------------
 Ordenar las ligas externas para que aparezca primero las
 propias del Sistema y también, crear rutina para que

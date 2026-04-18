@@ -54,8 +54,6 @@
                         <u>Cambiar mi contraseña</u>
                     </div>
                     <span wire:loading wire:target="PedirTokenPasswd()" style="display:none; color:#CD7B34"> Procesando solicitud ...</span>
-
-
                 </div>
             </div>
         </div>
@@ -65,7 +63,7 @@
                 @if($this->avatar =='')
                     {{-- <img src="@if($NvoAvatar=='') /avatar/usr.png @else {{ $NvoAvatar->temporaryUrl() }} @endif" class="avatar"> --}}
                 @else
-                    <img src="@if($NvoAvatar=='') {{ $this->avatar }} @else {{ $NvoAvatar->temporaryUrl() }} @endif" class="avatar">
+                    <img src="@if($NvoAvatar=='') {{ $this->avatar }} @else {{ $NvoAvatar->temporaryUrl() }} @endif" class="avatar" alt="Avatar de usr">
 
                 @endif
                 <button type="button" class="btn btn-secondary btn-sm m-2" id="MiBotonPersonalizado">
@@ -97,7 +95,6 @@
                             <th>Rol</th>
                             <th>Campus</th>
                             <th></th>
-                            <th>Grupos</t>
                         </tr>
                     </thead>
                     <tbody>
@@ -105,10 +102,8 @@
                         @foreach ($rolesUsr as $r)
                             <tr>
                                 <td> {{ $r->rol_crolrol }} </td>
-                                <td > {{ $r->rol_cjarsiglas }} </td>
-                                <td> {{ $r->rol->crol_describe }}</td>
-                                <td> {{ $r->rol->crol_gps }}</td>
-                                {{-- <td> {{ preg_replace('/,/',', ',$catRoles->where('crol_rol',$r->rol_crolrol)->value('crol_gps') ) }}</td> --}}
+                                <td> {{ $r->rol_cjarsiglas }} </td>
+                                <td> <small>{{ $r->rol->crol_describe }}</small></td>
                             </tr>
                         @endforeach
                     </tbody>
