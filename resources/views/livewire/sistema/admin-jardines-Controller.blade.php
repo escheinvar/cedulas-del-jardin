@@ -26,11 +26,10 @@
                 @endif
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-12 table-responsive">
             <table class="table table-striped" style="width:100%;">
                 <thead>
                     <tr>
-                        <th>Id</th>
                         <th></th>
                         <th><center>Siglas</center></th>
                         <th>Nombre corto</th>
@@ -44,7 +43,7 @@
                 <tbody>
                     @foreach($jardines as $jar)
                         <tr>
-                            <td wire:click="AbreModalJardin({{ $jar->cjar_id }})" class="@if($edit=='1')PaClick @endif"> {{ $jar->cjar_id }} </td>
+                            {{-- <td wire:click="AbreModalJardin({{ $jar->cjar_id }})" class="@if($edit=='1')PaClick @endif"> {{ $jar->cjar_id }} </td> --}}
                             <td wire:click="AbreModalJardin({{ $jar->cjar_id }})" class="@if($edit=='1')PaClick @endif"><img src="{{ $jar->cjar_logo }}" style="max-width:60px; max-width:60px;"></center></td>
                             <td> <center>{{ $jar->cjar_siglas }}</td>
                             <td> {{ $jar->cjar_name }} </td>

@@ -17,7 +17,7 @@
 
     <div class="row">
         <!-- Buscar por Jardín-->
-        <div class="col-6 col-md-2 form-group">
+        <div class="col-12 col-md-2 form-group">
             <label id="BuscaJardin" class="form-label">Jardín<red>*</red></label>
             <select wire:model.live="BuscaJardin"  wire:change="DefineJardin()" id="BuscaJardin" class="@error('BuscaJardin') is-invalid @enderror form-select">
                 <option value="">Todos</option>
@@ -30,7 +30,7 @@
         </div>
 
         <!-- Buscar por módulo -->
-        <div class="col-6 col-md-2 form-group">
+        <div class="col-12 col-md-2 form-group">
             <label id="BuscaMod" class="form-label">Módulo<red>*</red></label>
             <select wire:model.live="BuscaMod" id="BuscaMod" class="@error('BuscaMod') is-invalid @enderror form-select">
                 <option value="">Indicar alguno</option>
@@ -43,7 +43,7 @@
         </div>
 
         <!-- Buscar por Url -->
-        <div class="col-6 col-md-2 form-group">
+        <div class="col-12 col-md-2 form-group">
             <label id="BuscaUrl" class="form-label">Url<red>*</red></label>
             <select wire:model.live="BuscaUrl" id="BuscaUrl" class="@error('BuscaUrl') is-invalid @enderror form-select" @if($BuscaMod=='') disabled @endif>
                     @if($BuscaMod == '') <option value=""> @endif Indica un módulo</option>
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Buscar por Submódulo -->
-        <div class="col-6 col-md-2 form-group">
+        <div class="col-12 col-md-2 form-group">
             <label id="BuscaSubMod" class="form-label">Submódulo<red>*</red></label>
             <select wire:model.live="BuscaSubMod" id="BuscaSubMod" class="@error('BuscaSubMod') is-invalid @enderror form-select" @if($BuscaMod=='') disabled @endif>
                 @if($BuscaMod == '') <option value=""> @endif Indica un módulo</option>
@@ -75,7 +75,7 @@
 
     <div class="row">
         <!-- Busar por titulo/aturo/pie o palabra clave -->
-        <div class="col-6 col-md-4 form-group">
+        <div class="col-12 col-md-4 form-group">
             <label id="BuscaTxt" class="form-label">Titulo/Autor/Pie o palabra clave<red></red></label>
             <input wire:model.live="BuscaTxt" id="BuscaTxt" class="@error('BuscaTxt') is-invalid @enderror form-control" type="text">
             <div class="form-text"></div>
@@ -83,7 +83,7 @@
         </div>
 
         <!-- Buscar por tipo de objeto -->
-        <div class="col-6 col-md-2 form-group">
+        <div class="col-12 col-md-2 form-group">
             <label id="BuscaTipo" class="form-label">Tipo de objeto<red></red></label>
             <select wire:model.live="BuscaTipo" id="BuscaTipo" class="@error('BuscaTipo') is-invalid @enderror form-select">
                 <option value="">Cualquiera</option>
@@ -96,7 +96,7 @@
         </div>
 
         <!-- Botón para agregar nuevo objeto -->
-        <div class="col-6 col-md-6" style="">
+        <div class="col-12 col-md-6" style="">
             {{-- @if($BuscaJardin != '' AND $BuscaMod != '' AND $BuscaSubMod != '' AND $edit=='1') --}}
                 <br>
                 <button wire:click="AbrirModalPaIncertarObjeto('0')" type="button" class="btn btn-primary" @if($BuscaJardin == '' OR $BuscaMod == '' OR $BuscaSubMod == '' or $edit=='0') disabled style="color:#64383E;" @endif >Nuevo Objeto</button>

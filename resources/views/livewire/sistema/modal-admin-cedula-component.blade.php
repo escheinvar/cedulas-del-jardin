@@ -23,7 +23,7 @@
                     <!-- Original/Copia y copia de -->
                     <div class="row">
                         <!-- Original o traducción -->
-                        <div class="col-4 form-group">
+                        <div class="col-12 col-md-4 form-group">
                             <label for="origtrad" class="form-label">Original/Traducción<red>*</red></label>
                             <select wire:model.live="origtrad"  wire:change="DeterminaVariablesDeCopia()" id="origtrad" class="@error('origtrad') is-invalid @enderror form-select" @if($cedulaId > '0') disabled @endif>
                                 <option value="">Indica ...</option>
@@ -35,7 +35,7 @@
                         </div>
 
                         <!-- Copia de -->
-                        <div class="col-4 form-group">
+                        <div class="col-12 col-md-4 form-group">
                             <label for="copiade" class="form-label">Copia de<red>@if($origtrad=='traducción')*@endif</red></label>
                             <select wire:model.live="copiade" wire:change="DeterminaVariablesDeCopia()" id="copiade" class="@error('copiade') is-invalid @enderror form-select" @if($origtrad=='original' or $cedulaId != '0') disabled @endif>
                                 <option value="">Indica ...</option>
@@ -54,7 +54,7 @@
                         </div>
 
                         <!-- Tipo de cédula -->
-                        <div class="col-4 form-group">
+                        <div class="col-12 col-md-4 form-group">
                             <label for="tipoCedula" class="form-label">Tipo de ćedula<red>*</red></label>
                             <select wire:model.live="tipoCedula" wire:change="DeterminaVariablesDeCopia()" id="tipoCedula" class="@error('tipoCedula') is-invalid @enderror form-select" @if($origtrad=='traducción' ) disabled @endif>
                                 <option value="">Indica ...</option>
@@ -70,7 +70,7 @@
                     <!-- Datos generales de la cédula -->
                     <div class="row">
                         <!-- Lengua -->
-                        <div class="col-4 form-group">
+                        <div class="col-12 col-md-4 form-group">
                             <label for="lengua" class="form-label">Lengua<red>*</red></label>
                             <select wire:model.live="lengua" wire:change="DeterminaVariablesDeCopia()" id="lengua" class="@error('lengua') is-invalid @enderror form-select">
                                 <option value="">Indica....</option>
@@ -83,7 +83,7 @@
                         </div>
 
                         <!-- MODAL: titulo --->
-                        <div class="col-4 form-group">
+                        <div class="col-12 col-md-4 form-group">
                             <label for="titulo" class="form-label"> Titulo<red>*</red></label>
                             <input wire:model="titulo" id="titulo" class="@error('titulo') is-invalid @enderror form-control" type="text" >
                             <div class="form-text"></div>
@@ -102,7 +102,7 @@
                         </div>
 
                         <!-- MODAL: url web jardin -->
-                        <div class="col-4 form-group">
+                        <div class="col-12 col-md-4 form-group">
                             <label for="url" class="form-label">URL <red>*</red></label>
                             @if($origtrad == 'original' and $cedulaId == '0')
                                 &nbsp; <i class="bi bi-info-square-fill agregar" wire:click="ProponUrl()"> Proponer </i>
@@ -113,7 +113,7 @@
                         </div>
 
                         <!-- MODAL: Resumen -->
-                        <div class="col-9 form-group">
+                        <div class="col-12 col-md-9 form-group">
                             <label for="resumen" class="form-label">Resumen</label>
                             {{-- @if($origtrad=='traducción') <span onclick="VerNoVer('resumen','Original')" class="PaClick">Ver original</span> @endif --}}
                             <textarea wire:model="resumen" id="resumen" class="@error('resumen') is-invalid @enderror form-control"></textarea>
@@ -133,7 +133,7 @@
                         </div>
 
                         <!-- MODAL: checkbox activo -->
-                        <div class="col-3 form-group my-2">
+                        <div class="col-12 col-md-3 form-group my-2">
                             <div class="form-check">
                                 <input class="form-check-input" wire:model.live="act" type="checkbox" id="act">
                                 <label class="form-check-label" for="checkDefault"> Publicar página </label><br>
@@ -156,7 +156,7 @@
                         <div class="row my-2">
                             <hr>
                             <!-- Autor -->
-                            <div class="col-4 form-group">
+                            <div class="col-12 col-md-4 form-group">
                                 <div>
                                     @if($CedAutores->count() =='0')
                                         <i wire:click="AbreModalDeBuscarAutor('Autor')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
@@ -182,7 +182,7 @@
                             </div>
 
                             <!-- Traductor -->
-                            <div class="col-4 form-group">
+                            <div class="col-12 col-md-4 form-group">
                                 @if($this->origtrad=='traducción')
                                     <div>
                                         @if($CedTraductores->count() =='0')
@@ -213,7 +213,7 @@
                             </div>
 
                             <!-- Editor -->
-                            <div class="col-4 form-group">
+                            <div class="col-12 col-md-4 form-group">
                                 <div>
                                     @if($CedEditores->where('aut_tipo','Editor')->count() =='0')
                                         <i wire:click="AbreModalDeBuscarAutor('Editor')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
@@ -244,7 +244,7 @@
                         <div class="row my-2">
                             <hr>
                             <!-- Ubicación(es) -->
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <div>
                                     @if($CedUbica->count() =='0')
                                         <i wire:click="AbrirModalDeUbicacion('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
@@ -268,7 +268,7 @@
                             </div>
 
                             <!-- Palabras clave -->
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <div>
                                     @if($CedAlias->count() =='0')
                                         <i wire:click="AbrirModalDeAlias('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
@@ -297,7 +297,7 @@
                         <div class="row my-2">
                             <hr>
                             <!-- Especie(s) -->
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <div>
                                     <i wire:click="VerNoVer('verSp')" class="@if($verSp=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     <label for="" class="form-label">Especie(s)<red></red></label>
@@ -328,7 +328,7 @@
                             </div>
 
                             <!-- usos -->
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <div>
                                     <i wire:click="VerNoVer('verUso')" class="@if($verUso=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     <label for="" class="form-label">Usos(s)<red></red></label>

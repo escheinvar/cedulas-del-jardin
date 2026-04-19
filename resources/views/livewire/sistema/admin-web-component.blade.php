@@ -19,7 +19,7 @@
 
     <!-- buscar por jardín -->
     <div class="row my-3">
-        <div class="col-6 col-md-3 form-group">
+        <div class="col-12 col-md-3 form-group">
             <label class="form-label">Jardin<red>*</red></label>
             <select wire:model.live="jardinSel"  wire:change="DefineJardin()"  class="form-select">
                 <option value="">Indica un jardín</option>
@@ -31,10 +31,10 @@
                 @endif
             </select>
         </div>
-        <div class="col-6 col-md-3">
+        <div class="col-12 col-md-3">
             <br>
             @if($abiertos > '0')<error> @endif
-                Hay {{ $abiertos }} @if($abiertos =='1' ) página @else páginas  @endif del jardin<br>
+                Hay {{ $abiertos }} @if($abiertos =='1' ) página @else páginas  @endif del jardin
                 y
                 {{ $abiertosAutor }} @if($abiertosAutor =='1' ) página @else páginas  @endif de autor
                 en edición
@@ -201,7 +201,7 @@
     </div>
 
     <!-- ---------------------------------------------  --------------------------------------- -->
-    <!-- ----------------------------- TABLA DE AUTORES ------------------------------------ -->
+    <!-- ----------------------------- TABLA DE PÁGINAS DE  AUTORES ------------------------------------ -->
     <!-- ------------------------------------------------------------------------------------ -->
     <div class="table-responsive-sm">
         <table class="table table-striped table-sm">
@@ -405,7 +405,7 @@
                     </div>
                     <div class="row">
                         <!-- Original o traducción -->
-                        <div class="col-6 form-group">
+                        <div class="col-12 col-md-6 form-group">
                             <label for="origtrad" class="form-label">Original/Traducción<red>*</red></label>
                             <select wire:model.live="origtrad"  wire:change="DeterminaVariablesDeCopia()" id="origtrad" class="@error('origtrad') is-invalid @enderror form-select" @if($jardinId > '0') disabled @endif>
                                 <option value="">Indica ...</option>
@@ -416,7 +416,7 @@
                             @error('origtrad') <error> {{ $message }}</error>@enderror
                         </div>
                         <!-- Copia de -->
-                        <div class="col-6 form-group">
+                        <div class="col-12 col-md-6 form-group">
                             <label for="copiade" class="form-label">Copia de<red></red></label>
                             <select wire:model.live="copiade" wire:change="DeterminaVariablesDeCopia()" id="copiade" class="@error('copiade') is-invalid @enderror form-select" @if($origtrad=='original' or $jardinId != '0') disabled @endif>
                                 <option value="">Indica ...</option>
@@ -430,7 +430,7 @@
                     </div>
                     <div class="row">
                         <!-- Lengua -->
-                        <div class="col-6 form-group">
+                        <div class="col-12 col-md-6 form-group">
                             <label for="lengua" class="form-label">Lengua<red>*</red></label>
                             <select wire:model.live="lengua" wire:change="DeterminaVariablesDeCopia()" id="lengua" class="@error('lengua') is-invalid @enderror form-select">
                                 <option value="">Indica....</option>
@@ -444,7 +444,7 @@
                         </div>
 
                         <!-- MODAL: url web jardin -->
-                        <div class="col-6 form-group">
+                        <div class="col-12 col-md-6 form-group">
                             <label for="url" class="form-label">URL <red>*</red> </label>
                             <input wire:model="url" id="url" class="@error('url') is-invalid @enderror form-control" @if($url=='inicio' or $origtrad=='traducción') disabled @endif type="text" >
                             <div class="form-text">Texto sin espacios ni caracteres para usar como url</div>
@@ -452,7 +452,7 @@
                         </div>
 
                         <!-- MODAL: banner titulo --->
-                        <div class="col-6 form-group">
+                        <div class="col-12 col-md-6 form-group">
                             <label for="bannertitle" class="form-label">Titulo<red>*</red> </label>
                             <input wire:model="bannertitle" id="bannertitle" class="@error('bannertitle') is-invalid @enderror form-control" type="text" >
                             <div class="form-text"> Texto que aparecerá como título de la página</div>
@@ -460,7 +460,7 @@
                         </div>
 
                         <!-- MODAL: titulo web jardin -->
-                        <div class="col-6 form-group">
+                        <div class="col-12 col-md-6 form-group">
                             <label for="titulo" class="form-label">Metadato: Título</label>
                             <input wire:model="titulo" id="titulo" class="@error('titulo') is-invalid @enderror form-control"  type="text" >
                             <div class="form-text"> Texto que aparecerá en la parte superior del navegador</div>
@@ -478,7 +478,7 @@
                         </div>
 
                         <!-- MODAL: checkbox activo -->
-                        <div class="col-6 form-group my-2">
+                        <div class="col-12 col-md-6 form-group my-2">
                             <div class="form-check">
                                 <input class="form-check-input" wire:model.live="act" type="checkbox" id="act">
                                 <label class="form-check-label" for="checkDefault"> Publicar página </label><br>

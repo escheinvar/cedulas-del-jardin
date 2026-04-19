@@ -19,7 +19,7 @@
 
     <div class="row my-3">
         <!-- buscar por jardín -->
-        <div class="col-6 col-md-3 form-group">
+        <div class="col-12 col-md-3 form-group">
             <label for="jardinSel" class="form-label">Jardin<red>*</red></label>
             <select wire:model="jardinSel"  wire:change="DefineJardin()" id="jardinSel" class="form-select">
                 <option value="">Indica un jardín</option>
@@ -33,7 +33,7 @@
         </div>
 
         <!-- buscar por lengua -->
-        <div class="col-6 col-md-3 form-group">
+        <div class="col-12 col-md-3 form-group">
             <label for="" class="form-label">Lengua</label>
             <select wire:model.live="BuscaLengua" id="BuscaLengua" class="form-select">
                 <option value="">En todas</option>
@@ -44,7 +44,7 @@
         </div>
 
         <!-- buscar por estado -->
-        <div class="col-6 col-md-3 form-group">
+        <div class="col-12 col-md-3 form-group">
             <label for="" class="form-label">Estado</label>
             <select wire:model.live="BuscaEstado" id="" class="form-select">
                 <option value="">En todos</option>
@@ -71,7 +71,7 @@
         </div>
 
         <!-- buscar por texto -->
-        <div class="col-6 col-md-3 form-group">
+        <div class="col-12 col-md-3 form-group">
             <label for="" class="form-label">Buscar por texto</label>
             <input wire:model.live="BuscaTexto" id="" class="form-control" type="text">
         </div>

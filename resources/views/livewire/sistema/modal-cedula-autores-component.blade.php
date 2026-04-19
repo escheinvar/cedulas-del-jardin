@@ -18,30 +18,6 @@
                 <!-- ----------------------------  cuerpo del modal --------------------------->
                 <div class="modal-body">
                     <div class="row">
-                        {{-- <div class="col-12 col-md-3">
-                            <div class="row">
-                                <div class="col-12 form-group">
-                                    @if($ModAut_img != '')
-                                        <center>
-                                            <img src="{{ $ModAut_img }}" style="max-width:90%;">
-                                            <i wire:click="BorrarImagen('{{ $ModAut_IdAutor }}')" wire:confirm="Estás por ELIMINAR PERMANENTEMENTE la imagen del autor. ¿Seguro que quieres continuar?" class="bi bi-trash agregar"></i>
-                                        </center>
-                                    @else
-                                        @if($ModAut_NvaImg != '')
-                                            <center>
-                                                <img src="{{ $ModAut_NvaImg->temporaryUrl() }}" style="max-width:90%;">
-                                            </center>
-                                        @endif
-                                        <label for="Mod_Aut_NvaImg">Nueva imagen</label>
-                                        <input wire:model="ModAut_NvaImg" type="file" class="form-control">
-                                    @endif
-                                </div>
-                            </div>
-                        </div> --}}
-
-
-
-
                         <div class="row">
                             <!-- Nombre -->
                             <div class="col-12 col-md-4  form-group">
@@ -69,9 +45,10 @@
 
                              <!-- Nombre de autor  -->
                             <div class="col-12 col-md-4  form-group">
-                                <button class="btn btn-sm btn-primary bi bi-info-square" wire:click="CalculaNombre()"  @if($ModAut_nombre=='' OR $ModAut_apellido1=='' OR $ModAut_IdAutor > '0') disabled @endif> Sugerir</button>
-                                <label for="ModAut_autorname" class="form-label">Nombre de autor<red>*</red></label> &nbsp; &nbsp;
-                                <input wire:model.live="ModAut_autorname" wire:change="CalculaUrl()" id="ModAut_autorname" class="@error('ModAut_autorname') is-invalid @enderror form-control"  @if($ModAut_IdAutor > '0') readonly @endif type="text">
+                                <label for="ModAut_autorname" class="form-label">Nombre de autor<red>*</red></label><br> &nbsp; &nbsp;
+                                <button class="btn btn-sm btn-primary bi bi-info-square" wire:click="CalculaNombre()" style="display:inline-block;"  @if($ModAut_nombre=='' OR $ModAut_apellido1=='' OR $ModAut_IdAutor > '0') disabled @endif> Sugerir</button>
+                                <input wire:model.live="ModAut_autorname" wire:change="CalculaUrl()" id="ModAut_autorname" style="display:inline-block;width:75%;" class="@error('ModAut_autorname') is-invalid @enderror form-control"  @if($ModAut_IdAutor > '0') readonly @endif type="text">
+
                                 <div class="form-text">Nombre único del autor (generalmente apellido-apellido N.)</div>
                                 @error('ModAut_autorname')<error>{{ $message }}</error>@enderror
                             </div>
@@ -100,7 +77,7 @@
                                         <label class="form-check-label" for="ModAut_web">Generar página web</label>
                                     </div>
                                 </div> --}}
-                                <div class="col-6 col-md-4 form-group">
+                                <div class="col-12 col-md-4 form-group">
                                     <div class="form-check">
                                         <br>
                                         <input wire:model.live="ModAut_mailpublic" class="form-check-input" type="checkbox" value="1" id="ModAut_mailpublic">
@@ -164,7 +141,7 @@
 
 
                                 <!-- Vincular a usuario -->
-                                <div class="col-6 col-md-4 form-group">
+                                <div class="col-12 col-md-4 form-group">
                                     <label for="ModAut_usrsist" class="form-label">@if($ModAut_usrsist=='')Vincular @else <i class="bi bi-person-check"></i>Vinculado @endif a usuario del sistema: <red></red></label>
                                     <select wire:model.live="ModAut_usrsist" id="ModAut_usrsist" class="@error('ModAut_usrsist') is-invalid @enderror form-select">
                                         <option value="">Indicar usuario del sistema...</option>

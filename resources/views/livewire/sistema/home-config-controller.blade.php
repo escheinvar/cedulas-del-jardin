@@ -42,7 +42,7 @@
                     @error('apellido')<error>{{ $message }}</error>@enderror
                 </div>
                 <div class="col-sm-12 col-md-5">
-                    <div class="col-sm-12 form-check  my-2">
+                    <div class="col-sm-12 form-check my-2">
                         <input class="form-check-input" value='0' wire:model.live="mensajes" type="checkbox" id="mensajes">
                         <label class="form-check-label" for="mensajes"> Reenviar mensajes del buzón a mi correo electrónico </label>
                         @if($mensajes=='0')

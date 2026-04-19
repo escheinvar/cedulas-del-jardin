@@ -712,3 +712,15 @@ cada una de las imágenes laterales */
   }
 }
 
+/*============ Botón de avisos de home */
+.avisoHome{
+    display:flex;
+    flex-direction:row;
+    /* flex-wrap:nowrap; */
+    padding:10px;
+    margin:5px;
+    background-color: #CDC6B9;
+    border-radius:7px;
+
+}
+

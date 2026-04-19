@@ -66,8 +66,9 @@
         <!-- mensajes de buzón -->
         @if($buzon->where('buz_act','1')->count() > '0')
             <div class="col-12 col-md-4" style="border-radius:5px;">
-                <div class="align-middle align-content-center" style="display:flex; flex-direction:row; flex-wrap:nowrap; padding:10px; margin:5px; background-color: #CDC6B9; border-radius:7px; height:130px;">
-                    <div style="transform:rotate(-90deg); width:110px; text-align:center;">
+                <div class="align-middle align-content-center avisoHome">
+
+                    <div style="transform:rotate(-90deg); text-align:center;">
                         <a href="/buzon" class="nolink">
                             <button  class="btn btn-primary">
                                 Buzón
@@ -89,9 +90,9 @@
         <!-- Aportes del público -->
         @if( $aporta->where('msg_edo','0')->count() > '0')
             <div class="col-12 col-md-4" style="border-radius:5px;">
-                <div class="align-middle align-content-center" style="display:flex; flex-direction:row; flex-wrap:nowrap; padding:10px; margin:5px; background-color: #CDC6B9; border-radius:7px; height:130px;">
+                <div class="align-middle align-content-center avisoHome">
 
-                    <div style="transform:rotate(-90deg); width:110px; text-align:center;">
+                    <div style="transform:rotate(-90deg); text-align:center;">
                         <a href="/admin_aportes" class="nolink">
                             <button  class="btn btn-primary">
                                 Aportes
@@ -113,22 +114,22 @@
 
         <!-- cédulas del usuario -->
         @if($cedulas->count() > '0')
-            <div class="col-12 col-md-4" style="">
-                <div class="align-middle align-content-center" style="display:flex; flex-direction:row; flex-wrap:nowrap; padding:10px; margin:5px; background-color: #CDC6B9; border-radius:7px; height:130px;">
+            <div class="col-12 col-md-4" style="border-radius:5px;">
+                <div class="align-middle align-content-center avisoHome">
 
-                    <div style="transform:rotate(-90deg); width:110px; text-align:center;">
+                    <div style="transform:rotate(-90deg); text-align:center;">
                         <a href="/admin_cedulas" class="nolink">
                             <button  class="btn btn-primary">
                                 Cédulas
                             </button>
                         </a>
                     </div>
-                    <div style="width:180px;">
+                    <div style="width:150px;">
                         <b style="color:#CD7B34">Creando: {{ $cedulas->where('url_ciclo', '<','1')->where('url_edo','0')->count() }}</b><br>
                         <b style="color:#CD7B34">Revisando: {{ $cedulas->where('url_edo','>','0')->where('url_edo','<','5')->count() }}</b><br>
                         <b style="color:#CD7B34">Editando: {{ $cedulas->where('url_edit','1')->count() }}</b>
                     </div>
-                    <div style="width:200px;">
+                    <div style="width:150px;">
                         Total: {{ $cedulas->count() }}<br>
                         Originales: {{ $cedulas->where('url_tradid','0')->count() }}<br>
                         Públicadas {{ $cedulas->where('url_edo','>=','5')->where('url_edit','0')->count() }}

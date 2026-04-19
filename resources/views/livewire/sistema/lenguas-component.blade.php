@@ -83,22 +83,21 @@
         <div class="row my-4">
             <!-- buscar por nombre o correo -->
             <div class="col-12 col-md-3 form-group">
-                <label class="form-label">Lengua/Autonimia</label>
+                <label class="form-label">Lengua/Autonimia</label><br>
                 <input wire:model.live="lenguaSel" class="form-control agregar">
                 <i class="bi bi-x-square-fill agregar" wire:click="BorrarBusqueda('lenguaSel')"></i>
-
             </div>
 
             <!-- buscar por ubicación geográfica -->
             <div class="col-12 col-md-3 form-group">
-                <label class="form-label">Municipio/Localidad</label>
+                <label class="form-label">Municipio/Localidad</label><br>
                 <input wire:model.live="localSel" class="form-control agregar">
                 <i class="bi bi-x-square-fill agregar" wire:click="BorrarBusqueda('localSel')"></i>
             </div>
 
             <!-- buscar por código -->
             <div class="col-12 col-md-3 form-group">
-                <label class="form-label">Código</label>
+                <label class="form-label">Código</label><br>
                 <input wire:model.live="codeSel" class="form-control agregar">
                 <i class="bi bi-x-square-fill agregar" wire:click="BorrarBusqueda('codeSel')"></i>
             </div>
