@@ -45,9 +45,9 @@
 
                              <!-- Nombre de autor  -->
                             <div class="col-12 col-md-4  form-group">
-                                <label for="ModAut_autorname" class="form-label">Nombre de autor<red>*</red></label><br> &nbsp; &nbsp;
-                                <button class="btn btn-sm btn-primary bi bi-info-square" wire:click="CalculaNombre()" style="display:inline-block;"  @if($ModAut_nombre=='' OR $ModAut_apellido1=='' OR $ModAut_IdAutor > '0') disabled @endif> Sugerir</button>
-                                <input wire:model.live="ModAut_autorname" wire:change="CalculaUrl()" id="ModAut_autorname" style="display:inline-block;width:75%;" class="@error('ModAut_autorname') is-invalid @enderror form-control"  @if($ModAut_IdAutor > '0') readonly @endif type="text">
+                                <label for="ModAut_autorname" class="form-label">Nombre de autor<red>*</red></label> &nbsp; &nbsp;
+                                <button class="btn btn-sm btn-primary bi bi-info-square" wire:click="CalculaNombre()"  @if($ModAut_nombre=='' OR $ModAut_apellido1=='' OR $ModAut_IdAutor > '0') disabled @endif> Sugerir</button>
+                                <input wire:model.live="ModAut_autorname" wire:change="CalculaUrl()" id="ModAut_autorname" class="@error('ModAut_autorname') is-invalid @enderror form-control"  @if($ModAut_IdAutor > '0') readonly @endif type="text">
 
                                 <div class="form-text">Nombre único del autor (generalmente apellido-apellido N.)</div>
                                 @error('ModAut_autorname')<error>{{ $message }}</error>@enderror

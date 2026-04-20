@@ -716,7 +716,8 @@ cada una de las imágenes laterales */
 .avisoHome{
     display:flex;
     flex-direction:row;
-    /* flex-wrap:nowrap; */
+    flex-wrap:nowrap;
+    /* display:inline-block; */
     padding:10px;
     margin:5px;
     background-color: #CDC6B9;

@@ -136,14 +136,14 @@
                         <!-- ------------ Muestra cuestionario ------------------------- -->
                         <div class="row my-3">
                             <!-- titulo -->
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="Imgmod_titulo" class="form-label">Título del objeto<red>*</red></label>
                                 <input wire:model="Imgmod_titulo" id="Imgmod_titulo" class="@error('Imgmod_titulo') is-invalid @enderror form-control" type="text" >
                                 <div class="form-text"></div>
                                 @error('Imgmo   d_titulo')<error>{{ $message }}@enderror
                             </div>
 
-                            <div class="col-6 form-check">
+                            <div class="col-12 col-md-6 m-2 form-check">
                                 <!-- forzar título -->
                                 <input wire:model="Imgmod_tituloact" class="form-check-input" type="checkbox" value="" id="forzar">
                                 <label class="form-check-label" for="forzar">Forzar título   </label>
@@ -156,7 +156,7 @@
                             </div>
 
                             <!-- autor -->
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="Imgmod_autor" class="form-label">Autor del objeto<red>*</red></label>
                                 <input wire:model="Imgmod_autor" id="Imgmod_autor" class="@error('Imgmod_autor') is-invalid @enderror form-control" type="text">
                                 <div class="form-text"></div>
@@ -164,7 +164,7 @@
                             </div>
 
                             <!-- fecha -->
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="Imgmod_fecha" class="form-label">Fecha</label>
                                 <input wire:model="Imgmod_fecha" id="Imgmod_fecha" class="@error('Imgmod_fecha') is-invalid @enderror form-control" type="date">
                                 <div class="form-text"></div>
