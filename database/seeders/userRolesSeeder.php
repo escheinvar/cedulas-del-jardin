@@ -52,21 +52,22 @@ class userRolesSeeder extends Seeder
                 'rol_cjarsiglas'=>'todos',
                 'rol_tipo1'=>'todas',
                 'rol_tipo2'=>'todas',
-            ],[
-                'rol_act'=>'1',
-                'rol_usrid'=>'3',
-                'rol_crolrol'=>'autor',
-                'rol_cjarsiglas'=>'todos',
-                'rol_tipo1'=>'todas',
-
-            ],[
-                'rol_act'=>'1',
-                'rol_usrid'=>'4',
-                'rol_crolrol'=>'editor',
-                'rol_cjarsiglas'=>'todos',
-                'rol_tipo1'=>'todas',
-
             ]
+            // ,[
+            //     'rol_act'=>'1',
+            //     'rol_usrid'=>'3',
+            //     'rol_crolrol'=>'autor',
+            //     'rol_cjarsiglas'=>'todos',
+            //     'rol_tipo1'=>'todas',
+
+            // ],[
+            //     'rol_act'=>'1',
+            //     'rol_usrid'=>'4',
+            //     'rol_crolrol'=>'editor',
+            //     'rol_cjarsiglas'=>'todos',
+            //     'rol_tipo1'=>'todas',
+
+            // ]
         ];
 
         if(UserRolesModel::count()=='0'){

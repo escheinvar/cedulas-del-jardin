@@ -35,26 +35,28 @@ class CatJardinesCampusSeeder extends Seeder
                 'cjar_red1'=>'',
                 'cjar_red2'=>'',
                 'cjar_red3'=>'',
-            ],[
+            ],
+            // [
+            //     'cjar_id'=>'2',
+            //     'cjar_name'=>'Matatlán',
+            //     'cjar_nombre'=>'Jardín Comunitario de Matatlán',
+            //     'cjar_siglas'=>'Matatlán',
+            //     'cjar_tipo'=>'Etnobotánico',
+            //     'cjar_direccion'=>'Reforma s/n, Independencia, Centro, Oaxaca de Juárez, Oaxaca. C.P. 68000 ',
+            //     'cjar_tel'=>' 951 516 5325',
+            //     'cjar_mail'=>'etnobotanico@infinitummail.com',
+            //     'cjar_edo'=>'Oaxaca',
+            //     'cjar_logo'=>'/avatar/jardines/Matatlan.png',
+            //     'cjar_face'=>'fac',
+            //     'cjar_insta'=>'insta',
+            //     'cjar_youtube'=>'you',
+            //     'cjar_www'=>'www.Matatlán',
+            //     'cjar_red1'=>'',
+            //     'cjar_red2'=>'',
+            //     'cjar_red3'=>'',
+            // ],
+            [
                 'cjar_id'=>'2',
-                'cjar_name'=>'Matatlán',
-                'cjar_nombre'=>'Jardín Comunitario de Matatlán',
-                'cjar_siglas'=>'Matatlán',
-                'cjar_tipo'=>'Etnobotánico',
-                'cjar_direccion'=>'Reforma s/n, Independencia, Centro, Oaxaca de Juárez, Oaxaca. C.P. 68000 ',
-                'cjar_tel'=>' 951 516 5325',
-                'cjar_mail'=>'etnobotanico@infinitummail.com',
-                'cjar_edo'=>'Oaxaca',
-                'cjar_logo'=>'/avatar/jardines/Matatlan.png',
-                'cjar_face'=>'fac',
-                'cjar_insta'=>'insta',
-                'cjar_youtube'=>'you',
-                'cjar_www'=>'www.Matatlán',
-                'cjar_red1'=>'',
-                'cjar_red2'=>'',
-                'cjar_red3'=>'',
-            ],[
-                'cjar_id'=>'3',
                 'cjar_name'=>'IxMx en JebOax',
                 'cjar_nombre'=>'Investigadores por México en el Jardín Etnobiológico de Oaxaca',
                 'cjar_siglas'=>'IxMxJebOax',
@@ -78,6 +80,9 @@ class CatJardinesCampusSeeder extends Seeder
                 CatJardinesModel::create($event);
             }
         }
+
+        ###################################################################################
+        ##################### Páginas web de jardines
 
         $events=[
             [
@@ -112,39 +117,41 @@ class CatJardinesCampusSeeder extends Seeder
                 'urlj_titulo'=>'Jardín Etnobiológico de Oaxaca',
                 'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
                 'urlj_bannertitle'=>'Jardín Etnobiológico de Oaxaca',
-            ],[
-                'urlj_cjarsiglas'=>'Matatlán',
-                'urlj_url'=>'inicio',
-                'urlj_urltxt'=>'inicio',
-                'urlj_act'=>'1',
-                'urlj_titulo'=>'Jardín comunitario de Santiago Matatlán',
-                'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
-                'urlj_bannertitle'=>'Jardín comunitario de Santiago Matatlán',
-            ],[
-                'urlj_cjarsiglas'=>'Matatlán',
-                'urlj_url'=>'autores',
-                'urlj_urltxt'=>'autores',
-                'urlj_act'=>'1',
-                'urlj_titulo'=>'Jardín comunitario de Santiago Matatlán',
-                'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
-                'urlj_bannertitle'=>'Jardín comunitario de Santiago Matatlán',
-            ],[
-                'urlj_cjarsiglas'=>'Matatlán',
-                'urlj_url'=>'cedulas',
-                'urlj_urltxt'=>'cedulas',
-                'urlj_act'=>'1',
-                'urlj_titulo'=>'Jardín comunitario de Santiago Matatlán',
-                'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
-                'urlj_bannertitle'=>'Jardín comunitario de Santiago Matatlán',
-            ],[
-                'urlj_cjarsiglas'=>'Matatlán',
-                'urlj_url'=>'lista',
-                'urlj_urltxt'=>'lista',
-                'urlj_act'=>'1',
-                'urlj_titulo'=>'Jardín comunitario de Santiago Matatlán',
-                'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
-                'urlj_bannertitle'=>'Jardín comunitario de Santiago Matatlán',
-            ],[
+            ],
+            // [
+            //     'urlj_cjarsiglas'=>'Matatlán',
+            //     'urlj_url'=>'inicio',
+            //     'urlj_urltxt'=>'inicio',
+            //     'urlj_act'=>'1',
+            //     'urlj_titulo'=>'Jardín comunitario de Santiago Matatlán',
+            //     'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
+            //     'urlj_bannertitle'=>'Jardín comunitario de Santiago Matatlán',
+            // ],[
+            //     'urlj_cjarsiglas'=>'Matatlán',
+            //     'urlj_url'=>'autores',
+            //     'urlj_urltxt'=>'autores',
+            //     'urlj_act'=>'1',
+            //     'urlj_titulo'=>'Jardín comunitario de Santiago Matatlán',
+            //     'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
+            //     'urlj_bannertitle'=>'Jardín comunitario de Santiago Matatlán',
+            // ],[
+            //     'urlj_cjarsiglas'=>'Matatlán',
+            //     'urlj_url'=>'cedulas',
+            //     'urlj_urltxt'=>'cedulas',
+            //     'urlj_act'=>'1',
+            //     'urlj_titulo'=>'Jardín comunitario de Santiago Matatlán',
+            //     'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
+            //     'urlj_bannertitle'=>'Jardín comunitario de Santiago Matatlán',
+            // ],[
+            //     'urlj_cjarsiglas'=>'Matatlán',
+            //     'urlj_url'=>'lista',
+            //     'urlj_urltxt'=>'lista',
+            //     'urlj_act'=>'1',
+            //     'urlj_titulo'=>'Jardín comunitario de Santiago Matatlán',
+            //     'urlj_descrip'=>'Página del  en el Sistema de Cédulas del Jardín en lenguas originarias',
+            //     'urlj_bannertitle'=>'Jardín comunitario de Santiago Matatlán',
+            // ],
+            [
                 'urlj_cjarsiglas'=>'IxMxJebOax',
                 'urlj_url'=>'autores',
                 'urlj_urltxt'=>'autores',

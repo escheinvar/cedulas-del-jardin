@@ -40,30 +40,30 @@ class userSeeder extends Seeder
                 'password'=>Hash::make('admin'),
                 'avatar'=>''
                 ]);
-             User::create([
-                'id'=>'3',
-                'email'=>'escheinvar2@gmail.com',
-                'nombre'=>'Niza',
-                'apellido'=>'Gamez',
-                'usrname'=>'Tamariz',
-                'nace'=>'1977-07-22',
-                'cinsid'=>'1',
-                'mensajes'=>'1',
-                'password'=>Hash::make('admin'),
-                'avatar'=>''
-                ]);
-             User::create([
-                'id'=>'4',
-                'email'=>'escheinvar3@gmail.com',
-                'nombre'=>'Alejandro',
-                'apellido'=>'De Ávila',
-                'usrname'=>'Bloomberg',
-                'nace'=>'1977-07-22',
-                'cinsid'=>'1',
-                'mensajes'=>'0',
-                'password'=>Hash::make('admin'),
-                'avatar'=>''
-                ]);
+            //  User::create([
+            //     'id'=>'3',
+            //     'email'=>'escheinvar2@gmail.com',
+            //     'nombre'=>'Niza',
+            //     'apellido'=>'Gamez',
+            //     'usrname'=>'Tamariz',
+            //     'nace'=>'1977-07-22',
+            //     'cinsid'=>'1',
+            //     'mensajes'=>'1',
+            //     'password'=>Hash::make('admin'),
+            //     'avatar'=>''
+            //     ]);
+            //  User::create([
+            //     'id'=>'4',
+            //     'email'=>'escheinvar3@gmail.com',
+            //     'nombre'=>'Alejandro',
+            //     'apellido'=>'De Ávila',
+            //     'usrname'=>'Bloomberg',
+            //     'nace'=>'1977-07-22',
+            //     'cinsid'=>'1',
+            //     'mensajes'=>'0',
+            //     'password'=>Hash::make('admin'),
+            //     'avatar'=>''
+            //     ]);
         }
     }
 }

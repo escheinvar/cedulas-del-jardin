@@ -23,28 +23,23 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             #### Genera catálogos
-            userSeeder::class,
-            CatRolesSeeder::class,
-            userRolesSeeder::class,
-            CatJardinesCampusSeeder::class,
-            CatLenguasSeeder::class,
-            CatLenguasInaliSeeder::class,
-            CatEntidadesSeeder::class,
-            #SpUrlSeeder::class,
-            #SpUrlCedulaSeeder::class,
-            #SpCedulaSeeder::class,
-            #SpFotosSeeder::class,
-            #Nom054semarnatSeeder::class,
-            BuzonSeeder::class,
-            LenguasSeeder::class,
-            cat_imgSeeder::class,
-            #### Cédulas:
-            CatTipocedulaSeeder::class,
-            CatAutoresSeeder::class,
-            CedulaUrlSeeder::class,
-            CatUsosSeeder::class,
-            CedCatalogos::class,
-            CatRedesSeeder::class,
+            userSeeder::class,              ##### real 2 usrs iniciales
+            CatRolesSeeder::class,          ##### real catalogo sistema
+            userRolesSeeder::class,         ##### real de los 2 usrs iniciales
+            CatJardinesCampusSeeder::class, ##### real catálogo del sistema
+            CatLenguasSeeder::class,        ##### real catálogo del sistema
+            CatLenguasInaliSeeder::class,   ##### real catálogo del sistema
+            CatEntidadesSeeder::class,      ##### real catálogo del sistema
+            Nom054semarnatSeeder::class,    ##### real catálogo del sistema
+            #BuzonSeeder::class,            ##### datos inventados
+            LenguasSeeder::class,           ##### real lenguas iniciales
+            cat_imgSeeder::class,           ##### real catálogo del sistema
+            CatTipocedulaSeeder::class,     ##### real catálogo del sistema
+            #CatAutoresSeeder::class,       ##### datos inventados
+            #CedulaUrlSeeder::class,        ##### datos inventados
+            #CatUsosSeeder::class,          ##### datos inventados
+            CedCatalogos::class,            ##### real catálogo del sistema
+            CatRedesSeeder::class,          ##### real catálogo del sistemaS
         ]);
     }
 }
