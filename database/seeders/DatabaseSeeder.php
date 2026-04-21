@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             CatLenguasSeeder::class,        ##### real catálogo del sistema
             CatLenguasInaliSeeder::class,   ##### real catálogo del sistema
             CatEntidadesSeeder::class,      ##### real catálogo del sistema
-            Nom054semarnatSeeder::class,    ##### real catálogo del sistema
+            #Nom054semarnatSeeder::class,    ##### real catálogo del sistema
             #BuzonSeeder::class,            ##### datos inventados
             LenguasSeeder::class,           ##### real lenguas iniciales
             cat_imgSeeder::class,           ##### real catálogo del sistema
