@@ -56,17 +56,14 @@
                 <option value="5">5 Publicada</option>
                 <option value="6">6 Publicada Solicita Edición</option>
             </select>
-            {{-- @if($abiertos->where('url_edit','1')->count() > '0')
-                <error style="font-size: 90%;">
-            @endif
-            Hay {{ $abiertos->where('url_edit','1')->count() }} @if($abiertos =='1' ) página @else páginas  @endif en edición
-            y {{ $abiertos->where('url_edo','<','5')->count() }} en proceso --}}
-            @if($urls->where('url_edit','1')->count() > '0')
+            {{-- @if($urls->where('url_edit','1')->count() > '0')
                 <error style="font-size: 90%;">
             @endif
             Hay {{ $urls->where('url_edit','1')->count() }} @if($abiertos =='1' ) página @else páginas  @endif en edición
             y {{ $abiertos->where('url_edo','<','5')->count() }} en proceso
-            </error>
+            @if($urls->where('url_edit','1')->count() > '0')
+                </error>
+            @endif --}}
 
         </div>
 
@@ -119,8 +116,20 @@
     <!-- ------------------------------------------------------------------------------------ -->
     <!-- ----------------------- TABLA DE CÉDULAS LOS JARDÍNES ------------------------------ -->
     <!-- ------------------------------------------------------------------------------------ -->
-    <div class="table-responsive-sm"  style="clear:both;">
-        <table class="table table-striped table-sm my-4">
+
+    <div class="table-responsive-sm my-4"  style="clear:both;">
+        <!-- aviso de páginas en edición -->
+        @if($urls->where('url_edit','1')->count() > '0')
+            <red style="font-size: 90%;">
+        @endif
+        Hay {{ $urls->where('url_edit','1')->count() }} @if($abiertos =='1' ) página @else páginas  @endif en edición
+        y {{ $abiertos->where('url_edo','<','5')->count() }} en proceso
+        @if($urls->where('url_edit','1')->count() > '0')
+            </red>
+        @endif
+
+        <!-- tabla -->
+        <table class="table table-striped table-sm">
             <thead>
                 <tr>
                     <th wire:click="ordenaTabla('url_id')" class="PaClick">Id</th>
@@ -174,9 +183,9 @@
                                 {{ $u->url_titulo }}
                                 <div style="color:gray;font-size:80%;">
                                 @if($u->url_tradid=='0')
-                                    Original
+                                    -- Original --
                                 @else
-                                    Traducción
+                                    {!! $u->url_tituloorig!!}
                                 @endif
                             </div>
                             </div>

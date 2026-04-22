@@ -689,17 +689,7 @@ button.EdoActual{
     font-size: 100%;
 }
 
-/*=== ContenedorImg: usado en las cédulas para mostrar
-cada una de las imágenes laterales */
-/* .ContenedorImg{
-    margin-left:auto;
-    margin-right: auto;
-    position: relative;
-    display: inline-block;
-    margin-top:0px;
-    padding:15px;
-    color:#87796d;
-} */
+
 
 /*========== Termina estilos de cédulas*/
 

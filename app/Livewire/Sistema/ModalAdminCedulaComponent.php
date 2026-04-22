@@ -187,6 +187,7 @@ class ModalAdminCedulaComponent extends Component
 
         ##### Guarda en Base de datos
         if($this->cedulaId=='0'){
+            $datos['url_edit']='1';
             $ja=cedulas_url::create($datos);
             $id=$ja->url_id;
             #### Crea log
@@ -197,8 +198,9 @@ class ModalAdminCedulaComponent extends Component
             #### Crea log
             paLog('Edita los datos generales de la cédula ('.$this->url.') de '.$this->jardinSel,'jardin_url',$id);
         }
-        ##### en caso de copias, copia alias, ubicaciones yel contenido de la página,
-        if($this->origtrad=='traducción'){
+
+        ##### en caso de ser una nueva copia, copia alias, ubicaciones yel contenido de la página,
+        if($this->cedulaId=='0'  AND $this->origtrad=='traducción'){
             ##### Genera copia de elementos de la cédula
             ##### $this->copiade =tiene url_id del original, $id=nuevo ID
             ##### Copia Autores
@@ -230,12 +232,10 @@ class ModalAdminCedulaComponent extends Component
                 $copia->save();
             }
             ##### No requiere copiar especies ni usos.
-
             ##### Copia textos
             $orig4=cedulas_txt::where('txt_urlid',$this->copiade)
                 ->where('txt_del','0')
                 ->get();
-
             foreach($orig4 as $or){
                 $copia=$or->replicate();
                 $copia->txt_urlid=$id;
@@ -315,6 +315,7 @@ class ModalAdminCedulaComponent extends Component
         $datos=[
             'jardin'=>$this->jardinSel,
             'urltxt'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt'),
+            'urlid'=>$this->cedulaId,
         ];
         $this->dispatch('AbreModalDeBuscarEspecie',$datos);
     }
@@ -337,6 +338,7 @@ class ModalAdminCedulaComponent extends Component
                 'spid'=>$spId, ### Id de sp_id de tabla ced_sp
                 'jardin'=>$this->jardinSel,
                 'urltxt'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt'),
+                'urlid'=>$this->cedulaId,
             ];
         $this->dispatch('AbreModalUsoEnCedula',$datos);
     }

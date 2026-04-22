@@ -56,7 +56,8 @@
                     <tr>
                         <!-- nombre cédula -->
                         <td>
-                            <b>{{ $i->url_urltxt }}</b>
+                            <b>{!! $i->url_titulo !!}</b>
+                            <div class="form-text">{!! $i->url_tituloorig !!}
                         </td>
 
                         <!-- lengua -->

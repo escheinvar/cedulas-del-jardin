@@ -214,3 +214,16 @@ post_max_size = 256M
 
 php artisan view:clear
 php artisan cache:clear
+
+###########################################
+### Cambiar maximo en nginx. dentro de /etc/nginx/nginx.conf
+### agregar la directiva:
+http {
+    client_max_body_size 100M;
+}
+
+
+###########################################
+### Cargar manualmente las siguientes bases de dato:
+- kew
+- Nom054semarnatSeeder

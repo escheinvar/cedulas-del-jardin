@@ -111,7 +111,7 @@
                             @foreach($a->cedulas as $ced)
                                 <?php $num++; ?>
                                 <a href="{{ url('/cedula') }}/{{ $ced->url_cjarsiglas }}/{{ $ced->url_url }}" class="nolink">
-                                    {{ $ced->url_titulo }}<sup>{{ substr($ced->aut_tipo,0,1) }}</sup>
+                                    {!! $ced->url_titulo !!}<sup>{{ substr($ced->aut_tipo,0,1) }}</sup>
                                     <i>
                                         {{ $ced->url_lencode }}
                                         {{ $ced->url_cjarsiglas }}
@@ -138,7 +138,7 @@
                 <ul>
                     <li>
                         <a href="/cedula/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}" target="cedula" class="nolink">
-                            <b>{{ $c->url_titulo }}: {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})</b>.
+                            <b>{!! $c->url_titulo !!}: {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})</b>.
                             <span id="sale_copiaurl">
                                 {{ url('/cedula') }}/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}
                             </span>

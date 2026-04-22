@@ -31,13 +31,13 @@ return new class extends Migration
             $table->foreign('url_lencode')->references('len_code')->on('lenguas')->constrained('lenguas','len_code');
             $table->integer('url_tradid');      ##### url_id de la cédula de la que proviene la traducción o 0 para original
 
-            $table->string('url_titulo')->nullable();  ##### Título original de la cédula
-            $table->string('url_tituloorig')->nullable(); ##### Título traducido de la cédula
+            $table->string('url_titulo')->nullable();  ##### Código html del titulo original de la cédula (es html por los símbolos)
+            $table->string('url_tituloorig')->nullable(); ##### Código html del título traducido de la cédula (es html por los símbolos)
             $table->longText('url_resumen')->nullable(); ##### Resumen de la cédula
             $table->longText('url_resumenorig')->nullable(); ##### Resumen traducido de la cédula
-            $table->string('url_cita')->nullable(); ##### Cita completa de la cédula
-            $table->string('url_cita_aut')->nullable(); ##### Autores en formato de cita
-            $table->string('url_cita_trad')->nullable(); ##### Traductores en formato de cita
+            $table->longText('url_cita')->nullable(); ##### Cita completa de la cédula
+            $table->longText('url_cita_aut')->nullable(); ##### Autores en formato de cita
+            $table->longText('url_cita_trad')->nullable(); ##### Traductores en formato de cita
             $table->string('url_anio')->nullable(); ##### Año de la cédula
             $table->decimal('url_version',5 ,2)->default('1.0');
             $table->string('url_doi')->nullable();

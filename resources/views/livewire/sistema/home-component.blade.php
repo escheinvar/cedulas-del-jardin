@@ -159,6 +159,8 @@
     @if(in_array('admin',session('rol')))
         <h3>Pendientes</h3>
         <ol>
+            <li>Botón en home: "solicitar lengua"</li>
+            <li>Botón: Solicitar nueva cédula, solicitar traducción </li>
             <li>Cédulas: Buscador de cédulas. Vincular cédulas por tema(s)</li>
             <li>Cédulas: Módulo para vaciar imágenes que no estan en sp_cedulas (txt_audio, txt_img1-3, txt_video) o en sp_fotos
             <br>

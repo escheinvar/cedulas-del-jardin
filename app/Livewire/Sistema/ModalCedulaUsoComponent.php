@@ -4,6 +4,7 @@ namespace App\Livewire\Sistema;
 
 use App\Models\cat_usos;
 use App\Models\ced_sp;
+use App\Models\cedulas_url;
 use App\Models\ced_catalogos;
 use App\Models\ced_usos;
 use Livewire\Attributes\On;
@@ -16,6 +17,7 @@ class ModalCedulaUsoComponent extends Component
     public $uso_usoid; ##### valor id del uso
     public $uso_jardin; ##### siglas del jardin
     public $uso_urltxt; ##### nombre de cedula (sin traducción)
+    public $uso_urlid; ##### Id de cédula
     ################### variables de cuestionario
     public $uso_catego, $uso_uso, $uso_parte, $uso_usosPartes, $uso_explica;
 
@@ -40,6 +42,7 @@ class ModalCedulaUsoComponent extends Component
         $this->uso_usoid=$datos['usoid'];
         $this->uso_jardin=$datos['jardin'];
         $this->uso_urltxt=$datos['urltxt'];
+        $this->uso_urlid=$datos['urlid'];
         if($this->uso_usoid > '0'){
             #### Carga datos:
             $dato=ced_usos::where('uso_id',$this->uso_usoid)->first();
@@ -147,15 +150,28 @@ class ModalCedulaUsoComponent extends Component
             ##### Genera Log
             paLog('Se edita uso de '.$this->uso_urltxt.' de '.$this->uso_jardin, 'ced_usos',  $this->uso_usoid);
         }
+
+        ####### Envía nuevos usos a modulo de cédula (para actualizar cambios)
+        $dato=cedulas_url::where('url_id',$this->uso_urlid)
+                ->with('usos')
+                ->first();
+        $this->dispatch('RecibeVariablesDeUsos',$dato->usos);
+
         $this->limpiarModalUsoEnCedula();
-        $this->CerrarModalUsoEnCedula('1');
+        $this->CerrarModalUsoEnCedula('0');
     }
 
     public function EliminarUso(){
         ced_usos::where('uso_id',$this->uso_usoid)->update([
             'uso_del'=>'1',
         ]);
-        $this->CerrarModalUsoEnCedula('1');
+        ####### Envía nuevos usos a modulo de cédula (para actualizar cambios)
+        $dato=cedulas_url::where('url_id',$this->uso_urlid)
+                ->with('usos')
+                ->first();
+        $this->dispatch('RecibeVariablesDeUsos',$dato->usos);
+
+        $this->CerrarModalUsoEnCedula('0');
     }
 
     public function render(){

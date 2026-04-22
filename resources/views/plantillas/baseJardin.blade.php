@@ -118,16 +118,8 @@
                                 <!-- El jardín (inicio) -->
                                 <li class="nav-item">
 
-                                    <a class="nav-link @if(preg_match("/jardins\/.*/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')">
-                                        Inicio
-                                    </a>
-                                </li>
-
-
-                                <!-- Los autores -->
-                                <li class="nav-item">
-                                    <a class="nav-link @if(preg_match("/jardin\/.*\/autores/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')/autores">
-                                        Autores
+                                    <a class="nav-link @if(preg_match("/jardin(?!.*cedulas$)/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')">
+                                        El Jardín
                                     </a>
                                 </li>
 
@@ -144,6 +136,17 @@
                                         Listado
                                     </a>
                                 </li>
+
+                                <!-- Los autores -->
+                                <li class="nav-item">
+                                    <a class="nav-link @if(preg_match("/jardin\/.*\/autores/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')/autores">
+                                        Autores
+                                    </a>
+                                </li>
+
+
+
+
 
                                 <!-- Otros jardines -->
                                 <li class="nav-item">

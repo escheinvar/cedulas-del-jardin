@@ -4,6 +4,7 @@ namespace App\Livewire\Sistema;
 
 use App\Models\CatKewModel;
 use App\Models\ced_sp;
+use App\Models\cedulas_url;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -21,7 +22,7 @@ class ModalCedulaEspecieComponent extends Component
         $this->dispatch('AbreModalDeBuscarEspecie',$datos);
     }
     ############################################################# */
-    public $aliasp_jardin, $aliasp_urltxt;  ##### Vars. grales.
+    public $aliasp_jardin, $aliasp_urltxt, $aliasp_urlid;  ##### Vars. grales.
     public $aliasp_ConCatalogo; #### Indica si hay o no catálogo de sp.
     public $aliasp_reino, $aliasp_familia, $aliasp_buscaGen, $aliasp_gen;
     public $aliasp_sp, $aliasp_ssp, $aliasp_var, $aliasp_especies; ##### Variables de formaulario
@@ -31,6 +32,7 @@ class ModalCedulaEspecieComponent extends Component
         ##### recibe variables externas
         $this->aliasp_jardin=$datos['jardin'];
         $this->aliasp_urltxt=$datos['urltxt'];
+        $this->aliasp_urlid=$datos['urlid'];
 
         ##### Prepara variables de modal
         $this->aliasp_ConCatalogo='0';
@@ -45,7 +47,7 @@ class ModalCedulaEspecieComponent extends Component
     }
 
     public function CerrarModalDeBuscarEspecie($reload){
-        if(!isset($reload) or $reload==''){$reload='1';}
+        if(!isset($reload) or $reload==''){$reload='0';}
         $this->limpiarModalDeBuscarEspecie();
         $this->aliasp_reino='';
         $this->dispatch('CierraModalDeBuscarEspecie',reload:$reload);
@@ -165,6 +167,15 @@ class ModalCedulaEspecieComponent extends Component
         #### Crea log
         paLog('Se vincula la cedula '.$this->aliasp_jardin."-".$this->aliasp_urltxt.' a la sp '.$nombre,'ced_sp',$bla->sp_id);
 
+
+
+        ##### Manda datos a cédula-controller para actualizar listado
+            $dato=cedulas_url::where('url_id',$this->aliasp_urlid)
+                ->with('especies')
+                ->first();
+            $this->dispatch('RecibeVariablesDeEspecies',$dato->especies);
+
+
         #### Limpia
         $this->limpiarModalDeBuscarEspecie();
         $this->aliasp_reino='';
@@ -173,7 +184,7 @@ class ModalCedulaEspecieComponent extends Component
         $this->dispatch('AvisoExitoAliasCedula',msj:'Se vinculó la cédula a la especie correctamente');
 
         ##### Cierra
-        $this->dispatch('CierraModalDeBuscarEspecie',reload:'1');
+        $this->dispatch('CierraModalDeBuscarEspecie',reload:'0');
     }
 
     ################################################## Página general

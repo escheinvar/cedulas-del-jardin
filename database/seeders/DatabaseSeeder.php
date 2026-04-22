@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
             CatTipocedulaSeeder::class,     ##### real catálogo del sistema
             #CatAutoresSeeder::class,       ##### datos inventados
             #CedulaUrlSeeder::class,        ##### datos inventados
-            #CatUsosSeeder::class,          ##### datos inventados
+            CatUsosSeeder::class,           ##### real catálogo del sistemaa
             CedCatalogos::class,            ##### real catálogo del sistema
             CatRedesSeeder::class,          ##### real catálogo del sistemaS
         ]);

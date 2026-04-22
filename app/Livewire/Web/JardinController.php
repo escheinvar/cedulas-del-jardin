@@ -146,10 +146,10 @@ class JardinController extends Component
 
         ###### Obtiene lista de autores
         $autores=cat_autores::whereIn('caut_id',$IdDeAutores)
-        ->orderBy('caut_nombre','asc')
-        ->orderBy('caut_apellido1','asc')
-        ->with('cedulas')
-        ->with('urlautor')
+            ->orderBy('caut_nombre','asc')
+            ->orderBy('caut_apellido1','asc')
+            ->with('cedulas')
+            ->with('urlautor')
             ->get();
 // dd($autores);
 

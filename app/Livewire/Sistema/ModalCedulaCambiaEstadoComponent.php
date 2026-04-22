@@ -169,7 +169,7 @@ class ModalCedulaCambiaEstadoComponent extends Component
             $from=Auth::user()->id;      ##### id de users de quien escribe o 0 para sistema
             $ifReply='0';   ##### 0 para mensajes nuevos o msj_id para respuesta a msj previo
             $asunto="Se te envía la cédula ".$url->url_titulo." para su revisión.";
-            $mensaje='La cédula <b>'. $url->url_titulo .'</b>'.
+            $mensaje='La cédula <b>"'. $url->url_titulo .'"</b>'.
                 ' en lengua <b>'. $url->lenguas->len_autonimias .'</b> ('.$url->lenguas->len_lengua.') ['.$url->lenguas->len_code.']'.
                 ' del jardín <b>'. $url->url_cjarsiglas .'</b> '.
                 $texto1." <b>". $a->caut_nombre." ".$a->caut_apellido1."</b> ".$texto2.
@@ -227,6 +227,7 @@ class ModalCedulaCambiaEstadoComponent extends Component
         ->where('txt_act','1')->where('txt_del','0')
         ->orderBy('txt_orden')
         ->get();
+
         $meses=['0','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','dieciembre'];
         $UrlRedes=url('/').'/cedula/'.$this->CambiaEdo_ced->url_cjarsiglas.'/'.$this->CambiaEdo_ced->url_url;
         $qrSize='80';
@@ -374,12 +375,13 @@ class ModalCedulaCambiaEstadoComponent extends Component
 
         ##### Prepara textos para correos
         if($this->CambiaEdo_version=='1'){$textin1=' nueva ';}else{$textin1=' misma ';}
-        $Texto="La cédula ".$this->CambiaEdo_ced->url_titulo.
-                " en lengua ".$this->CambiaEdo_ced->lenguas->len_autonimias." (".$this->CambiaEdo_ced->lenguas->len_lengua.")".
+        if($this->CambiaEdo_ced->url_ciclo=='0'){$TextoX=' finalizó su primer ciclo de revisiones ';}else{$TextoX=' finalizó su ciclo número '.$this->CambiaEdo_ced->url_ciclo.' de revisiones ';}
+        $Texto='La cédula "<b>'.$this->CambiaEdo_ced->url_titulo.'</b>" '.
+                ' en lengua '.$this->CambiaEdo_ced->lenguas->len_autonimias." (".$this->CambiaEdo_ced->lenguas->len_lengua.")".
                 " del jardín ".$this->CambiaEdo_ced->url_cjarsiglas.
-                " finalizó su ciclo EnviaMensajeAmailnúmero ".$this->CambiaEdo_ced->url_ciclo.
+                $TextoX.
                 " y acaba de ser liberada al público en la URL: ".url('/cedula')."/".$this->CambiaEdo_ced->url_cjarsiglas."/".$this->CambiaEdo_ced->url_url.
-                "(".$textin1." versión ".$this->CambiaEdo_ced->url_version.")".
+                " (".$textin1." versión ".$this->CambiaEdo_ced->url_version.")".
                 "</b> (ver <a href='".url('/cedula')."/".$this->CambiaEdo_ced->url_cjarsiglas."/".$this->CambiaEdo_ced->url_url."'>cédula</a>)";
         $Asuntillo="Aviso de liberación al público de la cédula ".$this->CambiaEdo_ced->url_titulo;
 

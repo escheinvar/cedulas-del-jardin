@@ -1,5 +1,5 @@
 @section('MenuPublico') x @endsection
-@section('title') {{ $url->url_titulo }} @endsection
+@section('title') {!! $url->url_titulo !!} @endsection
 @section('meta-description') {{ $url->url_descrip }} @endsection
 
 @section('logo') {{ $url->jardin->cjar_logo }} @endsection
@@ -223,7 +223,7 @@
             <!-- ------------------------- FOTO DE LA PORTADA ------------------------>
             <!-- ------------------------- FOTO DE LA PORTADA ------------------------>
             <div class="col-12 col-md-5 col-lg-6 ced-Portada">
-                <div class="ContendorImg" style="width:100%">
+                <div style="margin-bottom:10px;">
                     <!-- muestra portada -->
                     @if($objs->where('img_cimgtipo','portada')->count() >'0')
                         @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','portada'),'TipoDeObjeto'=>'portada'])
@@ -234,9 +234,6 @@
 
                         @endif
                     @endif
-
-
-
                 </div>
             </div>
 
@@ -249,20 +246,24 @@
                     <i class="bi bi-arrow-up-circle" style="font-size: 170%; color:#87796d;; cursor: pointer;"></i>
                 </div> -->
 
+
                 <!-- imagenes laterales ppal1, ppal2 y ppal3 -->
                 @foreach (['ppal1','ppal2','ppal3','ppal'] as $ppal)
-                    @if($objs->where('img_cimgtipo',$ppal)->count() >'0')
-                        @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo',$ppal),'TipoDeObjeto'=>$ppal])
-                    @else
-                        @if($editMaster=='1')
-                            <div wire:click="AbrirModalPaIncertarObjeto('0','cedula','{{ $ppal }}','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">{{ $ppal }}
-                            </div>
+                    <div style="margin-bottom:10px;">
+                        @if($objs->where('img_cimgtipo',$ppal)->count() >'0')
+                            @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo',$ppal),'TipoDeObjeto'=>$ppal])
+                        @else
+                            @if($editMaster=='1')
+                                <div wire:click="AbrirModalPaIncertarObjeto('0','cedula','{{ $ppal }}','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">{{ $ppal }}
+                                </div>
+                            @endif
                         @endif
-                    @endif
+                    </div>
                 @endforeach
                 @if($editMaster=='1')
                     <div wire:click="AbrirModalPaIncertarObjeto('0','cedula','ppal','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">ppal</div>
                 @endif
+
 
                 <!-- flecha -->
                 <!-- <div class="center" style="text-align: center;">
@@ -327,14 +328,25 @@
                 <!--  Título de cédula  -->
                 <div class="row" style="">
                     <div class="col-12" style="text-align: center;margin:30px;">
-                        <h2 style="display:inline">{{ $url->url_titulo }}</h2>
-                        @if($edit=='1')
-                            <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbirModalTraduceTitulo()">
-                                <i  class="bi bi-pencil-square"></i><sup></sup>
-                            </span>
-                        @endif
+                        <div style="display:block;">
+                            <h2 style="display:inline-block">{!! $url->url_titulo !!}</h2>
+                            <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('titulo','{{ $url->url_id }}')" style="color:#87796d;"></i>
+                            @if($edit=='1')
+                                <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbirModalTraduceTitulo()">
+                                    <i  class="bi bi-pencil-square"></i><sup></sup>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="" style="text-align:center; font-size:150%;color: #87796d;">
+                            {{ $url->lenguas->len_autonimias }}
+                        </div>
+                    </div>
+                    <!-- titulo original -->
+                    <div class="col-12" style="color:#87796d; display:none;vertical-align:top" id="sale_titulo{{ $url->url_id }}">
+                        <h2 style="display:inline">{!!  $url->url_tituloorig !!}</h2>
                     </div>
                 </div>
+
 
                 <!--  Autores de cédula  -->
                 <?php $total=$cedula->autores->count(); ?>
@@ -356,6 +368,7 @@
                                     @if($total > '1' and $num==($total-1) ) y
                                     @elseif($total > '1' and $num < ($total-1)),
                                     @endif
+
                                 @endforeach
                             </div>
 
@@ -363,8 +376,8 @@
                             <div style="font-size: 70%;">
                             @foreach ($cedula->autores as $a)
                                 @if($a->aut_comunidad != '' OR $a->aut_institucion != '' or $a->aut_corresponding=='1')
-                                    @if($total > '1' )<sup>{{ $num++ }}</sup>@endif {{ $a->aut_comunidad }} {{ $a->aut_institucion }}
-                                    @if($a->aut_corresponding=='1') <b>{{ $a->aut_correo }}</b>&nbsp; |@endif
+                                    @if($total > '1' )&nbsp; &nbsp; | <sup>{{ $num++ }}</sup>@endif {{ $a->aut_comunidad }} {{ $a->aut_institucion }}
+                                    @if($a->aut_corresponding=='1') <b>{{ $a->aut_correo }}</b> @endif
                                 @endif
                             @endforeach
                             </div>
@@ -467,14 +480,16 @@
             <!-- -------------- Zona de objetos laterales  ----------------->
             <div class="col-12 col-md-2 col-lg-3" style="background-color:#CDC6B9;">
                 @foreach (['lat1','lat2','lat3','lat4','lat5','lat'] as $posi)
-                    @if($objs->where('img_cimgtipo',$posi)->count() > '0')
-                        @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo',$posi),'TipoDeObjeto'=>$posi])
-                    @else
-                        @if($editMaster=='1')
-                            <div wire:click="AbrirModalPaIncertarObjeto('0','cedula','{{ $posi }}','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">{{ $posi }}
-                            </div>
+                    <div style="margin-bottom:10px;margin-top:10px;">
+                        @if($objs->where('img_cimgtipo',$posi)->count() > '0')
+                            @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo',$posi),'TipoDeObjeto'=>$posi])
+                        @else
+                            @if($editMaster=='1')
+                                <div wire:click="AbrirModalPaIncertarObjeto('0','cedula','{{ $posi }}','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">{{ $posi }}
+                                </div>
+                            @endif
                         @endif
-                    @endif
+                    </div>
                 @endforeach
                 @if($editMaster=='1')
                     <div wire:click="AbrirModalPaIncertarObjeto('0','cedula','{{ $posi }}','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">lat</div>

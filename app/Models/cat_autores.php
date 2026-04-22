@@ -44,7 +44,9 @@ class cat_autores extends Model
 
     public function cedulas():HasMany{
         return $this->hasMany(ced_autores::class, 'aut_cautid','caut_id')
-            ->join('cedula_url','url_id','=','aut_urlid');
+            ->join('cedula_url','url_id','=','aut_urlid')
+            ->where('aut_act','1')->where('aut_del','0')
+            ->where('url_act','1')->where('url_del','0');
     }
 
     public function urlautor():HasMany{

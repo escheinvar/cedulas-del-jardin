@@ -75,7 +75,7 @@
                             <select wire:model.live="lengua" wire:change="DeterminaVariablesDeCopia()" id="lengua" class="@error('lengua') is-invalid @enderror form-select">
                                 <option value="">Indica....</option>
                                 @foreach($lenguas as $l)
-                                    <option value="{{ $l->len_code }}">{{ $l->len_code }}: {{ $l->len_lengua }} {{ $l->len_variante }}</option>
+                                    <option value="{{ $l->len_code }}">{{ $l->len_autonimias }} ({{ $l->len_lengua }}) {{ $l->len_code }}</option>
                                 @endforeach
                             </select>
                             <div class="form-text"></div>
@@ -417,6 +417,14 @@
 
         Livewire.on('RecibeVariablesDeAlias',() => {
             @this.set('CedAlias',event.detail.dato, live=true);
+        });
+
+        Livewire.on('RecibeVariablesDeEspecies',() => {
+            @this.set('CedSp',event.detail.dato, live=true);
+        });
+
+        Livewire.on('RecibeVariablesDeUsos',() => {
+            @this.set('CedUsos',event.detail.dato, live=true);
         });
 
         /* ### Script para abrir mensaje */

@@ -264,6 +264,7 @@ class CedulasController extends Component
     ############################## Modal Traduce Titulo
     public function AbirModalTraduceTitulo(){
         #####<livewire: web.web.cedulas.controller  />
+        $this->NuevoTituloTraducido=$this->url->url_titulo;
         $this->dispatch('AbreModalTraduceTitulo');
     }
     public function CerrarModalTraduceTitulo(){
