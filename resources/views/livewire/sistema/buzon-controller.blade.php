@@ -25,7 +25,7 @@
         </div>
         <!-- ---------------------------------------------------------------------------------- -->
         <!-- ------------- INICIA BARRA SUPERIOR DE ACCIONES PARA BUZÓN  ---------------------- -->
-        <div class="my-2" style="background-color:#CDC6B9; padding:5px;">
+        <div class="my-2" style="background-color:#CDC6B9; padding:5px; clear:both;">
             <!-- Marcar todos -->
             <div class="form-check mx-1" style="display:inline-block;">
                 <input wire:model.live="SelectTodo" wire:click="MarcaDesmarcaTodo()"  class="form-check-input" type="checkbox" id="checkDefault">
