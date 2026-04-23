@@ -95,35 +95,52 @@
         <!-- ------------------------------------------------------------------------ -->
         <!-- ------------------------------------------------------------------------ -->
         @if($url->urlj_urltxt=='autores')
-            @foreach ($autores as $a)
-                <ul>
-                    <li>
-                        @if($a->urlautor->count() > '0')<a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" target="autor" class="nolink"> @endif
-                            <!-- nombre -->
-                            <b>
-                                {{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}
-                                @if($a->urlautor->count() > '0')<i class="bi bi-arrow-up-right-square"></i> @endif.
-                            </b>
-                            <!-- cantidad -->
-                            {{-- {{ $a->cedulas->count() }} @if($a->cedulas->count() == '1')cedula @else cedulas @endif: --}}
-                            <!-- listado de cédulas -->
-                            <?php $num=0; ?>
-                            @foreach($a->cedulas as $ced)
-                                <?php $num++; ?>
-                                <a href="{{ url('/cedula') }}/{{ $ced->url_cjarsiglas }}/{{ $ced->url_url }}" class="nolink">
-                                    {!! $ced->url_titulo !!}<sup>{{ substr($ced->aut_tipo,0,1) }}</sup>
-                                    <i>
-                                        {{ $ced->url_lencode }}
-                                        {{ $ced->url_cjarsiglas }}
-                                    </i>
+            <div class="row">
+                @foreach ($autores as $a)
+                    <div class="col-12 col-md-2" style="text-align: center;">
+                        <div style="">
+                            <a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" target="autor" class="nolink">
+                                <div>
+                                    @if($a->objetos->count() > '0')
+                                        <img src="{{ $a->objetos->value('img_file') }}" style="height:200px;">
+                                    @else
+                                        <img src="/avatar/usr1.png" style="height:200px;">
+                                    @endif
+                                </div>
+                                <b>{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</b>
+                            </a>
+                            <div>
+                                {{ $a->cedulas->count() }} @if($a->cedulas->count() > '1') cédulas @else cedula @endif
+                            </div>
+                            <div style="font-size:70%;">
+                                <a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" id="sale_autor{{ $a->caut_id }}" target="autor" class="nolink">
+                                    {{ url('/autor') }}/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}
                                 </a>
-                                @if($num < $a->cedulas->count())&nbsp; || &nbsp; @endif
-                            @endforeach
+                                <i onclick="CopiarContenido('autor',{{ $a->caut_id }})" class="bi bi-clipboard PaClick"> URL</i>
+                            </div>
 
-                        @if($a->urlautor->count() > '0')</a>@endif
-                    </li>
-                </ul>
-            @endforeach
+
+                            <div>
+
+                            </div>
+                            {{-- <div style="font-size: 70%;">
+                                <?php $num=0; ?>
+                                @foreach($a->cedulas as $ced)
+                                    <?php $num++; ?>
+                                    <a href="{{ url('/cedula') }}/{{ $ced->url_cjarsiglas }}/{{ $ced->url_url }}" class="nolink">
+                                        {!! $ced->url_titulo !!}<sup>{{ substr($ced->aut_tipo,0,1) }}</sup>
+                                        <i>
+                                            {{ $ced->url_lencode }}
+                                            {{ $ced->url_cjarsiglas }}
+                                        </i>
+                                    </a>
+                                    @if($num < $a->cedulas->count())&nbsp; || &nbsp; @endif
+                                @endforeach
+                            </div> --}}
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         @endif
 
 
@@ -134,19 +151,106 @@
         <!-- ------------------------------------------------------------------------ -->
         <!-- ------------------------------------------------------------------------ -->
         @if($url->urlj_urltxt=='cedulas')
-            @foreach ($cedulas as $c)
-                <ul>
-                    <li>
-                        <a href="/cedula/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}" target="cedula" class="nolink">
-                            <b>{!! $c->url_titulo !!}: {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})</b>.
-                            <span id="sale_copiaurl">
-                                {{ url('/cedula') }}/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}
-                            </span>
+            <!-- ------------ Formulario de búsqueda -------------------------- -->
+            <div class="row my-4">
+                <div class="col-sm-12 col-md-3 form-group">
+                    <label class="form-label">Buscar: </label>
+                    <input wire:model.live="buscaText" type="text" class="form-control">
+                    @error('buscaText')<error>{{ $message }}</error>@enderror
+                </div>
+
+
+                <div class="col-sm-12 col-md-3 form-group">
+                    <label class="form-label">Lengua:</label>
+                    <select wire:model.live="buscaLengua" class="form-select">
+                        <option value="%"> Todas</option>
+                        {{-- @foreach ($lenguas as $i)
+                            <option value="{{ $i->len_code }}"> {{ $i->len_autonimias }} ({{ $i->len_lengua }})</option>
+                        @endforeach --}}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                @foreach ($cedulas as $c)
+                    <?php $ElUrl= url('/cedula').'/'. $c->url_cjarsiglas .'/'. $c->url_url; ?>
+                    <div class="col-12 col-md-3 p-1 m-1" style="background-color:#CDC6B9; border:1px solid #202d2d;border-radius:15px;">
+                        <a href="{{ $ElUrl }}" class="nolink">
+                            <div>
+                                <div style="float: right;">
+                                    <img src="{{ $c->jardin->cjar_logo }}" style="width:30px;">
+                                </div>
+                                <b>{!!  $c->url_titulo !!}</b>
+                            </div>
+                            <div class="cortaTexto" style="color:#87796d;font-family:'Roboto Condensed'">
+                                {{-- {!! $c->url_tituloorig!!} --}}
+                                {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})
+                            </div>
                         </a>
-                        <i onclick="CopiarContenido('copia','url')" class="bi bi-clipboard PaClick"></i>
-                    </li>
-                </ul>
-            @endforeach
+                            <div style="clear:both">
+
+                                @if( $c->objetos->whereIn('img_cimgtipo',['portada','ppal1','ppal2','ppal3'])->count() > '0' )
+                                    <div style="float: left;">
+                                        <a href="{{ $ElUrl }}" class="nolink">
+                                            <img src="{{ $c->objetos->whereIn('img_cimgtipo',['portada','ppal1','ppal2','ppal3'])->value('img_file') }}"
+                                                style="max-width:90%; max-height:100px; margin:10px;">
+                                        </a>
+                                    </div>
+                                @endif
+
+                                <div style="display:inline-block; margin:10px;">
+                                    @if($c->especies->count() >'0')
+                                        <a href="{{ $ElUrl }}" class="nolink">
+                                            <b><i>{{ implode(',  ',$c->especies->pluck('sp_scname')->toArray()) }}</b></i>
+                                        </a>
+                                    @endif
+                                </div>
+                                <div style="font-size: 80%;">
+                                    <a href="{{ $ElUrl }}" class="nolink">
+                                        @if($c->alias->count() >'0')
+                                            {{ implode(',  ',$c->alias->pluck('ali_txt')->toArray()) }},
+                                        @endif
+
+                                        @if($c->usos->count() >'0')
+                                            {{ implode(',  ',$c->usos->pluck('uso_uso')->toArray()) }},
+                                        @endif
+                                        @if($c->ubicaciones->count() >'0')
+                                            {{ implode(',  ',$c->ubicaciones->pluck('ubi_ubicacion')->toArray()) }},
+                                        @endif
+                                    </a>
+                                    <div>
+                                        <span id="sale_copiaurl" style="display:none;">
+                                            {{ url('/cedula') }}/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}
+                                        </span>
+                                        <i onclick="CopiarContenido('copia','url')" class="bi bi-clipboard PaClick"> URL</i>
+
+                                        <a href="{{ $ElUrl }}" class="nolink">
+                                            <i class="bi bi-box-arrow-up-right mx-2"> {{ $ElUrl }}</i>
+                                        </a>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+                    </div>
+                @endforeach
+
+                {{-- @foreach ($cedulas as $c)
+                    <ul>
+                        <li>
+                            <a href="/cedula/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}" target="cedula" class="nolink">
+                                <b>{!! $c->url_titulo !!}: {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})</b>.
+                                <span id="sale_copiaurl">
+                                    {{ url('/cedula') }}/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}
+                                </span>
+                            </a>
+                            <i onclick="CopiarContenido('copia','url')" class="bi bi-clipboard PaClick"></i>
+                        </li>
+                    </ul>
+                @endforeach --}}
+            </div>
         @endif
 
 

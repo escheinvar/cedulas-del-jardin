@@ -16,7 +16,7 @@ use Livewire\Component;
 class AdminCedulasComponent extends Component
 {
     public $edit, $editMaster, $editjar; ##### Variables de permisos del usuario
-    public $jardinSel, $BuscaLengua, $BuscaEstado, $BuscaTexto, $sentido, $orden, $edoEdit, $abiertos; ##### Vars de formulario de búsqueda y de tabla
+    public $jardinSel, $BuscaLengua, $BuscaEstado, $BuscaTexto, $BuscaOriginal, $sentido, $orden, $edoEdit, $abiertos; ##### Vars de formulario de búsqueda y de tabla
 
     #################################################################################
     /*##### Tabla de cambios de estado:
@@ -32,14 +32,22 @@ class AdminCedulasComponent extends Component
 
     public function mount(){
         $this->jardinSel=session('jardin');
+        $this->BuscaOriginal=TRUE;
+        $this->orden='url_id';
+        $this->sentido='asc';
     }
 
     public function DefineJardin(){
         session(['jardin'=>$this->jardinSel]);
     }
 
-    public function ordenaTabla(){
-        //
+    public function ordenaTabla($orden){
+        $this->orden=$orden;
+        if($this->sentido=='asc'){
+            $this->sentido='desc';
+        }else{
+            $this->sentido='asc';
+        }
     }
 
     public function CambiaAmodoEdicion($id){
@@ -119,15 +127,19 @@ class AdminCedulasComponent extends Component
                 ->orderBy('cjar_name')
                 ->get();
         }
-
+// dd($JardsUsr);
         ############################# Inicia lista de Cédulas
         ##### Obtiene lista de Cédulas accesibles por usuario
         $urls=collect();
         if($this->jardinSel != ''){
             $urls=cedulas_url::query();
             $urls=$urls->where('url_cjarsiglas','ilike',$this->jardinSel);
-        }
 
+            ##### Obtiene cédulas originales
+            if($this->BuscaOriginal==TRUE){
+                $urls=$urls->where('url_tradid','0');
+            }
+        }
         ##### Obtiene lista de Cédulas por lengua (en caso de búsqueda por lengua)
         if($this->BuscaLengua != ''){
             $urls=$urls->where('url_lencode',$this->BuscaLengua);
@@ -150,7 +162,7 @@ class AdminCedulasComponent extends Component
 
         ### Finaliza búsqueda de url
         $urls=$urls->orderBy('url_cjarsiglas','asc')
-                ->orderBy('url_url','asc')
+                ->orderBy($this->orden,$this->sentido)
                 ->where('url_del','0')
                 ->with('jardin')
                 ->with('lenguas')

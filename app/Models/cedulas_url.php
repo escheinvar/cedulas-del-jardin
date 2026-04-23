@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -125,9 +126,9 @@ class cedulas_url extends Model
             ->where('ver_del','0');
     }
 
-    public function imagenesGral():HasMany{
-        return $this->HasMany(imagenes::class, 'img_key','url_key')
+    public function objetos():HasMany{
+        return $this->HasMany(Imagenes::class, 'img_key','url_key')
             ->where('img_act','1')
-            ->where('img_del','1');
+            ->where('img_del','0');
     }
 }

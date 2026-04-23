@@ -133,7 +133,14 @@ class JardinController extends Component
         $cedulas=cedulas_url::where('url_cjarsiglas',$this->url->urlj_cjarsiglas)
             ->where('url_del','0')
             ->with('lenguas')
-            ->orderBy('url_url')
+            ->with('objetos')
+            ->with('ubicaciones')
+            ->with('especies')
+            ->with('alias')
+            ->with('usos')
+            ->with('jardin')
+            // ->orderBy('url_url')
+            ->inRandomOrder()
             ->get();
 
         ############## Carga lista de autores únicos del jardín (recordar que se puede repetir un autor)
@@ -151,7 +158,7 @@ class JardinController extends Component
             ->with('cedulas')
             ->with('urlautor')
             ->get();
-// dd($autores);
+
 
         return view('livewire.web.jardin-controller',[
             'txt'=>$txt,

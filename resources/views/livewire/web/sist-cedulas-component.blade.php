@@ -11,7 +11,7 @@
     <h2 class="subtitulo">Las cédulas</h2>
 
     <!-- ------------ Formulario de búsqueda -------------------------- -->
-    <div class="row">
+    <div class="row my-4">
         <div class="col-sm-12 col-md-3 form-group">
             <label class="form-label">Buscar: </label>
             <input wire:model.live="buscaText" type="text" class="form-control">
@@ -39,91 +39,90 @@
         </div>
     </div>
 
-    <div class="row py-4">
-        <table class="table table-striped table-responsive">
-            <thead>
-                <tr>
-                    <th>Cédula</th>
-                    <th>Lengua</th>
-                    <th>Jardín</th>
-                    <th>Palabras</th>
-                    {{-- <th>Autores</th> --}}
-                    <th>Url</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($cedulas as $i)
-                    <tr>
-                        <!-- nombre cédula -->
-                        <td>
-                            <b>{!! $i->url_titulo !!}</b>
-                            <div class="form-text">{!! $i->url_tituloorig !!}
-                        </td>
+    <div class="row my-5">
+        @foreach ($cedulas as $c)
+            <?php $ElUrl= url('/cedula').'/'. $c->url_cjarsiglas .'/'. $c->url_url; ?>
+            <div class="col-12 col-md-3 p-1 m-1" style="background-color:#CDC6B9; border:1px solid #202d2d;border-radius:15px;">
+                <a href="{{ $ElUrl }}" class="nolink">
+                    <div>
+                        <div style="float: right;">
+                            <img src="{{ $c->jardin->cjar_logo }}" style="width:30px;">
+                        </div>
+                        <b>{!!  $c->url_titulo !!}</b>
+                    </div>
+                    <div class="cortaTexto" style="color:#87796d;font-family:'Roboto Condensed'">
+                        {{-- {!! $c->url_tituloorig!!} --}}
+                        {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})
+                    </div>
+                </a>
+                    <div style="clear:both">
 
-                        <!-- lengua -->
-                        <td>
-                            {{ $i->lenguas->len_autonimias }}
-                            ({{ $i->lenguas->len_lengua }})
-                            <span class="form-text">{{ $i->url_lencode }}</span>
-                        </td>
-
-                        <!-- Jardin -->
-                        <td>
-                            {{ $i->jardin->cjar_name }}
-                            <span class="form-text">{{ $i->jardin->cjar_siglas }}</span>
-                        </td>
-
-                        <!-- Palabras -->
-                        <td style="font-size:80%;">
-                            @foreach($i->especies as $e)
-                                <i>{{ $e->sp_scname }}</i>,
-                            @endforeach
-
-                            @foreach ($i->alias as $a)
-                                {{ $a->ali_txt_tr }},
-                            @endforeach
-
-                            @foreach ($i->ubicaciones as $u)
-                                {{ $u->ubi_ubicacion_tr }},
-                            @endforeach
-
-                            @foreach ($i->usos as $s)
-                                {{ $s->usos->cuso_uso }},
-                            @endforeach
-                        </td>
-
-                        <!-- autores -->
-                        {{-- <td style="font-size: 80%;" >
-                            @foreach ($i->autores as $a)
-                                {{ $a->aut_name }},
-                            @endforeach
-
-                            @if($i->traductores->count() > '0')
-                                (
-                                @foreach ($i->traductores as $a)
-                                    {{ $a->aut_name }},
-                                @endforeach
-                                )
-                            @endif
-                        </td> --}}
-
-                        <td>
-                            <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('url','{{ $i->url_id }}')"></i> &nbsp;
-                            @if($i->url_doi == '')
-                                <a href="{{ url('/cedula') }}/{{ $i->url_cjarsiglas }}/{{ $i->url_url }}" id="sale_url{{ $i->url_id }}" target="new" class="nolink">
-                                    {{ url('/cedula') }}/{{ $i->url_cjarsiglas }}/{{ $i->url_url }}
+                        @if( $c->objetos->whereIn('img_cimgtipo',['portada','ppal1','ppal2','ppal3'])->count() > '0' )
+                            <div style="float: left;">
+                                <a href="{{ $ElUrl }}" class="nolink">
+                                    <img src="{{ $c->objetos->whereIn('img_cimgtipo',['portada','ppal1','ppal2','ppal3'])->value('img_file') }}"
+                                        style="max-width:90%; max-height:100px; margin:10px;">
                                 </a>
-                            @else
-                                <a href="https://doi.org/{{ $i->url_doi }}" target="new" class="nolink">
-                                    https://doi.org/{{ $i->url_doi }}
+                            </div>
+                        @endif
+
+                        <div style="display:inline-block; margin:10px;">
+                            @if($c->especies->count() >'0')
+                                <a href="{{ $ElUrl }}" class="nolink">
+                                    <b><i>{{ implode(',  ',$c->especies->pluck('sp_scname')->toArray()) }}</b></i>
                                 </a>
                             @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                        </div>
+                        <div style="font-size: 80%;">
+                            <a href="{{ $ElUrl }}" class="nolink">
+                                @if($c->alias->count() >'0')
+                                    {{ implode(',  ',$c->alias->pluck('ali_txt')->toArray()) }},
+                                @endif
+
+                                @if($c->usos->count() >'0')
+                                    {{ implode(',  ',$c->usos->pluck('uso_uso')->toArray()) }},
+                                @endif
+                                @if($c->ubicaciones->count() >'0')
+                                    {{ implode(',  ',$c->ubicaciones->pluck('ubi_ubicacion')->toArray()) }},
+                                @endif
+                            </a>
+                            <div>
+                                <span id="sale_copiaurl" style="display:none;">
+                                    {{ url('/cedula') }}/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}
+                                </span>
+                                <i onclick="CopiarContenido('copia','url')" class="bi bi-clipboard PaClick"> URL</i>
+
+                                <a href="{{ $ElUrl }}" class="nolink">
+                                    <i class="bi bi-box-arrow-up-right mx-2"> {{ $ElUrl }}</i>
+                                </a>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+            </div>
+        @endforeach
+
+        {{-- @foreach ($cedulas as $c)
+            <ul>
+                <li>
+                    <a href="/cedula/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}" target="cedula" class="nolink">
+                        <b>{!! $c->url_titulo !!}: {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})</b>.
+                        <span id="sale_copiaurl">
+                            {{ url('/cedula') }}/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}
+                        </span>
+                    </a>
+                    <i onclick="CopiarContenido('copia','url')" class="bi bi-clipboard PaClick"></i>
+                </li>
+            </ul>
+        @endforeach --}}
     </div>
+
+
+
 
 
     @section('scripts')

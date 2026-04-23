@@ -69,6 +69,7 @@ function VerNoVerPass(CampoPass,CampoIcono, iconoText, iconoPass){
 }
 
 function playAudio(IdAudio) {
+    MyAudio.pause();
     var MyAudio = document.getElementById('SpAudio'+IdAudio);
     document.getElementById('IconPlay'+IdAudio).style.display='none';
     document.getElementById('IconStop'+IdAudio).style.display='inline';

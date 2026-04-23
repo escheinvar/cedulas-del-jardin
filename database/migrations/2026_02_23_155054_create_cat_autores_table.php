@@ -36,8 +36,11 @@ return new class extends Migration
             $table->enum('caut_mailpublic',['0','1'])->default('0'); ##### flag de autorización para publicar datos
             $table->string('caut_orcid')->nullable();       #### Número identificador de autor académico (orcid)
             $table->string('caut_scopus')->nullable();      #### Número identificador de autor académico (scopus)
-            // $table->string('caut_researchid')->nullable();  #### Número identificador de autor académico (webOfscience)
             $table->string('caut_isni')->nullable();        #### Número identificador de autor académico (International Standard Name Identifier)
+            $table->string('caut_google')->nullable();        #### Dirección URL de autor de gogogle academico
+            $table->string('caut_rgate')->nullable();        #### Url de research gate
+
+
             // $table->string('caut_otrosid')->nullable();       #### Array; nombre@valor; de números identificadores de autor académico
 
             // $table->string('caut_img')->nullable();      ##### Ruta al archivo de imagen del autor

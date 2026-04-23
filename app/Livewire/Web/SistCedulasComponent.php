@@ -36,17 +36,24 @@ class SistCedulasComponent extends Component
             $texto=$this->buscaText;
         }
 
-        $cedulas=cedulas_url::where('url_ciclo','>','0')
-            ->where('url_act','1')
+        $cedulas=cedulas_url:: #where('url_ciclo','>','0')
+            where('url_act','1')
             ->where('url_del','0')
             ->with('jardin')
+            ->with('objetos')
             ->with('lenguas')
             ->with('ubicaciones')
+            ->with('alias')
             ->with('especies')
             ->with('usos')
+            ->with('jardin')
             ->with('autores')
             ->with('traductores')
+            ->inRandomOrder()
             ->get();
+
+
+
 
         $lenguas=cedulas_url::where('url_ciclo','>','0')
             ->leftJoin('lenguas', 'url_lencode', '=', 'len_code')

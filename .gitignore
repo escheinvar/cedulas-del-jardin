@@ -2,13 +2,12 @@
 /node_modules
 /public/build
 /public/hot
-/public/aud
+/public/audios/
 /public/avatar/autores
 /public/avatar/jardines
 /public/avatar/usr
 /public/storage
 /public/cedulas/
-/public/img
 /public/img/
 /public/img_basura/
 /public/jardines/

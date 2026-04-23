@@ -200,7 +200,7 @@ class ModalEditaParrafoComponent extends Component
             if($this->modJar_NvoAudio != ''){
                 ##### Construye nombre
                 $nombre=$this->modJar_cjarsiglas . "_" . $this->modJar_url . str_pad($this->modJar_orden,3,"0",STR_PAD_LEFT) . "." . $this->modJar_NvoAudio->getClientOriginalExtension();
-                $ruta="/aud/";
+                $ruta="/cedulas/audios/";
                 ##### Guarda archivo
                 $this->modJar_NvoAudio->storeAs(path:'/public/'.$ruta, name:$nombre);
                 ##### Guarda en BD
@@ -240,7 +240,7 @@ class ModalEditaParrafoComponent extends Component
             if($this->modJar_NvoAudio != ''){
                 ##### Construye nombre
                 $nombre=$this->modJar_cjarsiglas . "_" . $this->modJar_url . str_pad($this->modJar_orden,3,"0",STR_PAD_LEFT) . "." . $this->modJar_NvoAudio->getClientOriginalExtension();
-                $ruta="/aud/";
+                $ruta="/audios/";
                 ##### Guarda archivo
                 $this->modJar_NvoAudio->storeAs(path:'/public/'.$ruta, name:$nombre);
                 ##### Guarda en BD
@@ -283,7 +283,7 @@ class ModalEditaParrafoComponent extends Component
             if($this->modJar_NvoAudio != ''){
                 ##### Construye nombre
                 $nombre=$this->modJar_cjarsiglas . "_" . $this->modJar_url . str_pad($this->modJar_orden,3,"0",STR_PAD_LEFT) . "." . $this->modJar_NvoAudio->getClientOriginalExtension();
-                $ruta="/aud/";
+                $ruta="/audios/";
                 ##### Guarda archivo
                 $this->modJar_NvoAudio->storeAs(path:'/public/'.$ruta, name:$nombre);
                 ##### Guarda en BD

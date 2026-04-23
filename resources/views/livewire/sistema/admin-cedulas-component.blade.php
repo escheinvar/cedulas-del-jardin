@@ -34,7 +34,7 @@
 
         <!-- buscar por lengua -->
         <div class="col-12 col-md-3 form-group">
-            <label for="" class="form-label">Lengua</label>
+            <label for="" class="form-label">Lengua<red></red></label>
             <select wire:model.live="BuscaLengua" id="BuscaLengua" class="form-select">
                 <option value="">En todas</option>
                 @foreach($lenguas as $len)
@@ -45,7 +45,7 @@
 
         <!-- buscar por estado -->
         <div class="col-12 col-md-3 form-group">
-            <label for="" class="form-label">Estado</label>
+            <label for="" class="form-label">Estado<red></red></label>
             <select wire:model.live="BuscaEstado" id="" class="form-select">
                 <option value="">En todos</option>
                 <option value="0">0 En creación (autor/traductor)</option>
@@ -69,8 +69,16 @@
 
         <!-- buscar por texto -->
         <div class="col-12 col-md-3 form-group">
-            <label for="" class="form-label">Buscar por texto</label>
+            <label for="" class="form-label">Buscar por texto<red></red></label>
             <input wire:model.live="BuscaTexto" id="" class="form-control" type="text">
+        </div>
+
+        <!-- mostrar solo originales -->
+        <div class="col-12 col-md-3 form-check">
+            <input wire:model.live="BuscaOriginal" @if($BuscaOriginal==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Solo originales
+            </label>
         </div>
     </div>
 
@@ -128,21 +136,21 @@
             </red>
         @endif
 
-        <!-- tabla -->
+        <!-- tabla -->{{ $orden }}_{{ $sentido }}
         <table class="table table-striped table-sm">
             <thead>
                 <tr>
                     <th wire:click="ordenaTabla('url_id')" class="PaClick">Id</th>
                     <th></th>
-                    <th wire:click="ordenaTabla('url_id')" class="PaClick">Jardin</th>
+                    <th wire:click="ordenaTabla('url_cjarsiglas')" class="PaClick">Jardin</th>
                     <th wire:click="ordenaTabla('url_titulo')" class="PaClick">Titulo</th>
-                    <th wire:click="ordenaTabla('')" class="PaClick">Lengua</th>
-                    <th wire:click="ordenaTabla('url_tipo')" class="PaClick">Tipo</th>
-                    <th wire:click="ordenaTabla('url_titulo')" class="PaClick">Autores/Edit</th>
-                    <th wire:click="ordenaTabla('url_descrip')" class="PaClick">Estado</th>
-                    <th wire:click="ordenaTabla('urlO_descrip')" class="PaClick"> Dirección </th>
-                    <th> Edición </th>
-                    <th>Ciclo (V.0)</th>
+                    <th wire:click="ordenaTabla('url_lencode')" class="PaClick">Lengua</th>
+                    {{-- <th wire:click="ordenaTabla('url_tipo')" class="PaClick">Tipo</th> --}}
+                    <th wire:click="" class="">Autores/Edit</th>
+                    <th wire:click="ordenaTabla('url_edo')" class="PaClick">Estado</th>
+                    <th wire:click="ordenaTabla('url_url')" class="PaClick"> Dirección </th>
+                    <th wire:click="ordenaTabla('url_edit')" class="PaClick"> Edición </th>
+                    <th wire:click="ordenaTabla('url_ciclo')" class="PaClick">Ciclo (V.0)</th>
                 </tr>
             </thead>
             <tbody>
@@ -200,11 +208,11 @@
                         </td>
 
                         <!-- tipo -->
-                        <td>
+                        {{-- <td>
                             <div>
                                 {{ $u->url_ccedtipo }}
                             </div>
-                        </td>
+                        </td> --}}
 
                         <td>
                             <div style="font-size:80%;">

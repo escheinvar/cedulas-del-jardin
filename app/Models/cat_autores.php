@@ -38,8 +38,9 @@ class cat_autores extends Model
         'caut_scopus',
         'caut_researchid',
         'caut_isni',
-        'caut_otrosid',
-        // 'caut_img',
+        'caut_google',
+        'caut_rgate',
+
     ];
 
     public function cedulas():HasMany{
@@ -50,7 +51,15 @@ class cat_autores extends Model
     }
 
     public function urlautor():HasMany{
-        return $this->hasMany(autor_url::class, 'aurl_cautid','caut_id');
+        return $this->hasMany(autor_url::class, 'aurl_cautid','caut_id')
+            ->where('aurl_act','1')
+            ->where('aurl_del','0');
+    }
+
+    public function objetos():HasMany{
+        return $this->hasMany(Imagenes::class, 'img_urltxt','caut_url')
+            ->where('img_act','1')
+            ->where('img_del','0');
     }
 
 }

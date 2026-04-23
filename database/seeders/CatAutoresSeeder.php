@@ -21,73 +21,45 @@ class CatAutoresSeeder extends Seeder
                 'caut_apellido2'=>'Gottdiener',
                 'caut_nombreautor'=>'Scheinvar E.',
                 'caut_url'=>'scheinvare',
-                // 'caut_cjarsiglas'=>'JebOax',
                 'caut_correo'=>'escheinvar@gmail.com',
                 'caut_institu'=>'Secihti/JebOax',
                 'caut_usrid'=>'2',
-                // 'caut_lenguas'=>'spa',
-                // 'caut_web'=>'1', ### 1=si publica web, 0=no publica
                 'caut_mailpublic'=>'1', ###1=si publica @ 0=no publica
                 'caut_orcid'=>'0000-0002-0665-8298',
                 'caut_scopus'=>'55636465200',
                 'caut_isni'=>'0000000049333253',
-                // 'caut_img'=>null,
+                'caut_google'=>'https://scholar.google.es/citations?user=EAjudjwAAAAJ&hl=es&oi=ao',
+                'caut_rgate'=>'https://www.researchgate.net/profile/Enrique-Scheinvar',
             ],[
                 'caut_nombre'=>'Alejandro',
-                'caut_apellido1'=>'De Ávila',
+                'caut_apellido1'=>'de Ávila',
                 'caut_apellido2'=>'Blomberg',
                 'caut_nombreautor'=>'De Ávila A.',
                 'caut_url'=>'deavila-blomberga',
-                // 'caut_cjarsiglas'=>'JebOax',
-                'caut_correo'=>'alejandro@correo.mx',
-                'caut_institu'=>'JebOa',
+                'caut_correo'=>'',
+                'caut_institu'=>'JebOax',
                 'caut_usrid'=>null,
-                // 'caut_lenguas'=>'spa;zap',
-                // 'caut_web'=>'1', ### 1=si publica web, 0=no publica
+                'caut_orcid'=>'0009-0003-7569-8423',
+                'caut_scopus'=>'55561105200',
+                'caut_isni'=>'0000000073304014',
+                'caut_google'=>'https://scholar.google.es/citations?hl=es&user=qj3w18MAAAAJ',
+                'caut_rgate'=>'https://www.researchgate.net/profile/Alejandro-De-Avila-2',
                 'caut_mailpublic'=>'1', ###1=si publica @ 0=no publica
-                // 'caut_img'=>null,
             ],[
                 'caut_nombre'=>'Niza',
                 'caut_apellido1'=>'Gámez',
                 'caut_apellido2'=>'Tamariz',
                 'caut_nombreautor'=>'Gámez-Tamariz N.',
                 'caut_url'=>'gameztamarizn',
-                // 'caut_cjarsiglas'=>'JebOax',
                 'caut_correo'=>'nizagt@gmail.com',
                 'caut_institu'=>'Secihti/JebOax',
                 'caut_usrid'=>null,
-                // 'caut_lenguas'=>'spa',
-                // 'caut_web'=>'1', ### 1=si publica web, 0=no publica
                 'caut_mailpublic'=>'1', ###1=si publica @ 0=no publica
-                // 'caut_img'=>null,
-            ],[
-                'caut_nombre'=>'Noe',
-                'caut_apellido1'=>'Pinzón',
-                'caut_apellido2'=>'Palafox',
-                'caut_nombreautor'=>'Pinzón-Palafox N.',
-                'caut_url'=>'pinzon-palafoxn',
-                // 'caut_cjarsiglas'=>'JebOax',
-                'caut_correo'=>'noe@y.que',
-                'caut_institu'=>'',
-                'caut_usrid'=>null,
-                // 'caut_lenguas'=>'huv',
-                // 'caut_web'=>'1', ### 1=si publica web, 0=no publica
-                'caut_mailpublic'=>'0', ###1=si publica @ 0=no publica
-                // 'caut_img'=>null,
-            ],[
-                'caut_nombre'=>'Juana',
-                'caut_apellido1'=>'Mendoza',
-                'caut_apellido2'=>'Ruiz',
-                // 'caut_cjarsiglas'=>'JebOax',
-                'caut_nombreautor'=>'Mendoza-Ruiz J.',
-                'caut_url'=>'mendozaruizj',
-                'caut_correo'=>'',
-                'caut_institu'=>'Instituto de Investigaciones Filológicas, UNAM',
-                'caut_usrid'=>null,
-                // 'caut_lenguas'=>'',
-                // 'caut_web'=>'0', ### 1=si publica web, 0=no publica
-                'caut_mailpublic'=>'1', ###1=si publica @ 0=no publica
-                // 'caut_img'=>null,
+                'caut_orcid'=>'0000-0001-7929-2859',
+                'caut_scopus'=>'',
+                'caut_isni'=>'',
+                'caut_google'=>'https://scholar.google.es/citations?hl=es&user=FiNVIw8AAAAJ',
+                'caut_rgate'=>'https://www.researchgate.net/profile/Niza-Gamez-2',
             ]
         ];
 
