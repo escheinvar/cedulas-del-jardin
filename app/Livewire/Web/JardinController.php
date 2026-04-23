@@ -157,6 +157,7 @@ class JardinController extends Component
             ->orderBy('caut_apellido1','asc')
             ->with('cedulas')
             ->with('urlautor')
+            ->with('objetos')
             ->get();
 
 
