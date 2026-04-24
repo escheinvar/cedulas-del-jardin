@@ -49,17 +49,15 @@
             </div>
 
 
-            <span style="margin:5px; padding:1px;" >
-                <span style="float: right;">
-                    <button wire:click="LeerMensajes()" type="button" class="btn btn-sm btn-primary mx-2" style="color:#CDC6B9; display:inline-block" @if(count($ganonesLee)==0) disabled @endif)>
-                        <i class="bi bi-envelope-open" style="color:#CDC6B9;"></i> Leer <sub> {{ count($ganonesLee) }}</sub>
-                    </button>
+            <div style="margin:5px; padding:1px; display:inline-block;" >
+                <button wire:click="LeerMensajes()" type="button" class="btn btn-sm btn-primary mx-2" style="color:#CDC6B9; display:inline-block" @if(count($ganonesLee)==0) disabled @endif)>
+                    <i class="bi bi-envelope-open" style="color:#CDC6B9;"></i> Leer <sub> {{ count($ganonesLee) }}</sub>
+                </button>
 
-                    <button wire:click="BorrarMensajes()" type="button" class="btn btn-sm btn-primary mx-2" style="color:#CDC6B9; display:inline-block" @if(count($ganonesLee)==0) disabled @endif wire:confirm="Estás por eliminar definitivamente este mensaje. Esta acción no puede ser revertida. ¿Deseas continuar?">
-                        <i class="bi bi-trash" style="color:#CDC6B9;"></i> Borrar <sub>{{ count($ganonesLee) }}</sub>
-                    </button>
-                </span>
-            </span>
+                <button wire:click="BorrarMensajes()" type="button" class="btn btn-sm btn-primary mx-2" style="color:#CDC6B9; display:inline-block" @if(count($ganonesLee)==0) disabled @endif wire:confirm="Estás por eliminar definitivamente este mensaje. Esta acción no puede ser revertida. ¿Deseas continuar?">
+                    <i class="bi bi-trash" style="color:#CDC6B9;"></i> Borrar <sub>{{ count($ganonesLee) }}</sub>
+                </button>
+            </div>
         </div>
         <!-- ------------------------------------------------------------------- -->
         <!-- ------- TERMINA BARRA SUPERIOR DE ACCIONES PARA BUZÓN  ------------ -->
