@@ -26,7 +26,7 @@ class SistAutoresController extends Component
 
         $jardines=collect();
         $lenguas=collect();
-
+// dd($autores);
         return view('livewire.web.sist-autores-controller',[
             'autores'=>$autores,
             'jardines'=>$jardines,

@@ -46,44 +46,31 @@
         @foreach ($autores as $a)
             <div class="col-12 col-md-2" style="text-align: center;">
                 <div style="">
-                    {{-- <a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" target="autor" class="nolink"> --}}
-                        <div>
-                            @if($a->objetos->count() > '0')
-                                <img src="{{ $a->objetos->value('img_file') }}" style="height:200px;">
-                            @else
-                                <img src="/avatar/usr1.png" style="height:200px;">
-                            @endif
-                        </div>
-                        <b>{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</b>
-                    {{-- </a> --}}
+                    <div>
+                        @if($a->objetos->count() > '0')
+                            <img src="{{ $a->objetos->value('img_file') }}" style="height:200px;">
+                        @else
+                            <img src="/avatar/usr1.png" style="height:200px;">
+                        @endif
+                    </div>
+
+                    <b>{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</b>
+
                     <div>
                         {{ $a->cedulas->count() }} @if($a->cedulas->count() > '1') cédulas @else cedula @endif
                     </div>
-                    <div style="font-size:70%;">
-                        {{-- <a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" id="sale_autor{{ $a->caut_id }}" target="autor" class="nolink">
-                            {{ url('/autor') }}/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}
-                        </a> --}}
-                        <i onclick="CopiarContenido('autor',{{ $a->caut_id }})" class="bi bi-clipboard PaClick"> URL</i>
-                    </div>
-
 
                     <div>
-
-                    </div>
-                    {{-- <div style="font-size: 70%;">
-                        <?php $num=0; ?>
-                        @foreach($a->cedulas as $ced)
-                            <?php $num++; ?>
-                            <a href="{{ url('/cedula') }}/{{ $ced->url_cjarsiglas }}/{{ $ced->url_url }}" class="nolink">
-                                {!! $ced->url_titulo !!}<sup>{{ substr($ced->aut_tipo,0,1) }}</sup>
-                                <i>
-                                    {{ $ced->url_lencode }}
-                                    {{ $ced->url_cjarsiglas }}
-                                </i>
-                            </a>
-                            @if($num < $a->cedulas->count())&nbsp; || &nbsp; @endif
+                        @foreach ($a->urlautor as $u)
+                            <div style="font-size:70%;">
+                                <span id="sale_autor{{ $u->aurl_id }}" style="display:none">{{ url('/autor') }}/{{ $u->aurl_cjarsiglas }}/{{ $a->caut_url }}</span>
+                                <a href="{{ url('/autor') }}/{{ $u->aurl_cjarsiglas }}/{{ $a->caut_url }}" class="nolink">
+                                    {{ $u->aurl_cjarsiglas }}
+                                </a>
+                                <i onclick="CopiarContenido('autor',{{ $u->aurl_id }})" class="bi bi-clipboard PaClick mx-1"> </i>
+                            </div>
                         @endforeach
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         @endforeach
