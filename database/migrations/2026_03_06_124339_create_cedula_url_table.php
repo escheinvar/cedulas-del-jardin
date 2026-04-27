@@ -52,6 +52,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cedula_url');
+        Schema::dropIfExists('cedula_url'); ##### tabla en producción
     }
 };

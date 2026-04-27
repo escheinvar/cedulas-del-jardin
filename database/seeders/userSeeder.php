@@ -23,10 +23,10 @@ class userSeeder extends Seeder
                 'apellido'=>'Scheinvar',
                 'usrname'=>'admin',
                 'nace'=>'1977-07-22',
-                'cinsid'=>'1',
+                // 'cinsid'=>'1',
                 'mensajes'=>'0',
                 'password'=>Hash::make('admin'),
-                'avatar'=>''
+                'avatar'=>'/avatar/usr1.png'
             ]);
             User::create([
                 'id'=>'2',
@@ -35,10 +35,10 @@ class userSeeder extends Seeder
                 'apellido'=>'Scheinvar',
                 'usrname'=>'escheinvar',
                 'nace'=>'1977-07-22',
-                'cinsid'=>'1',
+                // 'cinsid'=>'1',
                 'mensajes'=>'1',
                 'password'=>Hash::make('admin'),
-                'avatar'=>''
+                'avatar'=>'/avatar/usr1.png'
                 ]);
             //  User::create([
             //     'id'=>'3',

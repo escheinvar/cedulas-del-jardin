@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserRolesModel;
+use Dompdf\FrameDecorator\Page;
 use Illuminate\Support\Facades\Auth;
 
 class loginController extends Controller
@@ -43,6 +44,17 @@ class loginController extends Controller
                 'locale'=>'es',
                 'locale2'=>'spa',
             ]);
+
+            ##### Guarda último acceso
+            User::where('email',$request->correo)->update([
+                'ultimoacceso'=>date('Y-m-d'),
+            ]);
+
+            ##### gENERA lOG
+            paLog('Acceso de usuario '.$request->correo,'Login -no tabla-',  Auth::user()->id,);
+
+            ##### Genera estadística de visita
+            MyRegistraVisita('3','0','login_'.$request->correo);
 
             #### Redirecciona
             return redirect('/home');

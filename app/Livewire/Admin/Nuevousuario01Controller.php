@@ -29,6 +29,8 @@ class Nuevousuario01Controller extends Component
         }else{
             redirect('/ingreso');
         }
+        $this->contrasenia='';
+        $this->contrasenia2='';
 
     }
 
@@ -52,19 +54,19 @@ class Nuevousuario01Controller extends Component
             'nombre'=>$this->nombre,
             'apellido'=>$this->apellido,
             'nace'=>$this->nace,
-            'cinsid'=>$this->org,
-            'avatar'=>'/avatar/default.png',
+            // 'cinsid'=>$this->org,
+            'avatar'=>'/avatar/usr1.png',
             'password'=>Hash::make($this->contrasenia),
 
         ]);
 
         ##### Otorga rol básico
-        UserRolesModel::firstOrCreate(['rol_usrid'=>$ja->id,'rol_crolrol'=>'web'],[
-            'rol_act'=>'1',
-            'rol_usrid'=>$ja->id,
-            'rol_crolrol'=>'usr',
-            'rol_describe'=>'Usuario del sistama',
-        ]);
+        // UserRolesModel::firstOrCreate(['rol_usrid'=>$ja->id,'rol_crolrol'=>'web'],[
+        //     'rol_act'=>'1',
+        //     'rol_usrid'=>$ja->id,
+        //     'rol_crolrol'=>'usr',
+        //     'rol_describe'=>'Usuario del sistama',
+        // ]);
 
         ##### Elimina tockens
         TokensModel::where('tok_mail',$this->correo[0])->where('tok_act','1')->update([
@@ -75,9 +77,8 @@ class Nuevousuario01Controller extends Component
     }
 
     public function render(){
-        $instituciones=InstitucionesModel::all();
-        return view('livewire.admin.nuevousuario01-controller',[
-            'instituciones'=>$instituciones,
-        ]);
+        // $instituciones=InstitucionesModel::all();
+
+        return view('livewire.admin.nuevousuario01-controller');
     }
 }

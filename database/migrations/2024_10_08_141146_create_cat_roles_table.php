@@ -30,6 +30,6 @@ return new class extends Migration
     public function down(): void
     {
         ##### No borrar porque se utiliza en las tablas de usuario en producción.
-        Schema::dropIfExists('cat_roles');
+        Schema::dropIfExists('cat_roles'); ##### tabla en producción
     }
 };

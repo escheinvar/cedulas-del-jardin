@@ -57,7 +57,7 @@ ddleware group. Make something great!
 */
 
 
-Route::get('/ja' ,[ModalJardinWebComponent::class,'index'])->name('ja');
+// Route::get('/ja' ,[ModalJardinWebComponent::class,'index'])->name('ja');
 
 
 /* ---------------------------------------- LOGIN / LOGOUT ------------------------- */

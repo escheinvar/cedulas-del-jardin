@@ -32,7 +32,7 @@ class AdminCedulasComponent extends Component
 
     public function mount(){
         $this->jardinSel=session('jardin');
-        $this->BuscaOriginal=TRUE;
+        #$this->BuscaOriginal=TRUE;
         $this->orden='url_id';
         $this->sentido='asc';
     }

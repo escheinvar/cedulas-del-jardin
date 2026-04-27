@@ -136,7 +136,7 @@
             </red>
         @endif
 
-        <!-- tabla -->{{ $orden }}_{{ $sentido }}
+        <!-- tabla -->
         <table class="table table-striped table-sm">
             <thead>
                 <tr>

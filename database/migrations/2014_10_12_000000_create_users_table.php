@@ -21,10 +21,11 @@ return new class extends Migration
                 $table->string('nombre');
                 $table->string('apellido');
                 $table->date('nace')->nullable();  ## Año, mes y dia de nacimiento
-                $table->string('cinsid');
+                // $table->string('cinsid')->nullable();
                 // $table->foreignId('cinsid')->constrained('cat_instituciones','cins_id');
                 $table->string('avatar')->nullable()->default('/avatar/usr.png');
                 $table->enum('mensajes',['1','0'])->default('1');
+                $table->date('ultimoacceso')->nullable();
 
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('password');
@@ -40,6 +41,6 @@ return new class extends Migration
     public function down(): void
     {
         // --------------- En producción (cédulas: no borrar, pues tiene datos de usuarios en producción)
-        Schema::dropIfExists('users');
+        #Schema::dropIfExists('users'); ##### tabla en producción
     }
 };
