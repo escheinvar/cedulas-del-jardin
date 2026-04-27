@@ -41,6 +41,6 @@ return new class extends Migration
     public function down(): void
     {
         // --------------- En producción (cédulas: no borrar, pues tiene datos de usuarios en producción)
-        #Schema::dropIfExists('users'); ##### tabla en producción
+        Schema::dropIfExists('users'); ##### tabla en producción v
     }
 };
