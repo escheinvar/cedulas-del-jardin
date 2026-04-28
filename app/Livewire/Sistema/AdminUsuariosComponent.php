@@ -30,6 +30,7 @@ class AdminUsuariosComponent extends Component
         $this->orden='email';
         $this->sentido='asc';
         $this->jardinSel=session('jardin');
+
         $this->rolSel='';
     }
 
@@ -80,7 +81,6 @@ class AdminUsuariosComponent extends Component
         ##### Tabla de usuarios con su rol
         $usuarios=User::query();
         $usuarios=$usuarios->select(['id','act','email','usrname','nombre','apellido','nace','avatar'])
-            ->with('roles')
             ->orderBy($this->orden,$this->sentido)
             ->with('roles');
 

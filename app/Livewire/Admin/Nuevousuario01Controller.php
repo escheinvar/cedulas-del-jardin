@@ -26,9 +26,8 @@ class Nuevousuario01Controller extends Component
             if($revisaUser > 0){
                 $this->finalizado='1';
             }
-        }else{
-            redirect('/ingreso');
         }
+
         $this->contrasenia='';
         $this->contrasenia2='';
 

@@ -18,7 +18,9 @@ use Illuminate\Support\Facades\Mail;
 if(!function_exists('EnviaMensajeAbuzon')){
 
 
-    ###### Función que recibe variables y envía mensaje a buzón de sistema.
+    ###### Función que recibe variables y envía mensaje a buzón de sistema,
+    ###### si el destinatario tiene activo la recepción de mensajes, entonces
+    ###### también le envía un correo electrónico.
     ###### to=id usr al que se envía el mensaje, from=Id usr del remitente
     /* ############################ Ejemplo (8 variables)
     EnviaMensajeAbuzon(

@@ -24,7 +24,8 @@
         <div class="col-12 col-md-3 form-group">
             <label class="form-label">Jardin</label>
             <select wire:model.live="jardinSel" wire:change="DefineJardin()" class="form-select">
-                <option value="">Cualquiera</option>
+                <option value="">Cualquiera o sin jardin</option>
+
                 @foreach($JardsDelUsr as $jar)
                     <option value="{{ $jar->cjar_siglas }}">{{ $jar->cjar_name }}</option>
                 @endforeach
@@ -76,6 +77,7 @@
                             @foreach ($usr->roles as $rol)
                                 <b>{{ $rol->rol_crolrol }}</b> ({{ $rol->rol_cjarsiglas }}), &nbsp;
                             @endforeach
+                            @if($usr->roles->count()=='0') --- @endif
                         </td>
                         <td>
                             <i class="bi bi-pencil-square PaClick"  ></i>

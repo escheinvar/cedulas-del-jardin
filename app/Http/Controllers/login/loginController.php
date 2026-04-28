@@ -43,6 +43,7 @@ class loginController extends Controller
                 'rol'=>$roles,
                 'locale'=>'es',
                 'locale2'=>'spa',
+                'jardin'=>'',
             ]);
 
             ##### Guarda último acceso

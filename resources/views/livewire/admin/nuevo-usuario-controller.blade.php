@@ -63,7 +63,7 @@ Nuevo Usuario
                 @endif
                 <a href="/ingreso"><button type="button" class="btn btn-secondary">Regresar</button></a>
                 <div wire:loading  style="display:none;">
-                    <error>Espera. Estoy enviando el correo ....</error>
+                    <error class="parpadeo">Espera. Estoy enviando el correo ....</error>
                 </div>
             </div>
         </div>

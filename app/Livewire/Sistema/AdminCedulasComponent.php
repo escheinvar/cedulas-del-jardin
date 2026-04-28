@@ -62,11 +62,6 @@ class AdminCedulasComponent extends Component
     }
 
     public function CambiaEstadoCedula($id,$edo){
-        if($edo=='5'){
-            dd('lógica de cierre de ciclo: ¿registro año?, ¿es nueva versión?',
-            'en lugar de ir aquí, abrir modal de versión donde ve estadísticas y determina versión?');
-        }
-
         ##### Calcula ciclo
         $previo=cedulas_url::where('url_id',$id)->value('url_ciclo');
         if($edo=='5'){
@@ -127,58 +122,62 @@ class AdminCedulasComponent extends Component
                 ->orderBy('cjar_name')
                 ->get();
         }
-// dd($JardsUsr);
+
         ############################# Inicia lista de Cédulas
         ##### Obtiene lista de Cédulas accesibles por usuario
-        $urls=collect();
-        if($this->jardinSel != ''){
+        if(cedulas_url::count() > '0' ){
             $urls=cedulas_url::query();
-            $urls=$urls->where('url_cjarsiglas','ilike',$this->jardinSel);
+            if($this->jardinSel != ''){
+                $urls=$urls->where('url_cjarsiglas','ilike',$this->jardinSel);
 
-            ##### Obtiene cédulas originales
-            if($this->BuscaOriginal==TRUE){
-                $urls=$urls->where('url_tradid','0');
+                ##### Obtiene cédulas originales
+                if($this->BuscaOriginal==TRUE){
+                    $urls=$urls->where('url_tradid','0');
+                }
             }
-        }
-        ##### Obtiene lista de Cédulas por lengua (en caso de búsqueda por lengua)
-        if($this->BuscaLengua != ''){
-            $urls=$urls->where('url_lencode',$this->BuscaLengua);
-        }
 
-        ##### Obtiene lista de Cédulas por estado
-        if($this->BuscaEstado != ''){
-            $urls=$urls->where('url_edo',$this->BuscaEstado);
-        }
+            ##### Obtiene lista de Cédulas por lengua (en caso de búsqueda por lengua)
+            if($this->BuscaLengua != ''){
+                $urls=$urls->where('url_lencode',$this->BuscaLengua);
+            }
 
-        ##### Obtiene lista de Cédulas por texto
-        if($this->BuscaTexto != ''){
-            $urls=$urls->where(function($q){
-                return $q
-                ->where('url_url','ilike', '%'.$this->BuscaTexto.'%')
-                ->orWhere('url_titulo','ilike', '%'.$this->BuscaTexto.'%')
-                ->orWhere('url_resumen','ilike', '%'.$this->BuscaTexto.'%');
-            });
-        }
+            ##### Obtiene lista de Cédulas por estado
+            if($this->BuscaEstado != ''){
+                $urls=$urls->where('url_edo',$this->BuscaEstado);
+            }
 
-        ### Finaliza búsqueda de url
-        $urls=$urls->orderBy('url_cjarsiglas','asc')
-                ->orderBy($this->orden,$this->sentido)
-                ->where('url_del','0')
-                ->with('jardin')
-                ->with('lenguas')
-                ->with('autores')
-                ->with('editores')
-                ->with('traductores')
-                ->with('ubicaciones')
-                ->with('alias');
+            ##### Obtiene lista de Cédulas por texto
+            if($this->BuscaTexto != ''){
+                $urls=$urls->where(function($q){
+                    return $q
+                    ->where('url_url','ilike', '%'.$this->BuscaTexto.'%')
+                    ->orWhere('url_titulo','ilike', '%'.$this->BuscaTexto.'%')
+                    ->orWhere('url_resumen','ilike', '%'.$this->BuscaTexto.'%');
+                });
+            }
 
-        ##### En autor y traductor, restringe a cédulas autorizadas
-        if( (array_intersect(['autor','traductor'],session('rol'))) and  (!array_intersect(['editor','admin'], session('rol'))) ){
-            $urls=$urls->join('ced_autores','aut_urlid','=','url_id')
-                ->join('cat_autores','aut_cautid','=','caut_id')
-                ->where('aut_del','0')->where('aut_act','1')
-                ->where('caut_del','0')->where('caut_act','1')
-                ->where('caut_usrid',Auth::user()->id);
+            ### Finaliza búsqueda de url
+            $urls=$urls->orderBy('url_cjarsiglas','asc')
+                    ->orderBy($this->orden,$this->sentido)
+                    ->where('url_del','0')
+                    ->with('jardin')
+                    ->with('lenguas')
+                    ->with('autores')
+                    ->with('editores')
+                    ->with('traductores')
+                    ->with('ubicaciones')
+                    ->with('alias');
+
+            ##### En autor y traductor, restringe a cédulas autorizadas
+            if( (array_intersect(['autor','traductor'],session('rol'))) and  (!array_intersect(['editor','admin'], session('rol'))) ){
+                $urls=$urls->join('ced_autores','aut_urlid','=','url_id')
+                    ->join('cat_autores','aut_cautid','=','caut_id')
+                    ->where('aut_del','0')->where('aut_act','1')
+                    ->where('caut_del','0')->where('caut_act','1')
+                    ->where('caut_usrid',Auth::user()->id);
+            }
+        }else{
+                 $urls=cedulas_url::query();
         }
 
         ##### Obtiene cantidad de cedulas en edición

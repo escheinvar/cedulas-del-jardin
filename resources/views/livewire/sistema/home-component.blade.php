@@ -48,9 +48,9 @@
                             <i class="@if(Auth::user()->mensajes =='1') bi bi-envelope @else bi bi-envelope-x @endif" style="color:black;"></i>
                         </a>
                     @else
-                        <a href="/config" class="nolink" style="">
+                        <a href="/homeConfig" class="nolink" style="">
                             <img src="{{ Auth::user()->avatar }}" class="avatar ">
-                            <i class="@if(Auth::user()->mensajes =='1') bi bi-envelope @else bi bi-envelope-x @endif" style="color:black;"></i>
+                            <i class="@if(Auth::user()->mensajes =='1') bi bi-envelope @else bi bi-envelope-x @endif" style="@if(Auth::user()->mensajes =='0')color:#CD7B34; @else color:black; @endif"></i>
                         </a>
                     @endif
                 </div>
@@ -142,8 +142,16 @@
 
     <!-- botones de acción -->
     <div class="row">
-        <div class="col-12 my-2">
+        <div class="col-12 col-md-2 my-2">
             <button wire:click="AbrirModalParaPedirNvoRol()" class="btn btn-primary bi bi-person-gear"> Solicitar rol</button>
+        </div>
+
+        <div class="col-12 col-md-3 my-2">
+            <button wire:click="enconstruccion()" class="btn btn-primary bi bi-send" > Someter nueva cédula</button>
+        </div>
+
+        <div class="col-12 col-md-3 my-2">
+            <button wire:click="enconstruccion()" class="btn btn-primary bi bi-translate" > Ofrecer traducción</button>
         </div>
     </div>
 

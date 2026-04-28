@@ -20,25 +20,14 @@ class HomeComponent extends Component
 {
     ##### Variables de autorización de nivel de privilegio
     public $edit, $editMaster, $editjar, $JardUsr;
-    ##### Variables de solicitud de nuevo rol
-    // public $verNvoRol, $jardinesRol, $rolesRol, $jardinRol, $rolRol, $msjRol;
 
     public function mount(){
-        // $this->verNvoRol='0';
 
     }
 
-    // public function VerNoVerNvoRol(){
-    //     if($this->verNvoRol=='1'){
-    //         $this->verNvoRol='0';
-    //     }else{
-    //         $this->verNvoRol='1';
-    //     }
-    //     $this->jardinesRol=CatJardinesModel::get();
-    //     $this->rolesRol=CatRolesModel::get();
-    // }
-
-
+    public function enconstruccion(){
+        $this->dispatch('AvisoExitoHome',msj:'Sección en construcción!!. Por el momento, ve a tu buzón y envía un mensaje al administrador.');
+    }
 
     ##### Termina imágens
     public function render(){

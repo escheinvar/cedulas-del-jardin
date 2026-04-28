@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class buzon extends Model
 {
@@ -30,6 +31,13 @@ class buzon extends Model
         'buz_date_borrado',
         'buz_mailed',
         'buz_replyTo',
-
     ];
+
+    public function para():HasOne {
+        return $this->hasOne(user::class,'id', 'buz_to');
+    }
+
+    public function de():HasOne {
+        return $this->hasOne(user::class,'id', 'buz_from');
+    }
 }

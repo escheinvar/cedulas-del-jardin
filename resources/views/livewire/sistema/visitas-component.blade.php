@@ -47,7 +47,7 @@
                     <td>
                         <!-- Página -->
                         <div style="display:inline-block; width:300px;">
-                            {{ $v->vis_url2 }}
+                            {{ $v->vis_flag }}
                         </div>
                         <!-- visitas -->
                         <div style="display:inline-block; width:80px;">

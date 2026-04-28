@@ -56,7 +56,7 @@
                         <!-- Tipo de cédula -->
                         <div class="col-12 col-md-4 form-group">
                             <label for="tipoCedula" class="form-label">Tipo de ćedula<red>*</red></label>
-                            <select wire:model.live="tipoCedula" wire:change="DeterminaVariablesDeCopia()" id="tipoCedula" class="@error('tipoCedula') is-invalid @enderror form-select" @if($origtrad=='traducción' ) disabled @endif>
+                            <select wire:model="tipoCedula" wire:change="DeterminaVariablesDeCopia()" id="tipoCedula" class="@error('tipoCedula') is-invalid @enderror form-select" disabled @if($origtrad=='traducción' ) disabled @endif>
                                 <option value="">Indica ...</option>
                                 @foreach($TiposDeCedula as $t)
                                     <option value="{{ $t->cced_tipo }}"> {{ $t->cced_tipo }}</option>

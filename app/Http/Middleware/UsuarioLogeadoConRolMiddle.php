@@ -53,7 +53,7 @@ class UsuarioLogeadoConRolMiddle
             ]);
 
             ##### Define session de jardin
-            if($request->session()->has('jardin')){}else{session(['jardin'=>'a']);}
+            if($request->session()->has('jardin')){}else{session(['jardin'=>'']);}
 
             return $next($request);
         }else{

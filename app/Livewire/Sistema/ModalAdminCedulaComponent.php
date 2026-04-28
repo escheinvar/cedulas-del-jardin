@@ -67,6 +67,7 @@ class ModalAdminCedulaComponent extends Component
             $this->LimpiaModal();
             $this->act=TRUE;
         }
+        $this->tipoCedula='sp';
     }
 
     public function mount(){
@@ -75,6 +76,7 @@ class ModalAdminCedulaComponent extends Component
         $this->verAutor='1'; $this->verEditor='1'; $this->verTraductor='1';
         $this->verUbicacion='0'; $this->verAlias='0'; $this->verSp='0'; $this->verUso='0';
         $this->verTituloOrig='0'; $this->verResumenOrig='0';
+        $this->tipoCedula='sp';
 
     }
 

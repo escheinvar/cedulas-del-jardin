@@ -31,6 +31,10 @@ class UserRolesModel extends Model
     public function rol():HasOne {
         return $this->hasOne(CatRolesModel::class,'crol_rol', 'rol_crolrol');
     }
+
+    public function usr():HasOne {
+        return $this->hasOne(User::class, 'id','rol_usrid');
+    }
     // public function rol():BelongsTo{
     //     return $this->belongsTo()
     // }

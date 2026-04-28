@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Sistema;
 
-use App\Models\SistVisitasModel;
+use App\Models\sist_visitas;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -20,15 +20,17 @@ class VisitasComponent extends Component
     }
 
     public function render(){
-        $visitas=SistVisitasModel::groupBy('vis_url2')
-            ->select('vis_url2', DB::raw('count (vis_url2) as cant'))
+        $visitas=sist_visitas::groupBy('vis_flag')
+            ->selectRaw("REPLACE(vis_flag, 'login_%','login') LIKE ?",['%123%'])
+            ->select('vis_flag', DB::raw('count (vis_flag) as cant'))
             ->where('created_at', '>=', $this->desde." 00:00:00.001")
             ->where('created_at', '<=', $this->hasta." 23:59:59.999")
             ->orderBy('cant','desc')
             ->get();
 
-        $Ips=SistVisitasModel::groupBy('vis_url2','vis_ip','vis_pais','vis_regionname','vis_ciudad','region')
-            ->select('vis_url2', 'vis_ip', DB::raw('count (vis_ip) as cant'), 'vis_pais','vis_regionname',DB::raw("CONCAT(vis_pais,'-',vis_regionname) AS region"))
+        $Ips=sist_visitas::groupBy('vis_flag','vis_ip','vis_pais','vis_region','vis_ciudad','region')
+            ->select('vis_flag', 'vis_ip', DB::raw('count (vis_ip) as cant'), 'vis_pais','vis_region',DB::raw("CONCAT(vis_pais,'-',vis_region) AS region"))
+            ->selectRaw("REPLACE(vis_flag, 'login_.*','login') as vis_flag ")
             ->where('created_at', '>=', $this->desde." 00:00:00.001")
             ->where('created_at', '<=', $this->hasta." 23:59:59.999")
             ->orderBy('vis_pais','asc')
