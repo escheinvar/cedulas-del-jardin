@@ -103,99 +103,122 @@
             <div class="col-12 col-md-4 col-lg-3 ced-barraLatIzq" style="">
                 <!-- Nombre y Logo del Jardín -->
                 <div class="row pb-2">
-                    <div class="col-12 py-2" style="text-align: center; color:#202d2d; font-family: 'Noto Serif JP', serif; text-align:center; font-size:130%; font-weigth:bold;">
+                    <div class="col-12 py-2" style="text-align: center; color:#202d2d; font-family: 'Noto Serif JP', serif; text-align:center; font-size:100%; font-weigth:bold;">
                         <a href="" class="nolink">
                             {{ $url->jardin->cjar_nombre }}<br>
-                            <img src="@if($url->jardin->cjar_logo=='')/avatar/jardines/default.png @else {{ $url->jardin->cjar_logo }} @endif" style="width:80px;"><br>
+                            <img src="@if($url->jardin->cjar_logo=='')/avatar/jardines/default.png @else {{ $url->jardin->cjar_logo }} @endif" style="width:70px;"><br>
                         </a>
                     </div>
                 </div>
+
                 <!--  BarraLatIzq: Título de cédula -->
                 <div style="color:#202d2d; font-family: 'Noto Serif JP', serif; text-align:center;font-weigth:bold;" >
-                    <div class="py-4" style="font-size:140%;"> {{ $url->url_titulo }}</div>
+                    <div class="my-4" style="font-size:140%;font-weight:600;">
+                        {{ $url->url_titulo }}
+                    </div>
                 </div>
 
-                <!--  BarraLatIzq: Nombre común y Lengua -->
+                <!--  BarraLatIzq: Lengua, especies, categorías de riesgo y nombre común-->
                 <div style="color:#202d2d; font-family: 'Noto Serif JP', serif; text-align:center; font-weight:100;" >
-                    <div class="py-1" style="font-size:120%;">{{ $url->lenguas->len_autonimias }} ({{ $url->lenguas->len_lengua }})</div>
+                    <!-- lengua -->
+                    <div class="my-4" style="font-weight:500;">
+                        {{ $url->lenguas->len_autonimias }} ({{ $url->lenguas->len_lengua }})
+                    </div>
 
-                    <div class="" style="font-size:90%;">
+                    <!-- Nombre de especie y categorias de riesgo -->
+                    <div class="" >
                         @if($especies->count() > '0')
                             @foreach ($especies as $e)
                                 @if($e->sp_scname != '')
-                                    <div>
+                                    <div class="my-4">
                                         <!-- Nombre de especie -->
-                                        {{ $e->sp_scname }}<br>
+                                        <div style="font-weight: 700;">
+                                            <i>{{ $e->sp_scname }}</i>
+                                        </div>
+
                                         <!-- NOM-054 Semarnat -->
                                         @if($e->nom_cat != '')
-                                            <span style="border:1px solid #CD7B34;color:#CD7B34;padding:3px;font-size:60%; border-radius:3px;">
-                                                NOM-059<b>
+                                            <div class="CategoriaDeRiesgo">
+                                                <a href="https://www.dof.gob.mx/normasOficiales/4254/semarnat/semarnat.htm" class="nolink" target="new">
+                                                    NOM-059<br>
                                                     @if($e->nom_cat=='E') Extinta silvestre
                                                     @elseif($e->nom_cat=='P') Peligro extinción
                                                     @elseif($e->nom_cat=='A') Amenazada
                                                     @elseif($e->nom_cat=='Pr') Protección especial
                                                     @endif
-                                                </b>
-                                            </span>
+                                                </a>
+                                            </div>
+                                        @else
+                                            <a href="https://www.dof.gob.mx/normasOficiales/4254/semarnat/semarnat.htm" class="nolink" target="new" style="font-size: 70%;">
+                                                Nom
+                                            </a>
                                         @endif
-                                        <!-- CITES -->
-                                        {{-- @if($cites['estatus']=='200' & in_array('taxon_concepts',$cites['dato'])  )
-                                            @if(count($cites['dato']['taxon_concepts']) > 0 )
-                                                <div class="CategoriaDeRiesgo">
-                                                    CITES <br>
-                                                    Apéndice {{ $cites['dato']['taxon_concepts'][0]['cites_listing'] }}
-                                                </div>
-                                            @endif
-                                        @endif --}}
 
-                                        <!--UICN RED LIST -->
-                                        {{-- @if($redList['estatus']=='200')
+                                        <!-- Red List -->
+                                        @if($riesgo["$e->sp_scname"]['redlist']['estatus'] == "200" AND isset($riesgo["$e->sp_scname"]['redlist']['dato']['red_list_category_code']) )
+                                            <?php $red=$riesgo["$e->sp_scname"]['redlist']['dato']['red_list_category_code']; ?>
                                             <div class="CategoriaDeRiesgo">
-                                                <a href="{{ $redList['dato']['url'] }}" class="nolink" target="new">
+                                                <a href="{{ $riesgo["$e->sp_scname"]['redlist']['dato']['url'] }}" class="nolink" target="new">
                                                     UICN Red List:
-                                                    {{ $redList['dato']['red_list_category_code'] }}<br>
-                                                    @if( $redList['dato']['red_list_category_code'] == 'NE' ) No evaluado
-                                                    @elseif($redList['dato']['red_list_category_code']=='DD') Datos deficientes
-                                                    @elseif($redList['dato']['red_list_category_code']=='LC') Preocupación menor
-                                                    @elseif($redList['dato']['red_list_category_code']=='NT') Casi amenazada
-                                                    @elseif($redList['dato']['red_list_category_code']=='VU') Vulnerable
-                                                    @elseif($redList['dato']['red_list_category_code']=='EN') En peligro
-                                                    @elseif($redList['dato']['red_list_category_code']=='CR') Peligro crítico
-                                                    @elseif($redList['dato']['red_list_category_code']=='EW') Extinto en silvestre
-                                                    @elseif($redList['dato']['red_list_category_code']=='EX') Extinto
+                                                    {{-- {{ $red }} --}}
+                                                    <br>
+                                                    @if( $red == 'NE' ) No evaluado
+                                                    @elseif($red=='DD') Datos deficientes
+                                                    @elseif($red=='LC') Preocupación menor
+                                                    @elseif($red=='NT') Casi amenazada
+                                                    @elseif($red=='VU') Vulnerable
+                                                    @elseif($red=='EN') En peligro
+                                                    @elseif($red=='CR') Peligro crítico
+                                                    @elseif($red=='EW') Extinto en silvestre
+                                                    @elseif($red=='EX') Extinto
                                                     @endif
                                                 </a>
                                             </div>
-                                        @endif --}}
-                                        <!-- Botón agregar nueva especie -->
-                                        {{-- @if($edit=='1' AND $editMaster=='1')
-                                            <center>
-                                                <button wire:click="" class="btn"  style="margin-top:30px;">
-                                                    <i class="bi bi-plus-circle" style="color:#87796d;">Sp</i>
-                                                </button>
-                                            </center>
-                                        @endif --}}
+                                        @else
+                                            <a href="https://www.iucnredlist.org/" class="nolink mx-1" target="new" style="font-size: 70%;">
+                                                RedList
+                                            </a>
+                                        @endif
+
+                                        <!-- CITES -->
+                                        @if($riesgo["$e->sp_scname"]['cites']['estatus'] == "200" AND count( $riesgo["$e->sp_scname"]['cites']['dato']['taxon_concepts'] ) > '0' )
+                                            <div class="CategoriaDeRiesgo">
+                                                <a href="https://checklist.cites.org" class="nolink mx-1" target="new">
+                                                    CITES <br>
+                                                    Apéndice {{ $riesgo["$e->sp_scname"]['cites']['dato']['taxon_concepts'][0]['cites_listings'][0]['appendix'] }}
+                                                </a>
+                                            </div>
+                                        @else
+                                            <a href="https://checklist.cites.org" class="nolink mx-1" target="new" style="font-size: 70%;">
+                                                Cites
+                                            </a>
+                                        @endif
                                     </div>
                                 @endif
                             @endforeach
                         @endif
                     </div>
-                </div>
 
-                <!-- ------------------------- GralIzq: Categoría de riesgo ------------------------>
+                    <!-- nombres comunes -->
+                    <div class="my-4" >
+                        @if($url->alias->where('ali_calitipo','Nombre común')->count() > '0')
+                            {{ implode(', ', $url->alias->where('ali_calitipo','Nombre común')->pluck('ali_txt')->toArray() ) }}
+                        @endif
+                    </div>
+                </div>
 
 
                 <!-- ------------------------- GralIzq: Otras cédulas de otros jardines ------------------------>
-                @if($traducciones->count() > 0) <!-- OJO:puse traducciones, pero hay que poner el match de temas -->
+                @if($hermanas->count() > 0) <!-- OJO:puse traducciones, pero hay que poner el match de temas -->
                     <div class="py-5" style="width:100%;text-align:center;">
-                        <div style="font-size: 120%; font-weight:bold;" >
+                        <div style="font-size: 120%;" >
                             En otros jardines
                         </div>
                         <div class="row" style="">
                             <div class="col-12" style="text-align: center; color:#64383E;font-size:90%;">
-                                @foreach ($traducciones as $t)<!-- OJO:puse traducciones, pero hay que poner el match de temas -->
+                                @foreach ($hermanas as $t)
                                     <div class="px-1" style="display: inline-block;">
-                                        <a href="" class="nolink">
+                                        <a href="/cedula/{{ $t->url_cjarsiglas }}/{{ $t->url_url }}" class="nolink">
                                             <div class="iconoWWW">
                                                 <img class="iconoWWW" src="@if($t->jardin->cjar_logo=='')/avatar/jardines/default.png @else {{ $t->jardin->cjar_logo }} @endif"><br>
                                                 {{ $t->jardin->cjar_siglas }}
@@ -330,7 +353,9 @@
                     <div class="col-12" style="text-align: center;margin:30px;">
                         <div style="display:block;">
                             <h2 style="display:inline-block">{!! $url->url_titulo !!}</h2>
-                            <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('titulo','{{ $url->url_id }}')" style="color:#87796d;"></i>
+                            @if($url->url_tradid > '0')
+                                <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('titulo','{{ $url->url_id }}')" style="color:#87796d;"></i>
+                            @endif
                             @if($edit=='1')
                                 <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbirModalTraduceTitulo()">
                                     <i  class="bi bi-pencil-square"></i><sup></sup>
@@ -349,20 +374,27 @@
 
 
                 <!--  Autores de cédula  -->
-                <?php $total=$cedula->autores->count(); ?>
+                <?php $total=$cedula->autores->count(); $refs=''; ?>
                 @if($total > '0')
                     <div class="row" style="margin-bottom:50px;margin-right:7px;">
                         <div class="col-12 col-md-4" style=""> &nbsp; </div>
                         <div class="col-12 col-md-8" style="text-align: right;">
-                            <?php $num='0'; ?>
+                            <?php $num='0'; $num2='0'; ?>
                             <div style="font-weight:700;">
                                 @foreach ($cedula->autores as $a)
                                     <?php $num++; ?>
                                     <a href="/autor/{{ $url->url_cjarsiglas }}/{{ $a->autor->caut_url }}" class="nolink">
-                                        {{ $a->autor->caut_nombre }} {{ $a->autor->caut_apellido1 }} {{ $a->autor->caut_apellido2 }}
+                                        {{ $a->autor->caut_nombre }} {{ $a->autor->caut_apellido1 }} {{ $a->autor->caut_apellido2 }}@if($a->aut_corresponding=='1')* @endif
+
                                     </a>
-                                    @if($total > '1' AND ($a->aut_comunidad != '' OR $a->aut_institucion != '' or $a->aut_corresponding=='1'))
-                                        <sup>{{ $num }}</sup>
+                                    @if($a->aut_comunidad != '' OR $a->aut_institucion != '' Or $a->aut_corresponding=='1')
+                                        <?php $num2++; ?>
+                                        @if($total > '1' )<sup>{{ $num2 }}</sup>
+                                            @if($num2 > '1') <?php $refs=$refs.'&nbsp;  | &nbsp; '; ;?> @endif
+                                            <?php $refs=$refs.' <sub>'.$num2.'</sub> ';?>
+                                        @endif
+                                        @if($a->aut_corresponding=='1') <?php $refs=$refs.'<b>*'.$a->aut_correo.'</b>' ;?> @endif
+                                        <?php $refs=$refs.$a->aut_comunidad.' '.$a->aut_institucion.' ';?>
                                     @endif
 
                                     @if($total > '1' and $num==($total-1) ) y
@@ -374,12 +406,15 @@
 
                             <?php $num='1'; ?>
                             <div style="font-size: 70%;">
-                            @foreach ($cedula->autores as $a)
+                            {{-- @foreach ($cedula->autores as $a)
                                 @if($a->aut_comunidad != '' OR $a->aut_institucion != '' or $a->aut_corresponding=='1')
                                     @if($total > '1' )&nbsp; &nbsp; | <sup>{{ $num++ }}</sup>@endif {{ $a->aut_comunidad }} {{ $a->aut_institucion }}
                                     @if($a->aut_corresponding=='1') <b>{{ $a->aut_correo }}</b> @endif
                                 @endif
-                            @endforeach
+                            @endforeach --}}
+                            <div>
+                                {!! $refs !!}
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -405,10 +440,13 @@
                             Traducción y voz en lengua <b>{{ $url->lenguas->len_autonimias }}</b> ({{ $url->lenguas->len_lengua }}):
                             @foreach($cedula->traductores as $trad)
                                 <span wire:key="trad_{{ $trad->autor->caut_id }}">
-                                    <a href="/autor/{{ $url->url_cjarsiglas }}/{{ $trad->autor->caut_url }}" class="nolink">
-                                        <b>{{ $trad->autor->caut_nombre }} {{ $trad->autor->caut_apellido1 }} {{ $trad->autor->caut_apellido2 }}</b>@if($trad->aut_corresponding=='1')*@endif
-                                    </a>
-                                    @if($trad->aut_comunidad!='')({{ $trad->aut_comunidad }})@endif<br>
+                                    <div>
+                                        <a href="/autor/{{ $url->url_cjarsiglas }}/{{ $trad->autor->caut_url }}" class="nolink">
+                                            <b>{{ $trad->autor->caut_nombre }} {{ $trad->autor->caut_apellido1 }} {{ $trad->autor->caut_apellido2 }}</b>@if($trad->aut_corresponding=='1')*@endif
+                                        </a>
+                                    </div>
+                                    @if($trad->aut_comunidad!=''){{ $trad->aut_comunidad }}@endif
+                                    @if($trad->aut_comunidad !='' AND $trad->aut_institucion!=''), @endif
                                     @if($trad->aut_institucion!=''){{ $trad->aut_institucion }}@endif
                                     @if($trad->aut_corresponding=='1')<br>*{{ $trad->aut_correo }}@endif
                                 </span>
@@ -657,11 +695,6 @@
 
         {{-- <div class="row my-3" @if($aportes->count() > '0')style="border:1px solid #87796d;; border-radius:8px;padding:10px;" @endif> --}}
         <div class="row my-3">
-            <!-- Yo tengo algo que aportar -->
-            <div class="col-12 " wire:click="AbrirModalYoTengoAlgoQueAportar()" style="margin-left:20px; display:inline-block;" >
-                <img src="/imagenes/BotonAportar.png" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px; float: right;">
-            </div>
-
             <!-- muestra APORTES DE VISITANTES -->
             @if($aportes->count() > '0')
                 @foreach ($aportes as $a)
@@ -700,7 +733,7 @@
                             </div>
                             <!-- nombre de autor -->
                             @if($l->ext_autorname != '')
-                                Autor
+                                Autor(a)
                                 @if($l->ext_autorurl != '')<a href="{{ $l->ext_autorurl }}" target="new_">@endif
                                     {{ $l->ext_autorname }}
                                 @if($l->ext_autorurl != '')</a>@endif
@@ -716,7 +749,10 @@
             @if($edit=='1')
                 <i wire:click="AbrirModalDeFuenteExterna('0','{{ $url->url_cjarsiglas }}','{{ $url->url_urltxt }}')" class="bi bi-plus-circle cedEdo{{ $url->url_edo }} PaClick"> Agregar fuente externa</i>
             @endif
-
+            <!-- Yo tengo algo que aportar -->
+            <div class="col-12 " wire:click="AbrirModalYoTengoAlgoQueAportar()" style="margin-left:20px; display:inline-block;" >
+                <img src="/imagenes/BotonAportar.png" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px; float: right;">
+            </div>
         </div>
     @endif
 

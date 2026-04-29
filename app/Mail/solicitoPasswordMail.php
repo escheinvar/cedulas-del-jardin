@@ -28,7 +28,7 @@ class solicitoPasswordMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('sistema.automatico@jardin.etnobotanico.oaxaca.org','Sistema Jardin'),
+            from: new Address('sistema.automatico@cedulasdeljardin.mx','Sistema Jardin'),
             subject: 'Cambio de contraseña',
         );
     }

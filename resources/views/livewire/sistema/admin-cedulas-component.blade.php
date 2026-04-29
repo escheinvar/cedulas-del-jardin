@@ -147,6 +147,7 @@
                     <th wire:click="ordenaTabla('url_lencode')" class="PaClick">Lengua</th>
                     {{-- <th wire:click="ordenaTabla('url_tipo')" class="PaClick">Tipo</th> --}}
                     <th wire:click="" class="">Autores/Edit</th>
+                    <th wire:click="" class="">Especies</th>
                     <th wire:click="ordenaTabla('url_edo')" class="PaClick">Estado</th>
                     <th wire:click="ordenaTabla('url_url')" class="PaClick"> Dirección </th>
                     <th wire:click="ordenaTabla('url_edit')" class="PaClick"> Edición </th>
@@ -251,6 +252,20 @@
                                 @endforeach
                             </div>
                         </td>
+
+                        <!-- ESPECIES -->
+                        <td  class="@if($u->url_act=='0') inact @endif">
+                            @if($u->especies->count() > '0')
+                                @foreach ($u->especies as $sp)
+                                    <div style="font-size:80%;">
+                                        <i>{{ $sp->sp_scname }}</i>  [{{ $sp->sp_familia }}]
+                                    </div>
+                                @endforeach
+                            @else
+                                - - -
+                            @endif
+                        </td>
+
                         <!-- estado -->
                         <td  class="@if($u->url_act=='0') inact @endif">
                             <!-- ------------------------- Muestra estado actual --------------------- -->
@@ -287,21 +302,27 @@
                             </span>
                         </td>
 
-                        <!-- Dirección -->
+
                         <td class="@if($u->url_act=='0') inact @endif">
-                            <a href="{{ url('/') }}/cedula/{{ strtolower($u->url_cjarsiglas) }}/{{ $u->url_url }}" target="new" class="nolink" id="sale_url{{ $u->url_id }}">
-                                {{ url('/') }}/cedula/{{ strtolower($u->url_cjarsiglas) }}/{{ $u->url_url }}
-                            </a>
-                            <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('url','{{ $u->url_id }}')"></i>
-                            <!-- doi -->
+                            <!--Dirección / DOI -->
+                            <div>
                             @if($u->url_doi != '')
-                                <div>
-                                    <a href="https://doi.org/{{ $u->url_doi }}" target="new" class="nolink" id="sale_doi{{ $u->url_id }}">
-                                        <b>https://doi.org/{{ $u->url_doi }}</b>
+                                    <span id="sale_url{{ $u->url_id }}" style="display: none;">
+                                        https://doi.org/{{ $u->url_doi }}
+                                    </span>
+                                    <a href="https://doi.org/{{ $u->url_doi }}" target="new" class="nolink" >
+                                        <i class="bi bi-box-arrow-up-right">DOI</i>
                                     </a>
-                                    <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('doi','{{ $u->url_id }}')"></i>
-                                </div>
-                            @endif
+                            @else
+                                <span id="sale_url{{ $u->url_id }}" style="display: none;">
+                                    {{ url('/') }}/cedula/{{ strtolower($u->url_cjarsiglas) }}/{{ $u->url_url }}
+                                </span>
+                                <a href="{{ url('/') }}/cedula/{{ strtolower($u->url_cjarsiglas) }}/{{ $u->url_url }}" target="new" class="nolink" id="sale_url{{ $u->url_id }}">
+                                    <i class="bi bi-box-arrow-up-right">url</i>
+                                </a>
+                                @endif
+                                <i class="bi bi-clipboard PaClick mx-2" onclick="CopiarContenido('url','{{ $u->url_id }}')"></i>
+
                         </td>
 
 

@@ -714,4 +714,17 @@ button.EdoActual{
     border-radius:7px;
 
 }
+/*=========== Botón de categoría de riesgo en cédulas con especie */
+.CategoriaDeRiesgo{
+    border:1px solid #64383E;
+    font-weight: 400;
+    color:#64383E;
+    border-radius:0.5rem;
+    text-align: center;
+    padding:3px;
+    margin:3px;
+    font-size:70%;
+    display:inline-block;
+    line-height: 1.0em;
+}
 

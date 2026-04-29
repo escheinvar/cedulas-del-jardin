@@ -136,7 +136,13 @@ class ModalEditaParrafoComponent extends Component
             // $this->modJar_original=jardin_txt::where('jar_id',$copiaUorig)->value('')
             $this->modJar_original='Este es un documento original';
         }else{
-            $this->modJar_original=$dato->jar_txtoriginal;
+            if($this->modJar_modulo=='cedula'){
+                $this->modJar_original=$dato->txt_txtoriginal;
+            }elseif($this->modJar_modulo=='autor'){
+                $this->modJar_original=$dato->autxt_txtoriginal;
+            }else{
+                $this->modJar_original=$dato->jar_txtoriginal;
+            }
         }
     }
 
@@ -216,11 +222,16 @@ class ModalEditaParrafoComponent extends Component
         }elseif($this->modJar_modulo=='autor'){
 
             ##### Genera arreglo de datos
+            $autURl=autor_url::where('aurl_cjarsiglas',$this->modJar_cjarsiglas)
+                ->where('aurl_url',$this->modJar_url)
+                ->where('aurl_act','1')->where('aurl_del','0')
+                ->first();
             $dato=[
                 // 'url_id'=>$this->modJar_id,
                 'autxt_cjarsiglas'=>$this->modJar_cjarsiglas,
-                'autxt_aurlid'=>autor_url::where('aurl_cjarsiglas',$this->modJar_cjarsiglas)->where('aurl_url',$this->modJar_url)->first()->value('aurl_id'),
+                'autxt_aurlid'=>$autURl->aurl_id,
                 'autxt_aurlurltxt'=>$this->modJar_url,
+                'autxt_aurlurl'=>$autURl->aurl_url,
                 'autxt_tipo'=>$this->modJar_tipo,
                 'autxt_orden'=>$this->modJar_orden,
                 'autxt_txt'=>$this->modJar_txt,

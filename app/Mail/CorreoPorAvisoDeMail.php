@@ -29,7 +29,7 @@ class CorreoPorAvisoDeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('sistema.automatico@cedulas.deljardin.org','Sistema Cédulas del Jardín'),
+            from: new Address('sistema.automatico@cedulasdeljardin.mx','Sistema Cédulas del Jardín'),
             // subject: 'Mensaje en tu buzón del Sistema Gestor de Jardines',
             subject: $this->Data['asunto'],
         );

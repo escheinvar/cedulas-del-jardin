@@ -81,7 +81,9 @@
                 @if($url->autor->caut_orcid != '')  <a href="https://orcid.org/{{ $url->autor->caut_orcid }}" target="orcid" class="nolink">ORCID: {{ $url->autor->caut_orcid }}</a><br>@endif
                 @if($url->autor->caut_scopus != '')  <a href="https://scopus.com/authid/detail.uri?authorId={{ $url->autor->caut_scopus }}" target="orcid" class="nolink">Scopus: {{ $url->autor->caut_scopus }}</a><br>@endif
                 @if($url->autor->caut_isni != '')  <a href="https://isni.org/isni/{{ $url->autor->caut_isni }}" target="orcid" class="nolink">ISNI: {{ $url->autor->caut_isni }}</a><br>@endif
-                Cédulas del Jardín: {{ STR_PAD($url->autor->caut_id, 4,"0",STR_PAD_LEFT) }}<br>
+                @if($url->autor->caut_google != '')<a href={{ $url->autor->caut_google }}" target="google_" class="nolink">Google: {{ $url->autor->caut_google }}<br> @endif
+                {{-- @if($url->autor->caut_rgate != '')<a href={{ $url->autor->caut_rgate }}" target="google" class="nolink">Research gate: {{ $url->autor->caut_rgate }}<br> @endif --}}
+                Id en Cédulas del Jardín: {{ STR_PAD($url->autor->caut_id, 4,"0",STR_PAD_LEFT) }}<br>
                 <br>
                 Persona autora de cédulas del {{ $url->jardin->cjar_nombre }}<br>
 

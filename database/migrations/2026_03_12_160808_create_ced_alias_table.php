@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('ali_cjarsiglas');     #### Jardín al que pertenece
             $table->string('ali_urltxt');     #### urltxt de la cédula ej: huaje (sin traducción)
             $table->string('ali_urlurl');     #### url de la cédula ej: huaje_maa (con traducción)
+            $table->string('ali_key')->nullable(); #### key de jardin + urltxt
 
             $table->string('ali_calitipo'); ##### tipo de alias según catálogo
             $table->string('ali_txt');  ##### texto del alias

@@ -166,6 +166,7 @@ class AdminCedulasComponent extends Component
                     ->with('editores')
                     ->with('traductores')
                     ->with('ubicaciones')
+                    ->with('especies')
                     ->with('alias');
 
             ##### En autor y traductor, restringe a cédulas autorizadas

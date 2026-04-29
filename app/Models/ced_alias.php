@@ -31,6 +31,18 @@ class ced_alias extends Model
         'ali_lengua',
     ];
 
+    ################################################################
+    ############# Función que genera automáticamente la columna key
+    ############# a partir de concatenar cjarsiglas y urltxt
+    protected static function boot() {
+        parent::boot();
+        static::saving(function ($registro) {
+            if ($registro->ali_cjarsiglas && $registro->ali_urltxt) {
+                $registro->ali_key = trim($registro->ali_cjarsiglas . '@' . $registro->ali_urltxt);
+            }
+        });
+    }
+
     public function jardin():BelongsTo{
         return $this->belongsTo(CatJardinesModel::class,'cjar_siglas','ali_cjarsiglas');
     }

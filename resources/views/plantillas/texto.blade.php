@@ -19,7 +19,7 @@
                 $txt_audio = $t->txt_audio;
                 $txt_orden = $t->txt_orden;
                 $edo= $t->url->url_edo;
-
+                $trad=$t->url->url_tradid;
             ?>
 
         @elseif($modulo=='autor')
@@ -31,6 +31,7 @@
                 $txt_audio = $t->autxt_audio;
                 $txt_orden = $t->autxt_orden;
                 $edo= $t->url->aurl_edo;
+                $trad=$t->url->aurl_tradid;
             ?>
 
         @else
@@ -42,6 +43,7 @@
                 $txt_audio = $t->jar_audio;
                 $txt_orden = $t->jar_orden;
                 $edo= $t->url->urlj_edo;
+                $trad= $t->url->urlj_tradid;
             ?>
 
         @endif
@@ -52,13 +54,24 @@
         ?>
 
         <div class="col-12" style="" wire:key="parr_{{ $txt_id }}">
-            <!-- párrafo tipo título 1 -->
-            @if($txt_tipo == 'h1')
-                <div style="margin-top: 50px;">
-                    <h3 style="display:inline;">
-                        <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
-                    </h3>
-                    @if($EsUnPdf=='FALSE')
+            <!-- Títulos h1 h2 o h3 -->
+            @if($txt_tipo == 'h1' OR $txt_tipo == 'h2' OR $txt_tipo == 'h3' )
+                <div style="margin-top: @if($txt_tipo=='h1') 50px; @else 30px; @endif">
+                    @if($txt_tipo=='h1')
+                        <h3 style="display:inline;">
+                            <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
+                        </h3>
+                    @elseif($txt_tipo=='h2')
+                        <h4 style="display:inline;">
+                            <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
+                        </h4>
+                    @elseif($txt_tipo=='h3')
+                        <h5 style="display:inline;">
+                            <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
+                        </h5>
+                    @endif
+
+                    @if($EsUnPdf=='FALSE' AND $trad > '0')
                         <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
                     @endif
                     @if($txt_audio != '' and $EsUnPdf=='FALSE')
@@ -80,67 +93,13 @@
 
                 </div>
 
-            <!-- párrafo tipo título 2 -->
-            @elseif($txt_tipo=='h2')
-                <div style="margin-top: 30px;">
-                    <h4 style="display:inline;">
-                        <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
-                    </h4>
-                    @if($EsUnPdf=='FALSE')
-                        <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
-                    @endif
-                    @if($txt_audio != '' and $EsUnPdf=='FALSE')
-                        <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
-                            <source src="{{ $txt_audio }}" type="audio/ogg" /> @if($EsUnPdf=='FALSE')El navegador no soporta el audio @endif
-                        </audio>
-                        <i class="audioTxtPlay" id="IconPlay{{ $txt_id }}" onclick="playAudio('{{ $txt_id }}')"></i>
-                        <i class="audioTxtStop" id="IconStop{{ $txt_id }}" onclick="pauseAudio('{{ $txt_id }}')"></i>
-                    @endif
-                    @if($edit=='1')
-                        <span class="cedEdo{{ $edo }} PaClick" wire:click="AbreModalEditaParrafo('{{ $txt_id }}',' {{ $txt_orden }}', '', '', '', '1')">
-                            <i  class="bi bi-pencil-square"></i><sup>{{ $txt_orden }}</sup>
-                        </span>
-                    @endif
-                    <!-- texto original -->
-                    <div class="" style="color:#87796d; display:none;" id="sale_parrafo{{ $txt_id }}">
-                        {!!  $txt_txtoriginal !!}
-                    </div>
-                </div>
-
-            <!-- párrafo tipo título 3 -->
-            @elseif($txt_tipo=='h3')
-                <div style="margin-top: 30px;">
-                    <h5 style="display:inline;">
-                        <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
-                    </h5>
-                    @if($EsUnPdf=='FALSE')
-                        <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
-                    @endif
-                    @if($txt_audio != '' and $EsUnPdf=='FALSE')
-                        <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
-                            <source src="{{ $txt_audio }}" type="audio/ogg" /> @if($EsUnPdf=='FALSE')El navegador no soporta el audio @endif
-                        </audio>
-                        <i class="audioTxtPlay" id="IconPlay{{ $txt_id }}" onclick="playAudio('{{ $txt_id }}')"></i>
-                        <i class="audioTxtStop" id="IconStop{{ $txt_id }}" onclick="pauseAudio('{{ $txt_id }}')"></i>
-                    @endif
-                    @if($edit=='1')
-                        <span class="cedEdo{{ $edo }} PaClick" wire:click="AbreModalEditaParrafo('{{ $txt_id }}',' {{ $txt_orden }}', '', '', '', '1')">
-                            <i  class="bi bi-pencil-square"></i><sup>{{ $txt_orden }}</sup>
-                        </span>
-                    @endif
-                    <!-- texto original -->
-                    <div class="" style="color:#87796d; display:none;" id="sale_parrafo{{ $txt_id }}">
-                        {!!  $txt_txtoriginal !!}
-                    </div>
-                </div>
-            @endif
             <!-- párrafo tipo parrafo -->
-            @if($txt_tipo=='p')
+            @elseif($txt_tipo=='p')
                 <div class="my-2">
                     <div style="display:inline;">
                         {!! $txt_txt !!}
-                        @if($EsUnPdf=='FALSE')
-                        <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
+                        @if($EsUnPdf=='FALSE' AND $trad > '0')
+                            <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
                         @endif
 
                         @if($txt_audio != '' and $EsUnPdf=='FALSE')

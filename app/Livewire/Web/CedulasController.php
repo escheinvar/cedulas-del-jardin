@@ -3,7 +3,7 @@
 namespace App\Livewire\Web;
 
 use App\Models\ced_aporteusrs;
-use App\Models\ced_autores;
+use App\Models\ced_alias;
 use App\Models\ced_externos;
 use App\Models\ced_sp;
 use App\Models\sist_visitas;
@@ -13,6 +13,7 @@ use App\Models\cedulas_url;
 use App\Models\Imagenes;
 use App\Models\nom054semarnat;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -31,6 +32,9 @@ class CedulasController extends Component
     public $meses, $UrlRedes, $qrSize;
     public $aportes; ##### get() de aportes de usuarios publicos
     public $ligas;  ##### get() de ligas extra
+    public $especies; ##### get() de especies
+    public $riesgo; #### Categorias cites y Redlist
+    public $hermanas; #### get() de cedulas similares (sp, o alias)
 
     ###### Variables de modal Traduce titulo
     public $NuevoTituloTraducido;
@@ -79,7 +83,7 @@ class CedulasController extends Component
             ->orderBy('url_lencode')
             ->get();
 
-        ##### Carga vauribbles
+        ##### Carga varibbles
         $this->verSp='0';
         $this->verUbica='0';
         $this->verAlias='0';
@@ -87,6 +91,113 @@ class CedulasController extends Component
         $this->UrlRedes=url('/').'/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url;
         $this->qrSize='80';
 
+        ##### Carga especies
+        $this->especies=ced_sp::where('sp_cjarsiglas',$this->url->url_cjarsiglas)
+            ->where('sp_urltxt',$this->url->url_urltxt)
+            ->where('sp_act','1')->where('sp_del','0')
+            ->orderBy('sp_id','asc')
+            ->with('usos')
+            ->leftJoin('nom059semarnat', function($q){
+                $q->on('nom_genero','ilike','sp_genero')
+                ->on('nom_especie','ilike','sp_especie')
+                ->on('nom_infrasp','ilike','sp_ssp');
+            })
+            ->get();
+
+
+        ################## Inicia WebService RedList y Cites
+        if($this->especies->count() > '0'){
+            foreach($this->especies as $e){
+                $RedListToken='V6NT8Woe3ZnPcRZxiALB54eaedAMjkQMjDEV';
+
+                $RedListApi = Http::withHeaders([
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . $RedListToken, // Or 'Token ' for some APIs
+                ])->get('https://api.iucnredlist.org/api/v4/taxa/scientific_name',[
+                    'genus_name'=>$e->sp_genero,
+                    'species_name'=>$e->sp_especie,
+                    'infra_name'=>$e->sp_ssp,
+                    // 'genus_name'=>'Dioon',
+                    // 'species_name'=>'califanoi',
+                    // 'infra_name'=>'',
+                ]);
+                if ($RedListApi->successful()) {
+                    #dd('exito',count($RedListApi->json()['assessments']));
+                    if(count($RedListApi->json()['assessments']) > 0){
+                        $Riesgo[$e->sp_scname]['redlist']=[
+                            'estatus'=>$RedListApi->status(),
+                            'dato'=>$RedListApi->json()['assessments'][0]
+                        ];
+                    }else{
+                        $Riesgo[$e->sp_scname]['redlist']=[
+                            'estatus'=>'400',
+                            'dato'=>''
+                        ];
+                    }
+
+                } else {
+                    $Riesgo[$e->sp_scname]['redlist']=[
+                        'estatus'=>$RedListApi->status(),
+                        'dato'=>$RedListApi->body()
+                    ];
+                }
+
+                ############################# Api de Cites
+                $CitesToken='wooIyHq5e7kH8DIsA8YxDgtt';
+                $CitesApi = Http::withHeaders([
+                    'Accept' => 'application/json',
+                    'X-Authentication-Token'=>$CitesToken,
+                ])->get('https://api.speciesplus.net/api/v1/taxon_concepts',[
+                    'name'=>$e->sp_scname,
+                    // 'name'=>'Loxodonta africana',
+                    // 'name'=>'Taxodium mucrunatum'
+                ]);
+
+                if ($CitesApi->successful()) {
+                    $Riesgo[$e->sp_scname]['cites']=[
+                        'estatus'=>$CitesApi->status(),
+                        'dato'=>$CitesApi->json(),
+                    ];
+                } else {
+                    $Riesgo[$e->sp_scname]['cites']=[
+                        'estatus'=>$CitesApi->status(),
+                        'dato'=>[$CitesApi->body()],
+                    ];
+                }
+            }
+            $this->riesgo=$Riesgo;
+        }
+
+        ################## Busca otras cédulas con = sp o palabra clave
+        #### obtiene lista de sp y de alias de esta cédula
+        $Misp=$this->url->especies->pluck('sp_scname')->toArray();
+        $Mialias=$this->url->alias->pluck('ali_txt')->toArray();
+        #### Si tiene 1 sp, busca la misma en otras
+        if(count($Misp) > '0'){
+            $ganones1=ced_sp::whereIn('sp_scname',$Misp)
+                ->where('sp_key', '!=', $this->url->url_key)
+                ->where('sp_act','1')
+                ->where('sp_del','0')
+                ->pluck('sp_key')
+                ->toArray();
+
+        }
+        #### Si tiene 1 alias, busca en otras cédulas
+        if(count($Mialias) > '0'){
+            $ganones2=ced_alias::whereIn('ali_txt',$Mialias)
+                ->where('ali_key', '!=', $this->url->url_key)
+                ->where('ali_act','1')
+                ->where('ali_del','0')
+                ->pluck('ali_key')
+                ->toArray();
+            }
+        $ganones=array_merge($ganones1,$ganones2);
+        $ganones=array_unique($ganones);
+        $this->hermanas=cedulas_url::whereIn('url_key',$ganones)
+            ->where('url_tradid','0')
+            ->with('jardin')
+            ->get();
+        #dd('ali',$Mialias, $ganones);
     }
 
     public function EliminaImagen($id){
@@ -194,17 +305,17 @@ class CedulasController extends Component
             ->with('alias')
             ->first();
 
-        $especies=ced_sp::where('sp_cjarsiglas',$this->url->url_cjarsiglas)
-            ->where('sp_urltxt',$this->url->url_urltxt)
-            ->where('sp_act','1')->where('sp_del','0')
-            ->orderBy('sp_id','asc')
-            ->with('usos')
-            ->leftJoin('nom059semarnat', function($q){
-                $q->on('nom_genero','ilike','sp_genero')
-                ->on('nom_especie','ilike','sp_especie')
-                ->on('nom_infrasp','ilike','sp_ssp');
-            })
-            ->get();
+        // $especies=ced_sp::where('sp_cjarsiglas',$this->url->url_cjarsiglas)
+        //     ->where('sp_urltxt',$this->url->url_urltxt)
+        //     ->where('sp_act','1')->where('sp_del','0')
+        //     ->orderBy('sp_id','asc')
+        //     ->with('usos')
+        //     ->leftJoin('nom059semarnat', function($q){
+        //         $q->on('nom_genero','ilike','sp_genero')
+        //         ->on('nom_especie','ilike','sp_especie')
+        //         ->on('nom_infrasp','ilike','sp_ssp');
+        //     })
+        //     ->get();
 
         $this->alias=$cedula->alias;
         $this->ubicaciones=$cedula->ubicaciones;
@@ -230,7 +341,7 @@ class CedulasController extends Component
 
         return view('livewire.web.cedulas-controller',[
             'cedula'=>$cedula,
-            'especies'=>$especies,
+            // 'especies'=>$especies,
             'NumVisits'=>$NumVists,
 
         ]);

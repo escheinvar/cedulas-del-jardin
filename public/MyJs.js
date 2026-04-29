@@ -69,10 +69,31 @@ function VerNoVerPass(CampoPass,CampoIcono, iconoText, iconoPass){
 }
 
 function playAudio(IdAudio) {
-    MyAudio.pause();
+    //busca si hay audios encendidos
+    const AlgunoConPlay = document.querySelectorAll('[id*="SpAudio"]');
+    // Si hay, los pausa todos
+    if(AlgunoConPlay.length > 0){
+        AlgunoConPlay.forEach(el => {
+            if (typeof el.pause === 'function') {
+                el.pause();
+            }
+        });
+    }
+    //Cierra todos los íconos que estén reproduciendo
+    document.querySelectorAll('[id*="IconStop"]').forEach(el => {
+        el.style.display='none';
+    });
+    //Prende todos los iconos para reproducir
+    document.querySelectorAll('[id*="IconPlay"]').forEach(el => {
+        el.style.display='inline';
+    });
+
+    //cambia el ícono del picado
     var MyAudio = document.getElementById('SpAudio'+IdAudio);
     document.getElementById('IconPlay'+IdAudio).style.display='none';
     document.getElementById('IconStop'+IdAudio).style.display='inline';
+    // Play al actual
+    MyAudio.currentTime = 0;
     MyAudio.play();
 }
 
