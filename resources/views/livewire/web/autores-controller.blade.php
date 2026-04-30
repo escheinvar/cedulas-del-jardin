@@ -133,6 +133,9 @@
                 @endforeach
             </ol>
         </div>
+        <div>
+            A=Autor; T=Traductor; E=Editor.
+        </div>
     @endif
 
 

@@ -109,34 +109,15 @@
                                 </div>
                                 <b>{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</b>
                             </a>
-                            <div>
+                            {{-- <div>
                                 {{ $a->cedulas->count() }} @if($a->cedulas->count() > '1') cédulas @else cedula @endif
-                            </div>
+                            </div> --}}
                             <div style="font-size:70%;">
                                 <a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" id="sale_autor{{ $a->caut_id }}" target="autor" class="nolink">
                                     {{ url('/autor') }}/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}
                                 </a>
                                 <i onclick="CopiarContenido('autor',{{ $a->caut_id }})" class="bi bi-clipboard PaClick"> URL</i>
                             </div>
-
-
-                            <div>
-
-                            </div>
-                            {{-- <div style="font-size: 70%;">
-                                <?php $num=0; ?>
-                                @foreach($a->cedulas as $ced)
-                                    <?php $num++; ?>
-                                    <a href="{{ url('/cedula') }}/{{ $ced->url_cjarsiglas }}/{{ $ced->url_url }}" class="nolink">
-                                        {!! $ced->url_titulo !!}<sup>{{ substr($ced->aut_tipo,0,1) }}</sup>
-                                        <i>
-                                            {{ $ced->url_lencode }}
-                                            {{ $ced->url_cjarsiglas }}
-                                        </i>
-                                    </a>
-                                    @if($num < $a->cedulas->count())&nbsp; || &nbsp; @endif
-                                @endforeach
-                            </div> --}}
                         </div>
                     </div>
                 @endforeach
@@ -187,12 +168,16 @@
                             </div>
                         </a>
                             <div style="clear:both">
-
-                                @if( $c->objetos->whereIn('img_cimgtipo',['portada','ppal1','ppal2','ppal3'])->count() > '0' )
+                                @if( $c->objetos->whereIn('img_cimgtipo',['portada'])->count() > '0' )
                                     <div style="float: left;">
                                         <a href="{{ $ElUrl }}" class="nolink">
-                                            <img src="{{ $c->objetos->whereIn('img_cimgtipo',['portada','ppal1','ppal2','ppal3'])->value('img_file') }}"
-                                                style="max-width:90%; max-height:100px; margin:10px;">
+                                            @if( $c->objetos->whereIn('img_cimgtipo',['portada'])->count() > '0')
+                                                <img src="{{ $c->objetos->whereIn('img_cimgtipo',['portada'])->value('img_file') }}"
+                                                    style="max-width:90%; max-height:100px; margin:10px;">
+                                            @else
+                                                <img src="{{ $c->objetos->whereIn('img_cimgtipo',['portada','ppal1','ppal2','ppal3'])->value('img_file') }}"
+                                                        style="max-width:90%; max-height:100px; margin:10px;">
+                                            @endif
                                         </a>
                                     </div>
                                 @endif
