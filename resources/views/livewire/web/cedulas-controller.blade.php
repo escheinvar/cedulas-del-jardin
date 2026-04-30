@@ -202,7 +202,7 @@
                     <!-- nombres comunes -->
                     <div class="my-4" >
                         @if($url->alias->where('ali_calitipo','Nombre común')->count() > '0')
-                            {{ implode(', ', $url->alias->where('ali_calitipo','Nombre común')->pluck('ali_txt')->toArray() ) }}
+                            {{ implode(', ', $url->alias->where('ali_calitipo','Nombre común')->pluck('ali_txt_tr')->toArray() ) }}
                         @endif
                     </div>
                 </div>

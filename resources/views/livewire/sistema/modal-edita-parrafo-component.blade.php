@@ -30,7 +30,7 @@
                             <label for="modJar_tipo" class="form-label">Tipo de elemento<red>*</red></label>
                             <select wire:model="modJar_tipo" id="modJar_tipo" class="@error('modJar_tipo') is-invalid @enderror form-select">
                                 <option value="">Indicar...</option>
-                                @foreach(['p','h1','h2','h3'] as $tipo)
+                                @foreach(['p','h1','h2','h3','TituloNoIndexado_1','TituloNoIndexado_2'] as $tipo)
                                     <option value="{{ $tipo }}">{{ $tipo }}</option>
                                 @endforeach
                             </select>
@@ -85,7 +85,10 @@
                                 <button onclick="insertarTexto('<h3>','</h3>')" class="lenguas" title="Título">  H3  </button>
                                 <button onclick="insertarTexto('<h4>','</h4>')" class="lenguas" title="Título">  H4  </button>
                                 {{-- &nbsp; | &nbsp; --}}
-                                <br>
+                                <br><!-- caracteres especiales -->
+                                <button onclick="insertarTexto('&amp;','')" class="lenguas" title="Título"> &amp;  </button>
+                                <button onclick="insertarTexto('&gt;','')" class="lenguas" title="Título"> &gt;  </button>
+                                <button onclick="insertarTexto('&lt;','')" class="lenguas" title="Título"> &lt;  </button>
                                 <button onclick="insertarTexto('&Aring;','')" class="lenguas" title="Título"> &Aring;  </button>
                                 <button onclick="insertarTexto('&aring;','')" class="lenguas" title="Título"> &aring;  </button>
                                 <button onclick="insertarTexto('&Atilde;','')" class="lenguas" title="Título">  &Atilde; </button>
@@ -129,6 +132,9 @@
                                     {!! $modJar_txt !!}
                                 </div>
                             @endif
+                            <div>
+                                <i class="bi bi-x-square agregar" wire:click="BorrarTodoCodigo()" wire:confirm="Vas a eliminar todo el código del párrafo. ¿Quieres continuar?" style="float: right;"> Borrar todo</i>
+                            </div>
                         </div>
 
                         <!-- Archivo de audio -->

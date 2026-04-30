@@ -55,20 +55,26 @@
 
         <div class="col-12" style="" wire:key="parr_{{ $txt_id }}">
             <!-- Títulos h1 h2 o h3 -->
-            @if($txt_tipo == 'h1' OR $txt_tipo == 'h2' OR $txt_tipo == 'h3' )
+            @if(in_array($txt_tipo, ['h1','h2','h3','TituloNoIndexado_1','TituloNoIndexado_2']) )
                 <div style="margin-top: @if($txt_tipo=='h1') 50px; @else 30px; @endif">
                     @if($txt_tipo=='h1')
-                        <h3 style="display:inline;">
+                        <h3 style="display:inline; font-size:160%;">
                             <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
                         </h3>
                     @elseif($txt_tipo=='h2')
-                        <h4 style="display:inline;">
+                        <h4 style="display:inline; font-size:140%;">
                             <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
                         </h4>
                     @elseif($txt_tipo=='h3')
                         <h5 style="display:inline;">
                             <a name="IrA{{ $txt_id }}tit">{!! $txt_txt !!}</a>
                         </h5>
+                    @elseif($txt_tipo=='TituloNoIndexado_1')
+                        <br>
+                        <b><big>{!! $txt_txt !!}</big></b>
+                    @elseif($txt_tipo=='TituloNoIndexado_2')
+                        <br>
+                        <b>{!! $txt_txt !!}</b>
                     @endif
 
                     @if($EsUnPdf=='FALSE' AND $trad > '0')

@@ -406,6 +406,8 @@ class ModalEditaParrafoComponent extends Component
         $this->dispatch('CierraModalDeParrafoWebJardin',reload:'1');
     }
 
+
+
     #################################################################
     ######################################## Verificador de tags html
     public $ValidadorDeTag;
@@ -500,6 +502,10 @@ class ModalEditaParrafoComponent extends Component
         //     $this->isValid = true;
         //     $this->dispatch('html-validated');
         // }
+    }
+
+    public function BorrarTodoCodigo(){
+        $this->modJar_txt='';
     }
 
     public function render(){
