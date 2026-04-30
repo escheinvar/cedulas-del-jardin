@@ -19,7 +19,7 @@
         <!-- Buscar por Jardín-->
         <div class="col-12 col-md-2 form-group">
             <label id="BuscaJardin" class="form-label">Jardín<red>*</red></label>
-            <select wire:model.live="BuscaJardin"  wire:change="DefineJardin()" id="BuscaJardin" class="@error('BuscaJardin') is-invalid @enderror form-select">
+            <select wire:model.live="BuscaJardin" wire:change="DefineSesion('jardin')" id="BuscaJardin" class="@error('BuscaJardin') is-invalid @enderror form-select">
                 <option value="">Todos</option>
                 @foreach ($jardines as $j)
                     <option value="{{ $j->cjar_siglas }}">{{ $j->cjar_siglas }}</option>
@@ -32,7 +32,7 @@
         <!-- Buscar por módulo -->
         <div class="col-12 col-md-2 form-group">
             <label id="BuscaMod" class="form-label">Módulo<red>*</red></label>
-            <select wire:model.live="BuscaMod" id="BuscaMod" class="@error('BuscaMod') is-invalid @enderror form-select">
+            <select wire:model.live="BuscaMod" wire:change="DefineSesion('BuscaMod')" id="BuscaMod" class="@error('BuscaMod') is-invalid @enderror form-select">
                 <option value="">Indicar alguno</option>
                 @foreach ($modulos as $m)
                     <option value="{{ $m->cimg_modulo }}">{{ $m->cimg_modulo }} </option>
@@ -45,7 +45,7 @@
         <!-- Buscar por Url -->
         <div class="col-12 col-md-2 form-group">
             <label id="BuscaUrl" class="form-label">Url<red>*</red></label>
-            <select wire:model.live="BuscaUrl" id="BuscaUrl" class="@error('BuscaUrl') is-invalid @enderror form-select" @if($BuscaMod=='') disabled @endif>
+            <select wire:model.live="BuscaUrl"  wire:change="DefineSesion('BuscaUrl')" id="BuscaUrl" class="@error('BuscaUrl') is-invalid @enderror form-select" @if($BuscaMod=='') disabled @endif>
                     @if($BuscaMod == '') <option value=""> @endif Indica un módulo</option>
                     <option value="">Todos</option>
                     @foreach ($UrlsDelModulo as $m)
@@ -59,7 +59,7 @@
         <!-- Buscar por Submódulo -->
         <div class="col-12 col-md-2 form-group">
             <label id="BuscaSubMod" class="form-label">Submódulo<red>*</red></label>
-            <select wire:model.live="BuscaSubMod" id="BuscaSubMod" class="@error('BuscaSubMod') is-invalid @enderror form-select" @if($BuscaMod=='') disabled @endif>
+            <select wire:model.live="BuscaSubMod" wire:change="DefineSesion('BuscaSubMod')" id="BuscaSubMod" class="@error('BuscaSubMod') is-invalid @enderror form-select" @if($BuscaMod=='') disabled @endif>
                 @if($BuscaMod == '') <option value=""> @endif Indica un módulo</option>
                 @if($BuscaMod != '')
                     <option value="">Todos</option>
@@ -77,7 +77,7 @@
         <!-- Busar por titulo/aturo/pie o palabra clave -->
         <div class="col-12 col-md-4 form-group">
             <label id="BuscaTxt" class="form-label">Titulo/Autor/Pie o palabra clave<red></red></label>
-            <input wire:model.live="BuscaTxt" id="BuscaTxt" class="@error('BuscaTxt') is-invalid @enderror form-control" type="text">
+            <input wire:model.live="BuscaTxt" wire:change="DefineSesion('BuscaTxt') id="BuscaTxt" class="@error('BuscaTxt') is-invalid @enderror form-control" type="text">
             <div class="form-text"></div>
             @error('BuscaTxt')<error>{{ $message }}</error>@enderror
         </div>
@@ -85,7 +85,7 @@
         <!-- Buscar por tipo de objeto -->
         <div class="col-12 col-md-2 form-group">
             <label id="BuscaTipo" class="form-label">Tipo de objeto<red></red></label>
-            <select wire:model.live="BuscaTipo" id="BuscaTipo" class="@error('BuscaTipo') is-invalid @enderror form-select">
+            <select wire:model.live="BuscaTipo" wire:change="DefineSesion('BuscaTipo') id="BuscaTipo" class="@error('BuscaTipo') is-invalid @enderror form-select">
                 <option value="">Cualquiera</option>
                 <option value="img">Imágenes</option>
                 <option value="vid">Videos</option>

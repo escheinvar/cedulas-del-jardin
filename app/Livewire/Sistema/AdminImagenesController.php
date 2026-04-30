@@ -18,18 +18,30 @@ class AdminImagenesController extends Component
     public $BuscaMod, $BuscaSubMod, $BuscaUrl; #### Variable de tabla
 
     public function mount($tipo){
+        // dd(Session()->all());
         ### imagenes=Tabla; imagen=Imgs
         if($tipo=='nes'){$this->ModoTabla='1';}else{$this->ModoTabla='0';}
         $this->orden='img_id';
         $this->sent='asc';
+        ##### Revisa si ya se viene trabajando con jardín en sesión
         $this->BuscaJardin=session('jardin');
-        $this->BuscaMod='cedula';
-        $this->BuscaSubMod='';
-        $this->BuscaTxt='';
+        ##### Revisa si hay sesión de búsqueda de esta pg. para cargar parámetros
+        foreach(['BuscaMod','BuscaUrl','BuscaSubMod','BuscaTxt','BuscaTipo'] as $mod){
+            if(isset(session('tempSession')[$mod])){
+                $this->$mod=session('tempSession')[$mod];
+            }else {
+                $this->$mod='';
+            }
+        }
     }
 
-    public function DefineJardin(){
-        session(['jardin'=>$this->BuscaJardin]);
+    public function DefineSesion($Modelo){
+        ##### Guarda variables de búsqueda en sesión para que al reiniciar, sigua la misma búsqueda
+        if($Modelo=='jardin'){
+            session(['jardin'=>$this->BuscaJardin]);
+        }else{
+            session(['tempSession'=>[$Modelo=>$this->$Modelo]]);
+        }
     }
 
     public function CambiaModo(){
