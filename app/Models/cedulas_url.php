@@ -117,7 +117,8 @@ class cedulas_url extends Model
             ->where('uso_act','1')
             ->where('uso_del','0')
             ->where('sp_act','1')
-            ->where('sp_del','0');
+            ->where('sp_del','0')
+            ->orderBy('uso_id','asc');
     }
 
     public function versiones():HasMany{

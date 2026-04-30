@@ -38,7 +38,7 @@ class ModalCedulaUsoComponent extends Component
     #[On('AbreModalUsoEnCedula')]
     public function montarDatos($datos){
         ##### recibe variables externas
-        $this->uso_sp=ced_sp::where('sp_id',$datos['spid'])->first();
+        $this->uso_sp=ced_sp::where('sp_id', $datos['spid'])->first();
         $this->uso_usoid=$datos['usoid'];
         $this->uso_jardin=$datos['jardin'];
         $this->uso_urltxt=$datos['urltxt'];

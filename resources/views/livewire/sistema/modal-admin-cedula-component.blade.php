@@ -332,13 +332,10 @@
                                 <div>
                                     <i wire:click="VerNoVer('verUso')" class="@if($verUso=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     <label for="" class="form-label">Usos(s)<red></red></label>
-                                    {{-- @if($CedUsos->count() =='0')
-                                        <i wire:click="AbrirModalDeBuscarEspecie('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
-                                    @endif --}}
-                                    {{-- <i wire:click="AbrirModalDeUso('0')" class="bi bi-plus-circle-fill agregar"></i> --}}
                                 </div>
                                 @if($CedUsos AND $cedulaId > '0' and $verUso=='1')
-                                    <div class="form-text">(Aplica a todas las traducciones)</div>
+                                    <div class="form-text">(Aplica a todas las traducciones)<BR>
+                                        Agregar uso desde la sección de especies</div>
                                     @foreach ($CedUsos as $u)
                                         <div class="elemento" style="font-size: 80%;width:100%;">
                                             <div class="cortaTexto PaClick" id="Uso{{ $u->uso_id }}" onclick="QuitarCortaTexto('Uso','{{ $u->uso_id }}')" style="width:90%; display:inline-block;">

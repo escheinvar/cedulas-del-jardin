@@ -114,7 +114,7 @@ class AdminImagenesController extends Component
 
         ##### GBenera tabla de imágenes: busca por url
         if($this->BuscaMod=='cedula' AND $this->BuscaUrl != ''){
-            $imagenes=$imagenes->where('img_urlurl',$this->BuscaUrl);
+            $imagenes=$imagenes->where('img_urltxt',$this->BuscaUrl);
         }
 
         ##### Genera tabla de imágenes genera búsqueda

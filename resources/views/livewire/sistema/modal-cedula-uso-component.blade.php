@@ -74,7 +74,7 @@
                         <!-- Select Partes de planta-->
                         @if($uso_sp AND $uso_sp->sp_reino=='planta')
                             <label for="uso_parte" class="form-label">Parte(s) de la planta usadas<red></red></label>
-                            <select wire:model="uso_parte" id="uso_parte" class="@error('uso_parte') is-invalid @enderror form-select agregar">
+                            <select wire:model="uso_parte" wire:change="AgregarParte()" id="uso_parte" class="@error('uso_parte') is-invalid @enderror form-select ">
                                 @if($uso_uso=='')
                                     <option value="">Indicar uso primero</option>
                                 @else
@@ -84,9 +84,9 @@
                                     @endforeach
                                 @endif
                             </select>
-                            @if($uso_uso != '')<i wire:click="AgregarParte()" class="bi bi-plus-square-fill agregar"></i>@endif
+                            {{-- @if($uso_uso != '')<i wire:click="AgregarParte()" class="bi bi-plus-square-fill agregar"></i>@endif
                                 <div class="form-text"></div>
-                            @error('uso_parte')<error>{{ $message }}</error>@enderror
+                            @error('uso_parte')<error>{{ $message }}</error>@enderror --}}
 
                         <!-- Select Partes no planta -->
                         @elseif($uso_sp AND $uso_sp->sp_reino !='planta')
