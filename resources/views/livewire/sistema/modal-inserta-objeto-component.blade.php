@@ -67,7 +67,7 @@
                                 @if($Imgmod_tipoobjeto!='')
                                     <div class="col-3">
                                         <br><br>
-                                        <button wire:click="LeerObjeto()" class="btn btn-primary"> Revisar</button>
+                                        <button wire:click="LeerObjeto()" class="btn btn-primary" @if($Imgmod_nvoobj == '') disabled @endif> Revisar</button>
                                     </div>
                                 @endif
                             @endif

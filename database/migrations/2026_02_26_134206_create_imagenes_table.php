@@ -35,8 +35,8 @@ return new class extends Migration
             $table->string('img_resolu')->nullable(); #### Resolución en px X,Y
             $table->string('img_titulo')->nullable(); ##### tiulo de la imágen
             $table->enum('img_tituloact',['0','1'])->default('0'); ##### flag de título visible
-            $table->string('img_pie')->nullable(); ##### pie de figura
-            $table->string('img_explica')->nullable(); ##### explicación de la figura
+            $table->longText('img_pie')->nullable(); ##### pie de figura
+            $table->longText('img_explica')->nullable(); ##### explicación de la figura
             $table->string('img_autor')->nullable(); ##### Nombre del autor
             $table->date('img_fecha')->nullable(); ##### Fecha del objeto
             $table->string('img_ubica')->nullable(); ##### notas de ubiación
