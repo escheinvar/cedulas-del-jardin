@@ -181,6 +181,8 @@ class CedulasController extends Component
                 ->pluck('sp_key')
                 ->toArray();
 
+        }else{
+            $ganones1=[];
         }
         #### Si tiene 1 alias, busca en otras cédulas
         if(count($Mialias) > '0'){
@@ -190,13 +192,19 @@ class CedulasController extends Component
                 ->where('ali_del','0')
                 ->pluck('ali_key')
                 ->toArray();
-            }
-        $ganones=array_merge($ganones1,$ganones2);
-        $ganones=array_unique($ganones);
-        $this->hermanas=cedulas_url::whereIn('url_key',$ganones)
-            ->where('url_tradid','0')
-            ->with('jardin')
-            ->get();
+        }else{
+            $ganones2=[];
+        }
+        if(count($ganones1)> '0' OR count($ganones2)>'0'){
+            $ganones=array_merge($ganones1,$ganones2);
+            $ganones=array_unique($ganones);
+            $this->hermanas=cedulas_url::whereIn('url_key',$ganones)
+                ->where('url_tradid','0')
+                ->with('jardin')
+                ->get();
+        }else{
+            $this->hermanas=collect();
+        }
         #dd('ali',$Mialias, $ganones);
     }
 

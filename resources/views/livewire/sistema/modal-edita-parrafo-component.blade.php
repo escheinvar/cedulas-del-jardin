@@ -124,7 +124,7 @@
 
                             <!-- textarea -->
                             @if($VerHtml=='0')
-                                <textarea  rows="5" id="Codigo" wire:model="modJar_txt" class="@error('modJar_txt') is-invalid @enderror form-control"></textarea>
+                                <textarea  rows="8" id="Codigo" wire:model="modJar_txt" class="@error('modJar_txt') is-invalid @enderror form-control"></textarea>
                                 <div class="form-text"></div>
                                 @error('modJar_txt')<error>{{ $message }}</error>@enderror
                             @else
