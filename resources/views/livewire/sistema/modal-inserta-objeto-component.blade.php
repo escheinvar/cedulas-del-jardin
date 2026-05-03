@@ -50,7 +50,7 @@
                                         <!-- Carga nuevo youtube -->
 
                                         <label for="Imgmod_nvoobj" class="form-label">Indica la clave del video:<red></red></label>
-                                        <input wire:model="Imgmod_nvoobj" id="Imgmod_nvoobj" class="@error('Imgmod_nvoobj') is-invalid @enderror form-control" type="text">
+                                        <input wire:model.live="Imgmod_nvoobj" id="Imgmod_nvoobj" class="@error('Imgmod_nvoobj') is-invalid @enderror form-control" type="text">
                                         <div class="form-text">Texto url entre los símbolos '=' y '&' (.../watch?v<b>=</b><span style="color:#CD7B34;">RpbjMcAqKzY</span><b>&</b>t=5s...)</div>
                                         @error('Imgmod_nvoobj')<error>{{ $message }}</error>@enderror
 
@@ -58,7 +58,7 @@
                                         <!-- Carga nuevo código -->
 
                                         <label for="Imgmod_nvoobj" class="form-label">Código para embeber:<red></red></label>
-                                        <textarea wire:model="Imgmod_nvoobj" id="Imgmod_nvoobj" class="@error('Imgmod_nvoobj') is-invalid @enderror form-control"></textarea>
+                                        <textarea wire:model.live="Imgmod_nvoobj" id="Imgmod_nvoobj" class="@error('Imgmod_nvoobj') is-invalid @enderror form-control"></textarea>
                                         <div class="form-text">Copia el código para embeber</div>
                                         @error('Imgmod_nvoobj')<error>{{ $message }}</error>@enderror
                                     @endif
@@ -268,7 +268,8 @@
                 <div class="modal-footer">
                     <div class="row">
                         <div class="col-12">
-                            <button wire:click="CerrarModalIncertaObjeto()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <error wire:loading style="display:none" class="parpadeo">Trabajando. espera...</error>
+                            <button wire:click="CerrarModalIncertaObjeto()" wire:loadin.attr="disabled" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button class="btn btn-primary" wire:click="GuardarDatos()" @if($Imgmod_verobjeto=='0') disabled style="color:gray;" @endif> Guardar </button>
                         </div>
                     </div>
