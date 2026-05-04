@@ -304,12 +304,12 @@
                 </div>
 
                 <!-- Autor -->
-                <div class="col-12 col-md-3 my-1 form-group">
+                <div class="col-12 col-md-3 my-1 form-group" >
                     <label for="NvoAutor" class="form-label">Indica al autor<red>*</red></label>
                     <select wire:model="NvoAutor" id="NvoAutor" class="@error('NvoAutor') is-invalid @enderror form-select">
                         <option value="">Indicar autor...</option>
                         @foreach($NvosAutores as $a)
-                            <option value="{{ $a->caut_id }}">{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</option>
+                            <option value="{{ $a->caut_id }}" wire_key="{{ $a->caut_id }}">{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</option>
                         @endforeach
                     </select>
                     <div class="form-text"></div>

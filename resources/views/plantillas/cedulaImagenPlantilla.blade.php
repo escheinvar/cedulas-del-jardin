@@ -21,7 +21,7 @@
     </div>
 @else
     @foreach ($objetos as $objeto)
-        <div wire:key="objetoCed_{{ $objeto->img_id }}">
+        <div wire:key="objetoCed_{{ $objeto->img_id }}" >
             <!-- Muestra título -->
             @if($objeto->img_tituloact=='1')
                 <div style="font-weight: 900;">{{ $objeto->img_titulo }}</div>
@@ -53,7 +53,7 @@
                 </div>
             @elseif($objeto->img_tipo=='you')
                 <!-- imprime youtube -->
-                <div class="ratio ratio-16x9">
+                <div class="ratio ratio-16x9" style="">
                     <iframe
                         width="100%"
                         src="https://www.youtube.com/embed/{{ $objeto->img_youtube }}"
@@ -61,10 +61,12 @@
                         frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
                     </iframe>
                 </div>
-                <i onclick="VerYocultar('foto','{{ $objeto->img_id }}')" id="entra_foto{{ $objeto->img_id }}" class="bi bi-box-arrow-in-down-right agregar" style="color:#87796d;float: right;"></i>
+                <div style="padding-bottom:15px;">
+                    <i onclick="VerYocultar('foto','{{ $objeto->img_id }}')" id="entra_foto{{ $objeto->img_id }}" class="bi bi-box-arrow-in-down-right agregar" style="color:#87796d;float: right;"></i>
+                </div>
             @elseif($objeto->img_tipo=='htm')
                 <!-- imprime el Html -->
-                <div>
+                <div >
                     {!! $objeto->img_html !!}
                     <i onclick="VerYocultar('foto','{{ $objeto->img_id }}')" id="entra_foto{{ $objeto->img_id }}" class="bi bi-box-arrow-in-down-right agregar" style="color:#87796d;float: right;"></i>
                 </div>

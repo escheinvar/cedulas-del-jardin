@@ -20,7 +20,6 @@ class cat_autores extends Model
         'caut_act',
         'caut_del',
         'caut_edit',
-        // 'caut_cjarsiglas',
         'caut_nombre',
         'caut_apellido1',
         'caut_apellido2',
@@ -31,8 +30,6 @@ class cat_autores extends Model
         'caut_comunidad',
         'caut_tel',
         'caut_usrid',
-        // 'caut_lenguas',
-        // 'caut_web',
         'caut_mailpublic',
         'caut_orcid',
         'caut_scopus',
@@ -40,6 +37,7 @@ class cat_autores extends Model
         'caut_isni',
         'caut_google',
         'caut_rgate',
+        'caut_lengua',
 
     ];
 

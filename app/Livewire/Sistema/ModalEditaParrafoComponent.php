@@ -226,6 +226,7 @@ class ModalEditaParrafoComponent extends Component
                 ->where('aurl_url',$this->modJar_url)
                 ->where('aurl_act','1')->where('aurl_del','0')
                 ->first();
+// dd($autURl);
             $dato=[
                 // 'url_id'=>$this->modJar_id,
                 'autxt_cjarsiglas'=>$this->modJar_cjarsiglas,
@@ -509,7 +510,6 @@ class ModalEditaParrafoComponent extends Component
     }
 
     public function render(){
-
         return view('livewire.sistema.modal-edita-parrafo-component');
     }
 

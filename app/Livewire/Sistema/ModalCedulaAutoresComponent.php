@@ -3,6 +3,7 @@
 namespace App\Livewire\Sistema;
 
 use App\Models\cat_autores;
+use App\Models\lenguas;
 use App\Models\User;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -15,7 +16,7 @@ class ModalCedulaAutoresComponent extends Component
     public $ModAut_IdAutor, $ModAut_jardin, $ModAut_reload; ##### Variable con idde autor o 0 recibida desde componente
     ##### Variables de formulario:
     public $ModAut_nombre, $ModAut_apellido1, $ModAut_apellido2, $ModAut_url, $ModAut_autorname, $ModAut_correo, $ModAut_tel;
-    public $ModAut_institu,$ModAut_comunidad, $ModAut_orcid, $ModAut_scopus, $ModAut_isni, $ModAut_img, $ModAut_NvaImg;
+    public $ModAut_institu,$ModAut_comunidad, $ModAut_lengua, $ModAut_orcid, $ModAut_scopus, $ModAut_google, $ModAut_rgate, $ModAut_isni, $ModAut_img, $ModAut_NvaImg;
     public $ModAut_web, $ModAut_mailpublic, $ModAut_usrsist;
 
     #[On('AbreModalDeAutores')]
@@ -30,6 +31,7 @@ class ModalCedulaAutoresComponent extends Component
 
         if($this->ModAut_IdAutor=='0'){
             $this->LimpiaModalAutores();
+            $this->ModAut_lengua='spa';
 
         }else{
             $datos=cat_autores::where('caut_id',$this->ModAut_IdAutor)->first();
@@ -45,11 +47,15 @@ class ModalCedulaAutoresComponent extends Component
             $this->ModAut_orcid = $datos->caut_orcid;
             $this->ModAut_scopus = $datos->caut_scopus;
             $this->ModAut_isni = $datos->caut_isni;
-            // $this->ModAut_img = $datos->caut_img;
             $this->ModAut_usrsist= $datos->caut_usrid;
+            $this->ModAut_google=$datos->caut_google;
+            $this->ModAut_rgate=$datos->caut_rgate;
+            $this->ModAut_lengua=$datos->caut_lengua;
             // if($datos->caut_web=='1'){$this->ModAut_web=true;}else{$this->ModAut_web=false;}
             if($datos->caut_mailpublic=='1'){$this->ModAut_mailpublic=true;}else{$this->ModAut_mailpublic=false;}
         }
+
+
     }
 
     public function LimpiaModalAutores(){
@@ -80,7 +86,6 @@ class ModalCedulaAutoresComponent extends Component
         $this->validate([
             'ModAut_nombre'=>'required',
             'ModAut_apellido1'=>'required',
-            'ModAut_autorname'=>'required',
             'ModAut_autorname'=>'required|unique:cat_autores,caut_nombreautor,'.$this->ModAut_IdAutor.',caut_id',
         ]);
 
@@ -93,16 +98,15 @@ class ModalCedulaAutoresComponent extends Component
         }
 
         ##### Valida url sea única
-        // $busca=cat_autores::where('caut_url','ilike',$this->ModAut_url)
-        //     ->where('caut_del','0')->where('caut_act','1')
-        //     ->where('caut_cjarsiglas',$this->ModAut_jardin)
-        //     ->where('caut_id','!=',$this->ModAut_IdAutor)
-        //     ->count();
+        $busca=cat_autores::where('caut_nombreautor','ilike',$this->ModAut_autorname)
+            ->where('caut_del','0')->where('caut_act','1')
+            ->where('caut_id','!=',$this->ModAut_IdAutor)
+            ->count();
 
-        // if($busca > '0'){
-        //     $this->addError('ModAut_autorname','Este nombre de autor ya está registrado en este jardín!');
-        //     return;
-        // }
+        if($busca > '0'){
+            $this->addError('ModAut_autorname','Este nombre de autor ya está registrado en este jardín!');
+            return;
+        }
 
         ##### Transforma checkboxes
         if($this->ModAut_web==true){$web='1';}else{$web='0';}
@@ -123,6 +127,9 @@ class ModalCedulaAutoresComponent extends Component
             'caut_mailpublic'=>$public,
             'caut_orcid'=>$this->ModAut_orcid,
             'caut_scopus'=>$this->ModAut_scopus,
+            'caut_google'=>$this->ModAut_google,
+            'caut_rgate'=>$this->ModAut_rgate,
+            'caut_lengua'=>$this->ModAut_lengua,
             'caut_isni'=>$this->ModAut_isni,
         ];
 
@@ -139,16 +146,7 @@ class ModalCedulaAutoresComponent extends Component
             paLog('Edita datos de autor '.$this->ModAut_nombre.'_'.$this->ModAut_apellido1.' en catálogo','cat_autores',$this->ModAut_IdAutor );
         }
 
-        // ##### Construye nombre de imagen y la guarda
-        // if($this->ModAut_NvaImg != ''){
-        //     $nombre=  "autor_".str_pad($vaId,3,"0",STR_PAD_LEFT).".".$this->ModAut_NvaImg->getClientOriginalExtension();
-        //     $this->ModAut_NvaImg->storeAs(path:'/public/avatar/autores/', name:$nombre);
-        //     cat_autores::where('caut_id',$vaId)->update([
-        //         'caut_img'=>'/avatar/autores/'.$nombre,
-        //     ]);
-        //     #### registra log
-        //     paLog('Edita imagen de autor '.$this->ModAut_nombre.'_'.$this->ModAut_apellido1.' en catálogo','cat_autores',$vaId );
-        // }
+
         #### Finaliza y cierra
         $this->CierraModalAutores();
     }
@@ -169,9 +167,11 @@ class ModalCedulaAutoresComponent extends Component
             ->where('del','0')
             ->select('id','usrname','nombre','apellido')
             ->get();
+        $lenguas=lenguas::all();
 
         return view('livewire.sistema.modal-cedula-autores-component',[
             'usr'=>$usuarios,
+            'lenguas'=>$lenguas,
         ]);
     }
 }

@@ -171,6 +171,7 @@ class ModalCedulaBuscautorComponent extends Component
 
             $this->dispatch('RecibeVariablesDeBuscaAutor',dato:$ja);
         }
+
         ###### Revisa si el autor tiene url en este jardín y en su caso, lo crea
         $webs=autor_url::where('aurl_cjarsiglas', $jardin)
             ->where('aurl_cautid',$this->BuscaAutor_id)
@@ -184,7 +185,7 @@ class ModalCedulaBuscautorComponent extends Component
                 'aurl_cjarsiglas'=>$jardin,
                 'aurl_urltxt'=>$autor->caut_url,
                 'aurl_url'=>$autor->caut_url,
-                'aurl_lencode'=>'spa',
+                'aurl_lencode'=>$autor->caut_lengua,
                 'aurl_tradid'=>'0',
                 // 'aurl_resumen'=>'',
                 // 'aurl_resumenorig'=>'',

@@ -39,6 +39,7 @@ return new class extends Migration
             $table->string('caut_isni')->nullable();        #### Número identificador de autor académico (International Standard Name Identifier)
             $table->string('caut_google')->nullable();        #### Dirección URL de autor de gogogle academico
             $table->string('caut_rgate')->nullable();        #### Url de research gate
+            $table->string('caut_lengua')->default('spa');   ##### Lengua materna
 
 
             // $table->string('caut_otrosid')->nullable();       #### Array; nombre@valor; de números identificadores de autor académico

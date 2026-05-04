@@ -56,9 +56,9 @@
 
                     <b>{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</b>
 
-                    <div>
+                    {{-- <div>
                         {{ $a->cedulas->count() }} @if($a->cedulas->count() > '1') cédulas @else cedula @endif
-                    </div>
+                    </div> --}}
 
                     <div>
                         @foreach ($a->urlautor as $u)

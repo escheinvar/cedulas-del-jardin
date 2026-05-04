@@ -72,12 +72,13 @@ class AutoresController extends Component
 
         ##### Carga textos
         $txt=autor_txt::where('autxt_cjarsiglas',$this->jardin)
-            ->where('autxt_aurlurltxt',$this->url->aurl_urltxt)
+            ->where('autxt_aurlurl',$this->url->aurl_url)
             ->where('autxt_act','1')->where('autxt_del','0')
             ->orderBy('autxt_orden')
             ->with('cedulas')
             ->with('url')
             ->get();
+
 
         ##### Carga Objetos
         $objs=Imagenes::where('img_cjarsiglas',$this->jardin)
@@ -88,6 +89,7 @@ class AutoresController extends Component
         ##### Carga las cédulas del autor
         $ceds=ced_autores::where('aut_cautid',$this->url->autor->caut_id)
             ->where('aut_act','1')->where('aut_del','0')
+            ->where('aut_tipo','!=','Editor')
             ->with('autor')
             ->with('cedula')
             ->get();

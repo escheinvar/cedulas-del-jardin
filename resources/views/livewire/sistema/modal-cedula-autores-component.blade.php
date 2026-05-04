@@ -47,20 +47,11 @@
                             <div class="col-12 col-md-4  form-group">
                                 <label for="ModAut_autorname" class="form-label">Nombre de autor<red>*</red></label> &nbsp; &nbsp;
                                 <button class="btn btn-sm btn-primary bi bi-info-square" wire:click="CalculaNombre()"  @if($ModAut_nombre=='' OR $ModAut_apellido1=='' OR $ModAut_IdAutor > '0') disabled @endif> Sugerir</button>
-                                <input wire:model.live="ModAut_autorname" wire:change="CalculaUrl()" id="ModAut_autorname" class="@error('ModAut_autorname') is-invalid @enderror form-control"  @if($ModAut_IdAutor > '0') readonly @endif type="text">
+                                <input wire:model.live="ModAut_autorname"  id="ModAut_autorname" class="@error('ModAut_autorname') is-invalid @enderror form-control"  @if($ModAut_IdAutor > '0') readonly @endif type="text">
 
                                 <div class="form-text">Nombre único del autor (generalmente apellido-apellido N.)</div>
                                 @error('ModAut_autorname')<error>{{ $message }}</error>@enderror
                             </div>
-
-                            {{-- <!-- Url-->
-                            <div class="col-12 col-md-4  form-group">
-                                <label for="ModAut_url" class="form-label">Url<red></red></label> &nbsp; &nbsp;
-                                <button class="btn btn-sm" @if($ModAut_nombre=='') disabled @endif readonly><i wire:click="CalculaNombre()" class="bi bi-info-square PaClick"> Sugerir</i></button>
-                                <input wire:model="ModAut_url" id="ModAut_url" class="@error('ModAut_url') is-invalid @enderror form-control" readonly type="text">
-                                <div class="form-text"></div>
-                                @error('ModAut_url')<error>{{ $message }}</error>@enderror
-                            </div> --}}
 
                             <!-- Correo electrónico -->
                             <div class="col-12 col-md-4  form-group">
@@ -70,28 +61,14 @@
                                 @error('ModAut_correo')<error>{{ $message }}</error>@enderror
                             </div>
 
-                            <!-- checkboxes de web y de publicar -->
-                                {{-- <div class="col-6 col-md-4 form-group">
-                                    <div class="form-check">
-                                        <input wire:model="ModAut_web" class="form-check-input" type="checkbox" value="1" id="ModAut_web">
-                                        <label class="form-check-label" for="ModAut_web">Generar página web</label>
-                                    </div>
-                                </div> --}}
-                                <div class="col-12 col-md-4 form-group">
-                                    <div class="form-check">
-                                        <br>
-                                        <input wire:model.live="ModAut_mailpublic" class="form-check-input" type="checkbox" value="1" id="ModAut_mailpublic">
-                                        <label class="form-check-label" for="ModAut_mailpublic">@if($ModAut_mailpublic=='1')El autor aceptó que su correo sea publicado en internet @else Publicar correo en web @endif</label>
-                                    </div>
+                            <!-- checkbox publicar correo -->
+                            <div class="col-12 col-md-4 form-group">
+                                <div class="form-check">
+                                    <br>
+                                    <input wire:model.live="ModAut_mailpublic" class="form-check-input" type="checkbox" value="1" id="ModAut_mailpublic">
+                                    <label class="form-check-label" for="ModAut_mailpublic">@if($ModAut_mailpublic=='1')El autor aceptó que su correo sea publicado en internet @else Publicar correo en web @endif</label>
                                 </div>
-
-                            <!-- Teléfono -->
-                            {{-- <div class="col-12 col-md-4  form-group">
-                                <label for="ModAut_tel" class="form-label">Teléfono</label>
-                                <input wire:model="ModAut_tel" id="ModAut_tel" class="@error('ModAut_tel') is-invalid @enderror form-control" type="text">
-                                <div class="form-text">Correo electrónico de contacto</div>
-                                @error('ModAut_tel')<error>{{ $message }}</error>@enderror
-                            </div> --}}
+                            </div>
                         </div>
 
                     </div>
@@ -112,6 +89,18 @@
                                     <input wire:model="ModAut_institu" id="ModAut_institu" class="@error('ModAut_institu') is-invalid @enderror form-control" type="text">
                                     <div class="form-text">En su caso, institución a la que pertenece</div>
                                     @error('ModAut_institu')<error>{{ $message }}</error>@enderror
+                                </div>
+
+                                <!-- lengua -->
+                                <div class="col-12 col-md-4 form-group">
+                                    <label for="ModAut_lengua" class="form-label">Lengua Materna<red></red></label>
+                                    <select wire:model="ModAut_lengua" id="ModAut_lengua" class="@error('ModAut_lengua') is-invalid @enderror form-select">
+                                        @foreach($lenguas as $len)
+                                            <option value="{{ $len->len_code }}">{{ $len->len_autonimias }} ({{ $len->len_lengua }}) {{ $len->len_code }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-text"></div>
+                                    @error('ModAut_lengua')<error>{{ $message }}</error>@enderror
                                 </div>
 
                                 <!--  Orcid -->
@@ -136,6 +125,22 @@
                                     <input wire:model="ModAut_isni" id="ModAut_isni" class="@error('ModAut_isni') is-invalid @enderror form-control" type="text">
                                     <div class="form-text">En su caso, número de autor ISNI (sacar en <a href="https://https://isni.org/" target="new">isni.org/</a>)</div>
                                     @error('ModAut_isni')<error>{{ $message }}</error>@enderror
+                                </div>
+
+                                <!--  Google Acad -->
+                                <div class="col-12 col-md-4  form-group">
+                                    <label for="ModAut_google" class="form-label">Google academico</label>
+                                    <input wire:model="ModAut_google" id="ModAut_google" class="@error('ModAut_google') is-invalid @enderror form-control" type="text">
+                                    <div class="form-text">En su caso, URl </div>
+                                    @error('ModAut_google')<error>{{ $message }}</error>@enderror
+                                </div>
+
+                                <!--  Research Gate -->
+                                <div class="col-12 col-md-4  form-group">
+                                    <label for="ModAut_rgate" class="form-label">Research Gate</label>
+                                    <input wire:model="ModAut_rgate" id="ModAut_rgate" class="@error('ModAut_rgate') is-invalid @enderror form-control" type="text">
+                                    <div class="form-text">En su caso, URL de Research Gate </div>
+                                    @error('ModAut_rgate')<error>{{ $message }}</error>@enderror
                                 </div>
 
 

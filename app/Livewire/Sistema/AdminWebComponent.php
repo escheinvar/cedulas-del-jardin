@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Sistema;
 
+use App\Models\autor_txt;
 use App\Models\cat_autores;
 use App\Models\CatJardinesModel;
 use App\Models\autor_url;
@@ -129,10 +130,11 @@ class AdminWebComponent extends Component
         ##### Obtiene valores del autor seleccionado
         $autor=cat_autores::where('caut_id',$this->NvoAutor)->first();
 
-        ##### Crea variables
+        ##### Crea variables y si es trad. copia textos
         if($this->NvoAutorTipo=='traduccion'){
             $url=$autor->caut_url.'_'.$this->NvaLengua;
             $tradid='1';
+
         }else{
             $url=$autor->caut_url;
             $tradid='0';
@@ -151,6 +153,27 @@ class AdminWebComponent extends Component
             'aurl_tituloorig'=>$autor->caut_nombre.' '.$autor->caut_apellido1.' '.$autor->caut_apellido2,
         ];
         $nva=autor_url::create($data);
+
+        ##### si es traducción, Copia contenidos
+        $UrlOrig=autor_url::where('aurl_cjarsiglas',$this->jardinSel)
+            ->where('aurl_cautid',$this->NvoAutor)
+            ->where('aurl_tradid','0')
+            ->where('aurl_del','0')
+            ->value('aurl_id');
+        if($this->NvoAutorTipo=='traduccion'){
+            $textos=autor_txt::where('autxt_cjarsiglas',$this->jardinSel)
+                ->where('autxt_aurlid',$UrlOrig)
+                ->where('autxt_del','0')
+                ->where('autxt_act','1')
+                ->get();
+            foreach($textos as $or){
+                $copia= $or->replicate();
+                $copia->autxt_aurlid = $nva->aurl_id;
+                $copia->autxt_aurlurl = $url;
+                $copia->save();
+            }
+        }
+
         ##### Crea log
         paLog('Se genera pagina web de autor','autor_url',$nva->aurl_id);
         redirect('/admin_web');
