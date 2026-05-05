@@ -74,10 +74,18 @@
         </div>
 
         <!-- mostrar solo originales -->
-        <div class="col-12 col-md-3 form-check">
+        <div class="col-12 col-md-2 form-check">
             <input wire:model.live="BuscaOriginal" @if($BuscaOriginal==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             <label class="form-check-label" for="flexCheckDefault">
-                Solo originales
+                Ocultar traducciones
+            </label>
+        </div>
+
+        <!-- Ocultar publicadas -->
+        <div class="col-12 col-md-2 form-check">
+            <input wire:model.live="OcultaPublicadas" @if($OcultaPublicadas==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="OcultaPublicadas">
+            <label class="form-check-label" for="OcultaPublicadas">
+                Ocultar publicadas
             </label>
         </div>
     </div>

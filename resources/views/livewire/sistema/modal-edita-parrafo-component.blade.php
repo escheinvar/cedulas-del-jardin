@@ -86,9 +86,9 @@
                                 <button onclick="insertarTexto('<h4>','</h4>')" class="lenguas" title="Título">  H4  </button>
                                 {{-- &nbsp; | &nbsp; --}}
                                 <br><!-- caracteres especiales -->
-                                <button onclick="insertarTexto('&amp;','')" class="lenguas" title="Título"> &amp;  </button>
-                                <button onclick="insertarTexto('&gt;','')" class="lenguas" title="Título"> &gt;  </button>
-                                <button onclick="insertarTexto('&lt;','')" class="lenguas" title="Título"> &lt;  </button>
+                                <button onclick="insertarTexto('&amp;amp;','')" class="lenguas" title="Título"> &amp;  </button>
+                                <button onclick="insertarTexto('&amp;gt;','')" class="lenguas" title="Título"> &gt;  </button>
+                                <button onclick="insertarTexto('&amp;lt;','')" class="lenguas" title="Título"> &lt;  </button>
                                 <button onclick="insertarTexto('&Aring;','')" class="lenguas" title="Título"> &Aring;  </button>
                                 <button onclick="insertarTexto('&aring;','')" class="lenguas" title="Título"> &aring;  </button>
                                 <button onclick="insertarTexto('&Atilde;','')" class="lenguas" title="Título">  &Atilde; </button>

@@ -27,8 +27,8 @@ return new class extends Migration
             $table->string('ubi_paraje')->nullable();   ##### Nombre del paraje
             $table->decimal('ubi_x',12,8)->nullable(); ##### coords. x
             $table->decimal('ubi_y',12,8)->nullable(); ##### coords. y
-            $table->string('ubi_ubicacion')->nullable(); ##### Texto final de ubiación (donde se hace la búsqueda concatenando todo)
-            $table->string('ubi_ubicacion_tr')->nullable(); ##### Texto final de ubiación (donde se hace la búsqueda concatenando todo)
+            $table->longText('ubi_ubicacion')->nullable(); ##### Texto final de ubiación (donde se hace la búsqueda concatenando todo)
+            $table->longText('ubi_ubicacion_tr')->nullable(); ##### Texto final de ubiación (donde se hace la búsqueda concatenando todo)
             $table->timestamps();
 
         });

@@ -17,6 +17,7 @@ class AdminCedulasComponent extends Component
 {
     public $edit, $editMaster, $editjar; ##### Variables de permisos del usuario
     public $jardinSel, $BuscaLengua, $BuscaEstado, $BuscaTexto, $BuscaOriginal, $sentido, $orden, $edoEdit, $abiertos; ##### Vars de formulario de búsqueda y de tabla
+    public $OcultaPublicadas;
 
     #################################################################################
     /*##### Tabla de cambios de estado:
@@ -32,9 +33,10 @@ class AdminCedulasComponent extends Component
 
     public function mount(){
         $this->jardinSel=session('jardin');
-        #$this->BuscaOriginal=TRUE;
+        $this->BuscaOriginal=FALSE;
         $this->orden='url_tituloorig';
         $this->sentido='asc';
+        $this->OcultaPublicadas=FALSE;
     }
 
     public function DefineJardin(){
@@ -130,10 +132,11 @@ class AdminCedulasComponent extends Component
             if($this->jardinSel != ''){
                 $urls=$urls->where('url_cjarsiglas','ilike',$this->jardinSel);
 
-                ##### Obtiene cédulas originales
-                if($this->BuscaOriginal==TRUE){
-                    $urls=$urls->where('url_tradid','0');
-                }
+
+            }
+            ##### Obtiene cédulas originales
+            if($this->BuscaOriginal==TRUE){
+                $urls=$urls->where('url_tradid','0');
             }
 
             ##### Obtiene lista de Cédulas por lengua (en caso de búsqueda por lengua)
@@ -154,6 +157,11 @@ class AdminCedulasComponent extends Component
                     ->orWhere('url_titulo','ilike', '%'.$this->BuscaTexto.'%')
                     ->orWhere('url_resumen','ilike', '%'.$this->BuscaTexto.'%');
                 });
+            }
+
+            ##### Revisa opción de (solo publicadas)
+            if($this->OcultaPublicadas==TRUE){
+                $urls=$urls->where('url_edo','<=','4');
             }
 
             ### Finaliza búsqueda de url
