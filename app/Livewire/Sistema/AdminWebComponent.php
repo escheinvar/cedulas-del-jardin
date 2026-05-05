@@ -120,6 +120,7 @@ class AdminWebComponent extends Component
             $ganon=autor_url::where('aurl_cjarsiglas',$this->jardinSel)
                 ->where('aurl_cautid',$this->NvoAutor)
                 ->where('aurl_lencode',$this->NvaLengua)
+                ->where('aurl_del','0')
                 ->count();
             if($ganon > '0'){
                 $this->addError('NvaLengua', 'Ya existe una página del autor en esta lengua');
@@ -326,7 +327,6 @@ class AdminWebComponent extends Component
     }
 
     public function GuardaModal(){
-
         #### Valida cuestionario
         $this->validate([
             'origtrad'=>'required',
@@ -343,6 +343,7 @@ class AdminWebComponent extends Component
             $ja=jardin_url::where('urlj_cjarsiglas',$this->jardinSel)
                 ->where('urlj_urltxt',$urltxt)
                 ->where('urlj_lencode',$this->lengua)
+                ->where('urlj_del','0')
                 ->count();
             if($ja > '0'){$this->addError('lengua','Ya existe una copia en esta lengua');return;}
         }
@@ -365,6 +366,7 @@ class AdminWebComponent extends Component
         $ja=jardin_url::where('urlj_cjarsiglas',$this->jardinSel)
             ->where('urlj_url',$this->url)
             ->where('urlj_id','!=',$this->jardinId)
+            ->where('urlj_del','0')
             ->count();
         if($ja > '0'){$this->addError('url','Esta url ya existe en tu jardín');return;}
 

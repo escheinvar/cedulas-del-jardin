@@ -37,7 +37,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->unique(['urlj_cjarsiglas','urlj_url']);
+            #$table->unique(['urlj_cjarsiglas','urlj_url']);
         });
     }
 

@@ -143,7 +143,8 @@
                     <th wire:click="ordenaTabla('url_id')" class="PaClick">Id</th>
                     <th></th>
                     <th wire:click="ordenaTabla('url_cjarsiglas')" class="PaClick">Jardin</th>
-                    <th wire:click="ordenaTabla('url_titulo')" class="PaClick">Titulo</th>
+                    <th><span wire:click="ordenaTabla('url_titulo')" class="PaClick">Titulo</span>
+                        /<span wire:click="ordenaTabla('url_tituloorig')" class="PaClick">Original</span></th>
                     <th wire:click="ordenaTabla('url_lencode')" class="PaClick">Lengua</th>
                     {{-- <th wire:click="ordenaTabla('url_tipo')" class="PaClick">Tipo</th> --}}
                     <th wire:click="" class="">Autores/Edit</th>
