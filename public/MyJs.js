@@ -53,6 +53,19 @@ function VerNoVerIcon(Idprod,Idtipo,icono1,icono2,block) {
     }
 }
 
+function VerNoVerUnaLinea(Campo1,Campo2){
+    //Muestra y oculta una linea y muestra el ícono
+    const elemento = document.getElementById('sale_'+Campo1+Campo2);
+    const icono = document.getElementById('icono_'+Campo1+Campo2);
+    elemento.classList.toggle("cortaUnaLinea");
+
+    if(icono.style=='none'){
+        icono.style="block-inlne"
+    }else{
+        icono.style="none"
+    }
+}
+
 function VerNoVerPass(CampoPass,CampoIcono, iconoText, iconoPass){
     // Muestra el contenido de password y modifica icono
     if(iconoText==''){icono1='bi bi-eye';}

@@ -354,6 +354,13 @@ nota{
     text-overflow: ellipsis;
     /* max-width: 100%; */
 }
+
+.cortaUnaLinea {
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Limit the text to 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 /* ------------  Corta texto a las 3 líneas ------------- */
 /* .cortaLineas { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;} */
 

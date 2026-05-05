@@ -59,13 +59,11 @@
 
                         <th>Nombre</th>
                         <th>Nombre de autor</th>
-                        <th>Institucion</th>
-                        <th>Comunidad</th>
+                        <th>Institucion / Comunidad </th>
                         <th>Correo</th>
                         <th>Autoria(s)</th>
                         <th>Editor</th>
                         <th>Semblanza(s)</th>
-                        <th>Identificador(es)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,13 +87,10 @@
                                 {{ $a->caut_nombreautor }}
                             </td>
 
-                            <!-- Institución-->
+                            <!-- Institución / Comunidad-->
                             <td>
                                 {{ $a->caut_institu }}
-                            </td>
 
-                            <!-- Comunidad -->
-                            <td>
                                 {{ $a->caut_comunidad }}
                             </td>
 
@@ -107,40 +102,56 @@
 
                             <!-- Cédulas de las que es autor -->
                             <td>
-                                @foreach ($a->cedulas as $c)
-                                    @if($c->aut_tipo != 'Editor')
-                                        <div class="elemento" style="font-size: 70%;">
-                                            @if($c->aut_tipo=='Traductor')<b><sup>T</sup></b>@endif
-                                            {{ $c->aut_key }}
-                                        </div>
-                                    @endif
-                                @endforeach
+                                <div class="cortaUnaLinea PaClick" id="sale_Aut{{ $a->caut_id }}" onClick="VerNoVerUnaLinea('Aut','{{ $a->caut_id }}')">
+
+                                    @foreach ($a->cedulas as $c)
+                                        @if($c->aut_tipo != 'Editor')
+                                            <div class="elemento" style="font-size: 70%;">
+                                                <a href="{{ url('/cedula') }}/{{ $c->aut_cjarsiglas }}/{{ $c->aut_urltxt }}" class="nolink" target="new_">
+                                                    @if($c->aut_tipo=='Traductor')<b><sup>T</sup></b>@endif
+                                                    {{ $c->aut_key }}
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                    <i id="icono_Aut{{ $a->caut_id }}" style="display:none;" class="bi bi-box-arrow-up-right agregar">
+                                </div>
                             </td>
 
                             <!-- Cédulas de las que es editor -->
                             <td>
-                                @foreach ($a->cedulas as $c)
-                                    @if($c->aut_tipo == 'Editor')
-                                        <div class="elemento" style="font-size: 70%;">
-                                            @if($c->aut_tipo=='Traductor')<b><sup>T</sup></b>@endif
-                                            {{ $c->aut_key }}
-                                        </div>
-                                    @endif
-                                @endforeach
+                                <div class="cortaUnaLinea PaClick" id="sale_Edit{{ $a->caut_id }}" onClick="VerNoVerUnaLinea('Edit','{{ $a->caut_id }}')">
+                                    @foreach ($a->cedulas as $c)
+                                        @if($c->aut_tipo == 'Editor')
+                                            <div class="elemento" style="font-size: 70%;">
+                                                <a href="{{ url('/cedula') }}/{{ $c->aut_cjarsiglas }}/{{ $c->aut_urltxt }}" class="nolink" target="new_">
+                                                    @if($c->aut_tipo=='Traductor')<b><sup>T</sup></b>@endif
+                                                    {{ $c->aut_key }}
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                    <i id="icono_Edit{{ $a->caut_id }}" style="display:none;" class="bi bi-box-arrow-up-right agregar">
+                                </div>
                             </td>
 
 
 
                             <!-- Semblanzas -->
                             <td>
-                                @foreach ($a->urlautor as $u)
-                                    <div class="elemento" style="font-size: 70%;">
-                                        {{ $u->aurl_cjarsiglas }}
-                                    </div>
-                                @endforeach
+                                <div class="cortaUnaLinea PaClick" id="sale_Semb{{ $a->caut_id }}" onClick="VerNoVerUnaLinea('Semb','{{ $a->caut_id }}')">
+                                    @foreach ($a->urlautor as $u)
+                                        <div class="elemento" style="font-size: 70%;">
+                                            <a href="{{ url('/autor') }}/{{ $u->aurl_cjarsiglas }}/{{ $u->aurl_url }}" class="nolink" target="new_">
+                                                {{ $u->aurl_cjarsiglas }}
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                    <i id="icono_Semb{{ $a->caut_id }}" style="display:none;" class="bi bi-box-arrow-up-right agregar">
+                                </div>
                             </td>
 
-                            <!--  Identificadores -->
+                            {{-- <!--  Identificadores -->
                             <td>
                                 @if($a->caut_orcid != '')
                                     <div class="elemento" style="font-size:70%;">
@@ -148,7 +159,7 @@
                                     </div>
                                 @endif
 
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
                 </tbody>
