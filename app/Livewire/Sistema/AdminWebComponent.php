@@ -133,7 +133,13 @@ class AdminWebComponent extends Component
         ##### Crea variables y si es trad. copia textos
         if($this->NvoAutorTipo=='traduccion'){
             $url=$autor->caut_url.'_'.$this->NvaLengua;
-            $tradid='1';
+            ##### si es traducción, Copia contenidos
+            $UrlOrig=autor_url::where('aurl_cjarsiglas',$this->jardinSel)
+                ->where('aurl_cautid',$this->NvoAutor)
+                ->where('aurl_tradid','0')
+                ->where('aurl_del','0')
+                ->value('aurl_id');
+            $tradid=$UrlOrig;
 
         }else{
             $url=$autor->caut_url;
@@ -154,12 +160,12 @@ class AdminWebComponent extends Component
         ];
         $nva=autor_url::create($data);
 
-        ##### si es traducción, Copia contenidos
-        $UrlOrig=autor_url::where('aurl_cjarsiglas',$this->jardinSel)
-            ->where('aurl_cautid',$this->NvoAutor)
-            ->where('aurl_tradid','0')
-            ->where('aurl_del','0')
-            ->value('aurl_id');
+        // ##### si es traducción, Copia contenidos
+        // $UrlOrig=autor_url::where('aurl_cjarsiglas',$this->jardinSel)
+        //     ->where('aurl_cautid',$this->NvoAutor)
+        //     ->where('aurl_tradid','0')
+        //     ->where('aurl_del','0')
+        //     ->value('aurl_id');
         if($this->NvoAutorTipo=='traduccion'){
             $textos=autor_txt::where('autxt_cjarsiglas',$this->jardinSel)
                 ->where('autxt_aurlid',$UrlOrig)
@@ -264,7 +270,7 @@ class AdminWebComponent extends Component
     }
 
     ###################################################
-    #####################  Iniciamos funciones de modal
+    ##############  Iniciamos funciones de modal de nva pag. web
     public function AbreModalWeb($tipo,$var){
         $this->LimpiaModal();
         if($this->edit=='1'){
@@ -284,8 +290,10 @@ class AdminWebComponent extends Component
                 $this->descrip=$dato->urlj_descrip;
                 $this->bannerimg=$dato->urlj_bannerimg;
                 $this->bannertitle=$dato->urlj_bannertitle;
+
             }else{
                 $this->LimpiaModal();
+                $this->act=TRUE;
             }
 
             #### Abre modal
@@ -318,6 +326,7 @@ class AdminWebComponent extends Component
     }
 
     public function GuardaModal(){
+
         #### Valida cuestionario
         $this->validate([
             'origtrad'=>'required',
@@ -385,6 +394,7 @@ class AdminWebComponent extends Component
         if($this->jardinId=='0'){
             $ja=jardin_url::create($datos);
             $id=$ja->urlj_id;
+
             #### Crea log
             paLog('Genera nueva página web ('.$this->url.') de '.$this->jardinSel,'jardin_url',$id);
         }else{
@@ -414,10 +424,11 @@ class AdminWebComponent extends Component
             $original=jardin_txt::where('jar_urljid',$this->copiade)
                 ->where('jar_act','1')->where('jar_del','0')
                 ->get();
+
             foreach($original as $or){
                 $copia= $or->replicate();
-                $copia->jar_urljid = $id;
-                $copia->jar_txtoriginal = $or->jar_txt;
+                $copia->jar_urljid = $this->copiade;       #### Falta el original
+                $copia->jar_urljurl=$this->url; #### url con lengua
                 $copia->save();
             }
         }

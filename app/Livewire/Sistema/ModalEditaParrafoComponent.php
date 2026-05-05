@@ -226,7 +226,7 @@ class ModalEditaParrafoComponent extends Component
                 ->where('aurl_url',$this->modJar_url)
                 ->where('aurl_act','1')->where('aurl_del','0')
                 ->first();
-// dd($autURl);
+
             $dato=[
                 // 'url_id'=>$this->modJar_id,
                 'autxt_cjarsiglas'=>$this->modJar_cjarsiglas,
@@ -270,9 +270,9 @@ class ModalEditaParrafoComponent extends Component
         }else{
             $urljId=jardin_url::where('urlj_cjarsiglas',$this->modJar_cjarsiglas)
                 ->where('urlj_url',$this->modJar_url)
-                ->first()
                 ->value('urlj_id');
             ##### Genera arreglo de datos
+
             $dato=[
                 'jar_urljid'=> $urljId,
                 'jar_urljurl'=>$this->modJar_url,
@@ -304,10 +304,7 @@ class ModalEditaParrafoComponent extends Component
                 ]);
                 ##### hace log
                 paLog('Se agrega nuevo audio','jardin_txt',$id);
-
             }
-
-            //a
         }
 
         #### Finaliza y cierra
