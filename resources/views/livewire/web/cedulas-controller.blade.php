@@ -26,7 +26,7 @@
                 <i class="bi bi-arrow-left-short"></i>Regresar
             </a> &nbsp; | &nbsp;
             <div class="d-none d-sm-none d-md-inline-block">
-                Cédula {{ $url->url_url }} &nbsp; | &nbsp;
+                {{ $url->url_titulo }} &nbsp; | &nbsp;
                 Lengua {{ $url->lenguas->len_lengua }}
             </div>
             <!-- -------------------- Indicador de edición ------------------------------ -->
@@ -212,7 +212,7 @@
                 @if($hermanas->count() > 0) <!-- OJO:puse traducciones, pero hay que poner el match de temas -->
                     <div class="py-5" style="width:100%;text-align:center;">
                         <div style="font-size: 120%;" >
-                            En otros jardines
+                            Cédulas similares
                         </div>
                         <div class="row" style="">
                             <div class="col-12" style="text-align: center; color:#64383E;font-size:90%;">
@@ -711,26 +711,55 @@
             @endif
 
             <!-- muestra FUENTES EXTERNAS-->
-            @if($ligas->count() > '0')
-                @foreach($ligas as $l)
-                    <div class="col-12 col-md-4 my-2">
-                        <div style="width:100%; font-size:80%; display:inline-block;">
-                            <a href="{{ $l->ext_url }}" target="new_" class="nolink">
-                                <img class="m-1" src="{{ $l->ext_caratula}}" style="max-width:200px; max-height:100px; border-radius:7px; float:left;">
+            @if($ligas->count() > '0' or $hermanas->count() > '0')
+                <!-- primero del jardín -->
+                @foreach($hermanas as $h)
+                    <div class="col-12 col-md-3 my-2">
+                        <div style="display:inline-block; vertical-align:top;">
+                            <a href="{{ url('/cedula') }}/{{ $h->url_cjarsiglas }}/{{ $h->url_url }}" target="new_" class="nolink">
+                                @if( $h->objetos->count() > '0')
+                                    <img class="m-1" src="{{ $h->objetos->where('img_cimgtipo','portada')->value('img_file')}}" style="width:100px; border-radius:7px;">
+                                @else
+                                    <img class="m-1" src="/imagenes/redes/CedulasDelJardin.png" style="width:100px;  border-radius:7px;">
+                                @endif
                             </a>
+                        </div>
+                        <div style="font-size:80%; display:inline-block;">
                             <div class="m-1">
                                 <!-- fuente -->
-                                Fuente
-                                    @if($l->red->red_url != '')<a href="{{ $l->red->red_url }}" class="nolink"> @endif
-                                        {!! $l->red->red_icon !!} {{ $l->red->red_name }}<br>
-                                    @if($l->red->red_url != '')</a> @endif
-                                <!-- explicación -->
-                                <div class="truncarTexto PaClick" onclick="Destruncar('externo','{{ $l->ext_id }}')" id="sale_externo{{ $l->ext_id }}" style="width:190px;">{{ $l->ext_explica }}</div>
-                                <!-- icono ir -->
-                                <a href="{{ $l->ext_url }}" target="new_" class="nolink"><i class="bi bi-arrow-up-right-square"></i> Ir a referencia</a><br>
-                                <!-- fecha -->
-                                @if($l->ext_fecha != '') Fecha: {{ $l->ext_fecha }}@endif
+                                <a href="{{ url('/cedula') }}/{{ $h->url_cjarsiglas }}/{{ $h->url_url }}" target="new_" class="nolink">
+                                    Fuente: <b>Cédulas del jardín</b><br>
+
+                                    <!-- titulo -->
+                                    {{ $h->url_titulo }}
+
+                                    <!-- explicación -->
+                                    <div class="truncarTexto PaClick" onclick="Destruncar('externo','{{ $h->url_id }}')" id="sale_externo{{ $h->url_id }}" style="width:190px;">
+                                        {{ $h->url_resumen }}
+                                    </div>
+                                </a>
                             </div>
+                        </div>
+                    </div>
+                @endforeach
+
+                <!-- fuentes externas -->
+                @foreach($ligas as $l)
+                    <div class="col-12 col-md-3 my-2">
+                        <div style="display:inline-block; vertical-align:top;">
+                            <a href="{{ $l->ext_url }}" target="new_" class="nolink">
+                                @if( $l->ext_caratula != '')
+                                    <img class="m-1" src="{{ $l->ext_caratula}}" style="width:100px; border-radius:7px;">
+                                @else
+                                    <img class="m-1" src="{{ $l->red->red_icon}}" style="width:100px;  border-radius:7px;">
+                                @endif
+                            </a>
+                        </div>
+                        <div style="font-size:80%; display:inline-block;" class="m-1">
+                            <!-- fuente -->
+                            <a href="{{ $l->ext_url }}" target="new_" class="nolink">
+                                Fuente: <b>{{ $l->red->red_name }}</b><br>
+                            </a>
                             <!-- nombre de autor -->
                             @if($l->ext_autorname != '')
                                 Autor(a)
@@ -739,19 +768,30 @@
                                 @if($l->ext_autorurl != '')</a>@endif
                                 <br>
                             @endif
-                            @if($edit=='1')
-                                <i wire:click="AbrirModalDeFuenteExterna('{{ $l->ext_id }}','{{ $url->url_cjarsiglas }}','{{ $url->url_urltxt }}')" class="bi bi-pencil-square cedEdo{{ $url->url_edo }} PaClick"> editar</i>
+                            <!-- fecha -->
+                            @if($l->ext_fecha != '') Fecha: {{ $l->ext_fecha }}@endif
+                            <!-- explicación -->
+                            <div class="truncarTexto PaClick" onclick="Destruncar('externo','{{ $l->ext_id }}')" id="sale_externo{{ $l->ext_id }}" style="width:190px;">{{ $l->ext_explica }}</div>
+
+                            @if($edit=='1' or (session('rol') AND array_intersect(['admin','editor'],session('rol')))  )
+                                <!-- borrar -->
+                                <i wire:click="EliminarExterno('{{ $l->ext_id }}')" wire:confirm="Vas a borrar definitivamente esta fuente de {{ $l->red->red_name }} y no se podrá recuperar. ¿Deseas continuar?"  class="bi bi-trash agregar"> Eliminar</i>
                             @endif
                         </div>
                     </div>
                 @endforeach
             @endif
-            @if($edit=='1')
-                <i wire:click="AbrirModalDeFuenteExterna('0','{{ $url->url_cjarsiglas }}','{{ $url->url_urltxt }}')" class="bi bi-plus-circle cedEdo{{ $url->url_edo }} PaClick"> Agregar fuente externa</i>
+            @if($edit=='1' or (session('rol') AND array_intersect(['admin','editor'],session('rol')))  )
+                <span wire:click="AbrirModalDeFuenteExterna('0','{{ $url->url_cjarsiglas }}','{{ $url->url_urltxt }}')">
+                    <i class="bi bi-plus-circle cedEdo{{ $url->url_edo }} PaClick">
+                        Agregar fuente externa
+                    </i>
+                </span>
             @endif
+
             <!-- Yo tengo algo que aportar -->
-            <div class="col-12 " wire:click="AbrirModalYoTengoAlgoQueAportar()" style="margin-left:20px; display:inline-block;" >
-                <img src="/imagenes/BotonAportar.png" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px; float: right;">
+            <div class="col-12 "  style="margin-left:20px; display:inline-block;" >
+                <img src="/imagenes/BotonAportar.png" wire:click="AbrirModalYoTengoAlgoQueAportar()" class="PaClick" style="height:90px;border:2px solid rgb(61, 41, 33);border-radius:15px; float: right;">
             </div>
         </div>
     @endif
@@ -813,8 +853,9 @@
         <livewire:sistema.modal-cedula-cambia-estado-component />
         <livewire:sistema.modal-inserta-objeto-component />
         <livewire:sistema.modal-admin-aportes-publico-component />
-        <livewire:sistema.modal-cedula-fuente-externa-componennt />
+
     @endif
+    <livewire:sistema.modal-cedula-fuente-externa-componennt />
     <livewire:web.modal-cedula-yo-tengo-que-aportar />
 
 

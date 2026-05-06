@@ -144,8 +144,8 @@
         })
 
         /* ### Script para mostrar botón personalizado de input=file */
-        document.getElementById('MiBotonPersonalizado').addEventListener('click', function() {
-            document.getElementById('MiInputFile').click();
-        });
+        // document.getElementById('MiBotonPersonalizado').addEventListener('click', function() {
+        //     document.getElementById('MiInputFile').click();
+        // });
     </script>
 </div>

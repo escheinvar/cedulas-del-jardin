@@ -41,6 +41,7 @@ class CedulasController extends Component
 
     #[Layout('plantillas.baseJardin')]
     public function mount($jardin,$url){
+        $this->reset();
         ##### Carga variables recibidas por URL: carga jardín
         $this->jardin=$jardin;
 
@@ -201,13 +202,13 @@ class CedulasController extends Component
             $this->hermanas=cedulas_url::whereIn('url_key',$ganones)
                 ->where('url_tradid','0')
                 ->with('jardin')
+                ->with('objetos')
                 ->get();
         }else{
             $this->hermanas=collect();
         }
-        #dd('ali',$Mialias, $ganones);
-    }
 
+    }
     public function EliminaImagen($id){
         Imagenes::where('img_id',$id)->update([
             'img_del'=>'1',
@@ -253,6 +254,12 @@ class CedulasController extends Component
                 'Content-Type'=>'image/png'
             ]
             );
+    }
+
+    public function EliminarExterno($idExt){
+        ced_externos::where('ext_id',$idExt)->update([
+            'ext_del'=>'1',
+        ]);
     }
 
     public function render(){
@@ -343,6 +350,7 @@ class CedulasController extends Component
             ->orderBy('ext_id')
             ->with('red')
             ->get();
+            // dd($this->ligas);
         ##### Conteo de visitantes
         $NumVists=sist_visitas::where('vis_url',url()->current())->count();
 

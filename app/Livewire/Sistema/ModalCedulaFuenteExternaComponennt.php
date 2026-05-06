@@ -61,6 +61,7 @@ class ModalCedulaFuenteExternaComponennt extends Component
             'modext_url'=>'required',
         ]);
 
+
         ##### Genera arreglo de datos
         $datos=[
             'ext_jardin'=>$this->modext_jardin,

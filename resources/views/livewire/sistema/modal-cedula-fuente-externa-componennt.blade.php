@@ -49,7 +49,7 @@
 
                 <!-- Url del autor -->
                 <div class="col-12 col-md-4 my-1 form-group">
-                    <label for="modext_urlautor" class="form-label">Página del autor<red>*</red></label>
+                    <label for="modext_urlautor" class="form-label">Página del autor<red></red></label>
                     <input wire:model="modext_urlautor" id="modext_urlautor" class="@error('modext_urlautor') is-invalid @enderror form-control" type="text">
                     <div class="form-text">Dirección del canal del autor</div>
                     @error('modext_urlautor')<error>{{ $message }}</error>@enderror

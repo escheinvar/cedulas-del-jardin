@@ -19,7 +19,7 @@
 
     <div class="row my-3">
         <!-- buscar por jardín -->
-        <div class="col-12 col-md-3 form-group">
+        <div class="col-12 col-md-3 form-group" wire:ignore>
             <label for="jardinSel" class="form-label">Jardin<red>*</red></label>
             <select wire:model="jardinSel"  wire:change="DefineJardin()" id="jardinSel" class="form-select">
                 <option value="">Indica un jardín</option>
