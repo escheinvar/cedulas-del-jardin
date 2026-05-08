@@ -152,7 +152,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            {{-- <div class="row">
                 @foreach ($cedulas as $c)
                     <?php $ElUrl= url('/cedula').'/'. $c->url_cjarsiglas .'/'. $c->url_url; ?>
                     <!-- Título, lengua y logo -->
@@ -205,9 +205,6 @@
                                 @if($c->usos->count() >'0')
                                     uso:{{ implode(',  ',$c->usos->pluck('uso_uso')->toArray()) }},
                                 @endif
-                                @if($c->ubicaciones->count() >'0')
-                                    {{ implode(',  ',$c->ubicaciones->pluck('ubi_ubicacion')->toArray()) }},
-                                @endif
                             </div>
                             <div style="font-size: 80%;">
                                 <a href="{{ $ElUrl }}" class="nolink">
@@ -220,7 +217,9 @@
 
                     </div>
                 @endforeach
-            </div>
+            </div> --}}
+
+            @include('plantillas.cedula')
         @endif
 
 

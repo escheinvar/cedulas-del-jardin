@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div class="row my-5">
+    {{-- <div class="row my-5">
         @foreach ($cedulas as $c)
             <?php $ElUrl= url('/cedula').'/'. $c->url_cjarsiglas .'/'. $c->url_url; ?>
             <div class="col-12 col-md-3 p-1 m-1" style="background-color:#CDC6B9; border:1px solid #202d2d;border-radius:15px;">
@@ -51,7 +51,6 @@
                         <b>{!!  $c->url_titulo !!}</b>
                     </div>
                     <div class="cortaTexto" style="color:#87796d;font-family:'Roboto Condensed'">
-                        {{-- {!! $c->url_tituloorig!!} --}}
                         {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})
                     </div>
                 </a>
@@ -105,21 +104,8 @@
 
             </div>
         @endforeach
-
-        {{-- @foreach ($cedulas as $c)
-            <ul>
-                <li>
-                    <a href="/cedula/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}" target="cedula" class="nolink">
-                        <b>{!! $c->url_titulo !!}: {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})</b>.
-                        <span id="sale_copiaurl">
-                            {{ url('/cedula') }}/{{ $c->url_cjarsiglas }}/{{ $c->url_url }}
-                        </span>
-                    </a>
-                    <i onclick="CopiarContenido('copia','url')" class="bi bi-clipboard PaClick"></i>
-                </li>
-            </ul>
-        @endforeach --}}
-    </div>
+    </div> --}}
+    @include('plantillas.cedula')
 
 
 
