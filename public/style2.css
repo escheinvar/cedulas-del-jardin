@@ -593,13 +593,15 @@ i.agregar2{
 /* ===== cedEdo#: colores de los
 indicadores de estado de
 las cédulas */
-.cedEdoIcon0, .cedEdo0{color:#9917aa;}
+/* .cedEdoIcon0, .cedEdo0{color:#9917aa;} */
+.cedEdoIcon0, .cedEdo0{color:#2a8078;}
 .cedEdoIcon1, .cedEdo1{color:#CD7B34;}
 .cedEdoIcon2, .cedEdo2{color:#9917aa;}
 .cedEdoIcon3, .cedEdo3{color:#CD7B34;}
 .cedEdoIcon4, .cedEdo4{color:#9c1919;}
 .cedEdoIcon5, .cedEdo5{color:#108516;}
-.cedEdoIcon6, .cedEdo6{color:#108516;}
+.cedEdoIcon6, .cedEdo6{color:#8c928c;}
+/* .cedEdoIcon6, .cedEdo6{color:#108516;} */
 
 button.cedEdoIcon0:disabled, .cedEdoIcon1:disabled, .cedEdoIcon2:disabled,.cedEdoIcon3:disabled, .cedEdoIcon4:disabled, .cedEdoIcon5:disabled, .cedEdoIcon6:disabled{
     color: #87796d;

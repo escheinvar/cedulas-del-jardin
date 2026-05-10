@@ -152,12 +152,19 @@
                                         <source src="{{ $modJar_Audio }}" type="audio/mpeg">
                                         Tu navegador no soporta archivos de audio
                                     </audio>
+                                    <div class="" style="font-size:80%; display:inline-block;">
+                                        {{ $modJar_NvoAudio->getClientOriginalName() }}
+                                    </div>
                                     <i wire:click="BorrarAudio()" class="bi bi-trash agregar"></i>
                                 @endif
                             </div>
-                            <div class="col-2 form-group">
+                            <div class="col-4 form-group">
                                 @if($modJar_NvoAudio != '')
                                     <br><button wire:click="SubirAudio()" class="btn btn-secondary">Validar</button>
+                                @else
+                                    <div class="form-text">
+                                        Selecciona el archivo, pica validar, escucha el audio y guarda.
+                                    </div>
                                 @endif
                             </div>
                             <div class="col-4 form-group">
