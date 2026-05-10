@@ -21,7 +21,7 @@
         <!-- buscar por jardín -->
         <div class="col-12 col-md-3 form-group" wire:ignore>
             <label for="jardinSel" class="form-label">Jardin<red>*</red></label>
-            <select wire:model="jardinSel"  wire:change="DefineJardin()" id="jardinSel" class="form-select">
+            <select wire:model="jardinSel"  wire:change="DefineSession('jardin')" id="jardinSel" class="form-select">
                 <option value="">Indica un jardín</option>
                 @foreach($JardsDelUsr as $jar)
                     <option value="{{ $jar->cjar_siglas }}">{{ $jar->cjar_siglas }} ({{ $jar->cjar_name }})</option>
@@ -35,7 +35,7 @@
         <!-- buscar por lengua -->
         <div class="col-12 col-md-3 form-group">
             <label for="" class="form-label">Lengua<red></red></label>
-            <select wire:model.live="BuscaLengua" id="BuscaLengua" class="form-select">
+            <select wire:model.live="BuscaLengua" wire:change="DefineSession('BuscaLengua')" id="BuscaLengua" class="form-select">
                 <option value="">En todas</option>
                 @foreach($lenguas as $len)
                     <option value="{{ $len->len_code }}">{{ $len->len_lengua }} ({{ $len->len_code }})</option>
@@ -46,7 +46,7 @@
         <!-- buscar por estado -->
         <div class="col-12 col-md-3 form-group">
             <label for="" class="form-label">Estado<red></red></label>
-            <select wire:model.live="BuscaEstado" id="" class="form-select">
+            <select wire:model.live="BuscaEstado" wire:change="DefineSession('BuscaEstado')" id="" class="form-select">
                 <option value="">En todos</option>
                 <option value="0">0 En creación (autor/traductor)</option>
                 <option value="1">1 En edición (editor)</option>
@@ -70,12 +70,12 @@
         <!-- buscar por texto -->
         <div class="col-12 col-md-3 form-group">
             <label for="" class="form-label">Buscar por texto<red></red></label>
-            <input wire:model.live="BuscaTexto" id="" class="form-control" type="text">
+            <input wire:model.live="BuscaTexto" wire:change="DefineSession('BuscaTexto')" id="" class="form-control" type="text">
         </div>
 
         <!-- mostrar solo originales -->
         <div class="col-12 col-md-2 form-check">
-            <input wire:model.live="BuscaOriginal" @if($BuscaOriginal==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <input wire:model="BuscaOriginal"  wire:change="DefineSession('BuscaOriginal')" @if($BuscaOriginal==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             <label class="form-check-label" for="flexCheckDefault">
                 Ocultar traducciones
             </label>
@@ -83,7 +83,7 @@
 
         <!-- Ocultar publicadas -->
         <div class="col-12 col-md-2 form-check">
-            <input wire:model.live="OcultaPublicadas" @if($OcultaPublicadas==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="OcultaPublicadas">
+            <input wire:model="OcultaPublicadas"  wire:change="DefineSession('OcultaPublicadas')" @if($OcultaPublicadas==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="OcultaPublicadas">
             <label class="form-check-label" for="OcultaPublicadas">
                 Ocultar publicadas
             </label>

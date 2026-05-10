@@ -32,16 +32,26 @@ class AdminCedulasComponent extends Component
     */
 
     public function mount(){
-        $this->reset();
-        $this->jardinSel=session('jardin');
-        $this->BuscaOriginal=FALSE;
         $this->orden='url_tituloorig';
         $this->sentido='asc';
-        $this->OcultaPublicadas=FALSE;
+
+        $this->jardinSel=session('jardin');
+        foreach(['BuscaLengua','BuscaEstado','BuscaTexto','BuscaOriginal','OcultaPublicadas'] as $mod){
+            if(isset(session('tempSession')[$mod])  AND  session('tempSession')[$mod] != '' ){
+                $this->$mod=session('tempSession')[$mod];
+
+            }else {
+                $this->$mod='';
+            }
+        }
     }
 
-    public function DefineJardin(){
-        session(['jardin'=>$this->jardinSel]);
+    public function DefineSession($Modelo){
+        if($Modelo=='jardin'){
+            session(['jardin'=>$this->jardinSel]);
+        }else{
+            session(['tempSession'=>[$Modelo=>$this->$Modelo]]);
+        }
     }
 
     public function ordenaTabla($orden){

@@ -83,7 +83,7 @@
                             @foreach($url->traductores as $a)<sup>T</sup>{{ $a->aut_name }},   @endforeach
                         </div>
                         <div>
-                            @foreach($url->editores as $a)<sup>E</sup>{{ $a->aut_name }},  @endforeach
+                            {{-- @foreach($url->editores as $a)<sup>E</sup>{{ $a->aut_name }},  @endforeach --}}
                         </div>
                     </span>
                     del jardín {{ $url->jardin->cjar_nombre }}<br><br>

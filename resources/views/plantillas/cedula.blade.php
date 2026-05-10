@@ -43,38 +43,40 @@
                                 style="max-width:90%; max-height:100px; margin:10px;">
                         @else
                             <img src="{{ $c->objetos->whereIn('img_cimgtipo',['portada','ppal1','ppal2','ppal3'])->value('img_file') }}"
-                                    style="max-width:90%; max-height:100px; margin:10px;">
+                                style="max-width:90%; max-height:100px; margin:10px;">
                         @endif
                     </a>
                 </div>
             @endif
 
-            <!-- especie -->
-            <div style="display:inline-block; margin:10px;">
-                @if($c->especies->count() >'0')
+            <div style="display: inline-block;">
+                <!-- especie -->
+                <div style="display:inline-block; margin:10px;">
+                    @if($c->especies->count() >'0')
+                        <a href="{{ $ElUrl }}" class="nolink">
+                            <b><i>{{ implode(',  ',$c->especies->pluck('sp_scname')->toArray()) }}</b></i>
+                        </a>
+                    @endif
+                </div>
+
+                <div style="font-size: 80%;" id="sale_ced{{ $c->url_id }}" onclick="VerNoVerUnaLinea('ced','{{ $c->url_id }}')" class="cortaUnaLinea PaClick">
+                    @if($c->alias->count() >'0')
+                        {{ implode(',  ',$c->alias->where('ali_calitipo','Nombre común')->pluck('ali_txt')->toArray()) }},
+                        {{ implode(',  ',$c->alias->where('ali_calitipo','!=','Nombre común')->pluck('ali_txt')->toArray()) }},
+                    @endif
+
+                    @if($c->usos->count() >'0')
+                        uso:{{ implode(',  ',$c->usos->pluck('uso_uso')->toArray()) }},
+                    @endif
+                    {{-- @if($c->ubicaciones->count() >'0')
+                        {{ implode(',  ',$c->ubicaciones->pluck('ubi_ubicacion')->toArray()) }},
+                    @endif --}}
+                </div>
+                <div style="font-size: 80%;">
                     <a href="{{ $ElUrl }}" class="nolink">
-                        <b><i>{{ implode(',  ',$c->especies->pluck('sp_scname')->toArray()) }}</b></i>
+                        {{ $ElUrl }}
                     </a>
-                @endif
-            </div>
-
-            <div style="font-size: 80%;" id="sale_ced{{ $c->url_id }}" onclick="VerNoVerUnaLinea('ced','{{ $c->url_id }}')" class="cortaUnaLinea PaClick">
-                @if($c->alias->count() >'0')
-                    {{ implode(',  ',$c->alias->where('ali_calitipo','Nombre común')->pluck('ali_txt')->toArray()) }},
-                    {{ implode(',  ',$c->alias->where('ali_calitipo','!=','Nombre común')->pluck('ali_txt')->toArray()) }},
-                @endif
-
-                @if($c->usos->count() >'0')
-                    uso:{{ implode(',  ',$c->usos->pluck('uso_uso')->toArray()) }},
-                @endif
-                {{-- @if($c->ubicaciones->count() >'0')
-                    {{ implode(',  ',$c->ubicaciones->pluck('ubi_ubicacion')->toArray()) }},
-                @endif --}}
-            </div>
-            <div style="font-size: 80%;">
-                <a href="{{ $ElUrl }}" class="nolink">
-                    {{ $ElUrl }}
-                </a>
+                </div>
             </div>
 
         </div>
