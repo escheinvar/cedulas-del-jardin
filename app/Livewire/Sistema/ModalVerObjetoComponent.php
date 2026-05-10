@@ -11,6 +11,7 @@ class ModalVerObjetoComponent extends Component
 
     public $modver_jardin, $modver_modulo, $modver_url, $modver_tipoObjeto;
     public $modver_objetos, $modver_tipoRecibido, $modver_tipoSelected; #### vars. recibidas de fuera
+    public $modver_buscatxt;
     #################################################################
     ########## Abre modal de objetos
     #[On('AbreModalDeVerObjetos')]
@@ -26,7 +27,7 @@ class ModalVerObjetoComponent extends Component
             $this->modver_tipoSelected=$this->modver_tipoObjeto;
             $this->modver_tipoRecibido='1';
         }
-        #dd($data);
+        $this->modver_buscatxt='';
     }
 
     public function mount(){
@@ -40,12 +41,22 @@ class ModalVerObjetoComponent extends Component
 
     public function render() {
         ################## Descarga objetos
-        $this->modver_objetos=Imagenes::where('img_act','1')->where('img_del','0')
+        $objetos=Imagenes::query();
+
+        $objetos=$objetos->where('img_act','1')->where('img_del','0')
             ->where('img_cjarsiglas',$this->modver_jardin)
-            // ->where('img_cimgmodulo',$this->modver_modulo)
             ->where('img_tipo','ilike', $this->modver_tipoSelected)
-            ->with('alias')
-            ->get();
+            ->with('alias');
+        ######## Genera búsqueda
+        if($this->modver_buscatxt != ''){
+            $objetos=$objetos->where('img_urltxt','ilike','%'.$this->modver_buscatxt.'%')
+                ->orWhere('img_titulo','ilike','%'.$this->modver_buscatxt.'%')
+                ->orWhere('img_pie','ilike','%'.$this->modver_buscatxt.'%')
+                ->orWhere('img_autor','ilike','%'.$this->modver_buscatxt.'%')
+                ->orWhere('img_ubica','ilike','%'.$this->modver_buscatxt.'%');
+        }
+
+        $this->modver_objetos=$objetos->get();
 
         return view('livewire.sistema.modal-ver-objeto-component');
     }

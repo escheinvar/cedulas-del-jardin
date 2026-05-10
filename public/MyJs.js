@@ -8,6 +8,12 @@ function VerNoVer(prod,tipo) {
     }
 }
 
+function VerNoVerClase(prod,tipo,clase){
+    var x = document.getElementById('sale_'+prod+tipo);
+    x.classList.toggle(clase);
+
+}
+
 function CopiarContenido(prod,tipo){
     /* copia el contenido de id="sale_prod.tipo" */
     var x = document.getElementById('sale_'+prod+tipo).innerText;
