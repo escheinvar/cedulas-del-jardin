@@ -178,7 +178,7 @@
                                 <div wire:click="AbreModalCedula('{{ $u->url_id }}','{{ $u->url_cjarsiglas }}')" class="PaClick">
                                     @if($u->autores->count() =='0' OR
                                         $u->editores->count() =='0' OR
-                                        ($u->url_tradid=='1' AND $u->traductores->count() =='0') OR
+                                        ($u->url_tradid > '0' AND $u->traductores->count() =='0') OR
                                         ($u->ubicaciones->count() == '0') OR
                                         ($u->alias->count()=='0')
                                     )
