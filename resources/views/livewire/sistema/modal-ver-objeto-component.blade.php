@@ -66,6 +66,7 @@
                                             <div style="font-size:60%; width:200px;" onclick="VerNoVerClase('pie','{{ $o->img_id }}','cortaTexto')" id="sale_pie{{ $o->img_id }}" class="cortaTexto">
                                                 {{ $o->img_pie }}
                                             </div>
+                                        </div>
                                     <!-- ---------------- Muestra Audios para insertar ------------------------- -->
                                     @elseif($o->img_tipo =='aud')
                                         <div wire:key="img_{{ $o->img_id }}"
@@ -169,6 +170,7 @@
                                             <div style="font-size:60%; width:200px;" onclick="VerNoVerClase('pie','{{ $o->img_id }}','cortaTexto')" id="sale_pie{{ $o->img_id }}" class="cortaTexto">
                                                 {{ $o->img_pie }}
                                             </div>
+                                        </div>
                                     @endif
                                 </div>
                             @endforeach
