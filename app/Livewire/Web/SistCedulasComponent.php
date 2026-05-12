@@ -39,6 +39,7 @@ class SistCedulasComponent extends Component
         $cedulas=cedulas_url:: #where('url_ciclo','>','0')
             where('url_act','1')
             ->where('url_del','0')
+            ->where('url_ciclo','>','0')
             ->with('jardin')
             ->with('objetos')
             ->with('lenguas')

@@ -132,6 +132,8 @@ class JardinController extends Component
         ############## Carga cédulas (pag. cédulas)
         $cedulas=cedulas_url::where('url_cjarsiglas',$this->url->urlj_cjarsiglas)
             ->where('url_del','0')
+            ->where('url_act','1')
+            ->where('url_ciclo','>','0')
             ->with('lenguas')
             ->with('objetos')
             ->with('ubicaciones')
@@ -139,7 +141,6 @@ class JardinController extends Component
             ->with('alias')
             ->with('usos')
             ->with('jardin')
-            // ->orderBy('url_url')
             ->inRandomOrder()
             ->get();
 
