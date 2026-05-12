@@ -153,7 +153,11 @@
                                         Tu navegador no soporta archivos de audio
                                     </audio>
                                     <div class="" style="font-size:80%; display:inline-block;">
-                                        {{ $modJar_NvoAudio->getClientOriginalName() }}
+                                        @if($modJar_NvoAudio != '')
+                                            {{ $modJar_NvoAudio->getClientOriginalName() }}
+                                        @elseif($modJar_Audio != '')
+                                        {{ $modJar_Audio }}
+                                        @endif
                                     </div>
                                     <i wire:click="BorrarAudio()" class="bi bi-trash agregar"></i>
                                 @endif
