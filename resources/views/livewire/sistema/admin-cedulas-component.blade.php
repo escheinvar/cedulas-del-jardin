@@ -70,7 +70,8 @@
         <!-- buscar por texto -->
         <div class="col-12 col-md-3 form-group">
             <label for="" class="form-label">Buscar por texto<red></red></label>
-            <input wire:model.live="BuscaTexto" wire:change="DefineSession('BuscaTexto')" id="" class="form-control" type="text">
+            <input wire:model.live="BuscaTexto" wire:change="DefineSession('BuscaTexto')" id="" class="form-control agregar" type="text">
+            <i wire:click="BorrarCampo('BuscaTexto')" class="bi bi-x-square agregar"></i>
         </div>
 
         <!-- mostrar solo originales -->

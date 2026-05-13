@@ -114,7 +114,7 @@
                 <!--  BarraLatIzq: Título de cédula -->
                 <div style="color:#202d2d; font-family: 'Noto Serif JP', serif; text-align:center;font-weigth:bold;" >
                     <div class="my-4" style="font-size:140%;font-weight:600;">
-                        {{ $url->url_titulo }}
+                        {!! $url->url_titulo !!}
                     </div>
                 </div>
 
@@ -202,7 +202,7 @@
                     <!-- nombres comunes -->
                     <div class="my-4" >
                         @if($url->alias->where('ali_calitipo','Nombre común')->count() > '0')
-                            {{ implode(', ', $url->alias->where('ali_calitipo','Nombre común')->pluck('ali_txt_tr')->toArray() ) }}
+                            {!! implode(', ', $url->alias->where('ali_calitipo','Nombre común')->pluck('ali_txt_tr')->toArray() ) !!}
                         @endif
                     </div>
                 </div>

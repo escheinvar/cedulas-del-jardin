@@ -97,6 +97,10 @@ class AdminCedulasComponent extends Component
         paLog('Se cambió el estado de la cédula a '.$edo,'cedulas_url',$id);
     }
 
+    public function BorrarCampo($campo){
+        $this->reset([$campo]);
+    }
+
     public function render(){
         ##### Revisa permisos del usuario
         $auts=['editor','admin','autor','traductor']; ##### array de roles autorizados a editar
