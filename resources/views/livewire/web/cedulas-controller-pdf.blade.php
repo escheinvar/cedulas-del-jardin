@@ -62,7 +62,7 @@
             </div>
             <!--  BarraLatIzq: Título de cédula -->
             <div style="color:#202d2d; font-family: 'Noto Serif JP', serif; text-align:center;font-weigth:bold;" >
-                <div class="py-4" style="padding:8px;font-size:140%;"> {{ $url->url_titulo }}</div>
+                <div class="py-4" style="padding:8px;font-size:140%;"> {!! $url->url_titulo !!}</div>
             </div>
 
             <!--  BarraLatIzq: Nombre común y Lengua -->
