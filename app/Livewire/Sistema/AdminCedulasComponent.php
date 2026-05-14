@@ -106,7 +106,6 @@ class AdminCedulasComponent extends Component
         $auts=['editor','admin','autor','traductor']; ##### array de roles autorizados a editar
         if(array_intersect($auts,session('rol'))){
             $this->edit='1';
-
         }else{
             $this->edit='0';
             redirect('/noauth/Solo accede rol '.implode(',',$auts));
@@ -119,14 +118,14 @@ class AdminCedulasComponent extends Component
             $this->editMaster='0';
         }
 
-        ##### jardines autorizados al usuario (puede incluir palabra "todos")
+        ##### array de jardines autorizados al usuario (puede incluir palabra "todos")
         $this->editjar = UserRolesModel::where('rol_usrid',Auth::user()->id)
             ->whereIn('rol_crolrol',$auts)
             ->where('rol_act','1')->where('rol_del','0')
             ->distinct('rol_cjarsiglas')
             ->pluck('rol_cjarsiglas')->toArray();
 
-        #### Genera lista de jardines autorizados al usuario (sin palabra "todos")
+        #### Genera colect de jardines autorizados al usuario (sin palabra "todos")
         if(in_array('todos',$this->editjar)){
             $JardsUsr=CatJardinesModel::where('cjar_act','1')->where('cjar_del','0')
                 ->orderBy('cjar_siglas')
@@ -144,7 +143,22 @@ class AdminCedulasComponent extends Component
         ##### Obtiene lista de Cédulas accesibles por usuario
         if(cedulas_url::count() > '0' ){
             $urls=cedulas_url::query();
-            ##### restringe a urls autorizadas
+
+            ##### Restringe a jardines autorizados  y a autorias (salvo en admin)
+            if( !array_intersect(['admin'], session('rol'))) {
+                ###### Restringe a cédulas de jardines autorizados
+                $urls=$urls->whereIn('url_cjarsiglas', $JardsUsr->pluck('cjar_siglas')->toArray());
+
+                if(array_intersect(['autor','traductor','editor'], session('rol') )) {
+                    ##### Genera lista de cédulas de las que el usuario es editor, autor o traductor
+                    $Mias=ced_autores::join('cat_autores', 'aut_cautid','=','caut_id')
+                        ->where('caut_usrid', Auth::user()->id)
+                        ->where('aut_cjarsiglas',  $JardsUsr->pluck('cjar_siglas')->toArray() )
+                        ->pluck('aut_urlid')
+                        ->toArray();
+                    $urls=$urls->whereIn('url_id',$Mias);
+                }
+            }
 
             ##### Búsqueda por campo de select jardin
             if($this->jardinSel != ''){
@@ -193,28 +207,7 @@ class AdminCedulasComponent extends Component
                     ->with('especies')
                     ->with('alias');
 
-            ##### Restringe a jardines autorizados  y a autorias (salvo en admin)
-            if( !array_intersect(['admin'], session('rol'))) {
-                ###### Restringe a cédulas de jardines autorizados
-                $urls=$urls->whereIn('url_cjarsiglas', $JardsUsr->pluck('cjar_siglas')->toArray());
 
-                if(array_intersect(['autor','traductor','editor'], session('rol') )) {
-                    ##### Genera lista de cédulas de las que el usuario es editor, autor o traductor
-                    $Mias=ced_autores::join('cat_autores', 'aut_cautid','=','caut_id')
-                        ->where('caut_usrid', Auth::user()->id)
-                        ->where('aut_cjarsiglas',  $JardsUsr->pluck('cjar_siglas')->toArray() )
-                        ->pluck('aut_urlid')
-                        ->toArray();
-                    $urls=$urls->whereIn('url_id',$Mias);
-                }
-
-                ##### Agrega datos de cédula y de autores
-                // $urls=$urls->join('ced_autores','aut_urlid','=','url_id')
-                //     ->join('cat_autores','aut_cautid','=','caut_id')
-                //     ->where('aut_del','0')->where('aut_act','1')
-                //     ->where('caut_del','0')->where('caut_act','1')
-                //     ->where('caut_usrid',Auth::user()->id);
-            }
 
 
         }else{
