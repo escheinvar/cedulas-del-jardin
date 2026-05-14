@@ -266,10 +266,13 @@ class CedulasController extends Component
         ##### Revisa permisos del usuario (rol)
         $this->edit='0';
         if(session('rol')){
-            if(array_intersect(['editor','admin'], session('rol')) AND
-                $this->url->url_edit=='1'){
+            if(array_intersect(['admin'], session('rol'))   AND    $this->url->url_edit=='1'){
                 $this->edit='1';
-                 $this->editMaster='1';
+                $this->editMaster='1';
+
+            }elseif(array_intersect(['editor'], session('rol'))   AND    $this->url->url_edit=='1'    AND    $this->url->url_edo < '4'){
+                $this->edit='1';
+                $this->editMaster='1';
 
             ##### Si es autor o traductor, revisa que esté en la lista de autores o traductores de la cédula
             }elseif(array_intersect(['traductor','autor'], session('rol'))
