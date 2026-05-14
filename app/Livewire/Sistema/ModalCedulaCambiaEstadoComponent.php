@@ -482,7 +482,7 @@ class ModalCedulaCambiaEstadoComponent extends Component
         if($this->CambiaEdo_urlid > '0'){
             ################## Verifica estado
             if(array_intersect(['admin'],session('rol')) ){
-                if($this->CambiaEdo_urledo=='0'){      $this->e0='';         $this->e1='';         $this->e2='disabled'; $this->e3='disabled'; $this->e4='disabled'; $this->e5=''; $this->e6='disabled';
+                if($this->CambiaEdo_urledo=='0'){      $this->e0='';         $this->e1='';         $this->e2='';         $this->e3='disabled'; $this->e4='disabled'; $this->e5=''; $this->e6='disabled';
                 }elseif($this->CambiaEdo_urledo=='1'){ $this->e0='disabled'; $this->e1='';         $this->e2='';         $this->e3='disabled'; $this->e4='disabled'; $this->e5=''; $this->e6='disabled';
                 }elseif($this->CambiaEdo_urledo=='2'){ $this->e0='disabled'; $this->e1='';         $this->e2='';         $this->e3='disabled'; $this->e4='disabled'; $this->e5=''; $this->e6='disabled';
                 }elseif($this->CambiaEdo_urledo=='3'){ $this->e0='disabled'; $this->e1='disabled'; $this->e2='';         $this->e3='';         $this->e4='disabled'; $this->e5=''; $this->e6='disabled';
@@ -491,7 +491,7 @@ class ModalCedulaCambiaEstadoComponent extends Component
                 }elseif($this->CambiaEdo_urledo=='6'){ $this->e0='disabled'; $this->e1='';         $this->e2='';         $this->e3='disabled'; $this->e4='disabled'; $this->e5=''; $this->e6='';}
 
             }elseif(array_intersect(['editor'],session('rol')) ){
-                if($this->CambiaEdo_urledo=='0'){      $this->e0='';         $this->e1='disabled'; $this->e2='disabled'; $this->e3='disabled'; $this->e4='';         $this->e5='disabled'; $this->e6='disabled';
+                if($this->CambiaEdo_urledo=='0'){      $this->e0='';         $this->e1='disabled'; $this->e2='';         $this->e3='disabled'; $this->e4='';         $this->e5='disabled'; $this->e6='disabled';
                 }elseif($this->CambiaEdo_urledo=='1'){ $this->e0='disabled'; $this->e1='';         $this->e2='';         $this->e3='disabled'; $this->e4='';         $this->e5='disabled'; $this->e6='disabled';
                 }elseif($this->CambiaEdo_urledo=='2'){ $this->e0='disabled'; $this->e1='disabled'; $this->e2='';         $this->e3='disabled'; $this->e4='';         $this->e5='disabled'; $this->e6='disabled';
                 }elseif($this->CambiaEdo_urledo=='3'){ $this->e0='disabled'; $this->e1='disabled'; $this->e2='';         $this->e3='';         $this->e4='';         $this->e5='disabled'; $this->e6='disabled';

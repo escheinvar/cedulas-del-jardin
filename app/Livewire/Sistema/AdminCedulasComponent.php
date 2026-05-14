@@ -5,7 +5,7 @@ namespace App\Livewire\Sistema;
 
 use App\Models\cat_tipocedula;
 use App\Models\CatJardinesModel;
-
+use App\Models\ced_autores;
 use App\Models\cedulas_txt;
 use App\Models\cedulas_url;
 use App\Models\lenguas;
@@ -144,27 +144,28 @@ class AdminCedulasComponent extends Component
         ##### Obtiene lista de Cédulas accesibles por usuario
         if(cedulas_url::count() > '0' ){
             $urls=cedulas_url::query();
+            ##### restringe a urls autorizadas
+
+            ##### Búsqueda por campo de select jardin
             if($this->jardinSel != ''){
                 $urls=$urls->where('url_cjarsiglas','ilike',$this->jardinSel);
-
-
             }
-            ##### Obtiene cédulas originales
+            ##### Obtiene cédulas originales (checkbox)
             if($this->BuscaOriginal==TRUE){
                 $urls=$urls->where('url_tradid','0');
             }
 
-            ##### Obtiene lista de Cédulas por lengua (en caso de búsqueda por lengua)
+            ##### Obtiene lista de Cédulas por lengua (select lengua)
             if($this->BuscaLengua != ''){
                 $urls=$urls->where('url_lencode',$this->BuscaLengua);
             }
 
-            ##### Obtiene lista de Cédulas por estado
+            ##### Obtiene lista de Cédulas por estado (select estado)
             if($this->BuscaEstado != ''){
                 $urls=$urls->where('url_edo',$this->BuscaEstado);
             }
 
-            ##### Obtiene lista de Cédulas por texto
+            ##### Obtiene lista de Cédulas por texto (input texto)
             if($this->BuscaTexto != ''){
                 $urls=$urls->where(function($q){
                     return $q
@@ -174,7 +175,7 @@ class AdminCedulasComponent extends Component
                 });
             }
 
-            ##### Revisa opción de (solo publicadas)
+            ##### Revisa opción de solo publicadas (checkbox)
             if($this->OcultaPublicadas==TRUE){
                 $urls=$urls->where('url_edo','<=','4');
             }
@@ -192,14 +193,30 @@ class AdminCedulasComponent extends Component
                     ->with('especies')
                     ->with('alias');
 
-            ##### En autor y traductor, restringe a cédulas autorizadas
-            if( (array_intersect(['autor','traductor'],session('rol'))) and  (!array_intersect(['editor','admin'], session('rol'))) ){
-                $urls=$urls->join('ced_autores','aut_urlid','=','url_id')
-                    ->join('cat_autores','aut_cautid','=','caut_id')
-                    ->where('aut_del','0')->where('aut_act','1')
-                    ->where('caut_del','0')->where('caut_act','1')
-                    ->where('caut_usrid',Auth::user()->id);
+            ##### Restringe a jardines autorizados  y a autorias (salvo en admin)
+            if( !array_intersect(['admin'], session('rol'))) {
+                ###### Restringe a cédulas de jardines autorizados
+                $urls=$urls->whereIn('url_cjarsiglas', $JardsUsr->pluck('cjar_siglas')->toArray());
+
+                if(array_intersect(['autor','traductor','editor'], session('rol') )) {
+                    ##### Genera lista de cédulas de las que el usuario es editor, autor o traductor
+                    $Mias=ced_autores::join('cat_autores', 'aut_cautid','=','caut_id')
+                        ->where('caut_usrid', Auth::user()->id)
+                        ->where('aut_cjarsiglas',  $JardsUsr->pluck('cjar_siglas')->toArray() )
+                        ->pluck('aut_urlid')
+                        ->toArray();
+                    $urls=$urls->whereIn('url_id',$Mias);
+                }
+
+                ##### Agrega datos de cédula y de autores
+                // $urls=$urls->join('ced_autores','aut_urlid','=','url_id')
+                //     ->join('cat_autores','aut_cautid','=','caut_id')
+                //     ->where('aut_del','0')->where('aut_act','1')
+                //     ->where('caut_del','0')->where('caut_act','1')
+                //     ->where('caut_usrid',Auth::user()->id);
             }
+
+
         }else{
                  $urls=cedulas_url::query();
         }
@@ -221,7 +238,7 @@ class AdminCedulasComponent extends Component
         }
 
         return view('livewire.sistema.admin-cedulas-component',[
-            'JardsDelUsr'=>$JardsUsr,  ##### Lista de siglas de jardines autorizados
+            'JardsDelUsr'=>$JardsUsr,  ##### Lista de jardines autorizados
             'lenguas'=>lenguas::orderBy('len_lengua')->get(),  ##### Lista de lenguas del catálogo
             'urls'=>$urls->get(),   ##### Tabla de urls para ver en tabla
             ]);
