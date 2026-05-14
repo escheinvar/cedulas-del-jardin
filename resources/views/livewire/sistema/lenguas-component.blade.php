@@ -130,7 +130,7 @@
                                 <td>{{ $l->clen_base }}</td>
                                 <td>
                                     @if($lenguasActivas->where('len_code',$l->clen_code)->count() =='0')
-                                        <button wire:click="AgregarNuevaLengua('{{ $l->clen_code }}')" wire:confirm="Estás por agregar una nueva lengua al sistema. ¿Seguro deseas continuar?" class="btn btn-sm btn-secondary">
+                                        <button wire:click="AgregarNuevaLengua('{{ $l->clen_id }}')" wire:confirm="Estás por agregar una nueva lengua al sistema. ¿Seguro deseas continuar?" class="btn btn-sm btn-secondary">
                                             Agregar
                                         </button>
                                     @else

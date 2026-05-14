@@ -59,7 +59,7 @@ class LenguasComponent extends Component
 
     public function AgregarNuevaLengua($LenCode){
         ##### Carga datos
-        $datos=CatLenguasModel::where('clen_code',$LenCode)->first();
+        $datos=CatLenguasModel::where('clen_id',$LenCode)->first();
 
         ##### Escribe datos
         $nva=lenguas::create([
