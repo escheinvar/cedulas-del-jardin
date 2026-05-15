@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Mail;
 ##########       archs /App/Mail/CorreoPorAvisoDeBuzon.php
 
 if(!function_exists('EnviaMensajeAbuzon')){
-
-
     ###### Función que recibe variables y envía mensaje a buzón de sistema,
     ###### si el destinatario tiene activo la recepción de mensajes, entonces
     ###### también le envía un correo electrónico.
@@ -64,46 +62,51 @@ if(!function_exists('EnviaMensajeAbuzon')){
 
         $de=User::where('id',$from)->first();
 
-        ###### Genera registro de BD de buzón
-        $datos=[
-            'buz_to'=>$to,
-            'buz_from'=>$from,
-            'buz_asunto'=>$asunto,
-            'buz_mensaje'=>$mensaje,
-            'buz_notas'=>$notas,
-            'buz_replyTo'=>$ifReply,
-            'buz_date'=>$fecha,
-            'buz_hora'=>$hora,
-        ];
-        $nvo=buzon::create($datos);
-        if(!$nvo){$error++;}
-
-        ##### Verifica si usr tiene envío de correos:
-        if($para->mensajes=='1'){
-            ###### Prepara datos para el mensaje
-            $Data=[
-                'datos'=>$datos,
-                'de'=>$de,
-                'para'=>$para,
+        if($para->email != Auth::user()->email){ ##### Evita auto-mensajes innecesarios
+            ###### Genera registro de BD de buzón
+            $datos=[
+                'buz_to'=>$to,
+                'buz_from'=>$from,
+                'buz_asunto'=>$asunto,
+                'buz_mensaje'=>$mensaje,
+                'buz_notas'=>$notas,
+                'buz_replyTo'=>$ifReply,
+                'buz_date'=>$fecha,
+                'buz_hora'=>$hora,
             ];
-            ##### Envía correo
-            $sale=Mail::to($para->email)->send(new CorreoPorAvisoDeBuzon($Data));
+            $nvo=buzon::create($datos);
+            if(!$nvo){$error++;}
 
-            #### Lo indica en la base de datos
-            $nvo2=buzon::where('buz_id',$nvo->buz_id)->update([
-                'buz_mailed'=>$para->email,
-            ]);
-            ##### Actualiza datos de sesión:
-            $buzon= buzon::where('buz_del','0')
-                ->where('buz_act','1')
-                ->where('buz_to',Auth::user()->id)
-                ->count();
-            session([
-                'buzon'=>$buzon,
-            ]);
+            ##### Verifica si usr tiene envío de correos:
+            if($para->mensajes=='1'){
+                ###### Prepara datos para el mensaje
+                $Data=[
+                    'datos'=>$datos,
+                    'de'=>$de,
+                    'para'=>$para,
+                ];
+
+                ##### Envía correo
+                Mail::to($para->email)->send(new CorreoPorAvisoDeBuzon($Data));
+
+                #### Lo indica en la base de datos
+                buzon::where('buz_id',$nvo->buz_id)->update([
+                    'buz_mailed'=>$para->email,
+                ]);
+
+                ##### Actualiza datos de sesión:
+                $buzon= buzon::where('buz_del','0')
+                    ->where('buz_act','1')
+                    ->where('buz_to',Auth::user()->id)
+                    ->count();
+                session([
+                    'buzon'=>$buzon,
+                ]);
+            }
+
+            ###### Si todo fue ok, manda mensaje $error='0'
+            return $error;
         }
-        ###### Si todo fue ok, manda mensaje $error='0'
-        return $error;
     }
 }
 
