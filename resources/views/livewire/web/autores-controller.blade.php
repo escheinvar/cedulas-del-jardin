@@ -63,6 +63,12 @@
             <div class="col-6 col-md-2">
                 @if($objs->where('img_cimgtipo','portada')->count() > '0')
                     @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','portada'),'TipoDeObjeto'=>'portada'])
+
+                    <!-- botón para borrar -->
+                    @if($objs->where('img_cimgtipo','portada')->count() > '0' and $editMaster=='1')
+                        <i class="bi bi-trash agregar" style="float: right;" wire:click="BorrarImagen('{{ $objs->where('img_cimgtipo','portada')->value('img_id') }}')" wire:confirm="Estás por elminar la imagen de este autor. Seguro deseas continuar?"></i>
+                    @endif
+
                 @else
                     @if($editMaster=='1')
                         <div wire:click="AbrirModalPaIncertarObjeto('0','autor','portada','','1')" class="bi bi-image PaClick my-3 p-2" style="color:#87796d">

@@ -49,6 +49,12 @@ class AutoresController extends Component
         }
     }
 
+    public function BorrarImagen($idImg){
+        Imagenes::where('img_id',$idImg)->update([
+            'img_del'=>'1',
+        ]);
+    }
+
     public function render(){
         ##### Revisa permisos del usuario
         $auts=['admin','webmaster']; ##### array de roles autorizados a editar

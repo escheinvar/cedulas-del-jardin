@@ -56,15 +56,6 @@
                 <option value="5">5 Publicada</option>
                 <option value="6">6 Publicada Solicita Edición</option>
             </select>
-            {{-- @if($urls->where('url_edit','1')->count() > '0')
-                <error style="font-size: 90%;">
-            @endif
-            Hay {{ $urls->where('url_edit','1')->count() }} @if($abiertos =='1' ) página @else páginas  @endif en edición
-            y {{ $abiertos->where('url_edo','<','5')->count() }} en proceso
-            @if($urls->where('url_edit','1')->count() > '0')
-                </error>
-            @endif --}}
-
         </div>
 
         <!-- buscar por texto -->

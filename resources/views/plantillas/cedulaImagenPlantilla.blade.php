@@ -28,7 +28,13 @@
             @endif
             <!-- muestra objeto -->
             @if($objeto->img_tipo=='img')
+                <?php
+                    // Define el tipo de imagen (horizontal o vertical)
+                    $reso=explode(',',$objeto->img_resolu);
+                    if($reso[0] >= $reso[1]){$tipoImg='hor';}else{$tipoImg='ver';}
+                ?>
                 <!-- imprime imagen -->
+
                 <img style="display:flex;width:100%;" class="img-fluid PaClick" src="{{ $objeto->img_file }}" onclick="VerNoVer('foto','{{ $objeto->img_id }}')">
 
             @elseif($objeto->img_tipo=='vid')
