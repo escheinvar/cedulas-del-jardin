@@ -133,7 +133,7 @@
                                 </div>
                             @endif
                             <div>
-                                <i class="bi bi-x-square agregar" wire:click="BorrarTodoCodigo()" wire:confirm="Vas a eliminar todo el código del párrafo. ¿Quieres continuar?" style="float: right;"> Borrar todo</i>
+                                <i class="bi bi-x-square agregar" wire:click="BorrarTodoCodigo()" style="float: right;"> Borrar todo</i>
                             </div>
                         </div>
 
