@@ -22,14 +22,14 @@
         <div class="row">
             <div class="col-4 col-md-6 "> &nbsp; </div>
 
-            <div class="col-4 col-md-3 form-group" style="text-align:right;">
+            <div class="col-12 col-md-3 form-group" style="text-align:right;">
                 <div>
                     <h3>{{ $url->lengua->len_autonimias }}</h3>
                     <span style="font-size: 70%;">{{ $url->lengua->len_lengua }}</span>
                 </div>
             </div>
 
-            <div class="col-4 col-md-3 form-group">
+            <div class="col-12 col-md-3 form-group">
                 <label class="form-label">Hay {{ $traducciones->count() }} @if($traducciones->count()=='1') traducción @else traducciones @endif</label>
                 <select wire:change="CambiaAunaTraduccion()" wire:model.live="traduccion" class="form-select">
                     <option value="">Selecciona ...</option>
@@ -135,7 +135,9 @@
             <h3>Cédulas en las que participa:</h3>
             <ol >
                 @foreach ($ceds as $c)
-                    <li class="my-2"><a href="{{ url('/cedula') }}/{{ $c->cedula->url_cjarsiglas }}/{{ $c->cedula->url_url }}" class="nolink">{{ $c->cedula->url_titulo }}<sup>{{ substr($c->aut_tipo,0,1) }}</sup> ({{ $c->cedula->url_lencode }}), {{ $c->cedula->url_cjarsiglas }} </a></li>
+                    <li class="my-2"><a href="{{ url('/cedula') }}/{{ $c->cedula->url_cjarsiglas }}/{{ $c->cedula->url_url }}" class="nolink">
+                        {!! $c->cedula->url_titulo !!}<sup>{{ substr($c->aut_tipo,0,1) }}</sup> ({{ $c->cedula->url_lencode }}), {{ $c->cedula->url_cjarsiglas }}
+                    </li>
                 @endforeach
             </ol>
         </div>
