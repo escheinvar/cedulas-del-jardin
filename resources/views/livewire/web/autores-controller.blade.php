@@ -135,8 +135,10 @@
             <h3>Cédulas en las que participa:</h3>
             <ol >
                 @foreach ($ceds as $c)
-                    <li class="my-2"><a href="{{ url('/cedula') }}/{{ $c->cedula->url_cjarsiglas }}/{{ $c->cedula->url_url }}" class="nolink">
-                        {!! $c->cedula->url_titulo !!}<sup>{{ substr($c->aut_tipo,0,1) }}</sup> ({{ $c->cedula->url_lencode }}), {{ $c->cedula->url_cjarsiglas }}
+                    <li class="my-2">
+                        <a href="{{ url('/cedula') }}/{{ $c->cedula->url_cjarsiglas }}/{{ $c->cedula->url_url }}" class="nolink">
+                            {!! $c->cedula->url_titulo !!}<sup>{{ substr($c->aut_tipo,0,1) }}</sup> ({{ $c->cedula->url_lencode }}), {{ $c->cedula->url_cjarsiglas }}
+                        </a>
                     </li>
                 @endforeach
             </ol>
