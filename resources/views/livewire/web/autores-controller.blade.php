@@ -60,7 +60,7 @@
             </div> --}}
             <!-- imagen del autor-->
 
-            <div class="col-6 col-md-2">
+            <div class="col-12 col-md-2">
                 @if($objs->where('img_cimgtipo','portada')->count() > '0')
                     @include('plantillas.cedulaImagenPlantilla',['objetos'=>$objs->where('img_cimgtipo','portada'),'TipoDeObjeto'=>'portada'])
 
@@ -79,7 +79,7 @@
             </div>
 
             <!-- Datos del autor -->
-            <div class="col-6 col-md-10">
+            <div class="col-12 col-md-10">
                 <b>{{ $url->autor->caut_nombreautor }}</b><br>
                 @if($url->autor->caut_institu != '')Institución: {{ $url->autor->caut_institu }}<br> @endif
                 @if($url->autor->caut_comunidad!='')Comunidad: {{ $url->autor->caut_comunidad }}<br> @endif

@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Sistema;
 
-use App\Models\cat_autores;
-use App\Models\autor_url;
 use App\Models\autor_txt;
+use App\Models\autor_url;
+use App\Models\cat_autores;
 use App\Models\cedulas_txt;
 use App\Models\cedulas_url;
 use App\Models\jardin_txt;
 use App\Models\jardin_url;
+use HTMLPurifier;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -408,7 +409,8 @@ class ModalEditaParrafoComponent extends Component
 
     #################################################################
     ######################################## Verificador de tags html
-    public $ValidadorDeTag;
+    // public $ValidadorDeTag;
+    /*
     public function validarHtml() {
         ######################################################
         ######## Código obtenido por Qwen para revisar. Se debe
@@ -501,6 +503,277 @@ class ModalEditaParrafoComponent extends Component
         //     $this->dispatch('html-validated');
         // }
     }
+    */
+
+    #################################################################
+    ######################################## Verificador de tags html
+    /**
+     * Valida y opcionalmente sanitiza contenido HTML
+     *
+     * @param string $variableName Nombre de la propiedad en $this que contiene el HTML
+     * @param bool $sanitizar Si true, aplica HTMLPurifier tras validar
+     * @param array $allowedTags Lista blanca de tags permitidos (null = todos)
+     * @return bool True si es válido, false si tiene errores
+     */
+    public $ValidadorDeTag;
+
+    public function validarHtml(string $variableName = 'modJar_txt', bool $sanitizar = false, ?array $allowedTags = null): bool{
+        // ========================================
+        // 1️⃣ INICIALIZACIÓN Y LIMPIEZA
+        // ========================================
+        $this->resetErrorBag();
+        $this->resetValidation();
+        $this->ValidadorDeTag = '0';
+
+        // Acceso seguro a variable dinámica
+        if (!property_exists($this, $variableName)) {
+            $this->ValidadorDeTag = '1';
+            $this->addError($variableName, "La propiedad '{$variableName}' no existe en este componente.");
+            return false;
+        }
+
+        $html = trim($this->{$variableName});
+
+        // Validación de contenido vacío
+        if ($html === '') {
+            $this->ValidadorDeTag = '1';
+            $this->addError($variableName, 'El campo HTML no puede estar vacío.');
+            return false;
+        }
+
+        // ========================================
+        // 2️⃣ PRE-PROCESAMIENTO: Limpieza segura
+        // ========================================
+        // Eliminar comentarios HTML y CDATA para evitar falsos positivos en el regex
+        $cleanHtml = preg_replace('/<!--.*?-->|<!\[CDATA\[.*?\]\]>/s', '', $html);
+
+        // Extraer contenido de <script> y <style> para no parsear su interior como HTML
+        $protectedBlocks = [];
+        $cleanHtml = preg_replace_callback(
+            '/<(script|style)\b[^>]*>.*?<\/\1>/is',
+            function($matches) use (&$protectedBlocks) {
+                $id = '%%PROTECTED_' . count($protectedBlocks) . '%%';
+                $protectedBlocks[$id] = $matches[0];
+                return $id;
+            },
+            $cleanHtml
+        );
+
+        // ========================================
+        // 3️⃣ VALIDACIÓN CON DOMDocument + libxml
+        // ========================================
+        libxml_use_internal_errors(true);
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+
+        // Configuración para evitar que DOMDocument agregue estructura automática
+        $options = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_COMPACT | LIBXML_NOERROR | LIBXML_NOWARNING;
+
+        // Convertir encoding para compatibilidad con DOMDocument
+        $encodedHtml = mb_convert_encoding($cleanHtml, 'HTML-ENTITIES', 'UTF-8');
+
+        // Cargar HTML con manejo controlado de errores
+        $loaded = $dom->loadHTML($encodedHtml, $options);
+
+        // Procesar errores severos del parser
+        $xmlErrors = libxml_get_errors();
+        libxml_clear_errors();
+
+        $severeErrors = [];
+        foreach ($xmlErrors as $error) {
+            // Solo considerar errores de nivel 3 (error) o 4 (fatal)
+            if ($error->level >= LIBXML_ERR_ERROR) {
+                // Filtrar warnings conocidos de HTML5 que no son críticos
+                $msg = trim($error->message);
+                if (!preg_match('/Tag \w+ invalid|DOCTYPE declared|html\/head\/body implied/i', $msg)) {
+                    $severeErrors[] = sprintf(
+                        'Línea %d: %s',
+                        $error->line,
+                        preg_replace('/\s+/', ' ', $msg)
+                    );
+                }
+            }
+        }
+
+        if (!empty($severeErrors)) {
+            $this->ValidadorDeTag = '1';
+            $this->addError(
+                $variableName,
+                "Errores de sintaxis HTML:\n• " . implode("\n• ", array_unique($severeErrors))
+            );
+            return false;
+        }
+
+        // ========================================
+        // 4️⃣ VALIDACIÓN DE TAGS CON STACK (HTML5-AWARE)
+        // ========================================
+        // Tags void (autocerrados) según HTML5 spec
+        $voidTags = array_flip([
+            'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+            'link', 'meta', 'param', 'source', 'track', 'wbr', 'command', 'keygen'
+        ]);
+
+        // Tags con cierre implícito según HTML5 spec
+        $optionalCloseTags = array_flip([
+            'p', 'li', 'dt', 'dd', 'rt', 'rp', 'td', 'th', 'tr', 'colgroup',
+            'optgroup', 'option', 'tbody', 'tfoot', 'thead'
+        ]);
+
+        // Regex mejorado: soporta namespaces (svg:rect), ignora contenido protegido
+        $tagPattern = '/<(\/?)([a-zA-Z][a-zA-Z0-9:\-]*)(?:\s[^>]*)?(\/?)>/';
+
+        if (!preg_match_all($tagPattern, $cleanHtml, $matches, PREG_SET_ORDER)) {
+            // Si no hay tags, pero el contenido no está vacío, validar que sea texto plano válido
+            if (preg_match('/[<>]/', $cleanHtml)) {
+                $this->ValidadorDeTag = '1';
+                $this->addError($variableName, "Se detectaron caracteres '<' o '>' sin formar una etiqueta válida.");
+                return false;
+            }
+        }
+
+        $stack = [];
+        $lineage = []; // Para mensajes de error más precisos
+
+        foreach ($matches as $match) {
+            $isClosing   = $match[1] === '/';
+            $isSelfClose = $match[3] === '/';
+            $tagName     = strtolower($match[2]);
+
+            // Ignorar placeholders de bloques protegidos
+            if (str_starts_with($tagName, '%%protected')) continue;
+
+            // Ignorar tags void y self-closing explícitos
+            if (isset($voidTags[$tagName]) || $isSelfClose) {
+                continue;
+            }
+
+            if ($isClosing) {
+                // Buscar el tag de apertura correspondiente en el stack
+                $foundIndex = -1;
+                for ($i = count($stack) - 1; $i >= 0; $i--) {
+                    if ($stack[$i] === $tagName) {
+                        $foundIndex = $i;
+                        break;
+                    }
+                }
+
+                if ($foundIndex === -1) {
+                    // Tag de cierre sin apertura
+                    $this->ValidadorDeTag = '1';
+                    $this->addError(
+                        $variableName,
+                        "Etiqueta de cierre sin apertura: </{$tagName}>" .
+                        (!empty($lineage) ? "\nContexto: </" . implode('></', array_reverse($lineage)) . ">" : '')
+                    );
+                    return false;
+                }
+
+                // Si hay tags intermedios, reportarlos como no cerrados
+                if ($foundIndex < count($stack) - 1) {
+                    $unclosed = array_slice($stack, $foundIndex + 1);
+                    $this->ValidadorDeTag = '1';
+                    $this->addError(
+                        $variableName,
+                        "Etiquetas sin cerrar antes de </{$tagName}>: <" . implode('>, <', $unclosed) . ">"
+                    );
+                    return false;
+                }
+
+                // Remover del stack y lineage
+                array_pop($stack);
+                array_pop($lineage);
+
+            } else {
+                // Tag de apertura: manejar cierre implícito de tags HTML5
+                if (!empty($stack) && isset($optionalCloseTags[$tagName])) {
+                    $current = end($stack);
+                    // Si el tag actual puede cerrar implícitamente al anterior del mismo tipo
+                    if ($current === $tagName) {
+                        array_pop($stack);
+                        array_pop($lineage);
+                    }
+                    // Reglas específicas de anidación (ej: <p> no puede contener <div>)
+                    elseif ($current === 'p' && in_array($tagName, ['div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'table', 'blockquote'])) {
+                        array_pop($stack); // Cierra <p> implícitamente
+                        array_pop($lineage);
+                    }
+                }
+
+                $stack[] = $tagName;
+                $lineage[] = $tagName;
+            }
+        }
+
+        // Verificar tags sin cerrar al final
+        if (!empty($stack)) {
+            $unclosed = array_unique($stack);
+            $this->ValidadorDeTag = '1';
+            $this->addError(
+                $variableName,
+                "Etiquetas abiertas sin cerrar: <" . implode('>, <', $unclosed) . ">"
+            );
+            return false;
+        }
+
+        // ========================================
+        // 5️⃣ VALIDACIÓN DE TAGS PERMITIDOS (Whitelist)
+        // ========================================
+        if ($allowedTags !== null && is_array($allowedTags) && !empty($allowedTags)) {
+            $allowedLower = array_map('strtolower', $allowedTags);
+            $foundTags = [];
+
+            foreach ($matches as $match) {
+                $tag = strtolower($match[2]);
+                if (!isset($voidTags[$tag]) && !in_array($tag, $allowedLower)) {
+                    $foundTags[] = "<{$tag}>";
+                }
+            }
+
+            if (!empty($foundTags)) {
+                $this->ValidadorDeTag = '1';
+                $this->addError(
+                    $variableName,
+                    "Tags no permitidos: " . implode(', ', array_unique($foundTags)) .
+                    "\nTags permitidos: " . implode(', ', $allowedTags)
+                );
+                return false;
+            }
+        }
+
+        // ========================================
+        // 6️⃣ SANITIZACIÓN OPCIONAL (HTMLPurifier)
+        // ========================================
+        if ($sanitizar) {
+            if (!class_exists('HTMLPurifier')) {
+                \Log::warning('HTMLPurifier no está instalado. Ejecuta: composer require ezyang/htmlpurifier');
+                $this->addError($variableName, "Sanitización solicitada pero HTMLPurifier no está disponible.");
+                return false;
+            }
+
+            try {
+                $config = HTMLPurifier_Config::createDefault();
+                $config->set('Core.Encoding', 'UTF-8');
+                $config->set('HTML.Allowed', $allowedTags ? implode(',', $allowedTags) : null);
+                $config->set('Attr.AllowedFrameTargets', ['_blank']);
+                $config->set('CSS.AllowedProperties', ['font', 'font-size', 'font-weight', 'font-style', 'font-family', 'text-decoration', 'color', 'background-color', 'text-align', 'width', 'height', 'margin', 'padding']);
+                $config->set('URI.AllowedSchemes', ['http' => true, 'https' => true, 'mailto' => true, 'data' => true]);
+
+                $purifier = new HTMLPurifier($config);
+                $this->{$variableName} = $purifier->purify($this->{$variableName});
+
+            } catch (\Exception $e) {
+                \Log::error('Error en HTMLPurifier: ' . $e->getMessage());
+                $this->ValidadorDeTag = '1';
+                $this->addError($variableName, "Error al sanitizar el contenido HTML.");
+                return false;
+            }
+        }
+
+        // ========================================
+        // 7️⃣ ÉXITO
+        // ========================================
+        return true;
+    }
+
 
     public function BorrarTodoCodigo(){
         $this->modJar_txt='';
