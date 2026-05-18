@@ -184,13 +184,14 @@
 
                         <!-- jardin -->
                         <td class="@if($u->url_act=='0') inact @endif">
-                            {{ $u->url_cjarsiglas }}
+                            <img src="{{ $u->jardin->cjar_logo }}" style="width:40px;"><br>
+                            <span style="font-size:60%; color:gray;">{{ $u->url_cjarsiglas }}</span>
                         </td>
 
                         <!-- titulo -->
                         <td>
                             <div>
-                                {{ $u->url_titulo }}
+                                {!! $u->url_titulo !!}
                                 <div style="color:gray;font-size:80%;">
                                 @if($u->url_tradid=='0')
                                     -- Original --
