@@ -273,7 +273,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <b>Palabras clave</b>:
-                                @foreach($CambiaEdo_ced->alias as $a)
+                                @foreach($CambiaEdo_ced->alias->where('ali_calitipo','!=','Nombre común') as $a)
                                     <div class="elemento">{{ $a->ali_txt_tr }}</div>
                                 @endforeach
                             </div>
@@ -283,10 +283,21 @@
                                     <div class="elemento">{{ $a->ubi_ubicacion_tr }}</div>
                                 @endforeach
                             </div>
+                             <div class="col-12">
+                                <b>Nombres comunes</b>:
+                                @if($CambiaEdo_ced->alias->where('ali_calitipo','Nombre común')->count() == '0')
+                                    <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"> No hay nombre común registrado</i>
+                                @else
+                                    @foreach($CambiaEdo_ced->alias->where('ali_calitipo','Nombre común') as $e)
+                                        <div class="elemento">{{ $e->ali_txt_tr }}</div>
+                                    @endforeach
+                                @endif
+                            </div>
+
                             <div class="col-12">
                                 <b>Especies</b>:
                                 @if($CambiaEdo_ced->especies->count() == '0')
-                                    <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"></i> No hay especie registrada
+                                    <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"> No hay especie registrada</i>
                                 @else
                                     @foreach($CambiaEdo_ced->especies as $e)
                                         <div class="elemento">{{ $e->sp_scname }}</div>
@@ -296,7 +307,7 @@
                             <div class="col-12">
                                 <b>Usos</b>:
                                 @if($CambiaEdo_ced->usos->count() == '0')
-                                    <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"></i> No hay ningún uso registrado
+                                    <i class="bi bi-exclamation-octagon-fill" style="color:#CD7B34"> No hay ningún uso registrado</i>
                                 @else
                                     @foreach($CambiaEdo_ced->usos as $u)
                                         <div class="elemento">{{ $u->uso_categoria }}:{{ $u->uso_uso }}</div>
@@ -308,7 +319,7 @@
 
                     <!-- Botón final para publicar -->
                     @if($verDoi=='0')
-                        <div class="row">where
+                        <div class="row">
                             <div class="col-12" style="text-align: center;">
                                 <button wire:click="PublicaCedula()" class="btn btn-primary"> Publicar cédula </button>
                             </div>

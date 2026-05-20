@@ -11,7 +11,7 @@ use Livewire\Component;
 class ModalCedulaAliasComponent extends Component
 {
     ##### variables recibidas desde controlador eterno
-    public $alias_id, $alias_urlid;
+    public $alias_id, $alias_urlid, $alias_tipoAlias;
     ##### variable del modal
     public $alias_trad, $alias_url, $alias_jardin;
     public $alias_tipo, $alias_txt, $alias_txt_tr;
@@ -36,6 +36,7 @@ class ModalCedulaAliasComponent extends Component
         ##### recibe variables externas
         $this->alias_id=$datos['aliasId'];
         $this->alias_urlid=$datos['urlId'];
+        $this->alias_tipo=$datos['tipoAlias'];
 
         ##### Calcula variables
         $cedula=cedulas_url::where('url_id',$this->alias_urlid)->first();
@@ -123,7 +124,7 @@ class ModalCedulaAliasComponent extends Component
                 paLog('Se genera alias','ced_alias',$nvo->ali_id);
             }
             ##### Da aviso
-            $this->dispatch('AvisoExitoAlias',msj:'Se generó la palabra clave');
+            #$this->dispatch('AvisoExitoAlias',msj:'Se generó la palabra clave');
         }else{
             $datos['ali_urlid']= $this->alias_urlid;
             $datos['ali_urlurl']=$cedula->url_url;
@@ -140,11 +141,15 @@ class ModalCedulaAliasComponent extends Component
     }
 
     public function EliminarAlias(){
+        ced_alias::where('ali_id',$this->alias_id)->update(
+            ['ali_del'=>'1']);
         $ganon=ced_alias::where('ali_id',$this->alias_id)->first();
-        ced_alias::where('ali_cjarsiglas',$ganon->ali_cjarsiglas)
-            ->where('ali_urltxt',$ganon->ali_urltxt)
-            ->where('ali_txt',$ganon->ali_txt)
-            ->update(['ali_del'=>'1']);
+
+        // ced_alias::where('ali_cjarsiglas',$ganon->ali_cjarsiglas)
+        //     ->where('ali_urltxt',$ganon->ali_urltxt)
+        //     ->where('ali_txt',$ganon->ali_txt)
+        //     ->update(['ali_del'=>'1']);
+
         paLog('Se eliminan todos los alias de '.$ganon->ali_urltxt.' en '.$ganon->ali_cjarsiglas, 'alil_urltxt','varios id');
 
         ##### Actualiza
@@ -154,9 +159,9 @@ class ModalCedulaAliasComponent extends Component
     }
 
     public function render(){
-        $tipos=ced_catalogos::where('cat_tipo','alias')->get();
+        // $tipos=ced_catalogos::where('cat_tipo','alias')->get();
         return view('livewire.sistema.modal-cedula-alias-component',[
-            'tipoAlias'=>$tipos,
+            // 'tipoAlias'=>$tipos,
         ]);
     }
 }

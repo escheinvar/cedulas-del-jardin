@@ -164,6 +164,7 @@
                                         <i wire:click="VerNoVer('verAutor')" class="@if($verAutor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     @endif
                                     <label for="" class="form-label">Autor(es)<red>*</red></label>
+                                    <sup style="color:#87796d">{{ $CedAutores->count() }}</sup>
                                 </div>
                                 @if($CedAutores AND $cedulaId > '0' AND $verAutor=='1')
                                     <i wire:click="AbreModalDeBuscarAutor('Autor')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
@@ -171,14 +172,13 @@
                                     <?php $cont='1';?>
                                     @foreach ($CedAutores as $a)
                                         <div class="elemento" style="font-size: 80%;">
-                                            <sup>{{ $cont++ }}</sup>
+                                            <sup style="color:#87796d">{{ $cont++ }}</sup>
                                             @if($a->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
                                             {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
                                             <i wire:click="BorrarAutor('{{ $a->aut_id }}','Autor','{{ $a->aut_key }}')" wire:confirm="Estas por eliminar a este autor de esta cédula y todas sus traducciones. ¿Seguro quieres continuar?" class="bi bi-trash agregar"></i>
                                         </div>
                                     @endforeach
                                 @endif
-
                             </div>
 
                             <!-- Traductor -->
@@ -191,6 +191,7 @@
                                             <i wire:click="VerNoVer('verTraductor')" class="@if($verTraductor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                         @endif
                                         <label for="" class="form-label">Traductor<red>*</red></label>
+                                        <sup style="color:#87796d">{{ $CedTraductores->count() }}</sup>
                                     </div>
 
                                     @if($CedTraductores AND $cedulaId > '0' and $verTraductor=='1')
@@ -199,7 +200,7 @@
                                         <?php $cont='1';?>
                                         @foreach ($CedTraductores->where('aut_tipo','Traductor') as $a)
                                             <div class="elemento" style="font-size: 80%;">
-                                                <sup>{{ $cont++ }}</sup>
+                                                <sup style="color:#87796d">{{ $cont++ }}</sup>
                                                 @if($a->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
                                                 {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
                                                 <i wire:click="BorrarAutor('{{ $a->aut_id }}','Traductor','{{ $a->aut_key }}')" wire:confirm="Estás por eliminar a este autor de esta cédula. ¿Quieres continuar?" class="bi bi-trash agregar"></i>
@@ -221,6 +222,7 @@
                                         <i wire:click="VerNoVer('verEditor')" class="@if($verEditor=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     @endif
                                     <label for="" class="form-label">Editor<red>*</red></label>
+                                    <sup style="color:#87796d">{{ $CedEditores->count() }}</sup>
                                 </div>
                                 @if($CedEditores AND $cedulaId > '0' and $verEditor=='1')
                                     <i wire:click="AbreModalDeBuscarAutor('Editor')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
@@ -228,7 +230,7 @@
                                     <?php $cont='1';?>
                                     @foreach ($CedEditores as $a)
                                         <div class="elemento" style="font-size: 80%;">
-                                            <sup>{{ $cont++ }}</sup>
+                                            <sup style="color:#87796d">{{ $cont++ }}</sup>
                                             @if($a->caut_usrid > '0') <i class="bi bi-person-check"></i>@endif
                                             {{ $a->aut_name }}@if($a->aut_corresponding=='1')*@endif
                                             <i wire:click="BorrarAutor('{{ $a->aut_id }}','Editor','{{ $a->aut_key }}')" wire:confirm="Estás por eliminar al editor de esta cédula. ¿Seguro quires continuar?"  class="bi bi-trash agregar"></i>
@@ -244,7 +246,7 @@
                         <div class="row my-2">
                             <hr>
                             <!-- Ubicación(es) -->
-                            <div class="col-12 col-md-6 form-group">
+                            <div class="col-12 col-md-4 form-group">
                                 <div>
                                     @if($CedUbica->count() =='0')
                                         <i wire:click="AbrirModalDeUbicacion('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
@@ -252,10 +254,11 @@
                                         <i wire:click="VerNoVer('verUbicacion')" class="@if($verUbicacion=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     @endif
                                     <label for="" class="form-label">Ubicación(es)<red>*</red></label>
+                                    <sup style="color:#87796d">{{ $CedUbica->count() }}</sup>
                                 </div>
                                 @if($CedUbica AND $cedulaId > '0' and $verUbicacion=='1')
                                     <i wire:click="AbrirModalDeUbicacion('0')" class="bi bi-plus-circle-fill agregar"> Nuevo</i>
-                                    <div class="form-text">(Aplica a todas las traducciones y se traduce)</div>
+                                    {{-- <div class="form-text">(Aplica a todas las traducciones y se traduce)</div> --}}
                                     @foreach ($CedUbica as $a)
                                         <div class="elemento" style="font-size: 80%;width:100%;">
                                             <div class="cortaTexto PaClick" id="Ubica{{ $a->ubi_id }}" onclick="QuitarCortaTexto('Ubica','{{ $a->ubi_id }}')" style="width:90%; display:inline-block;">
@@ -267,25 +270,51 @@
                                 @endif
                             </div>
 
+                            <!-- Nombres comunes -->
+                            <div class="col-12 col-md-4 form-group">
+                                <div>
+                                    {{-- @if($CedAliasCom->count() =='0')
+                                        <i wire:click="AbrirModalDeAlias('0','Nombre común')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
+                                    @else --}}
+                                        <i wire:click="VerNoVer('verAliasNom')" class="@if($verAliasNom=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
+                                    {{-- @endif --}}
+                                    <label for="" class="form-label">Nombres comunes<red></red></label>
+                                    <sup style="color:#87796d">{{ $CedAliasCom->count() }}</sup>
+                                </div>
+                                @if($CedAliasCom AND $cedulaId > '0' AND $verAliasNom=='1')
+                                    <i wire:click="AbrirModalDeAlias('0','Nombre común')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
+                                    {{-- <div class="form-text">(Aplica a todas las traducciones y se traduce)</div> --}}
+                                    @foreach ($CedAliasCom as $a)
+                                        <div class="elemento" style="font-size: 80%;">
+                                            <div class="cortaTexto PaClick" id="Alias{{ $a->ali_id }}" onclick="QuitarCortaTexto('Alias','{{ $a->ali_id }}')" style="display:inline-block;">
+                                                {{ $a->ali_txt_tr }} 
+                                            </div>
+                                            <i wire:click="AbrirModalDeAlias('{{ $a->ali_id }}','Nombre común')" class="bi bi-pencil-square agregar" style="float: right;"></i>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+
                             <!-- Palabras clave -->
-                            <div class="col-12 col-md-6 form-group">
+                            <div class="col-12 col-md-4 form-group">
                                 <div>
                                     @if($CedAlias->count() =='0')
-                                        <i wire:click="AbrirModalDeAlias('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
+                                        <i wire:click="AbrirModalDeAlias('0','Palabra clave')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
                                     @else
                                         <i wire:click="VerNoVer('verAlias')" class="@if($verAlias=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     @endif
-                                    <label for="" class="form-label">Palabras clave, nombres comunes o alias<red>*</red></label>
+                                    <label for="" class="form-label">Palabras clave o alias<red>*</red></label>
+                                    <sup style="color:#87796d">{{ $CedAlias->count() }}</sup>
                                 </div>
                                 @if($CedAlias AND $cedulaId > '0' AND $verAlias=='1')
-                                    <i wire:click="AbrirModalDeAlias('0')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
-                                    <div class="form-text">(Aplica a todas las traducciones y se traduce)</div>
+                                    <i wire:click="AbrirModalDeAlias('0','Palabra clave')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
+                                    {{-- <div class="form-text">(Aplica a todas las traducciones y se traduce)</div> --}}
                                     @foreach ($CedAlias as $a)
-                                        <div class="elemento" style="font-size: 80%;width:100%;">
-                                            <div class="cortaTexto PaClick" id="Alias{{ $a->ali_id }}" onclick="QuitarCortaTexto('Alias','{{ $a->ali_id }}')" style="width:90%; display:inline-block;">
-                                                {{ $a->ali_txt_tr }} &nbsp; &nbsp; [{{ $a->ali_calitipo }}]
+                                        <div class="elemento" style="font-size: 80%;">
+                                            <div class="cortaTexto PaClick" id="Alias{{ $a->ali_id }}" onclick="QuitarCortaTexto('Alias','{{ $a->ali_id }}')" style="display:inline-block;">
+                                                {{ $a->ali_txt_tr }} 
                                             </div>
-                                            <i wire:click="AbrirModalDeAlias('{{ $a->ali_id }}')" class="bi bi-pencil-square agregar" style="float: right;"></i>
+                                            <i wire:click="AbrirModalDeAlias('{{ $a->ali_id }}','Palabra clave')" class="bi bi-pencil-square agregar" style="float: right;"></i>
                                         </div>
                                     @endforeach
                                 @endif
@@ -304,10 +333,11 @@
                                     {{-- @if($CedSp->count() =='0')
                                         <i wire:click="AbrirModalDeBuscarEspecie('0')" class="bi bi-exclamation-octagon-fill PaClick" style="color:#CD7B34"></i>
                                         @endif --}}
+                                        <sup style="color:#87796d">{{ $CedSp->count() }}</sup>
                                     </div>
                                 @if($CedSp AND $cedulaId > '0' and $verSp=='1')
                                     <i wire:click="AbrirModalDeBuscarEspecie('0')" class="bi bi-plus-circle-fill agregar">Nuevo</i>
-                                    <div class="form-text">(Aplica a todas las traducciones)</div>
+                                    {{-- <div class="form-text">(Aplica a todas las traducciones)</div> --}}
                                     @foreach ($CedSp as $sp)
                                         <div class="elemento" style="font-size: 80%;width:100%;">
                                             <div class="cortaTexto PaClick" id="Especie{{ $sp->sp_id }}" onclick="QuitarCortaTexto('Especie','{{ $sp->sp_id }}')" style="width:90%; display:inline-block;">
@@ -332,9 +362,10 @@
                                 <div>
                                     <i wire:click="VerNoVer('verUso')" class="@if($verUso=='1')bi bi-dash-square-fill @else bi bi-plus-square-fill @endif agregar"></i>
                                     <label for="" class="form-label">Usos(s)<red></red></label>
+                                    <sup style="color:#87796d">{{ $CedUsos->count() }}</sup>
                                 </div>
                                 @if($CedUsos AND $cedulaId > '0' and $verUso=='1')
-                                    <div class="form-text">(Aplica a todas las traducciones)<BR>
+                                    {{-- <div class="form-text">(Aplica a todas las traducciones)<BR> --}}
                                         Agregar uso desde la sección de especies</div>
                                     @foreach ($CedUsos as $u)
                                         <div class="elemento" style="font-size: 80%;width:100%;">

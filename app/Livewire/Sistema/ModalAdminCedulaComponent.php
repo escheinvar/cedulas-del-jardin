@@ -34,8 +34,8 @@ class ModalAdminCedulaComponent extends Component
     ##### vars. del modal Edición de ćedula
     public $cedulaId, $origtrad, $copiade, $tipoCedula, $lengua;
     public $url, $titulo, $tituloOrig, $resumen, $resumenOrig, $act;
-    public $CedAutores, $CedEditores, $CedTraductores,$CedSp, $CedUsos, $CedUbica, $CedAlias;
-    public $verTituloOrig, $verResumenOrig, $verAutor, $verEditor, $verTraductor, $verUbicacion, $verAlias, $verSp, $verUso;
+    public $CedAutores, $CedEditores, $CedTraductores,$CedSp, $CedUsos, $CedUbica, $CedAlias, $CedAliasCom;
+    public $verTituloOrig, $verResumenOrig, $verAutor, $verEditor, $verTraductor, $verUbicacion, $verAlias, $verAliasNom, $verSp, $verUso;
 
     #[On('AbreModalDeCedula')]
     public function AbriendoModalCedula($datos){
@@ -74,7 +74,7 @@ class ModalAdminCedulaComponent extends Component
         $this->jardinSel='';
         $this->origtrad='original';
         $this->verAutor='1'; $this->verEditor='1'; $this->verTraductor='1';
-        $this->verUbicacion='0'; $this->verAlias='0'; $this->verSp='0'; $this->verUso='0';
+        $this->verUbicacion='0'; $this->verAlias='0'; $this->verAliasNom='0'; $this->verSp='0'; $this->verUso='0';
         $this->verTituloOrig='0'; $this->verResumenOrig='0';
         $this->tipoCedula='sp';
 
@@ -345,13 +345,12 @@ class ModalAdminCedulaComponent extends Component
         $this->dispatch('AbreModalUsoEnCedula',$datos);
     }
 
-    public function AbrirModalDeAlias($aliasId){
+    public function AbrirModalDeAlias($aliasId,$tipo){
         $this->verAlias='1';
         $datos=[
             'aliasId'=>$aliasId, ### o id del uso
             'urlId'=>$this->cedulaId,
-            // 'jardin'=>$this->jardinSel,
-            // 'urltxt'=>cedulas_url::where('url_id',$this->cedulaId)->value('url_urltxt'),
+            'tipoAlias'=>$tipo,
         ];
 
         $this->dispatch('AbreModalAlias',$datos);
@@ -446,7 +445,8 @@ class ModalAdminCedulaComponent extends Component
             $this->CedSp=$dato->especies;
             $this->CedUsos=$dato->usos;
             $this->CedUbica=$dato->ubicaciones;
-            $this->CedAlias=$dato->alias;
+            $this->CedAlias=$dato->alias->where('ali_calitipo','!=','Nombre común');
+            $this->CedAliasCom=$dato->alias->where('ali_calitipo','Nombre común');
         }else{
             $this->CedAutores=collect();
             $this->CedEditores=collect();
