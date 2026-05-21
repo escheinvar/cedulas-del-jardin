@@ -120,13 +120,36 @@ class ModalCedulaFuenteExternaComponennt extends Component
         $this->resetValidation();
     }
 
+    public function PrecargaConocidos(){
+        $red=cat_redes::where('red_id',$this->modext_red)->first();
+        if($red->red_name == 'Enciclovida'){
+            $this->modext_autor="Enciclovida, Conabio";
+            $this->modext_urlautor="https://enciclovida.mx/";
+
+        }elseif($red->red_name == 'Inaturalist'){
+            $this->modext_autor="iNaturalist";
+            $this->modext_urlautor="https://www.inaturalist.org/";
+        }elseif($red->red_name == 'World Flora Online'){
+            $this->modext_autor="World Flora Online";
+            $this->modext_urlautor="https://www.worldfloraonline.org/";
+
+        }elseif($red->red_name == 'Cedulas del Jardín'){
+            $this->modext_autor="Cédulas del Jardín";
+            $this->modext_urlautor="https://www.cedulasdeljardin.mx/";
+        }else{
+            $this->modext_autor="";
+            $this->modext_urlautor="";
+        }
+
+    }
+
     public function CerrarModalDeFuenteExterna(){
         $this->LimpiarModal();
         $this->dispatch('CierraModalFuenteExterna',reload:1);
     }
 
     public function render(){
-        $redes=cat_redes::get();
+        $redes=cat_redes::orderBy('red_name')->get();
 
         return view('livewire.sistema.modal-cedula-fuente-externa-componennt',[
             'redes'=>$redes,

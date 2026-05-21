@@ -21,7 +21,7 @@
                 <!-- Nombre de la red Red-->
                 <div class="col-12 col-md-4 my-1 form-group">
                     <label for="modext_red" class="form-label">Nombre de la red<red>*</red></label>
-                    <select wire:model="modext_red" id="modext_red" class="@error('modext_red') is-invalid @enderror form-select">
+                    <select wire:model="modext_red" wire:change='PrecargaConocidos()' id="modext_red" class="@error('modext_red') is-invalid @enderror form-select">
                         <option value="">Indicar...</option>
                         @foreach($redes as $r)
                             <option value="{{ $r->red_id }}">{{ $r->red_name }}</option>
