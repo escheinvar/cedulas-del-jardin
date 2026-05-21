@@ -113,7 +113,7 @@
 
                 <!--  BarraLatIzq: Título de cédula -->
                 <div style="color:#202d2d; font-family: 'Noto Serif JP', serif; text-align:center;font-weigth:bold;" >
-                    <div class="my-4" style="font-size:140%;font-weight:600;">
+                    <div class="my-4" style="font-size:140%;font-weight:600; paddin:20px;">
                         {!! $url->url_titulo !!}
                     </div>
                 </div>
@@ -353,11 +353,20 @@
                     <div class="col-12" style="text-align: center;margin:30px;">
                         <div style="display:block;">
                             <h2 style="display:inline-block">{!! $url->url_titulo !!}</h2>
+                            <!-- audio titulo -->
+                            @if($url->url_audiotitulo != '' )
+                                <audio id="SpAudio{{ $url->url_id }}Tit" style="display:inline-block;">
+                                    <source src="{{ $url->url_audiotitulo }}" type="audio/ogg" /> El navegador no soporta el audio
+                                </audio>
+                                <i class="audioTxtPlay" id="IconPlay{{ $url->url_id }}Tit" onclick="playAudio('{{ $url->url_id }}Tit')"></i>
+                                <i class="audioTxtStop" id="IconStop{{ $url->url_id }}Tit" onclick="pauseAudio('{{ $url->url_id }}Tit')"></i>
+                            @endif
+
                             @if($url->url_tradid > '0')
                                 <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('titulo','{{ $url->url_id }}')" style="color:#87796d;"></i>
                             @endif
                             @if($edit=='1')
-                                <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbirModalTraduceTitulo()">
+                                <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbirModalTraduceTitulo('Titulo')">
                                     <i  class="bi bi-pencil-square"></i><sup></sup>
                                 </span>
                             @endif
@@ -406,16 +415,24 @@
 
                             <?php $num='1'; ?>
                             <div style="font-size: 70%;">
-                            {{-- @foreach ($cedula->autores as $a)
-                                @if($a->aut_comunidad != '' OR $a->aut_institucion != '' or $a->aut_corresponding=='1')
-                                    @if($total > '1' )&nbsp; &nbsp; | <sup>{{ $num++ }}</sup>@endif {{ $a->aut_comunidad }} {{ $a->aut_institucion }}
-                                    @if($a->aut_corresponding=='1') <b>{{ $a->aut_correo }}</b> @endif
-                                @endif
-                            @endforeach --}}
-                            <div>
-                                {!! $refs !!}
+                                <div>
+                                    {!! $refs !!}
+                                </div>
                             </div>
-                            </div>
+                            <!-- audio autores -->
+                            @if($url->url_audioautor != '' )
+                                <audio id="SpAudio{{ $url->url_id }}Aut" style="display:inline-block;">
+                                    <source src="{{ $url->url_audioautor }}" type="audio/ogg" /> El navegador no soporta el audio
+                                </audio>
+                                <i class="audioTxtPlay" id="IconPlay{{ $url->url_id }}Aut" onclick="playAudio('{{ $url->url_id }}Aut')"></i>
+                                <i class="audioTxtStop" id="IconStop{{ $url->url_id }}Aut" onclick="pauseAudio('{{ $url->url_id }}Aut')"></i>
+                            @endif
+                            <!-- icono de editar autores-->
+                            @if($edit=='1')
+                                <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbirModalTraduceTitulo('Autores')">
+                                    <i  class="bi bi-pencil-square"></i><sup></sup>
+                                </span>
+                            @endif
                         </div>
                     </div>
                 @endif
@@ -451,6 +468,20 @@
                                     @if($trad->aut_corresponding=='1')<br>*{{ $trad->aut_correo }}@endif
                                 </span>
                             @endforeach
+                            <!-- audio traductor -->
+                            @if($url->url_audiotraductor != '' )
+                                <audio id="SpAudio{{ $url->url_id }}Trad" style="display:inline-block;">
+                                    <source src="{{ $url->url_audiotraductor }}" type="audio/ogg" /> El navegador no soporta el audio
+                                </audio>
+                                <i class="audioTxtPlay" id="IconPlay{{ $url->url_id }}Trad" onclick="playAudio('{{ $url->url_id }}Trad')"></i>
+                                <i class="audioTxtStop" id="IconStop{{ $url->url_id }}Trad" onclick="pauseAudio('{{ $url->url_id }}Trad')"></i>
+                            @endif
+                            <!-- icono de editar traductores-->
+                            @if($edit=='1')
+                                <span class="cedEdo{{ $url->url_edo }} PaClick" wire:click="AbirModalTraduceTitulo('Traductor')">
+                                    <i  class="bi bi-pencil-square"></i><sup></sup>
+                                </span>
+                            @endif
                         </div>
                     @endif
                 </div>
@@ -805,7 +836,7 @@
 
 
     @if($edit=='1')
-        <!-- ------------------------------------------------------------------------------------------ -->
+        {{-- <!-- ------------------------------------------------------------------------------------------ -->
         <!-- ----------------------------------- MODAL DE TRADUCCIÓN DE TÍTULO ------------------------ -->
         <!-- ------------------------------------------------------------------------------------------ -->
         <!-- ------------------------------------------------------------------------------------------ -->
@@ -829,6 +860,33 @@
                             @error('NuevoTituloTraducido')<error>{{ $message }}</error>@enderror
                         </div>
 
+                        @if($url->url_audiotitulo != '')
+                            <div class="form-group">
+                                <audio style="width:100%;padding:10px;" controls>
+                                    <source src="{{ $url->url_audiotitulo }}" type="audio/ogg">
+                                    <source src="{{ $url->url_audiotitulo }}" type="audio/mpeg">
+                                    Tu navegador no soporta archivos de audio
+                                </audio>
+                                <i wire:click="EliminarAudioTitulo()" wire:confirm="Vas a eliminar el archivo de audio. ¿Seguro quieres continuar?" class="bi bi-trash agregar"></i>
+                            </div>
+                        @else
+                            <!-- Subir Audio -->
+                            <div class="col-12 my-1 form-group">
+                                <label for="NuevoAudio" class="form-label">Audio de título<red></red></label>
+                                <input wire:model="NuevoAudio" id="NuevoAudio" class="@error('NuevoAudio') is-invalid @enderror form-control" type="file">
+                                <div class="form-text"></div>
+                                @error('NuevoAudio')<error>{{ $message }}</error>@enderror
+                            </div>
+                            @if($NuevoAudio != '')
+                                <div class="col-12">
+                                    <button wire:click="SubirAudioTitulo()" wire:loading.attr="disabled" class="btn btn-primary">
+                                        Subir audio
+                                    </button>
+                                    <span wire:loading style="display:none;"> <red>..subiendo...</red> </span>
+                                </div>
+                            @endif
+                        @endif
+
                     </div>
                     <div class="modal-footer">
                         <button wire:click="CerrarModalTraduceTitulo()" class="btn btn-secondary">
@@ -842,11 +900,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- ---------------------- TERMINA MODAL DE TRADUCCIÓN DE TÍTULO ------------------------- -->
         <!-- -------------------------------------------------------------------------------------- -->
         <!-- -------------------------------------------------------------------------------------- -->
 
+        <livewire:web.modal-cedula-audios-especiales-component />
         <livewire:sistema.modal-edita-parrafo-component />
         <livewire:sistema.modal-cedula-ubicaciones-component />
         <livewire:sistema.modal-cedula-alias-component />
@@ -866,13 +925,13 @@
             alert(event.detail.msj);
         })
 
-        /* ### Script para abrir y cerrar modal */
-        Livewire.on('AbreModalTraduceTitulo', () => {
-            $('#ModalTraduceTitulo').modal('show');
-        });
-        Livewire.on('CierraModalTraduceTitulo', () => {
-            $('#ModalTraduceTitulo').modal('hide');
-        });
+        // /* ### Script para abrir y cerrar modal */
+        // Livewire.on('AbreModalTraduceTitulo', () => {
+        //     $('#ModalTraduceTitulo').modal('show');
+        // });
+        // Livewire.on('CierraModalTraduceTitulo', () => {
+        //     $('#ModalTraduceTitulo').modal('hide');
+        // });
 
         // Livewire.on('RecibeVariablesDeUbicacion',() => {
         //     @this.set('ubicaciones',event.detail.dato, live=true);

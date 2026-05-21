@@ -43,7 +43,9 @@ class cedulas_url extends Model
         // 'url_editor',
         'url_version',
         'url_doi',
-
+        'url_audiotitulo',
+        'url_audioautor',
+        'url_audiotraductor',
     ];
     ################################################################
     ############# Función que genera automáticamente la columna key

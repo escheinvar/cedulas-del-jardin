@@ -16,10 +16,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CedulasController extends Component
 {
+    use WithFileUploads;
+
     public $jardin, $url; ##### Vars. recibidas por URL, y luego en url se guarda el first() de toda la info de cedula_url
     public $edit, $enEdit, $editMaster; ###### Vars. de edición
     ###### Variables de página cédulas:
@@ -37,7 +40,7 @@ class CedulasController extends Component
     public $hermanas; #### get() de cedulas similares (sp, o alias)
 
     ###### Variables de modal Traduce titulo
-    public $NuevoTituloTraducido;
+    // public $NuevoTituloTraducido, $NuevoAudio;
 
     #[Layout('plantillas.baseJardin')]
     public function mount($jardin,$url){
@@ -209,6 +212,7 @@ class CedulasController extends Component
         }
 
     }
+
     public function EliminaImagen($id){
         Imagenes::where('img_id',$id)->update([
             'img_del'=>'1',
@@ -392,25 +396,59 @@ class CedulasController extends Component
 
     ############################################################
     ############################## Modal Traduce Titulo
-    public function AbirModalTraduceTitulo(){
+    public function AbirModalTraduceTitulo($tipo){
         #####<livewire: web.web.cedulas.controller  />
-        $this->NuevoTituloTraducido=$this->url->url_titulo;
-        $this->dispatch('AbreModalTraduceTitulo');
+        $data=[
+            'urlId'=>$this->url->url_id,
+            'tipo'=>$tipo,
+            // 'NuevoTituloTraducido'=>$this->url->url_titulo,
+        ];
+        $this->dispatch('AbreModalTraduceTitulo', $data);
     }
-    public function CerrarModalTraduceTitulo(){
-        #####<livewire: web.web.cedulas.controller  />
-        $this->dispatch('CierraModalTraduceTitulo');
-    }
-    public function GuardaTituloTraducido(){
-        #####<livewire: web.web.cedulas.controller  />
-        $this->validate([
-            'NuevoTituloTraducido'=>'required'
-        ]);
-        cedulas_url::where('url_id',$this->url->url_id)->update([
-            'url_titulo'=>$this->NuevoTituloTraducido,
-        ]);
-        redirect('/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url);
-    }
+    // public function CerrarModalTraduceTitulo(){
+    //     #####<livewire: web.web.cedulas.controller  />
+    //     $this->dispatch('CierraModalTraduceTitulo');
+    // }
+    // public function GuardaTituloTraducido(){
+    //     #####<livewire: web.web.cedulas.controller  />
+    //     $this->validate([
+    //         'NuevoTituloTraducido'=>'required'
+    //     ]);
+    //     cedulas_url::where('url_id',$this->url->url_id)->update([
+    //         'url_titulo'=>$this->NuevoTituloTraducido,
+    //     ]);
+    //     redirect('/cedula/'.$this->url->url_cjarsiglas.'/'.$this->url->url_url);
+    // }
+    // public function SubirAudioTitulo(){
+    //     if($this->NuevoAudio){
+    //         #### valida formulario
+    //         $this->validate([
+    //             'NuevoAudio'=>'file|mimes:audio/mpeg,mpga,mp3,wav,ogg,aac|max:10240', // Máximo 10MB
+    //         ]);
+    //         #### Genera nombre de archivo y ruta
+    //         $nombreArchivo = $this->url->url_urltxt.'_'.$this->url->url_cjarsiglas.'_'.$this->url->url_lencode.'_00_titulo.'.$this->NuevoAudio->getClientOriginalExtension();
+    //         $rutaArchivo = '/cedulas/audios/';
+    //         ##### Guarda archivo
+    //         $this->NuevoAudio->storeAs('/public'.$rutaArchivo, $nombreArchivo);
+    //         ##### Modifica base de datos
+    //         cedulas_url::where('url_id',$this->url->url_id)->update([
+    //             'url_audiotitulo'=>$rutaArchivo.$nombreArchivo,
+    //         ]);
+
+    //         $this->url->url_audiotitulo = $rutaArchivo.$nombreArchivo;
+    //     }
+    // }
+    // public function EliminarAudioTitulo(){
+    //     ##### Elimina archivo
+    //     // if($this->url->url_audiotitulo){
+    //     //     \Storage::delete($this->url->url_audiotitulo);
+    //     // }
+    //     ##### Modifica base de datos
+    //     cedulas_url::where('url_id',$this->url->url_id)->update([
+    //         'url_audiotitulo'=>null,
+    //     ]);
+    //     $this->url->url_audiotitulo = null;
+    // }
 
     ##########################################################
     ################## Modal externo Agregar Ubicación

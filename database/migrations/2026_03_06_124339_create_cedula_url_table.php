@@ -42,6 +42,11 @@ return new class extends Migration
             $table->decimal('url_version',5 ,2)->default('1.0');
             $table->string('url_doi')->nullable();
 
+            $table->string('url_audiotitulo')->nullable(); ##### Ruta al audio del título (ruta: /public/cedulas/audios/urltxt_jardin_lengua_00_titulo)
+            $table->string('url_audioautor')->nullable(); ##### Ruta al audio de autores (ruta: /public/cedulas/audios/urltxt_jardin_lengua_00_autor)
+            $table->string('url_audiotraductor')->nullable(); ##### Ruta al audio de traductor (ruta: /public/cedulas/audios/urltxt_jardin_lengua_00_traductor)
+
+
             $table->timestamps();
             // $table->unique(['url_cjarsiglas','url_url']);
         });
