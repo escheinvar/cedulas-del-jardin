@@ -15,7 +15,7 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Safe\url;
+
 
 class ModalCedulaCambiaEstadoComponent extends Component
 {
@@ -70,7 +70,6 @@ class ModalCedulaCambiaEstadoComponent extends Component
         }else{
             $this->verDoi='1';
         }
-
     }
 
     public function mount(){
@@ -120,14 +119,24 @@ class ModalCedulaCambiaEstadoComponent extends Component
             $texto3="editor";
 
         }elseif(in_array($edo,['2'])){
-            ##### Busca autores o traductores
-            $buscaId1=$buscaId1->whereIn('aut_tipo',['Autor','Traductor'])
-                ->distinct('aut_cautid')
-                ->pluck('aut_cautid')
-                ->toArray();
-            $texto1="fue editada por el editor y se envía a ";
-            $texto2=" (autor o traductor) para su revisión";
-            $texto3="autor/traductor";
+            if($this->CambiaEdo_ced > '0'){
+                ##### Busca autores o traductores
+                $buscaId1=$buscaId1->whereIn('aut_tipo',['Traductor'])
+                    ->distinct('aut_cautid')
+                    ->pluck('aut_cautid')
+                    ->toArray();
+                $texto1="fue editada por el editor y se envía a ";
+                $texto2=" (traductor) para su revisión";
+                $texto3="traductor";
+            }else{
+                $buscaId1=$buscaId1->whereIn('aut_tipo',['Autor'])
+                    ->distinct('aut_cautid')
+                    ->pluck('aut_cautid')
+                    ->toArray();
+                $texto1="fue editada por el editor y se envía a ";
+                $texto2=" (autor) para su revisión";
+                $texto3="autor";
+            }
 
         }elseif(in_array($edo,['4'])){
             ###### Busca administradores del jarrdín
@@ -155,9 +164,9 @@ class ModalCedulaCambiaEstadoComponent extends Component
             ->where('caut_act','1')
             ->where('caut_del','0')
             ->where('caut_usrid','>','0')
+            ->where('caut_usrid','!=',Auth::user()->id)
             ->distinct('caut_usrid')
             ->get();
-
 
         ##### Envía el correo
         foreach($buscaId2 as $a){
@@ -285,8 +294,6 @@ class ModalCedulaCambiaEstadoComponent extends Component
 
         }else{
             $version=$this->CambiaEdo_ced->url_version;
-
-
         }
 
         ##### Genera Cita
