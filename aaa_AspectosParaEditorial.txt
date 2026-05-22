@@ -2,16 +2,18 @@
 
 - debe respetar y nombrar autores, lugares
 - dar lugar a saber local.
-- dar reconocimiento a la coumunidad portadora del saber.
+- dar reconocimiento a la coumnidad portadora del saber.
 - no puede tener palabras altisonantes.
 - Debe estar redactado claramente y las ideas de cada párrafo deben ser comprensibles por el lector.
 - Con fines de traducción a lenguas originarias, se recomienda evitar el uso de términos técnicos de difícil o nula traducción.
 - Debe ser respetuoso del conocimiento local, no debe denigrarlo o ponerlo por debajo del científico.
-- Debe incluir una o más especies locales.
+- Debe incluir una o más especies locales. Las especies deben ser referidas con su nombre común (indicando la lengua del nombre) y preferentemente con su nombre científico.
 - Debe ir acompañada de un mínimo de 3 objetos (preferentemente 5 o más) todos con sus metadatos y debido reconocimiento.
 - Preferentemente debe incluir el nombre científico de la(s) especies.
 - Extensión mínima de  500 palabras
 - En caso de refereir a algún conocimiento obtenido de una comunicación personal o de cualquier otro documento, debe incluir la cita.
 - Las citas son en formato xxy:   Apellido Nombre, Apellido Nombre. Año. ....
 - Las imágenes deben tener un tamaño mínimo de X px x X px.
+- Los nombres científicos van en cursivas.
+
 

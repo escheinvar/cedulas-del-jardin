@@ -65,8 +65,18 @@
             <i wire:click="BorrarCampo('BuscaTexto')" class="bi bi-x-square agregar"></i>
         </div>
 
+        <!-- Buscar por autor -->
+        <div class="col-12 col-md-3 my-1 form-group">
+            <label for="BuscaAutor" class="form-label">Buscar por autor<red></red></label>
+            <input wire:model.live="BuscaAutor" id="BuscaAutor" class="@error('BuscaAutor') is-invalid @enderror form-control agregar" type="text">
+            <i wire:click="BorrarCampo('BuscaAutor')" class="bi bi-x-square agregar"></i>
+            <div class="form-text"></div>
+            @error('BuscaAutor')<error>{{ $message }}</error>@enderror
+        </div>
+
         <!-- mostrar solo originales -->
         <div class="col-12 col-md-2 form-check">
+            <br>
             <input wire:model="BuscaOriginal"  wire:change="DefineSession('BuscaOriginal')" @if($BuscaOriginal==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             <label class="form-check-label" for="flexCheckDefault">
                 Ocultar traducciones
@@ -75,6 +85,7 @@
 
         <!-- Ocultar publicadas -->
         <div class="col-12 col-md-2 form-check">
+            <br>
             <input wire:model="OcultaPublicadas"  wire:change="DefineSession('OcultaPublicadas')" @if($OcultaPublicadas==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="OcultaPublicadas">
             <label class="form-check-label" for="OcultaPublicadas">
                 Ocultar publicadas

@@ -195,7 +195,12 @@ class ModalCedulaBuscautorComponent extends Component
 
         }
         ##### Revisa si el autor/editor/trad. tiene cuenta de usuario
-        $buscaId=cat_autores::where('caut_id',$this->BuscaAutor_id)->where('caut_del','0')->where('caut_act','1')->value('caut_usrid');
+        $buscaId=cat_autores::where('caut_id',$this->BuscaAutor_id)
+            ->where('caut_del','0')
+            ->where('caut_id','!=',Auth::user()->id)
+            ->where('caut_act','1')
+            ->value('caut_usrid');
+
         ##### Envía el correo
         if($buscaId > '0'){
             ##### construye variables

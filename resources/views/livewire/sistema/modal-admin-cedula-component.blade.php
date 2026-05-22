@@ -287,7 +287,7 @@
                                     @foreach ($CedAliasCom as $a)
                                         <div class="elemento" style="font-size: 80%;">
                                             <div class="cortaTexto PaClick" id="Alias{{ $a->ali_id }}" onclick="QuitarCortaTexto('Alias','{{ $a->ali_id }}')" style="display:inline-block;">
-                                                {{ $a->ali_txt_tr }} 
+                                                {!! $a->ali_txt_tr !!}
                                             </div>
                                             <i wire:click="AbrirModalDeAlias('{{ $a->ali_id }}','Nombre común')" class="bi bi-pencil-square agregar" style="float: right;"></i>
                                         </div>
@@ -312,7 +312,7 @@
                                     @foreach ($CedAlias as $a)
                                         <div class="elemento" style="font-size: 80%;">
                                             <div class="cortaTexto PaClick" id="Alias{{ $a->ali_id }}" onclick="QuitarCortaTexto('Alias','{{ $a->ali_id }}')" style="display:inline-block;">
-                                                {{ $a->ali_txt_tr }} 
+                                                {!! $a->ali_txt_tr !!}
                                             </div>
                                             <i wire:click="AbrirModalDeAlias('{{ $a->ali_id }}','Palabra clave')" class="bi bi-pencil-square agregar" style="float: right;"></i>
                                         </div>

@@ -6,6 +6,7 @@ namespace App\Livewire\Sistema;
 use App\Models\cat_tipocedula;
 use App\Models\CatJardinesModel;
 use App\Models\ced_autores;
+use App\Models\cat_autores;
 use App\Models\cedulas_txt;
 use App\Models\cedulas_url;
 use App\Models\lenguas;
@@ -16,7 +17,9 @@ use Livewire\Component;
 class AdminCedulasComponent extends Component
 {
     public $edit, $editMaster, $editjar; ##### Variables de permisos del usuario
-    public $jardinSel, $BuscaLengua, $BuscaEstado, $BuscaTexto, $BuscaOriginal, $sentido, $orden, $edoEdit, $abiertos; ##### Vars de formulario de búsqueda y de tabla
+    ##### Vars de formulario de búsqueda y de tabla
+    public $jardinSel, $BuscaLengua, $BuscaEstado, $BuscaTexto, $BuscaOriginal, $BuscaAutor;
+    public $sentido, $orden, $edoEdit, $abiertos;
     public $OcultaPublicadas;
 
     #################################################################################
@@ -183,6 +186,22 @@ class AdminCedulasComponent extends Component
                     ->orWhere('url_titulo','ilike', '%'.$this->BuscaTexto.'%')
                     ->orWhere('url_resumen','ilike', '%'.$this->BuscaTexto.'%');
                 });
+            }
+
+            ##### Obtiene lista de Cédulas por autor
+            if($this->BuscaAutor != ''){
+                $autoresPosibles=cat_autores::where('caut_nombre','ilike', '%'.$this->BuscaAutor.'%')
+                    ->orWhere('caut_apellido1','ilike', '%'.$this->BuscaAutor.'%')
+                    ->orWhere('caut_apellido2','ilike', '%'.$this->BuscaAutor.'%')
+                    ->orWhere('caut_nombreautor','ilike', '%'.$this->BuscaAutor.'%')
+                    ->join('ced_autores','aut_cautid','=','caut_id')
+                    ->where('caut_del','0')
+                    ->where('caut_act','1')
+                    ->where('aut_del','0')
+                    ->where('aut_act','1')
+                    ->pluck('aut_urlid')
+                    ->toArray();
+                $urls=$urls->whereIn('url_id', $autoresPosibles);
             }
 
             ##### Revisa opción de solo publicadas (checkbox)
