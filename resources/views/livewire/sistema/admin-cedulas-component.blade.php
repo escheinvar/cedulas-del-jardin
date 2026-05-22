@@ -68,7 +68,7 @@
         <!-- Buscar por autor -->
         <div class="col-12 col-md-3 my-1 form-group">
             <label for="BuscaAutor" class="form-label">Buscar por autor<red></red></label>
-            <input wire:model.live="BuscaAutor" id="BuscaAutor" class="@error('BuscaAutor') is-invalid @enderror form-control agregar" type="text">
+            <input wire:model.live="BuscaAutor" wire:change="DefineSession('BuscaAutor')" id="BuscaAutor" class="@error('BuscaAutor') is-invalid @enderror form-control agregar" type="text">
             <i wire:click="BorrarCampo('BuscaAutor')" class="bi bi-x-square agregar"></i>
             <div class="form-text"></div>
             @error('BuscaAutor')<error>{{ $message }}</error>@enderror
