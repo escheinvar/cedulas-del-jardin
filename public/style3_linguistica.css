@@ -11,8 +11,24 @@ button.lenguas{
 }
 
 /*-- linea arriba del caracter (tono medio)--*/
-ar{
+/* ar{
     border-top: 1px solid black;
+    transform: translateY(4px);
+    display: inline-block;
+}
+*/
+ ar {
+  position: relative;        /* Necesario para posicionar la línea */
+
+}
+ar::before {
+  /* content: "";               Obligatorio para que el seudoelemento exista */
+  position: absolute;
+  top: 3px;                /* Distancia por encima del elemento */
+  left: 0;
+  width: 100%;               /* Ancho de la línea (puede ser en píxeles fijos como 100px) */
+  height: 2px;               /* Grosor de la línea */
+  background-color: #000;    /* Color de la línea */
 }
 ar::before{
     content:' ';
