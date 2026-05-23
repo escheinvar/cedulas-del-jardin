@@ -197,7 +197,7 @@ class ModalCedulaBuscautorComponent extends Component
         ##### Revisa si el autor/editor/trad. tiene cuenta de usuario
         $buscaId=cat_autores::where('caut_id',$this->BuscaAutor_id)
             ->where('caut_del','0')
-            ->where('caut_id','!=',Auth::user()->id)
+            ->where('caut_usrid','!=',Auth::user()->id)
             ->where('caut_act','1')
             ->value('caut_usrid');
 
@@ -214,7 +214,7 @@ class ModalCedulaBuscautorComponent extends Component
             $to=$buscaId;        ##### id de users de destino
             $from=Auth::user()->id;      ##### id de users de quien escribe o 0 para sistema
             $ifReply='0';   ##### 0 para mensajes nuevos o msj_id para respuesta a msj previo
-            $asunto="Asignación de privilegios de autor/traductor/editor sobre una cédula del Jardín";
+            $asunto="Asignación de privilegios de '.$this->BuscaAutor_tipo.' sobre una cédula del Jardín";
             $mensaje='Se te asignó el privilegio de <b>'. $this->BuscaAutor_tipo .
                 '</b> sobre la cédula <b>'. $urltxt .'</b> ' .$lengua.
                 '</b>  del jardín <b>'.$jardin.

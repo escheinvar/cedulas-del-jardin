@@ -15,5 +15,7 @@
 - Las citas son en formato xxy:   Apellido Nombre, Apellido Nombre. Año. ....
 - Las imágenes deben tener un tamaño mínimo de X px x X px.
 - Los nombres científicos van en cursivas.
+- texto de cédula preferentemente sin referencia a figuras.
+- Todas las imágenes, videos y objetos deben incluir sus metadatos: autor de la imagen (quien tomó la fotografía), fecha (en que se toma la fotografía), lugar que aparece en la fotografía, explicación de lo que se ve en la fotografía, .....
 
 
