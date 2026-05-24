@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Sistema;
 
+use App\Models\CatLenguasModel;
 use App\Models\ced_alias;
 use App\Models\ced_catalogos;
 use App\Models\cedulas_url;
+use App\Models\cat_lenguas;
 use App\Models\lenguas;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -14,7 +16,7 @@ class ModalCedulaAliasComponent extends Component
     ##### variables recibidas desde controlador eterno
     public $alias_id, $alias_urlid, $alias_tipoAlias;
     ##### variable del modal
-    public $alias_trad, $alias_url, $alias_jardin, $alias_lengua;
+    public $alias_trad, $alias_url, $alias_jardin, $alias_lengua, $alias_lengua2;
     public $alias_tipo, $alias_txt, $alias_txt_tr;
 
     /*############################################## ModalAlias_uso
@@ -106,7 +108,12 @@ class ModalCedulaAliasComponent extends Component
         }else{
             $txtTr=$this->alias_txt_tr;
         }
-
+        ##### recalcula en caso de otra
+        if($this->alias_lengua=='otra'){
+            $lengua=$this->alias_lengua2;
+        }else{
+            $lengua=$this->alias_lengua;
+        }
         ##### Compila datos
         $datos=[
             'ali_cjarsiglas'=>$cedula->url_cjarsiglas,
@@ -114,7 +121,7 @@ class ModalCedulaAliasComponent extends Component
             'ali_calitipo'=>$this->alias_tipo,
             'ali_txt'=>$this->alias_txt,
             'ali_txt_tr'=>$txtTr,
-            'ali_lengua'=>$this->alias_lengua,
+            'ali_lengua'=>$lengua,
         ];
         if($this->alias_id=='0'){
             ##### Calcula todas las copias y genera alias en cada una de ellas
@@ -169,6 +176,7 @@ class ModalCedulaAliasComponent extends Component
         return view('livewire.sistema.modal-cedula-alias-component',[
             // 'tipoAlias'=>$tipos,
             'lenguas'=>$lenguas,
+            'lenguas2'=>CatLenguasModel::orderBy('clen_lengua')->orderBy('clen_autonimia')->get(),
         ]);
     }
 }

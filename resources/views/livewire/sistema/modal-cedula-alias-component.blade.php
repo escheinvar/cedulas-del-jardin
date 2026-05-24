@@ -30,14 +30,31 @@
                 <!-- Lengua -->
                 <div class="col-12  my-1 form-group">
                     <label for="alias_lengua" class="form-label">Lengua<red>*</red></label>
-                    <select wire:model="alias_lengua" id="alias_lengua" class="@error('alias_lengua') is-invalid @enderror form-select">
+                    <select wire:model.live="alias_lengua" id="alias_lengua" class="@error('alias_lengua') is-invalid @enderror form-select">
                         <option value="">Indicar...</option>
                         @foreach($lenguas as $l)
                             <option value="{{ $l->len_code }}"> {{ $l->len_autonimias }} ({{$l->len_lengua}}) {{ $l->len_code }}</option>
                         @endforeach
+                        <option value="otra">Otra</option>
                     </select>
                     <div class="form-text"></div>
                     @error('alias_lengua')<error>{{ $message }}</error>@enderror
+                </div>
+
+                <!-- Lengua2 -->
+                <div class="col-12  my-1 form-group">
+                    @if($alias_lengua=='otra')
+                        <label for="alias_lengua2" class="form-label">Lengua<red>*</red></label>
+                        <select wire:model="alias_lengua2" id="alias_lengua2" class="@error('alias_lengua2') is-invalid @enderror form-select">
+                            <option value="">Indicar...</option>
+                            @foreach($lenguas2 as $l)
+                                <option value="{{ $l->clen_code }}">({{$l->clen_lengua}}) {{ $l->clen_autonimia }} [{{ $l->clen_code }}]</option>
+                            @endforeach
+                            <option value="otra">Otra</option>
+                        </select>
+                        <div class="form-text"></div>
+                        @error('alias_lengua2')<error>{{ $message }}</error>@enderror
+                    @endif
                 </div>
 
                 <!-- Palabra -->
