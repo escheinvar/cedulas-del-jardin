@@ -5,6 +5,7 @@ namespace App\Livewire\Sistema;
 use App\Models\ced_alias;
 use App\Models\ced_catalogos;
 use App\Models\cedulas_url;
+use App\Models\lenguas;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -13,7 +14,7 @@ class ModalCedulaAliasComponent extends Component
     ##### variables recibidas desde controlador eterno
     public $alias_id, $alias_urlid, $alias_tipoAlias;
     ##### variable del modal
-    public $alias_trad, $alias_url, $alias_jardin;
+    public $alias_trad, $alias_url, $alias_jardin, $alias_lengua;
     public $alias_tipo, $alias_txt, $alias_txt_tr;
 
     /*############################################## ModalAlias_uso
@@ -43,6 +44,7 @@ class ModalCedulaAliasComponent extends Component
         $this->alias_trad=$cedula->url_tradid;
         $this->alias_url=$cedula->url_urlurl;
         $this->alias_jardin=$cedula->url_cjarsiglas;
+        $this->alias_lengua=$cedula->url_lencode;
         if($this->alias_id > '0'){
             $dato=ced_alias::where('ali_id',$this->alias_id)->first();
             $this->alias_tipo=$dato->ali_calitipo;
@@ -88,11 +90,13 @@ class ModalCedulaAliasComponent extends Component
                 'alias_tipo'=>'required',
                 'alias_txt'=>'required',
                 'alias_txt_tr'=>'required',
+                'alias_lengua'=>'required',
             ]);
         }else{
             $this->validate([
                 'alias_tipo'=>'required',
                 'alias_txt'=>'required',
+                'alias_lengua'=>'required',
             ]);
         }
         ##### Calcula valores para generar
@@ -110,6 +114,7 @@ class ModalCedulaAliasComponent extends Component
             'ali_calitipo'=>$this->alias_tipo,
             'ali_txt'=>$this->alias_txt,
             'ali_txt_tr'=>$txtTr,
+            'ali_lengua'=>$this->alias_lengua,
         ];
         if($this->alias_id=='0'){
             ##### Calcula todas las copias y genera alias en cada una de ellas
@@ -160,8 +165,10 @@ class ModalCedulaAliasComponent extends Component
 
     public function render(){
         // $tipos=ced_catalogos::where('cat_tipo','alias')->get();
+        $lenguas=lenguas::all();
         return view('livewire.sistema.modal-cedula-alias-component',[
             // 'tipoAlias'=>$tipos,
+            'lenguas'=>$lenguas,
         ]);
     }
 }
