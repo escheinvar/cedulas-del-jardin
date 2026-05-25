@@ -211,6 +211,7 @@
                                                 <li><a class="dropdown-item @if(request()->path() == 'admin_imagenes') active @endif" href="/admin_imagenes">Imágenes</a></li>
 
                                                 <li> <hr class="dropdown-divider"> </li>
+                                                <li><a class="dropdown-item @if(request()->path() == 'reporte_cedulas') active @endif" href="/reporte_cedulas">Reporte</a></li>
                                                 <li><a class="dropdown-item @if(request()->path() == 'admin_aportes') active @endif" href="/admin_aportes">Aportes</a></li>
                                                 <li><a class="dropdown-item @if(request()->path() == 'admin_vervisitas') active @endif" href="/admin_visitas">Visitas</a></li>
                                             </ul>

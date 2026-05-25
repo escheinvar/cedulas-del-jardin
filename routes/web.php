@@ -10,26 +10,22 @@ use App\Http\Middleware\UsuarioLogeadoConRolMiddle;
 use App\Http\Middleware\VerificaUrlCedula;
 use App\Livewire\Admin\Nuevousuario01Controller;
 use App\Livewire\Admin\NuevoUsuarioController;
-// use App\Livewire\Cedulas\AportesComponent;
-// use App\Livewire\Cedulas\CatalogoDeCedulasComponent;
-// use App\Livewire\Cedulas\DistribuidorDeCedulasComponent;
-// use App\Livewire\Cedulas\EditaCedulasComponent;
-// use App\Livewire\Cedulas\EspeciesComponent;
 use App\Livewire\Login\RecuperaPasswd01Controller;
 use App\Livewire\Login\RecuperaPasswdController;
 use App\Livewire\Sistema\AdminAportesPublicoComponent;
+use App\Livewire\Sistema\AdminAutoresComponent;
 use App\Livewire\Sistema\AdminCedulasComponent;
 use App\Livewire\Sistema\AdminImagenesController;
 use App\Livewire\Sistema\AdminJardinesController;
-use App\Livewire\Sistema\AdminAutoresComponent;
+use App\Livewire\Sistema\AdminUsuariosComponent;
+use App\Livewire\Sistema\AdminWebComponent;
 use App\Livewire\Sistema\BuzonController;
 use App\Livewire\Sistema\ErrorComponent;
 use App\Livewire\Sistema\HomeComponent;
 use App\Livewire\Sistema\HomeConfigController;
 use App\Livewire\Sistema\LenguasComponent;
-use App\Livewire\Sistema\AdminUsuariosComponent;
+use App\Livewire\Sistema\ReporteCedulasComponent;
 use App\Livewire\Sistema\VisitasComponent;
-use App\Livewire\Sistema\AdminWebComponent;
 use App\Livewire\Web\AutoresController;
 use App\Livewire\Web\CedulasController;
 use App\Livewire\Web\JardinController;
@@ -89,7 +85,7 @@ Route::middleware([UsuarioLogeadoConRolMiddle::class,Authenticate::class])->grou
     Route::get('/admin_cedulas',AdminCedulasComponent::class)->name('AdminCedulas');
     Route::get('/admin_visitas',VisitasComponent::class)->name('visitas');
     Route::get('/admin_aportes',AdminAportesPublicoComponent::class)->name('aportes');
-
+    Route::get('/reporte_cedulas', ReporteCedulasComponent::class)->name('reporteCedulas');
 
     /* --------------------------- SECCION CÉDULAS -------------------------------- */
     /* ---------------------------------------------------------------------------- */

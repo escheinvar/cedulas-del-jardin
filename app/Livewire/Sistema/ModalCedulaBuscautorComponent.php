@@ -228,7 +228,7 @@ class ModalCedulaBuscautorComponent extends Component
 
 
         ##### Finaliza con mensaje y cierre
-        $this->dispatch('AvisoExitoBuscaAutorCedula',msj:'Se agregó correctamente el autor');
+        #$this->dispatch('AvisoExitoBuscaAutorCedula',msj:'Se agregó correctamente el autor');
         $this->dispatch('LimpiaBusqueda1');
         $this->dispatch('LimpiaBusqueda2');
         $this->BuscaAutor_Ganon=collect();
