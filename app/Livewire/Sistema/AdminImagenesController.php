@@ -36,12 +36,12 @@ class AdminImagenesController extends Component
     }
 
     public function DefineSesion($Modelo){
-        ##### Guarda variables de búsqueda en sesión para que al reiniciar, sigua la misma búsqueda
-        if($Modelo=='jardin'){
-            session(['jardin'=>$this->BuscaJardin]);
-        }else{
-            session(['tempSession'=>[$Modelo=>$this->$Modelo]]);
+        ##### Guarda variables de sesión
+        session(['jardin'=>$this->BuscaJardin]);
+        foreach(['BuscaMod','BuscaUrl','BuscaSubMod','BuscaTxt','BuscaTipo'] as $mod){
+            $bla[$mod]=$this->$mod;
         }
+        session(['tempSession'=>$bla]);
     }
 
     public function CambiaModo(){

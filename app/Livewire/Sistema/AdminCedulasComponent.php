@@ -58,11 +58,6 @@ class AdminCedulasComponent extends Component
 
     public function DefineCambio($Modelo){
         $this->cambiaPars='1';
-        // if($Modelo=='jardin'){
-        //     session(['jardin'=>$this->jardinSel]);
-        // }else{
-        //     session(['tempSession'=>[$Modelo=>$this->$Modelo]]);
-        // }
     }
 
     public function BuscarEnTextoDeCedulas(){
