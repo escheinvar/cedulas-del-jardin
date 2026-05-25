@@ -12,9 +12,11 @@ class ReporteCedulasComponent extends Component
         $orig = cedulas_url::where('url_tradid','0')
             ->where('url_act','1')
             ->where('url_del','0')
+            ->with('jardin')
             ->orderBy('url_cjarsiglas')
             ->orderBy('url_id')
             ->get();
+
         $trad = cedulas_url::where('url_tradid','>','0')
             ->where('url_act','1')
             ->where('url_del','0')
