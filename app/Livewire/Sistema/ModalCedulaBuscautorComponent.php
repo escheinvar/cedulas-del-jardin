@@ -72,12 +72,13 @@ class ModalCedulaBuscautorComponent extends Component
 
         ##### Genera query de búsqueda
         $busqueda=cat_autores::query();
+
         $busqueda=$busqueda->where('caut_act','1')
             ->where('caut_del','0');
 
         ###### Busca por nombre
         if($this->BuscaAutor_BuscaNombre != '' ){
-            $busqueda=$busqueda->where('caut_nombre','ilike', '%'.$this->BuscaAutor_BuscaNombre.'%');
+            $busqueda=$busqueda->whereRaw("unaccent(caut_nombre) ILIKE unaccent(?)", ['%'.$this->BuscaAutor_BuscaNombre.'%']);
         }
 
         ##### Busca por apellidos
@@ -87,11 +88,6 @@ class ModalCedulaBuscautorComponent extends Component
                 ->whereRaw("unaccent(caut_apellido1) ILIKE unaccent(?)", ['%'.$this->BuscaAutor_BuscaApellido.'%'])
                 ->orWhereRaw("unaccent(caut_apellido2) ILIKE unaccent(?)", ['%'.$this->BuscaAutor_BuscaApellido.'%']);
             });
-        }
-
-        ##### En caso de Editor, restringe a puro registrado
-        if($this->BuscaAutor_tipo=="Editor"){
-            // $busqueda=$busqueda->where('caut_usrid','>','0');
         }
 
         ##### Finaliza búsqueda
