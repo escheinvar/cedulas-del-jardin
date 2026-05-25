@@ -14,25 +14,25 @@
         <div class="col-0 col-md-3"> &nbsp; </div>
 
         <div class="col-3 col-md-1 cedEdoIcon0" style="text-align:center;font-size:80%;">
-            <div class="cedEdo0" style="font-size: 80%;">Autor/Traductor</div>
+            <div class="cedEdo0" style="font-size: 80%;">0 Autor/Traductor</div>
         </div>
         <div class="col-3 col-md-1 cedEdoIcon1" style="text-align:center;font-size:80%;">
-            <div class="cedEdo1" style="font-size: 80%;">Editor</div>
+            <div class="cedEdo1" style="font-size: 80%;">1 Editor</div>
         </div>
         <div class="col-3 col-md-1 cedEdoIcon2" style="text-align:center;font-size:80%;">
-            <div class="cedEdo2" style="font-size: 80%;">Autor/Traductor</div>
+            <div class="cedEdo2" style="font-size: 80%;">2 Autor/Traductor</div>
         </div>
         <div class="col-3 col-md-1 cedEdoIcon3" style="text-align:center;font-size:80%;">
-            <div class="cedEdo3" style="font-size: 80%;">Editor</div>
+            <div class="cedEdo3" style="font-size: 80%;">3 Editor</div>
         </div>
         <div class="col-3 col-md-1 cedEdoIcon4" style="text-align:center;font-size:80%;">
-            <div class="cedEdo4" style="font-size: 80%;">Administrador</div>
+            <div class="cedEdo4" style="font-size: 80%;">4 Administrador</div>
         </div>
         <div class="col-3 col-md-1 cedEdoIcon5" style="text-align:center;font-size:80%;">
-            <div class="cedEdo5" style="font-size: 80%;">Administrador</div>
+            <div class="cedEdo5" style="font-size: 80%;">5Administrador</div>
         </div>
         <div class="col-3 col-md-1 cedEdoIcon6" style="text-align:center;font-size:80%;">
-            <div class="cedEdo6" style="font-size: 80%;"></div>
+            <div class="cedEdo6" style="font-size: 80%;">6</div>
         </div>
     </div>
 
@@ -139,15 +139,11 @@
     <script>
         /* ############## Script para activar popovers de bootstrap en Livewire ############## */
         document.addEventListener('livewire:init', () => {
-            // Initialize on page load
             const initPopovers = () => {
                 const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
                 const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
             }
-
             initPopovers();
-
-            // Re-initialize after Livewire updates
             Livewire.hook('morph.updated', (el, component) => {
                 initPopovers();
             });

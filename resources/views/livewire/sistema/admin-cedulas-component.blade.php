@@ -21,7 +21,7 @@
         <!-- buscar por jardín -->
         <div class="col-12 col-md-3 form-group" wire:ignore>
             <label for="jardinSel" class="form-label">Jardin<red>*</red></label>
-            <select wire:model="jardinSel"  wire:change="DefineSession('jardin')" id="jardinSel" class="form-select">
+            <select wire:model="jardinSel"  wire:change="DefineCambio('jardin')" id="jardinSel" class="form-select">
                 <option value="">Indica un jardín</option>
                 @foreach($JardsDelUsr as $jar)
                     <option value="{{ $jar->cjar_siglas }}">{{ $jar->cjar_siglas }} ({{ $jar->cjar_name }})</option>
@@ -35,7 +35,7 @@
         <!-- buscar por lengua -->
         <div class="col-12 col-md-3 form-group">
             <label for="" class="form-label">Lengua<red></red></label>
-            <select wire:model.live="BuscaLengua" wire:change="DefineSession('BuscaLengua')" id="BuscaLengua" class="form-select">
+            <select wire:model="BuscaLengua" wire:change="DefineCambio('BuscaLengua')" id="BuscaLengua" class="form-select">
                 <option value="">En todas</option>
                 @foreach($lenguas as $len)
                     <option value="{{ $len->len_code }}">{{ $len->len_lengua }} ({{ $len->len_code }})</option>
@@ -46,7 +46,7 @@
         <!-- buscar por estado -->
         <div class="col-12 col-md-3 form-group">
             <label for="" class="form-label">Estado<red></red></label>
-            <select wire:model.live="BuscaEstado" wire:change="DefineSession('BuscaEstado')" id="" class="form-select">
+            <select wire:model="BuscaEstado" wire:change="DefineCambio('BuscaEstado')" id="" class="form-select">
                 <option value="">En todos</option>
                 <option value="0">0 En creación (autor/traductor)</option>
                 <option value="1">1 En edición (editor)</option>
@@ -58,43 +58,54 @@
             </select>
         </div>
 
-        <!-- buscar por texto -->
-        <div class="col-12 col-md-3 form-group">
-            <label for="" class="form-label">Buscar por texto<red></red></label>
-            <input wire:model.live="BuscaTexto" wire:change="DefineSession('BuscaTexto')" id="" class="form-control agregar" type="text">
-            <i wire:click="BorrarCampo('BuscaTexto')" class="bi bi-x-square agregar"></i>
-        </div>
-
-        <!-- Buscar por autor -->
-        <div class="col-12 col-md-3 my-1 form-group">
-            <label for="BuscaAutor" class="form-label">Buscar por autor<red></red></label>
-            <input wire:model.live="BuscaAutor" wire:change="DefineSession('BuscaAutor')" id="BuscaAutor" class="@error('BuscaAutor') is-invalid @enderror form-control agregar" type="text">
-            <i wire:click="BorrarCampo('BuscaAutor')" class="bi bi-x-square agregar"></i>
-            <div class="form-text"></div>
-            @error('BuscaAutor')<error>{{ $message }}</error>@enderror
-        </div>
-
         <!-- mostrar solo originales -->
-        <div class="col-12 col-md-2 form-check">
+        <div class="col-6 col-md-2 form-check">
             <br>
-            <input wire:model="BuscaOriginal"  wire:change="DefineSession('BuscaOriginal')" @if($BuscaOriginal==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <input wire:model="BuscaOriginal"  wire:change="DefineCambio('BuscaOriginal')" @if($BuscaOriginal==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             <label class="form-check-label" for="flexCheckDefault">
                 Ocultar traducciones
             </label>
         </div>
 
         <!-- Ocultar publicadas -->
-        <div class="col-12 col-md-2 form-check">
+        <div class="col-6 col-md-1 form-check">
             <br>
-            <input wire:model="OcultaPublicadas"  wire:change="DefineSession('OcultaPublicadas')" @if($OcultaPublicadas==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="OcultaPublicadas">
+            <input wire:model="OcultaPublicadas"  wire:change="DefineCambio('OcultaPublicadas')" @if($OcultaPublicadas==TRUE) checked @endif class="form-check-input" type="checkbox" value="" id="OcultaPublicadas">
             <label class="form-check-label" for="OcultaPublicadas">
                 Ocultar publicadas
             </label>
         </div>
+
+        <!-- Buscar por autor -->
+        <div class="col-12 col-md-3 my-1 form-group">
+            <label for="BuscaAutor" class="form-label">Buscar por autor<red></red></label>
+            <input wire:model="BuscaAutor" wire:keyup   ="DefineCambio('BuscaAutor')" id="BuscaAutor" class="@error('BuscaAutor') is-invalid @enderror form-control agregar" type="text">
+            <i wire:click="BorrarCampo('BuscaAutor')" class="bi bi-x-square agregar"></i>
+            <div class="form-text"></div>
+            @error('BuscaAutor')<error>{{ $message }}</error>@enderror
+        </div>
+
+        <!-- buscar por texto -->
+        <div class="col-12 col-md-3 form-group">
+            <label for="" class="form-label">Buscar por texto<red></red></label>
+            <input wire:model="BuscaTexto" wire:keyup="DefineCambio('BuscaTexto')" id="BuscaTexto" class="form-control agregar" type="text">
+            <i wire:click="BorrarCampo('BuscaTexto'); DefineCambio('a')"  class="bi bi-x-square agregar"></i>
+        </div>
+
+        <!-- botón buscar-->
+        <div class="col-12 col-md-3 my-1 form-group">
+            @if($cambiaPars=='1')
+                <span style="color:green;font-size:80%;">Parámetros actualizados</span>
+                <br>
+                <button wire:click="BuscarEnTextoDeCedulas()" class="btn btn-secondary">
+                    <i class="bi bi-search"></i> Buscar
+                </button>
+            @endif
+        </div>
     </div>
 
     <!-- ----------------- El ciclo de la cédula -------------------- -->
-    <div class="row">
+    <div class="row my-4">
         <div class="col-12" style="background-color:#CDC6B9;text-align:center;"><b>El ciclo de publicación de una cédula</b></div>
         <div class="col-0 col-md-3"> &nbsp; </div>
 
@@ -210,7 +221,6 @@
                                     {!! $u->url_tituloorig!!}
                                 @endif
                             </div>
-                            </div>
                         </td>
 
                         <!-- lengua -->
@@ -220,13 +230,6 @@
                                 {{ $u->lenguas->len_lengua }} [{{ $u->lenguas->len_code }}]
                             </div>
                         </td>
-
-                        <!-- tipo -->
-                        {{-- <td>
-                            <div>
-                                {{ $u->url_ccedtipo }}
-                            </div>
-                        </td> --}}
 
                         <td>
                             <div style="font-size:80%;">
@@ -277,6 +280,13 @@
                             @else
                                 - - -
                             @endif
+                            <!-- palabras clave -->
+                            {{-- <button wire:ignore class="btn btn-sm" style="color:gray;"
+                                data-bs-toggle="popover"
+                                data-bs-title="Nombres comunes y P. clave"
+                                data-bs-content="{{ implode(', ', $u->alias->pluck('ali_txt')->toArray() ) }}">
+                                ...
+                            </button> --}}
                         </td>
 
                         <!-- estado -->
@@ -376,5 +386,18 @@
             location.reload();
             // window.location.href;
         });
+
+        /* ############## Script para activar popovers de bootstrap en Livewire ############## */
+        document.addEventListener('livewire:init', () => {
+            const initPopovers = () => {
+                const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+                const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+            }
+            initPopovers();
+            Livewire.hook('morph.updated', (el, component) => {
+                initPopovers();
+            });
+        });
+
     </script>
 </div>
