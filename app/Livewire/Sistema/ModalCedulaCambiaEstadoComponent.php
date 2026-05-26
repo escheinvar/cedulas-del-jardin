@@ -178,7 +178,7 @@ class ModalCedulaCambiaEstadoComponent extends Component
             $from=Auth::user()->id;      ##### id de users de quien escribe o 0 para sistema
             $ifReply='0';   ##### 0 para mensajes nuevos o msj_id para respuesta a msj previo
             $asunto="Se te envía la cédula ".$url->url_titulo." para su revisión.";
-            $mensaje='La cédula <b>"'. $url->url_titulo .'"</b>'.
+            $mensaje='La cédula <b>"'. $url->url_titulo .'"</b>('.$url->url_tituloorig.') '.
                 ' en lengua <b>'. $url->lenguas->len_autonimias .'</b> ('.$url->lenguas->len_lengua.') ['.$url->lenguas->len_code.']'.
                 ' del jardín <b>'. $url->url_cjarsiglas .'</b> '.
                 $texto1." <b>". $a->caut_nombre." ".$a->caut_apellido1."</b> ".$texto2.
@@ -374,6 +374,7 @@ class ModalCedulaCambiaEstadoComponent extends Component
             ->toArray();
         $autoresConCta=cat_autores::whereIn('caut_id',$ListaUnicaDeAutores)
             ->where('caut_usrid','>','0')
+            ->where('caut_usrid','!=',Auth::user()->id)
             ->get();
         $autoresSinCta=cat_autores::whereIn('caut_id',$ListaUnicaDeAutores)
             ->whereNotIn('caut_id',  $autoresConCta->pluck('caut_id')->toArray())
@@ -383,7 +384,7 @@ class ModalCedulaCambiaEstadoComponent extends Component
         ##### Prepara textos para correos
         if($this->CambiaEdo_version=='1'){$textin1=' nueva ';}else{$textin1=' misma ';}
         if($this->CambiaEdo_ced->url_ciclo=='0'){$TextoX=' finalizó su primer ciclo de revisiones ';}else{$TextoX=' finalizó su ciclo número '.$this->CambiaEdo_ced->url_ciclo.' de revisiones ';}
-        $Texto='La cédula "<b>'.$this->CambiaEdo_ced->url_titulo.'</b>" '.
+        $Texto='La cédula "<b>'.$this->CambiaEdo_ced->url_titulo.'</b>" ('.$this->CambiaEdo_ced->url_tituloorig.') '.
                 ' en lengua '.$this->CambiaEdo_ced->lenguas->len_autonimias." (".$this->CambiaEdo_ced->lenguas->len_lengua.")".
                 " del jardín ".$this->CambiaEdo_ced->url_cjarsiglas.
                 $TextoX.
