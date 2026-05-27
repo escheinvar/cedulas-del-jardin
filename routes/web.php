@@ -94,7 +94,8 @@ Route::middleware([UsuarioLogeadoConRolMiddle::class,Authenticate::class])->grou
 });
 
 /* ------------------------------------ PÁGINA WEB PÚBLICA ------------------------ */
-Route::get('/', SistInicioController::class)->name('inicio');
+Route::get('/', SistCedulasComponent::class)->name('inicio');
+Route::get('/sistema', SistInicioController::class)->name('inicio');
 #Route::get('/acercade', AcercadeComponent::class)->name('acercade');
 Route::get('/jardiness',SistJardinesController::class)->name('jardines');
 Route::get('/autores',SistAutoresController::class)->name('autores');

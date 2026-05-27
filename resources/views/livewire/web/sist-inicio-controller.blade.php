@@ -13,31 +13,49 @@
         <div class="col-sm-auto col-md-4 text-end px-4 mb-4">
             <center>
 
-                <img  src="http://localhost:8000/imagenes/logo-nav.png">
+                <img  src="{{ asset('/imagenes/logo-nav.png') }}">
             </center>
         </div>
 
         <div class="col-sm-auto col-md-8 px-4 mb-4" style="text-align: justify;">
+            <p>El patrimonio biocultural se define como la trama viva que entrelaza la diversidad biológica con la diversidad cultural,
+                reconociendo que ambas coevolucionan en territorios específicos a lo largo del tiempo. No se
+                limita a especies, ecosistemas, usos o artefactos materiales; abarca saberes, lenguas, rituales, sistemas productivos,
+                toponimias y cosmovisiones que los pueblos han desarrollado mediante la interacción continua con sus entornos.</p>
+
+            <p>Documentar este patrimonio implica registrar y organizar sistemáticamente una memoria colectiva, dinámica,
+                que respeta la transmisión oral, la adaptación contextual y el uso de la lengua propia.</p>
+
+            <p>A diferencia de los inventarios tradicionales, la documentación biocultural se debe construir bajo protocolos éticos que
+                salvaguarden la propiedad intelectual colectiva, respetan los conocimientos sagrados o restringidos, y garanticen el derecho
+                de las comunidades a decidir qué, cómo y para qué se documenta o que no se documenta. </p>
+        </div>
+
+        <div class="row justify-content-around py-5">
             <p>Los Jardines Etnobiológicos tienen como objetivo la visibilización, resguardo, recuperación, intercambio y difusión del
                 conocimiento etnobiológico y de la riqueza biocultural del país, incluyendo sus lenguas originarias.  De ahí que se
                 requiere de la difusión de información en español y en lenguas sobre sus ejemplares. </p>
 
-            <p> La colocación de cédulas informativas en los jardines es compleja, debido a que se realiza en espacios al aire libre
+            <p> La colocación de cédulas informativas en  las comunidades o en los jardines, es compleja, debido a que se realiza en espacios al aire libre
                 y al recambio constante de ejemplares que eleva los costos de impresión.</p>
 
             <p>"Las cédulas del jardín" es una herramienta de código abierto diseñada para facilitar elaboración, traducción y
             publicación en línea de cédulas informativas en lenguas originarias.</p>
         </div>
         <div class="col-sm-auto col-md-12 px-4 mb-4" style="text-align: justify;">
-            <p>Su objetivo principal es apoyar a los Jardines Etnobiológicos, públicos o comunitarios en la
-                documentación, difusión  y preservación de los saberes locales en lenguas originarias mediante una
-                plataforma accesible, colaborativa y fácil de usar.</p>
+            <p>El objetivo principal del sistema es apoyar la documentación, difusión y preservación de saberes locales, particularmente
+                en lenguas originarias, mediante una plataforma electrónica gratuita, accesible y colaborativa
+                que permita la creación, edición y publicación en línea de cédulas o artículos de información y documentación elaboradas o traducidas a diversas lenguas
+                por las propias comunidades poseedoras del conocimiento o con el apoyo del personal de los Jardines Etnobiológicos.</p>
 
-            <p>Fue desarrollada por los Investigadores por México del
+
+            <p>Su desarrollo inicia en 2025 como parte de una línea de investigación de los Investigadores por México de la
                 <a href="https://secihti.mx/" target="new">Secihti</a> en el
                 <a href="https://jardinoaxaca.mx">Jardín Etnobiológico de Oaxaca</a> bajo
                 los principios de software libre, respeto a la diversidad cultural y lingüística y reconocimiento
-                de los saberes ancestrales de los pueblos originarios.</p>
+                de los saberes ancestrales de los pueblos originarios y desconolinzación del saber y ha sido apoyada por los proyectos
+                Renajeb-2023-21 y Divulgación 2024-1114 financiados por el Consejo Nacional de Humanidades, Ciencias y Tecnologías (Conahcyt) y la
+                la Secretaría de Ciencia, Humanidades, Tecnología e Innovación (Secihti).</p>
         </div>
     </div>
 
@@ -45,36 +63,41 @@
         <div class="col-sm-auto col-md-12 px-4 mb-4" style="text-align:justify;">
             <h3>Características principales</h3>
             <ul>
-            <li>Permite la creación, edición, publicación y compartición en línea de cédulas informativas elaboradas por
-                los Jardines Etnobiológicos o por los jardines comunitarios o públicos asociados a ellos.</li>
+            <li>Es colaborativa. Cuenta con diversos roles que facilitan la interacción para la creación, edición y publicación
+                 de cédulas de información.</li>
 
-            <li>Genera una dirección URL única para cada una de las cédulas de cada jardín a las cuales el público puede
-                acceder desde un código QR (generado por el sistema), desde el buscador de temas del sistema o
-                ingresando directamente la url a un navegador web.</li>
+            <li>Multilingüe. Cuenta con la capacidad de interactuar con traductores a distancia para generar traducciones
+                de cada una de las cédulas a diversas lenguas.</li>
 
-            <li> Permite generar múltiples traducciones de cada una de las cédulas que se ofrecen al usuario
-                desde un menú simple para que seleccione la lengua en la que desea leer</li>
+            <li>Respeta la oralidad. Permite asociar archivos de audio en las cédulas para preservar
+                    la tradición oral o facilitar la traducción a lenguas sin escritura o de compleja escritura .</li>
 
+            <li>Interactiva. Incluye funcionalidades para agregar documentación mediante audio, imágenes o videos.</li>
 
-            <li>Incluye funcionalidades para agregar audio, imágenes y ejemplos de uso en contexto,
-                incluyendo la opción de incorporar audios con la lectura en lengua originaria
-                de cada uno de los párrafos, lo cual resulta útil en el caso de lenguas sin
-                escritura.</li>
+            <li>Catalogable. Genera una dirección URL única y fija para cada una de las cédulas de documentacion a las cuales se puede
+                acceder desde una dirección URL o un código QR (generado por el sistema) o mediante la dirección asignada por DOI.</li>
 
-            <li>Incluye un módulo mediante el cual cualquier visitante registrado en la plataforma,
-                puede enviar sus aportaciones al conocimiento sobre alguna cédula (el material debe pasar
-                un proceso de aprobación por los administradores del Jardín previo a su publicación)</li>
+            <li>Aportaciones moderadas. Incluye un módulo mediante el cual los visitantes pueden enviar sus aportaciones al conocimiento
+                sobre alguna cédula, la cual se publica junto con la cédula de información luego de pasar por un proceso de aprobación.</li>
 
-            <li>Cuenta con un robusto sistema de seguridad que permite generar cuentas asociadas a un correo electrónico
-                y asignarles roles específicos, por ejemplo, creador de contenido de un jardín ó traductor de una lengua en específico
-                para un jardín, promoviendo la colaboración comunitaria, al permitir que hablantes nativos, lingüistas y educadores
+            <li>Incorpora redes. Permite incorporar referencias a canales, publicaciones y videos de documentación
+                generadas por el público en diversas redes sociales.</li>
+
+            <li>Gestión multi-jardín. Permite registrar uno o más jardines en un mismo sistema, manteniendo la independencia en la asignación de roles y
+                administración de contenidos, pero ahorrando recursos de infraestructura</li>
+
+            <li>Colaboración. Al incluir información de diferentes jardines, permite ampliar la información referente a un mismo tema, avisando al visitante, la existencia
+                de otras cédulas relacionadas en otros jardines, lo que promueve la colaboración entre jardines y comunidades.</li>
+
+             <li>Accesible. Al ser un sistema basado en la web, permite el acceso a las cédulas desde cualquier dispositivo con conexión a internet, facilitando su consulta tanto en los jardines como en las comunidades o desde cualquier parte del mundo.
+            </li>
+
+            <li>Seguro. Cuenta con un robusto sistema de seguridad que permite generar cuentas asociadas a un correo electrónico
+                y asignarles roles específicos, promoviendo la colaboración comunitaria, al permitir que hablantes nativos, lingüistas y educadores
                 contribuyan a la creación, edición o traducción de contenido desde sus comunidades mediante el
                 acceso a la plataforma por internet.</li>
 
-            <li>Permite registrar uno o más jardines en un mismo sistema, manteniendo la independencia en la asignación de roles y
-                administración de contenidos, pero ahorrando recursos de infraestructura</li>
-
-            <li> Con el objeto de homologar la información, incorpora catálogos especializados, como algunos de
+            <li>Catálogos homologados. Con el objeto de homologar la información, incorpora catálogos especializados, como algunos de
                 ubicación del <a href="https://www.inegi.org.mx/" target="new">INEGI</a>, de
                 <a href="https://www.ethnologue.com/" target="new">lenguas del ethnologue</a> o de especies botánicas
                 <a href="https://powo.science.kew.org/" target="new"> Plants of the World</a> de Kew</li>
@@ -93,7 +116,7 @@
 
         </div>
         <div class="col-sm-auto col-md-3 px-4 mb-4" style="text-align:justify;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Heckert_GNU.png" style="width:80%;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Heckert_GNU.png" style="width:150px;">
 
         </div>
     </div>
@@ -101,7 +124,7 @@
     <div class="row justify-content-around py-5">
         <div class="col-sm-auto col-md-12 px-4 mb-4" style="text-align:justify;">
         <h3>Desarrollo y contribución:</h3>
-        <p>El sistema fua desarrollado como un producto derivado del proyecto de investigación del Investigador por México de la Secihti en el Jardín Etnobiológico de Oaxaca,
+        <p>El sistema fua desarrollado como un producto derivado del proyecto de investigación del  Investigador por México de la Secihti en el Jardín Etnobiológico de Oaxaca,
             Dr. Enrique Scheinvar, sin embargo, una vez liberado, se considera un proyecto que pueda ser ampliado, adoptado y mejorado de manera colaborativa
             por la comunidad de programadores, lingüistas, activistas culturales y hablantes de lenguas originarias. Invitamos a personas interesadas a
             contribuir al proyecto mediante mejoras técnicas, traducciones, documentación o aportes lingüísticos.
@@ -135,7 +158,7 @@
         <div class="col-sm-auto col-md-12 px-4 mb-4" style="text-align:justify;">
             <h3>Contacto:</h3>
             <p>Para reportar errores, sugerir mejoras o participar en el proyecto, escríbe a Enrique Scheinvar: <b>enrique.scheinvar@secihti.mx</b> o visita nuestra página oficial:
-            https://jardinoaxaca.mx.</p>
+            {{ url('/') }}.</p>
         </div>
     </div>
 

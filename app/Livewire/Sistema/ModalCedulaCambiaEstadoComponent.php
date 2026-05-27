@@ -178,7 +178,7 @@ class ModalCedulaCambiaEstadoComponent extends Component
             $from=Auth::user()->id;      ##### id de users de quien escribe o 0 para sistema
             $ifReply='0';   ##### 0 para mensajes nuevos o msj_id para respuesta a msj previo
             $asunto="Se te envía la cédula ".$url->url_titulo." para su revisión.";
-            $mensaje='La cédula <b>"'. $url->url_titulo .'"</b>('.$url->url_tituloorig.') '.
+            $mensaje='La cédula <b>"'. $url->url_titulo .'"</b> ('.$url->url_tituloorig.') '.
                 ' en lengua <b>'. $url->lenguas->len_autonimias .'</b> ('.$url->lenguas->len_lengua.') ['.$url->lenguas->len_code.']'.
                 ' del jardín <b>'. $url->url_cjarsiglas .'</b> '.
                 $texto1." <b>". $a->caut_nombre." ".$a->caut_apellido1."</b> ".$texto2.

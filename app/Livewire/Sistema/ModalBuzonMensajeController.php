@@ -83,6 +83,11 @@ class ModalBuzonMensajeController extends Component
             $this->msjNuevo   ### ifReply; msj_id del mensaje al que se responde (o 0 para mensaje nuevo)
         );
 
+        ##### Marca mensaje como leído (si es respuesta)
+        if($this->msjNuevo != '0'){
+            buzon::where('buz_id',$this->replyTo)->update(['buz_act'=>'0']);
+        }
+
         $this->CierraModalMensaje();
     }
 

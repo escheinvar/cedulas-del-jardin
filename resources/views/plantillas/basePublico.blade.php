@@ -100,10 +100,10 @@
                             <ul class="navbar-nav justify-content-end flex-grow-1">
                                 <!-- -------------------------------------------------------------------------------- -->
                                 <!-- -------------------- INICIA MENÚ PÚBLICO --------------------------------------- -->
-                                <!-- El sistema -->
+                                <!-- Las cédulas -->
                                 <li class="nav-item">
-                                    <a class="nav-link @if(request()->path() == '/') active @endif" href="/">
-                                        Inicio
+                                    <a class="nav-link @if(request()->path() == 'cedulasdeljardin' OR request()->path() == '/') active @endif" href="/cedulasdeljardin">
+                                        Las cédulas
                                     </a>
                                 </li>
 
@@ -121,13 +121,12 @@
                                     </a>
                                 </li>
 
-                                <!-- Las cédulas -->
+                                <!-- El sistema -->
                                 <li class="nav-item">
-                                    <a class="nav-link @if(request()->path() == 'cedulasdeljardin') active @endif" href="/cedulasdeljardin">
-                                        Las cédulas
+                                    <a class="nav-link @if(request()->path() == 'sistema') active @endif" href="/sistema">
+                                        El sistema
                                     </a>
                                 </li>
-
 
                                 <!-- Ayuda -->
                                 <li class="nav-item dropdown">
@@ -174,11 +173,11 @@
                         <!-- ----------------- INICIA MENÚ PRIVADO --------------------------------------- -->
                         @hasSection('MenuPrivado')
                             <ul class="navbar-nav justify-content-end flex-grow-1">
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link @if(request()->path() == '/') active @endif" href="/">
                                         Inicio
                                     </a>
-                                </li>
+                                </li> --}}
                                 @if(Auth::user())
                                     <li class="nav-item">
                                         <a class="nav-link @if(request()->path() == 'home') active @endif" href="/home">
