@@ -188,6 +188,7 @@ class CedulasController extends Component
         }else{
             $ganones1=[];
         }
+
         #### Si tiene 1 alias, busca en otras cédulas
         if(count($Mialias) > '0'){
             $ganones2=ced_alias::whereIn('ali_txt',$Mialias)

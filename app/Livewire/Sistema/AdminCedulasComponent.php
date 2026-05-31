@@ -128,6 +128,7 @@ class AdminCedulasComponent extends Component
                     return $q
                     ->where('url_url','ilike', '%'.$this->BuscaTexto.'%')
                     ->orWhere('url_titulo','ilike', '%'.$this->BuscaTexto.'%')
+                    ->orWhere('url_tituloorig','ilike', '%'.$this->BuscaTexto.'%')
                     ->orWhere('url_resumen','ilike', '%'.$this->BuscaTexto.'%');
                     })
                     ->pluck('url_id')
