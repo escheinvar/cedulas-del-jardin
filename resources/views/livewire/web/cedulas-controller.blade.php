@@ -26,7 +26,7 @@
                 <i class="bi bi-arrow-left-short"></i>Regresar
             </a> &nbsp; | &nbsp;
             <div class="d-none d-sm-none d-md-inline-block">
-                {{ $url->url_titulo }} &nbsp; | &nbsp;
+                {!!  $url->url_titulo  !!} &nbsp; | &nbsp;
                 Lengua {{ $url->lenguas->len_lengua }}
             </div>
             <!-- -------------------- Indicador de edición ------------------------------ -->
@@ -75,7 +75,7 @@
             <div class="col-12">
                 <div class=" m-6" style="background-color:#CDC6B9; padding:40px; font-size: 120%; text-align:center;">
                     <h2>!Lo sentimos¡</h2>
-                    La cédula <b>{{ $url->url_titulo }}</b> en lengua {{ $url->lenguas->len_autonimias }} ({{ $url->lenguas->len_lengua }})<br>
+                    La cédula <b>{!! $url->url_titulo !!}</b> en lengua {{ $url->lenguas->len_autonimias }} ({{ $url->lenguas->len_lengua }})<br>
 
                     <span style="font-size:80%;">
                         <div>
@@ -579,7 +579,7 @@
             <div class="col-12 p-3">
                 <h4>Forma de citar:</h4>
 
-                    <b>{{ $url->url_cita_aut }}</b> {{ $url->url_anio }}. <u>{{ $url->url_titulo }}</u>
+                    <b>{{ $url->url_cita_aut }}</b> {{ $url->url_anio }}. <u>{!!  $url->url_titulo !!}</u>
                     @if($url->url_tradid > '0')
                         {{ $url->url_cita_trad }}
                     @endif
@@ -650,19 +650,19 @@
                         <!-- redes instagra -->
                         <i class="bi bi-instagram"></i>
                         <!-- redes X -->
-                        <a href="https://x.com/intent/tweet?text={{ $url->url_titulo }}&url={{$UrlRedes }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                        <a href="https://x.com/intent/tweet?text={!! $url->url_titulo !!}&url={{$UrlRedes }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                             <i class="bi bi-twitter"></i>
                         </a>
                         <!-- redes linkedin -->
-                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ $UrlRedes }}&title={{ $url->url_titulo }}"  target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ $UrlRedes }}&title={!! $url->url_titulo !!}"  target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                             <i class="bi bi-linkedin"></i>
                         </a>
                         <!-- redes reddit -->
-                        <!--a href="https://www.reddit.com/submit?url={{ $UrlRedes }}&title={{ $url->url_titulo }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                        <!--a href="https://www.reddit.com/submit?url={{ $UrlRedes }}&title={!! $url->url_titulo !!}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                             <img src="https://icon.png" alt="Share on Reddit">
                         </a-->
                         <!-- redes Whatsapp-->
-                        <a href="https://wa.me/?text={{ $url->url_titulo }}%20{{ $UrlRedes }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                        <a href="https://wa.me/?text={!! $url->url_titulo !!}%20{{ $UrlRedes }}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                             <i class="bi bi-whatsapp"></i>
                         </a>
                         <!-- redes Tumblr-->
@@ -670,7 +670,7 @@
                         <img src="https://icon.png" alt="Share on Tumblr">
                         </a-->
                         <!-- redes Pinterest-->
-                        <a href="https://pinterest.com/pin/create/button/?url=[{{ $UrlRedes }}]&media=[{{ $UrlRedes }}]&description=[$url->url_titulo]" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
+                        <a href="https://pinterest.com/pin/create/button/?url=[{{ $UrlRedes }}]&media=[{{ $UrlRedes }}]&description={!! $url->url_titulo !!}" target="_blank" class="nolink"  style="margin:7px; pading:5px;">
                             <i class="bi bi-pinterest"></i>
                         </a>
 
@@ -680,7 +680,7 @@
                         Share on Google+
                         </a-->
                         <!-- redes Mail-->
-                        <a href="mailto:?subject={{ $url->url_titulo }}&body=Mira lo que encontré: {{ $UrlRedes }}" class="nolink">
+                        <a href="mailto:?subject={!! $url->url_titulo !!}&body=Mira lo que encontré: {{ $UrlRedes }}" class="nolink">
                             <i class="bi bi-envelope"></i>
                         </a>
                     </div>
@@ -762,7 +762,7 @@
                                     Fuente: <b>Cédulas del jardín</b><br>
 
                                     <!-- titulo -->
-                                    {{ $h->url_titulo }}
+                                    {!! $h->url_titulo !!}
 
                                     <!-- explicación -->
                                     <div class="truncarTexto PaClick" onclick="Destruncar('externo','{{ $h->url_id }}')" id="sale_externo{{ $h->url_id }}" style="width:190px;">
@@ -836,75 +836,6 @@
 
 
     @if($edit=='1')
-        {{-- <!-- ------------------------------------------------------------------------------------------ -->
-        <!-- ----------------------------------- MODAL DE TRADUCCIÓN DE TÍTULO ------------------------ -->
-        <!-- ------------------------------------------------------------------------------------------ -->
-        <!-- ------------------------------------------------------------------------------------------ -->
-        <div wire:ignore.self class="modal fade" id="ModalTraduceTitulo" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Traduce el título</h3>
-                        <button wire:click="CerrarModalTraduceTitulo()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
-                    </div>
-                    <!-- ----------------------------  cuerpo del modal --------------------------->
-                    <div class="modal-body" style="">
-                        <div class="form-group">
-                            <b>Título original:</b>
-                            <input type="text" class="form-control" value="{{ $url->url_tituloorig }}" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <b>Título en {{ $url->lenguas->len_autonimias }}</b>:<br>
-                            <input  wire:model="NuevoTituloTraducido" type="text" class="@error('NuevoTituloTraducido') is-invalid @enderror form-control" >
-                            @error('NuevoTituloTraducido')<error>{{ $message }}</error>@enderror
-                        </div>
-
-                        @if($url->url_audiotitulo != '')
-                            <div class="form-group">
-                                <audio style="width:100%;padding:10px;" controls>
-                                    <source src="{{ $url->url_audiotitulo }}" type="audio/ogg">
-                                    <source src="{{ $url->url_audiotitulo }}" type="audio/mpeg">
-                                    Tu navegador no soporta archivos de audio
-                                </audio>
-                                <i wire:click="EliminarAudioTitulo()" wire:confirm="Vas a eliminar el archivo de audio. ¿Seguro quieres continuar?" class="bi bi-trash agregar"></i>
-                            </div>
-                        @else
-                            <!-- Subir Audio -->
-                            <div class="col-12 my-1 form-group">
-                                <label for="NuevoAudio" class="form-label">Audio de título<red></red></label>
-                                <input wire:model="NuevoAudio" id="NuevoAudio" class="@error('NuevoAudio') is-invalid @enderror form-control" type="file">
-                                <div class="form-text"></div>
-                                @error('NuevoAudio')<error>{{ $message }}</error>@enderror
-                            </div>
-                            @if($NuevoAudio != '')
-                                <div class="col-12">
-                                    <button wire:click="SubirAudioTitulo()" wire:loading.attr="disabled" class="btn btn-primary">
-                                        Subir audio
-                                    </button>
-                                    <span wire:loading style="display:none;"> <red>..subiendo...</red> </span>
-                                </div>
-                            @endif
-                        @endif
-
-                    </div>
-                    <div class="modal-footer">
-                        <button wire:click="CerrarModalTraduceTitulo()" class="btn btn-secondary">
-                            Cerrar
-                        </button>
-
-                        <button wire:click="GuardaTituloTraducido()" wire:loading.attr="disabled" class="btn btn-primary">
-                            Guardar
-                        </button>
-                        <span wire:loading style="display:none;"> <red>..guardando...</red> </span>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-        <!-- ---------------------- TERMINA MODAL DE TRADUCCIÓN DE TÍTULO ------------------------- -->
-        <!-- -------------------------------------------------------------------------------------- -->
-        <!-- -------------------------------------------------------------------------------------- -->
-
         <livewire:web.modal-cedula-audios-especiales-component />
         <livewire:sistema.modal-edita-parrafo-component />
         <livewire:sistema.modal-cedula-ubicaciones-component />
