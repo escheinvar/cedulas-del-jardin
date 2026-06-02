@@ -16,17 +16,17 @@ class VerificaUrlCedula
      */
     public function handle(Request $request, Closure $next): Response
     {
-        ##### Obtiene el id de cédula que viene en la URL
-        $cedJardin=$request->route()->parameter('jardin');
-        $cedUrl=$request->route()->parameter('url');
+        // ##### Obtiene el id de cédula que viene en la URL
+        // $cedJardin=$request->route()->parameter('jardin');
+        // $cedUrl=$request->route()->parameter('url');
 
-        $ced=cedulas_url::whereRaw('LOWER(url_cjarsiglas) = ?',strtolower($cedJardin))
-            ->where('url_url',$cedUrl)
-            ->count();
+        // $ced=cedulas_url::whereRaw('LOWER(url_cjarsiglas) = ?',strtolower($cedJardin))
+        //     ->where('url_url',$cedUrl)
+        //     ->count();
 
-        if($ced != '1'){
-            return redirect('/errorNo existe la dirección indicada');
-        }
+        // if($ced != '1'){
+        //     return redirect('/errorNo existe la dirección indicada');
+        // }
 
         return $next($request);
     }

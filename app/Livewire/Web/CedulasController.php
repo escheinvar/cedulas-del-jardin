@@ -88,7 +88,7 @@ class CedulasController extends Component
             ->orderBy('url_lencode')
             ->get();
 
-        ##### Carga varibbles
+        ##### Carga variables
         $this->verSp='0';
         $this->verUbica='0';
         $this->verAlias='0';
@@ -218,11 +218,13 @@ class CedulasController extends Component
         $audios=cedulas_txt::where('txt_cjarsiglas',$this->url->url_cjarsiglas)
             ->where('txt_urlurl',$this->url->url_url)
             ->where('txt_act','1')->where('txt_del','0')
+            ->where('txt_audio','!=',null)
             ->orderBy('txt_orden')
             ->pluck('txt_audio')
             ->toArray();
         $autores=$this->url->autores->pluck('aut_name')->toArray();
         $num='0';
+
         ##### Genera array de audios
         if(count($audios) > '0'){
             ##### Si hay, agrega audio de título
@@ -261,8 +263,10 @@ class CedulasController extends Component
                     'url'=>url($this->url->url_audiotraductor),
                 ];
             }
+            $this->audio = $audio;
+        }else{
+            $this->audio=[];
         }
-        $this->audio = $audio;
     }
 
     public function EliminaImagen($id){
