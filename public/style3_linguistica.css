@@ -43,10 +43,10 @@ ab::before{
 }
 
 /*-- texto tachado en diagonal -- */
-.diag {
+diag {
     position: relative;
 }
-.diag::before {
+diag::before {
     content: '';
     position: absolute;
     top: 50%;
