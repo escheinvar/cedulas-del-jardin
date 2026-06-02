@@ -124,6 +124,23 @@ function pauseAudio(IdAudio) {
     MyAudio.currentTime = 0;
 }
 
+function PlayAudioTodo(){
+    document.getElementById('audioPlayer').play();
+    document.getElementById('prevBtn').style.display='inline';
+    document.getElementById('pauseBtn').style.display='inline';
+    document.getElementById('pauseBtn').style.color='#CD7B34';
+    document.getElementById('nextBtn').style.display='inline';
+    document.getElementById('playBtn').style.display='none';
+}
+function PauseAudioTodo(){
+    document.getElementById('audioPlayer').pause();
+    document.getElementById('pauseBtn').style.display='none';
+    document.getElementById('playBtn').style.display='inline';
+}
+function OtroTrackTodo(){
+    document.getElementById('pauseBtn').style.display='inline';
+    document.getElementById('playBtn').style.display='none';
+}
 // function VerMapaJardin(IDreceptor){
 //     //var mapa = L.map(IDreceptor).setView([17.0666, -96.72243], 19);
 //     var mapa = L.map(IDreceptor).setView([17.06588524915741, -96.72211246391984], 20);

@@ -493,6 +493,15 @@ audio.web{
     margin-top:10px;
     margin-bottom: 10px;
 }
+
+i.audioTodo{
+    cursor: pointer;
+    color:#87796d;
+    font-size: 200%;
+}
+i.audioTodo:hover{
+    color:#CD7B34;
+}
 /* ################################# Termina audioTXT */
 
 /* hr.titulo{

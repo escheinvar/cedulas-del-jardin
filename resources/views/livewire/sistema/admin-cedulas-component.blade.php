@@ -79,7 +79,7 @@
         <!-- Buscar por autor -->
         <div class="col-12 col-md-3 my-1 form-group">
             <label for="BuscaAutor" class="form-label">Buscar por autor<red></red></label>
-            <input wire:model="BuscaAutor" wire:keyup   ="DefineCambio('BuscaAutor')" id="BuscaAutor" class="@error('BuscaAutor') is-invalid @enderror form-control agregar" type="text">
+            <input wire:model="BuscaAutor" wire:keydown   ="DefineCambio('BuscaAutor')" id="BuscaAutor" class="@error('BuscaAutor') is-invalid @enderror form-control agregar" type="text">
             <i wire:click="BorrarCampo('BuscaAutor')" class="bi bi-x-square agregar"></i>
             <div class="form-text"></div>
             @error('BuscaAutor')<error>{{ $message }}</error>@enderror
@@ -88,7 +88,7 @@
         <!-- buscar por texto -->
         <div class="col-12 col-md-3 form-group">
             <label for="" class="form-label">Buscar por texto<red></red></label>
-            <input wire:model="BuscaTexto" wire:keyup="DefineCambio('BuscaTexto')" id="BuscaTexto" class="form-control agregar" type="text">
+            <input wire:model="BuscaTexto" wire:keydown="DefineCambio('BuscaTexto')" id="BuscaTexto" class="form-control agregar" type="text">
             <i wire:click="BorrarCampo('BuscaTexto'); DefineCambio('a')"  class="bi bi-x-square agregar"></i>
         </div>
 

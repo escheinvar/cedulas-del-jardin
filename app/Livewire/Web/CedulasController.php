@@ -38,6 +38,7 @@ class CedulasController extends Component
     public $especies; ##### get() de especies
     public $riesgo; #### Categorias cites y Redlist
     public $hermanas; #### get() de cedulas similares (sp, o alias)
+    public $audio; ##### array de audios
 
     ###### Variables de modal Traduce titulo
     // public $NuevoTituloTraducido, $NuevoAudio;
@@ -212,6 +213,56 @@ class CedulasController extends Component
             $this->hermanas=collect();
         }
 
+        #####################################################
+        ############################ Crea el array de audios
+        $audios=cedulas_txt::where('txt_cjarsiglas',$this->url->url_cjarsiglas)
+            ->where('txt_urlurl',$this->url->url_url)
+            ->where('txt_act','1')->where('txt_del','0')
+            ->orderBy('txt_orden')
+            ->pluck('txt_audio')
+            ->toArray();
+        $autores=$this->url->autores->pluck('aut_name')->toArray();
+        $num='0';
+        ##### Genera array de audios
+        if(count($audios) > '0'){
+            ##### Si hay, agrega audio de título
+            if($this->url->url_audiotitulo){
+                $audio[]=[
+                    'name'=>'00_'.$this->url->url_titulo,
+                    'title'=>$this->url->url_titulo,
+                    'artist'=>implode(', ',$autores),
+                    'url'=>url($this->url->url_audiotitulo),
+                ];
+            }
+            #### Si hay, agrega audio de autor
+            if($this->url->url_audioautor){
+                $audio[]=[
+                    'name'=>'00_'.$this->url->url_titulo,
+                    'title'=>$this->url->url_titulo,
+                    'artist'=>implode(', ',$autores),
+                    'url'=>url($this->url->url_audioautor),
+                ];
+            }
+            ##### Agrega audios de párrafos
+            foreach($audios as $a){
+                $audio[]=[
+                    'name'=>$num++.'_'.$this->url->url_titulo,
+                    'title'=>$this->url->url_titulo,
+                    'artist'=>implode(', ',$autores),
+                    'url'=>url($a),
+                ];
+            }
+            ##### Si hay, agrega audio de traductor
+            if($this->url->url_audiotraductor){
+                $audio[]=[
+                    'name'=>'00_'.$this->url->url_titulo,
+                    'title'=>$this->url->url_titulo,
+                    'artist'=>implode(', ',$autores),
+                    'url'=>url($this->url->url_audiotraductor),
+                ];
+            }
+        }
+        $this->audio = $audio;
     }
 
     public function EliminaImagen($id){

@@ -348,6 +348,32 @@
 
             <!-- -------------- Zona de texto principal  ----------------->
             <div class="col-12 col-md-8 col-lg-7 ced-parrafos" style="">
+                <!-- Audio de todos -->
+                @if(count($audio) > '0')
+                    <div class="player-container" style="padding:10px;text-align:right;">
+                        <audio id="audioPlayer" preload="metadata"></audio>
+                        <div class="controls" style="display:inline-block">
+                            <i id="prevBtn"  class="bi bi-skip-backward-fill PaClick audioTodo"   onclick="OtroTrackTodo()"  style="display:none;"></i>
+                            <i id="playBtn"  class="bi bi-volume-down-fill PaClick audioTodo"     onclick="PlayAudioTodo()"  style="display:inline-block"></i>
+                            <i id="pauseBtn" class="bi bi-pause-circle PaClick audioTodo"     onclick="PauseAudioTodo()" style="display:none;"></i>
+                            <i id="nextBtn"  class="bi bi-skip-forward-fill PaClick audioTodo"    onclick="OtroTrackTodo()"  style="display:none;"></i>
+                        </div>
+                        <!-- Genera lista de playlist -->
+                        <ul id="track-list" style="display: none;">
+                            @forelse($audio as $index => $track)
+                                <li data-index="{{ $index }}">
+                                    <div class="track-info">
+                                        <span>{{ $track['title'] ?? 'Sin título' }}</span>
+                                        <span class="track-artist">{{ $track['artist'] ?? 'Artista desconocido' }}</span>
+                                    </div>
+                                </li>
+                            @empty
+                                <li style="text-align:center; color:#64748b;">No hay pistas en la lista</li>
+                            @endforelse
+                        </ul>
+                    </div>
+                @endif
+
                 <!--  Título de cédula  -->
                 <div class="row" style="">
                     <div class="col-12" style="text-align: center;margin:30px;">
@@ -724,7 +750,6 @@
         <!-- -------------------------------------- BLOQUE EXTRA DE EXTERNOS  ----------------------------------------------->
         <!-- -------------------------------------- BLOQUE EXTRA DE EXTERNOS  ----------------------------------------------->
 
-        {{-- <div class="row my-3" @if($aportes->count() > '0')style="border:1px solid #87796d;; border-radius:8px;padding:10px;" @endif> --}}
         <div class="row my-3">
             <!-- muestra APORTES DE VISITANTES -->
             @if($aportes->count() > '0')
@@ -878,6 +903,63 @@
             var obj = document.getElementById('sale_' + $tipo + $id);
             obj.classList.toggle('truncarTexto')
         }
+
+        /*---------------------------------------------------------------------------
+        --------------------------------- GENERA PLAYLIST DE AUDIO -----------------
+        ---------------------------------------------------------------------------*/
+        // Inyectamos el array de PHP a JS de forma segura
+        const playlist = @json($audio);
+        let currentIndex = 0;
+        const audio       = document.getElementById('audioPlayer');
+        const trackList   = document.getElementById('track-list');
+        const prevBtn     = document.getElementById('prevBtn');
+        const nextBtn     = document.getElementById('nextBtn')
+        // Cargar pista por índice
+        function loadTrack(index) {
+            if (!playlist.length) return;
+
+            // Loop infinito
+            if (index < 0) index = playlist.length - 1;
+            if (index >= playlist.length) index = 0;
+
+            currentIndex = index;
+            audio.src    = playlist[currentIndex].url;
+            audio.load();
+
+            // Intentar reproducir (los navegadores bloquean autoplay sin interacción previa)
+            audio.play().catch(err => console.warn('Reproducción automática bloqueada:', err));
+
+            updateActiveUI();
+        }
+
+        // Actualizar clases visuales
+        function updateActiveUI() {
+            const items = trackList.querySelectorAll('li');
+            items.forEach((item, i) => item.classList.toggle('active', i === currentIndex));
+        }
+
+        // Evento: clic en una pista
+        trackList.addEventListener('click', (e) => {
+            const li = e.target.closest('li');
+            if (li && li.dataset.index !== undefined) {
+                loadTrack(parseInt(li.dataset.index));
+            }
+        });
+
+        // Botones
+        prevBtn.addEventListener('click', () => loadTrack(currentIndex - 1));
+        nextBtn.addEventListener('click', () => loadTrack(currentIndex + 1));
+
+        // Avanzar automáticamente al terminar
+        audio.addEventListener('ended', () => loadTrack(currentIndex + 1));
+
+        // Inicializar primera pista (sin autoplay para cumplir políticas del navegador)
+        if (playlist.length > 0) {
+            audio.src = playlist[0].url;
+            updateActiveUI();
+        }
+        /*--------------------------------- FIN DE PLAYLIST DE AUDIO -----------------
+        ---------------------------------------------------------------------------*/
 
     </script>
 </div>

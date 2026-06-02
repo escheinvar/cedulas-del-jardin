@@ -81,7 +81,7 @@
                         <i class="bi bi-caret-down mx-2 PaClick" onclick="VerNoVer('parrafo','{{ $txt_id }}')" style="color:#87796d;"></i>
                     @endif
                     @if($txt_audio != '' and $EsUnPdf=='FALSE')
-                        <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
+                        <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;" >
                             <source src="{{ $txt_audio }}" type="audio/ogg" /> @if($EsUnPdf=='FALSE')El navegador no soporta el audio @endif
                         </audio>
                         <i class="audioTxtPlay" id="IconPlay{{ $txt_id }}" onclick="playAudio('{{ $txt_id }}')"></i>
@@ -109,7 +109,7 @@
                         @endif
 
                         @if($txt_audio != '' and $EsUnPdf=='FALSE')
-                            <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;">
+                            <audio id="SpAudio{{ $txt_id }}" style="display:inline-block;" >
                                 <source src="{{ $txt_audio }}" type="audio/ogg"> @if($EsUnPdf=='FALSE')El navegador no soporta el audio @endif
                             </audio>
                             <i class="audioTxtPlay" id="IconPlay{{ $txt_id }}" onclick="playAudio('{{ $txt_id }}')"></i>
