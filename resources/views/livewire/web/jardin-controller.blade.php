@@ -97,11 +97,6 @@
         @if($url->urlj_urltxt=='autores')
             <div class="row">
                 @foreach ($autores as $a)
-                    {{-- @php
-                        $dim=explode(',',$a->objetos->value('img_resolu'));
-                        if(count($dim) == 2 ){$x=$dim[0]; $y=$dim[1];}else{$x='0'; $y='0';}
-                        if($x > $y){$forma='hor';}else{$forma='ver';}
-                    @endphp --}}
                     <div class="col-12 col-md-3 py-3" style="text-align: center;">
                         <a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" target="autor" class="nolink">
                             <div>

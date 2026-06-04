@@ -44,7 +44,7 @@
 
     <div class="row my-5">
         @foreach ($autores as $a)
-            <div class="col-12 col-md-2" style="text-align: center;">
+            <div class="col-12 col-md-3" style="text-align: center;">
                 <div style="">
                     <div>
                         @if($a->objetos->count() > '0')
