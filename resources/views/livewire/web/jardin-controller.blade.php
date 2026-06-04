@@ -17,7 +17,7 @@
 @section('mail') {{ $url->jardin->cjar_mail }} @endsection
 @section('web') {{ $url->jardin->cjar_www }} @endsection
 
-<div>
+<div class="container">
 
     <!-- --------------------- Menú de traducciones ------------------------------ -->
     @if($traducciones->count() > 0)
@@ -97,27 +97,27 @@
         @if($url->urlj_urltxt=='autores')
             <div class="row">
                 @foreach ($autores as $a)
-                    <div class="col-12 col-md-2" style="text-align: center;">
-                        <div style="">
-                            <a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" target="autor" class="nolink">
-                                <div>
-                                    @if($a->objetos->count() > '0')
-                                        <img src="{{ $a->objetos->value('img_file') }}" style="height:200px;">
-                                    @else
-                                        <img src="/avatar/usr1.png" style="height:200px;">
-                                    @endif
-                                </div>
-                                <b>{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</b>
-                            </a>
-                            {{-- <div>
-                                {{ $a->cedulas->count() }} @if($a->cedulas->count() > '1') cédulas @else cedula @endif
-                            </div> --}}
-                            <div style="font-size:70%;">
-                                <a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" id="sale_autor{{ $a->caut_id }}" target="autor" class="nolink">
-                                    {{ url('/autor') }}/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}
-                                </a>
-                                <i onclick="CopiarContenido('autor',{{ $a->caut_id }})" class="bi bi-clipboard PaClick"> URL</i>
+                    {{-- @php
+                        $dim=explode(',',$a->objetos->value('img_resolu'));
+                        if(count($dim) == 2 ){$x=$dim[0]; $y=$dim[1];}else{$x='0'; $y='0';}
+                        if($x > $y){$forma='hor';}else{$forma='ver';}
+                    @endphp --}}
+                    <div class="col-12 col-md-3 py-3" style="text-align: center;">
+                        <a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" target="autor" class="nolink">
+                            <div>
+                                @if($a->objetos->count() > '0')
+                                    <img src="{{ $a->objetos->value('img_file') }}" style="height:200px;">
+                                @else
+                                    <img src="/avatar/usr1.png" style="height:200px;">
+                                @endif
                             </div>
+                            <b>{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</b>
+                        </a>
+                        <div style="font-size:70%; width:90%; display:block;">
+                            <a href="/autor/{{ $url->urlj_cjarsiglas }}/{{ $a->caut_url }}" id="sale_autor{{ $a->caut_id }}" target="autor" class="nolink">
+                                {{ $a->caut_url }}
+                            </a>
+                            <i onclick="CopiarContenido('autor',{{ $a->caut_id }})" class="bi bi-clipboard PaClick"><sub>URL</sub></i>
                         </div>
                     </div>
                 @endforeach
@@ -152,74 +152,8 @@
                 </div>
             </div>
 
-            {{-- <div class="row">
-                @foreach ($cedulas as $c)
-                    <?php $ElUrl= url('/cedula').'/'. $c->url_cjarsiglas .'/'. $c->url_url; ?>
-                    <!-- Título, lengua y logo -->
-                    <div class="col-12 col-md-3 p-1 m-1" style="background-color:#CDC6B9; border:1px solid #202d2d;border-radius:15px;">
-                        <a href="{{ $ElUrl }}" class="nolink">
-                            <div>
-                                <!-- logo -->
-                                <div style="float: right;">
-                                    <img src="{{ $c->jardin->cjar_logo }}" style="width:30px;">
-                                </div>
-                                <!-- título -->
-                                <b>{!!  $c->url_titulo !!}</b>
-                            </div>
-                            <!-- lengua -->
-                            <div class="cortaTexto" style="color:#87796d;font-family:'Roboto Condensed'">
-                                {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})
-                            </div>
-                        </a>
-                        <div style="clear:both">
-                            <!-- imagen de portada -->
-                            @if( $c->objetos->whereIn('img_cimgtipo',['portada'])->count() > '0' )
-                                <div style="float: left;">
-                                    <a href="{{ $ElUrl }}" class="nolink">
-                                        @if( $c->objetos->whereIn('img_cimgtipo',['portada'])->count() > '0')
-                                            <img src="{{ $c->objetos->whereIn('img_cimgtipo',['portada'])->value('img_file') }}"
-                                                style="max-width:90%; max-height:100px; margin:10px;">
-                                        @else
-                                            <img src="{{ $c->objetos->whereIn('img_cimgtipo',['portada','ppal1','ppal2','ppal3'])->value('img_file') }}"
-                                                    style="max-width:90%; max-height:100px; margin:10px;">
-                                        @endif
-                                    </a>
-                                </div>
-                            @endif
-
-                            <!-- especie -->
-                            <div style="display:inline-block; margin:10px;">
-                                @if($c->especies->count() >'0')
-                                    <a href="{{ $ElUrl }}" class="nolink">
-                                        <b><i>{{ implode(',  ',$c->especies->pluck('sp_scname')->toArray()) }}</b></i>
-                                    </a>
-                                @endif
-                            </div>
-
-                            <div style="font-size: 80%;" id="sale_ced{{ $c->url_id }}" onclick="VerNoVerUnaLinea('ced','{{ $c->url_id }}')" class="cortaUnaLinea PaClick">
-                                @if($c->alias->count() >'0')
-                                    {{ implode(',  ',$c->alias->where('ali_calitipo','Nombre común')->pluck('ali_txt')->toArray()) }},
-                                    {{ implode(',  ',$c->alias->where('ali_calitipo','!=','Nombre común')->pluck('ali_txt')->toArray()) }},
-                                @endif
-
-                                @if($c->usos->count() >'0')
-                                    uso:{{ implode(',  ',$c->usos->pluck('uso_uso')->toArray()) }},
-                                @endif
-                            </div>
-                            <div style="font-size: 80%;">
-                                <a href="{{ $ElUrl }}" class="nolink">
-                                    {{ $ElUrl }}
-                                </a>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-                @endforeach
-            </div> --}}
-
             @include('plantillas.cedula')
+
         @endif
 
 

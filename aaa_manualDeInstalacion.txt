@@ -1,5 +1,10 @@
 #### https://www.skynat-s.com/blog/how-to-install-and-configure-laravel-with-nginx-on-ubuntu-24-04/
 
+Ojo: para reinstalar base de datos a partir de dump:
+1) bajar sql
+2) hacer php artisan migrate:rollback (pa vaciar todas las tablas)
+3) psql -h localhost -U jardin  -d cedulas -f ./respcedulas_260602.1706.sql
+
 #################################################################################
 ###################################################### Instalar sistema operativo
 ### Descargar sistema operativo ubuntu 24.04 en formato iso

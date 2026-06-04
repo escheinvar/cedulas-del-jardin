@@ -136,8 +136,15 @@
             <ol >
                 @foreach ($ceds as $c)
                     <li class="my-2">
-                        <a href="{{ url('/cedula') }}/{{ $c->cedula->url_cjarsiglas }}/{{ $c->cedula->url_url }}" class="nolink">
-                            {!! $c->cedula->url_titulo !!}<sup>{{ substr($c->aut_tipo,0,1) }}</sup> ({{ $c->cedula->url_lencode }}), {{ $c->cedula->url_cjarsiglas }}
+                        @php
+                            if($c->aut_tipo=="Autor" and $c->cedula->url_tradid == '0'
+                               OR  $c->aut_tipo=="Traductor" and $c->cedula->url_tradid > '0' ){$col='black'; }else{$col='#87796d';}
+                        @endphp
+                        <a href="{{ url('/cedula') }}/{{ $c->cedula->url_cjarsiglas }}/{{ $c->cedula->url_url }}" class="nolink" style="color: {{ $col }};">
+                            {!! $c->cedula->url_titulo !!}
+                            @if($c->cedula->url_tradid == '0') ({{ $c->cedula->url_lencode }}),@endif
+                            {{ $c->cedula->url_cjarsiglas }}
+                            @if($c->cedula->url_tradid > '0') (traducción {{ $c->cedula->url_lencode }}) @endif
                         </a>
                     </li>
                 @endforeach

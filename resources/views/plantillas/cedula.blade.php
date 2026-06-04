@@ -20,41 +20,45 @@
     <!-- Título, lengua y logo -->
     <div class="col-12 col-md-3 m-1 p-1" style="background-color:#CDC6B9; border:1px solid #202d2d; border-radius:15px;">
         <a href="{{ $ElUrl }}" class="nolink">
-            <div>
-                <!-- logo -->
-                <div style="float: right;">
-                    <img src="{{ $c->jardin->cjar_logo }}" style="width:30px;">
+            <div style="margin-bottom: 10px;">
+                <div>
+                    <!-- logo -->
+                    <div style="float: right;">
+                        <img src="{{ $c->jardin->cjar_logo }}" style="width:30px;">
+                    </div>
+                    <!-- título -->
+                    <b class="cortaUnaLinea">{!!  $c->url_titulo !!}</b>
                 </div>
-                <!-- título -->
-                <b>{!!  $c->url_titulo !!}</b>
-            </div>
-            <!-- lengua -->
-            <div class="cortaTexto" style="color:#87796d;font-family:'Roboto Condensed'">
-                {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})
+                <!-- lengua -->
+                <div class="cortaTexto" style="color:#87796d;font-family:'Roboto Condensed'">
+                    {{ $c->lenguas->len_autonimias }} ({{ $c->lenguas->len_lengua }})
+                </div>
             </div>
         </a>
         <div style="clear:both">
             <!-- imagen de portada -->
             @if( $c->objetos->whereIn('img_cimgtipo',['portada'])->count() > '0' )
                 <div style="float: left;">
-                    <a href="{{ $c->objetos->whereIn('img_cimgtipo',['portada'])->value('img_file') }}" class="nolink"></a>
-                        <img src="{{ $c->objetos->whereIn('img_cimgtipo',['portada'])->value('img_file') }}" style="max-width:90%; max-height:60px; margin:10px;border:1px solid #202d2d;">
+                    <a href="{{ $ElUrl }}" class="nolink">
+                        <img src="{{ $c->objetos->whereIn('img_cimgtipo',['portada'])->value('img_file') }}" style="max-width:120px; max-height:100px; margin:3px; border-radius: 5px;">
                     </a>
                 </div>
             @endif
 
             <!-- especie -->
             @if($c->especies->count() >'0')
+            <div style="padding-top: 10px;">
                 <a href="{{ $ElUrl }}" class="nolink">
                     <b><i>{{ implode(',  ',$c->especies->pluck('sp_scname')->toArray()) }}</b></i>
                 </a>
+            </div>
             @endif
 
 
             <div style="font-size: 80%;" id="sale_ced{{ $c->url_id }}" onclick="VerNoVerUnaLinea('ced','{{ $c->url_id }}')" class="cortaUnaLinea PaClick">
                 @if($c->alias->count() >'0')
-                    {{ implode(',  ',$c->alias->where('ali_calitipo','Nombre común')->pluck('ali_txt')->toArray()) }},
-                    {{ implode(',  ',$c->alias->where('ali_calitipo','!=','Nombre común')->pluck('ali_txt')->toArray()) }},
+                    {!! implode(',  ',$c->alias->where('ali_calitipo','Nombre común')->pluck('ali_txt')->toArray()) !!},
+                    {!! implode(',  ',$c->alias->where('ali_calitipo','!=','Nombre común')->pluck('ali_txt')->toArray()) !!}
                 @endif
 
                 @if($c->usos->count() >'0')
@@ -64,11 +68,11 @@
                     {{ implode(',  ',$c->ubicaciones->pluck('ubi_ubicacion')->toArray()) }},
                 @endif --}}
             </div>
-            <div style="font-size: 80%;">
+            {{-- <div style="font-size: 80%; width:100%;display:block;">
                 <a href="{{ $ElUrl }}" class="nolink">
-                    {{ $ElUrl }}
+                    {{ $c->url_url }}
                 </a>
-            </div>
+            </div> --}}
         </div>
 
 
