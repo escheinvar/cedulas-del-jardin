@@ -17,8 +17,10 @@ class MemoramaComponent extends Component
         $this->NombreJuego='0';
         $this->baraja=collect();
 
-        $auts=['admin','webmaster'];
-        if(array_intersect($auts,session('rol'))){$this->granAyuda=TRUE;}else{$this->granAyuda=FALSE;}
+        if(session('rol')){
+            $auts=['admin','webmaster'];
+            if(array_intersect($auts,session('rol'))){$this->granAyuda=TRUE;}else{$this->granAyuda=FALSE;}
+        }
 
         // $this->nombres=[
         //     ['name'=>'Enrique','pt'=>'0'],
