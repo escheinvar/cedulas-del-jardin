@@ -83,6 +83,85 @@ class JueMemoriaSeeder extends Seeder
         }
 
 
+        ########################################### Sólo imágenes
+        $hay = juegos::where('jue_name','Ejemplares del Jardín')->count();
+        if($hay < '1'){
+            #####Crea juego:
+            $dato=juegos::create([
+                'jue_cjarsiglas'=>'IxMxJebOax',
+                'jue_tipo'=>'memoria',
+                'jue_name'=>'Imágenes de ejemplares',
+                'jue_cita'=>'Imágenes de ejemplares, por Enrique Scheinvar. '.date('Y'),
+                'jue_cita_aut'=>'Enrique Scheinvar',
+                'jue_anio'=>date('Y'),
+            ]);
+            ##### Crea cartas
+            $num='0';
+            $cartas=cedulas_url::where('url_act','1')->where('url_del','0')
+                    ->where('url_tradid','0')
+                    ->with('objetos')->with('lenguas')
+                    ->get();
+            foreach($cartas as $c){
+                $num=$num+1;
+                jue_memoria::create([
+                    'mem_jueid'=>$dato->jue_id,
+                    'mem_name'=>$dato->jue_name,
+                    'mem_par'=>$num,
+                    'mem_txt'=>null,
+                    'mem_img'=>$c->objetos->where('img_cimgtipo','portada')->value('img_file'),
+                    'mem_aud'=>null,
+                ]);
+                jue_memoria::create([
+                    'mem_jueid'=>$dato->jue_id,
+                    'mem_name'=>$dato->jue_name,
+                    'mem_par'=>$num,
+                    'mem_txt'=>null,
+                    'mem_img'=>$c->objetos->where('img_cimgtipo','portada')->value('img_file'),
+                    'mem_aud'=>null,
+                ]);
+            }
+        }
+        ########################################### Sólo imágenes
+        $hay = juegos::where('jue_name','Ejemplares del Jardín')->count();
+        if($hay < '1'){
+            #####Crea juego:
+            $dato=juegos::create([
+                'jue_cjarsiglas'=>'IxMxJebOax',
+                'jue_tipo'=>'memoria',
+                'jue_name'=>'Nombres científicos de ejemplares',
+                'jue_cita'=>'Nombres científicos de ejemplares, por Enrique Scheinvar. '.date('Y'),
+                'jue_cita_aut'=>'Enrique Scheinvar',
+                'jue_anio'=>date('Y'),
+            ]);
+            ##### Crea cartas
+            $num='0';
+            $cartas=cedulas_url::where('url_act','1')->where('url_del','0')
+                    ->where('url_tradid','0')
+                    ->with('objetos')->with('lenguas')->with('especies')
+                    ->get();
+
+            foreach($cartas as $c){
+                $num=$num+1;
+                jue_memoria::create([
+                    'mem_jueid'=>$dato->jue_id,
+                    'mem_name'=>$dato->jue_name,
+                    'mem_par'=>$num,
+                    'mem_txt'=>null,
+                    'mem_img'=>$c->objetos->where('img_cimgtipo','portada')->value('img_file'),
+                    'mem_aud'=>null,
+                ]);
+                jue_memoria::create([
+                    'mem_jueid'=>$dato->jue_id,
+                    'mem_name'=>$dato->jue_name,
+                    'mem_par'=>$num,
+                    'mem_txt'=>implode(', ',$c->especies->pluck('sp_scname')->toArray()),
+                    'mem_img'=>null,
+                    'mem_aud'=>null,
+                ]);
+            }
+        }
+
+
         // ################### Juego de cartas
         // $hay = juegos::where('jue_name','El abecedario')->count();
         // if($hay < '1'){
