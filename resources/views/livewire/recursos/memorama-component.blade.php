@@ -2,16 +2,23 @@
 
 
     @if($NombreJuego=='0')
+
+        <div style="float:right;">
+            <div class="cartaCerrada" style="width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px"></div><br>
+            {{ session('MemAlto') }} X {{ session('MemAncho') }}
+            </div>
         <h1>Juego de Memoria</h1>
-        <h3>Nombre de los jugadores</h3>
+
         <div class="row">
             <!-- Agrega jugadores -->
-            <div class="col-12 col-md-3 my-1 form-group">
+            <div class="col-12 col-md-4 my-1 form-group">
                 <label for="NvoJugador" class="form-label">Nombre del jugador {{ count($nombres)+1 }}:<red></red></label>
                 <input wire:model="NvoJugador" id="NvoJugador" class="@error('NvoJugador') is-invalid @enderror form-control agregar" type="text">
                 <button type="button" wire:click="AgregaJugador" class="btn btn-primary agregar">+</button>
                 <div class="form-text"></div>
                 @error('NvoJugador')<error>{{ $message }}</error>@enderror
+
+
             </div>
 
             <!-- Gran Ayuda -->
@@ -30,6 +37,22 @@
                     <div class="elemento">{{ $n['name'] }}</div>
                 @endforeach
             </div>
+
+
+            <!-- Tamaño de carta -->
+            <div style="float: right;">
+                <span wire:click='CambiaTamanio2(50,100)' class="PaClick mx-2">Mini</span>
+                <span wire:click='CambiaTamanio2(70,120)' class="PaClick mx-2">Chico</span>
+                <span wire:click='CambiaTamanio2(110,160)' class="PaClick mx-2">Mediano</span>
+                <span wire:click='CambiaTamanio2(150,200)' class="PaClick mx-2">Grande</span>
+                <span wire:click='CambiaTamanio2(180,230)' class="PaClick mx-2">Muy grande</span>
+                <i wire:click="CambiaTamanio(+10)"class="bi bi-plus-circle-fill PaClick mx-2" style="color:#64383E;"> </i>
+                <i wire:click="CambiaTamanio(-10)" class="bi bi-dash-circle-fill PaClick mx-2" style="color:#64383E;"> </i>
+            </div>
+            <div class="col-6">
+                {{-- <div class="cartaCerrada" style="display:block-inline; width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px"> --}}
+
+            </div>
         </div>
 
 
@@ -46,15 +69,18 @@
         <!-- ------------------------------------------------------------------ -->
         <!-- --------------  INICIA JUEGO ------------------------------------- -->
         <!-- ------------------------------------------------------------------ -->
-        <a href="/memoria">
-            <button class="btn btn-secondary">Reiniciar</button>
-        </a>
-
+        <div class="row">
+            <div class="col-6 col-md-2">
+                <a href="/memoria">
+                    <button class="btn btn-secondary">Reiniciar</button>
+                </a>
+            </div>
+        </div>
         <h1>Jugando {{ $NombreJuego }}</h1>
         <!-- marcador -->
         <div class="row">
             @foreach ($nombres as $n)
-                <div class="col-2" style="@if($nombres[$turno]['name'] == $n['name']) color:#CD7B34; font-size:200%; @else color:gray;  @endif vertical-align:middle;">
+                <div class="col-4 col-md-2" style="@if($nombres[$turno]['name'] == $n['name']) color:#CD7B34; font-size:200%; @else color:gray;  @endif vertical-align:middle;">
                     {{ $n['name'] }}
                     <b>
                         {{ $n['pt'] }}
@@ -64,22 +90,18 @@
             @endforeach
         </div>
 
-        {{-- <div class="alert alert-dark my-3" style="font-size:300%;">
-            Turno de {{ $nombres[$turno]['name'] }} {{ count($par) }}
-        </div> --}}
-
         <!-- ------------- Inicia tablero -------------------- -->
         <div class="row">
             <div class="col-12" wire:ignore>
                 <!-- cada carta -->
                 @foreach ($baraja as $c)
                     <!-- carta cerrada -->
-                    <div id="CartaCe{{ $c->mem_id }}" wire:click="TurnoDeJuego({{ $c->mem_id }})" class="cartaCerrada" style="display:block-inline;">
+                    <div id="CartaCe{{ $c->mem_id }}" wire:click="TurnoDeJuego({{ $c->mem_id }})" class="cartaCerrada" style="display:block-inline; width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px">
                         @if($granAyuda==TRUE)<div style="color:red; float: right;">{{ $c->mem_par }}@if($c->mem_img !='')<b>*</b>@endif @if($c->mem_aud !='')<b>^</b>@endif</div>@endif
                     </div>
 
                     <!-- carta abierta-->
-                    <div id="CartaAb{{ $c->mem_id }}" wire:click="TurnoDeJuego({{ $c->mem_id }})" class="cartaAbierta" style="display:none; background-image: url('{{ $c->mem_img }}')">
+                    <div id="CartaAb{{ $c->mem_id }}" wire:click="TurnoDeJuego({{ $c->mem_id }})" class="cartaAbierta" style="display:none; background-image: url('{{ $c->mem_img }}');  width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px">
                         @if($granAyuda==TRUE)<div style="color:red; float: right;">{{ $c->mem_par }}@if($c->mem_img !='')<b>*</b>@endif @if($c->mem_aud !='')<b>^</b>@endif</div>@endif
                         @if($c->mem_txt != '')
                             <div id="Txt{{ $c->mem_id }}" style="background-color:#efebe8; width:100%; margin:0px; padding:4px; border-radius:7px;">
@@ -174,10 +196,10 @@
         //});
 
         /* #### Reiniciar la página */
-        // Livewire.on('RecargarPagina',() => {
-        //     location.reload();
-        //     // window.location.href;
-        // });
+        Livewire.on('RecargarPagina',() => {
+            location.reload();
+            // window.location.href;
+        });
     </script>
 
 </div>

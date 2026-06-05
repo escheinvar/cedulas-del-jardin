@@ -12,11 +12,19 @@ class MemoramaComponent extends Component
     public $nombres, $NombreJuego, $turno, $par;
     public $NvoJugador, $baraja, $granAyuda;
 
+
     public function mount(){
         $this->nombres=[];
         $this->NombreJuego='0';
         $this->baraja=collect();
+        if(!session('MemAlto')){
+            session(['MemAlto'=>'200', 'MemAncho'=>'150']);
+        }
 
+        ## session(['MemAlto'=>'100', 'MemAncho'=>'50']); ##7 mini
+        ## session(['MemAlto'=>'120', 'MemAncho'=>'70']); ##5 chico
+        ## session(['MemAlto'=>'160', 'MemAncho'=>'110']); ##4 medi
+        ## session(['MemAlto'=>'200', 'MemAncho'=>'150']); ##3 gran
         if(session('rol')){
             $auts=['admin','webmaster'];
             if(array_intersect($auts,session('rol'))){$this->granAyuda=TRUE;}else{$this->granAyuda=FALSE;}
@@ -30,6 +38,21 @@ class MemoramaComponent extends Component
         //     ['name'=>'Chia','pt'=>'0'],
         //     ['name'=>'Mandarina','pt'=>'0'],
         // ];
+    }
+
+    public function CambiaTamanio($size){
+        $alto=session('MemAlto') + $size;
+        $ancho=session('MemAncho') + $size;
+        session(['MemAlto'=>$alto, 'MemAncho'=>$ancho]);
+        $this->dispatch('RecargarPagina');
+        $this->SeleccionaJuego($this->NombreJuego);
+
+    }
+    public function CambiaTamanio2($ancho,$alto){
+        session(['MemAlto'=>$alto, 'MemAncho'=>$ancho]);
+        $this->dispatch('RecargarPagina');
+        $this->SeleccionaJuego($this->NombreJuego);
+
     }
 
     public function AgregaJugador(){

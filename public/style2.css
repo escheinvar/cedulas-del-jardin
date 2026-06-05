@@ -749,8 +749,9 @@ button.EdoActual{
 
 /*============ Cartas de juego de memoria */
 .cartaCerrada, .cartaAbierta, .cartaImagen, .cartaGanada, .avisoGanada{
-    width:150px;
-    height:200px; display:inline-block;
+    /* width:150px;
+    height:200px; */
+    display:inline-block;
     margin:10px;
     border-radius:7px;
     cursor:pointer;
