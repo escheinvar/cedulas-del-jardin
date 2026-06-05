@@ -767,7 +767,6 @@ button.EdoActual{
     border:1px solid gray;
 }
 .cartaAbierta, .avisoGanada{
-    background-size:150px auto;
     background-repeat: no-repeat;
     background-position: bottom;
 }

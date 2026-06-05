@@ -18,22 +18,22 @@ class JueMemoriaSeeder extends Seeder
         ############################### Cédulas en español
         $JuegoDeCartas=[
             [
-                'titulo'=>'Las cédulas en español',
+                'titulo'=>'Titulos de cédulas en español',
                 'jardin'=>'IxMxJebOax',
                 'Autor'=>'Enrique Scheinvar',
                 'lengua'=>'spa',
             ],[
-                'titulo'=>'Las cédulas en én-ná (mazateco)',
+                'titulo'=>'Titulos de cédulas en én-ná (mazateco)',
                 'jardin'=>'IxMxJebOax',
                 'Autor'=>'Enrique Scheinvar y Gabriela ',
                 'lengua'=>'maa',
             ],[
-                'titulo'=>'Las cédulas en ditza dixza(zapoteco de Tlacolula)',
+                'titulo'=>'Titulos de cédulas en ditza dixza(zapoteco de Tlacolula)',
                 'jardin'=>'IxMxJebOax',
                 'Autor'=>'Enrique Scheinvar y Gabriela ',
                 'lengua'=>'zab',
             ],[
-                'titulo'=>'Las cédulas en ayuuk (mixe)',
+                'titulo'=>'Titulos de cédulas en ayuuk (mixe)',
                 'jardin'=>'IxMxJebOax',
                 'Autor'=>'Enrique Scheinvar y Gabriela ',
                 'lengua'=>'neq',

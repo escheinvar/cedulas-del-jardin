@@ -3,17 +3,16 @@
 
     @if($NombreJuego=='0')
 
-        {{-- <div style="float:right;">
-            <div class="cartaCerrada" style="width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px">
-            </div><br>
+        <div style="float:right;">
+            <div class="cartaCerrada" style="width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px"></div><br>
             {{ session('MemAlto') }} X {{ session('MemAncho') }}
-        </div> --}}
+            </div>
         <h1>Juego de Memoria</h1>
 
         <div class="row">
             <!-- Agrega jugadores -->
-            <div class="col-12 col-md-6 my-1 form-group">
-                <label for="NvoJugador" class="form-label">Nombre del jugador {{ count(session('MemNombres'))+1 }}:<red></red></label>
+            <div class="col-12 col-md-4 my-1 form-group">
+                <label for="NvoJugador" class="form-label">Nombre del jugador {{ count($nombres)+1 }}:<red></red></label>
                 <input wire:model="NvoJugador" id="NvoJugador" class="@error('NvoJugador') is-invalid @enderror form-control agregar" type="text">
                 <button type="button" wire:click="AgregaJugador" class="btn btn-primary agregar">+</button>
                 <div class="form-text"></div>
@@ -32,27 +31,27 @@
                 </div>
             @endif
 
+            <!-- muestra jugadores-->
+            <div class="col-12">
+                @foreach ($nombres as $n)
+                    <div class="elemento">{{ $n['name'] }}</div>
+                @endforeach
+            </div>
+
+
             <!-- Tamaño de carta -->
             <div style="float: right;">
                 <span wire:click='CambiaTamanio2(50,100)' class="PaClick mx-2">Mini</span>
                 <span wire:click='CambiaTamanio2(70,120)' class="PaClick mx-2">Chico</span>
                 <span wire:click='CambiaTamanio2(110,160)' class="PaClick mx-2">Mediano</span>
-                <span wire:click='CambiaTamanio2(150,200)' class="PaClick mx-2">Normal</span>
-                <span wire:click='CambiaTamanio2(180,230)' class="PaClick mx-2">Grande</span>
-                <span wire:click='CambiaTamanio2(210,260)' class="PaClick mx-2">Grandísimo</span>
-                <span wire:click='CambiaTamanio2(250,300)' class="PaClick mx-2">Enorme</span>
+                <span wire:click='CambiaTamanio2(150,200)' class="PaClick mx-2">Grande</span>
+                <span wire:click='CambiaTamanio2(180,230)' class="PaClick mx-2">Muy grande</span>
                 <i wire:click="CambiaTamanio(+10)"class="bi bi-plus-circle-fill PaClick mx-2" style="color:#64383E;"> </i>
                 <i wire:click="CambiaTamanio(-10)" class="bi bi-dash-circle-fill PaClick mx-2" style="color:#64383E;"> </i>
             </div>
-            <!-- muestra jugadores-->
-            <div class="col-12">
-                {{-- <button wire:click='temp()'>a</button> --}}
-                @foreach($nombres as $n)
-                    <div class="elemento p-1">
-                        {{ $n['name'] }}
-                        <i wire:click="EliminaJugador('{{ $n['name'] }}')" class="bi bi-trash agregar"></i>
-                    </div>
-                @endforeach
+            <div class="col-6">
+                {{-- <div class="cartaCerrada" style="display:block-inline; width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px"> --}}
+
             </div>
         </div>
 
@@ -61,19 +60,11 @@
         <h3>Selecciona el juego</h3>
         <div class="row my-4">
             @foreach ($NombreJuegos as $j)
-            <div style="display:inline-block; width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px; margin:10px;">
-                <div wire:click="SeleccionaJuego('{{ $j->jue_name }}')"
-                    class="cartaAbierta"
-                    style="width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px; @if($j->jue_portada != '')background-image:url('{{ $j->jue_portada }}'); @endif background-size:auto {{ session('MemAlto') }}px; margin-bottom:0px;">
-                    @if($j->jue_portada==''){{ $j->jue_name }}@endif
-                </div>
-                <div style="margin-top:0px;font-size:80%;margin-left:10px;">
+                <div wire:click="SeleccionaJuego('{{ $j->jue_name }}')" class="col-6 col-md-2 PaClick" style="height:200px; border:1px solid gray; border-radius: 15px; margin:15px; padding:10px;">
                     {{ $j->jue_name }}<br>({{ $j->cartas->count()/2 }} pares)
                 </div>
+                @endforeach
             </div>
-
-            @endforeach
-        </div>
     @else
         <!-- ------------------------------------------------------------------ -->
         <!-- --------------  INICIA JUEGO ------------------------------------- -->
@@ -81,9 +72,8 @@
         <div class="row">
             <div class="col-6 col-md-2">
                 <a href="/memoria">
-                    <button class="btn btn-secondary">Regresar</button>
+                    <button class="btn btn-secondary">Reiniciar</button>
                 </a>
-
             </div>
         </div>
         <h1>Jugando {{ $NombreJuego }}</h1>
@@ -111,7 +101,7 @@
                     </div>
 
                     <!-- carta abierta-->
-                    <div id="CartaAb{{ $c->mem_id }}" wire:click="TurnoDeJuego({{ $c->mem_id }})" class="cartaAbierta" style="display:none; background-image: url('{{ $c->mem_img }}');  width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px; background-size:auto {{ session('MemAlto') }}px">
+                    <div id="CartaAb{{ $c->mem_id }}" wire:click="TurnoDeJuego({{ $c->mem_id }})" class="cartaAbierta" style="display:none; background-image: url('{{ $c->mem_img }}');  width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px; background-size:{{ session('MemAlto') }}px auto">
                         @if($granAyuda==TRUE)<div style="color:red; float: right;">{{ $c->mem_par }}@if($c->mem_img !='')<b>*</b>@endif @if($c->mem_aud !='')<b>^</b>@endif</div>@endif
                         @if($c->mem_txt != '')
                             <div id="Txt{{ $c->mem_id }}" style="background-color:#efebe8; width:100%; margin:0px; padding:4px; border-radius:7px;">

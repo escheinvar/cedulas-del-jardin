@@ -9,30 +9,27 @@ use Livewire\Component;
 class MemoramaComponent extends Component
 {
     public $edit;
-    public $nombres,    $NombreJuego, $turno, $par;
+    public $nombres, $NombreJuego, $turno, $par;
     public $NvoJugador, $baraja, $granAyuda;
 
 
     public function mount(){
-
+        $this->nombres=[];
         $this->NombreJuego='0';
         $this->baraja=collect();
         if(!session('MemAlto')){
             session(['MemAlto'=>'200', 'MemAncho'=>'150']);
         }
-        if(!session('MemNombres')){
-            session(['MemNombres'=>[]]);
-            $this->nombres=[];
-        }else{
-            $this->nombres=session('MemNombres');
-        }
-
+        // if(!session('MemNombres')){
+        //     session(['memNombres'=>[]]);
+        // }
 
         if(session('rol')){
             $auts=['admin','webmaster'];
             if(array_intersect($auts,session('rol'))){$this->granAyuda=TRUE;}else{$this->granAyuda=FALSE;}
         }
     }
+
     public function CambiaTamanio($size){
         $alto=session('MemAlto') + $size;
         $ancho=session('MemAncho') + $size;
@@ -50,26 +47,10 @@ class MemoramaComponent extends Component
 
     public function AgregaJugador(){
         if($this->NvoJugador!= ''){
-            $nombres = session('MemNombres');
-            $nombres[] = ['name'=>$this->NvoJugador,'pt'=>'0'];
-            session(['MemNombres'=> $nombres]);
+            $this->nombres[]=['name'=>$this->NvoJugador, 'pt'=>'0'];
         }
         $this->NvoJugador='';
-    }
 
-    public function EliminaJugador($nombre){
-        if(count($this->nombres)=='1'){
-            $this->nombres=[];
-            session(['MemNombres'=> $this->nombres]);
-        }else{
-            // Extract the 'name' column and search for 'Bob'
-            $va = array_search($nombre, array_column($this->nombres, 'name'));
-            unset($this->nombres[$va]);
-            $this->nombres=array_values($this->nombres);
-            session(['MemNombres'=> $this->nombres]);
-            // dd('+1',$va,$this->nombres);
-            $this->dispatch('RecargarPagina');
-        }
     }
 
     public function turnar(){
@@ -79,6 +60,7 @@ class MemoramaComponent extends Component
         }else{
             $this->turno='0';
         }
+        // $this->par=[];
     }
 
     public function SeleccionaJuego($jue){
@@ -142,9 +124,8 @@ class MemoramaComponent extends Component
             #### En caso de que gana:
             if($carta1 == $carta2){
                 $this->dispatch('AvisaGana',id1:$this->par['0'], id2:$this->par['1']);
-
                 $this->nombres[$this->turno]['pt']=$this->nombres[$this->turno]['pt']+1;
-                session(['MemNombres'=>$this->nombres]);
+
             ##### En caso de que pierde:
             }else{
                 $this->turnar();
@@ -163,13 +144,8 @@ class MemoramaComponent extends Component
             }
         }
 
-        ##### Toma valores de sesión y los mete como variable
-        $this->nombres=session('MemNombres');
-
-        ##### Obtiene lista de juegos
         $NombreJuegos=juegos::where('jue_act','1')
             ->where('jue_del','0')
-            ->where('jue_tipo','memoria')
             ->with('cartas')
             ->get();
 
