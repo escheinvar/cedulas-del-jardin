@@ -57,6 +57,10 @@ class ListaController extends Component
         lista::where('lst_id',$id)->update(['lst_del'=>'1']);
     }
 
+    public function Renumerar(){
+
+    }
+
     public function render(){
         ###### Determina permisos
         $this->edit='0';
@@ -72,10 +76,16 @@ class ListaController extends Component
 
         $lista=$lista->where('lst_cjarsiglas',$this->url->urlj_cjarsiglas)
             ->where('lst_del','0')
-            ->orderBy('lst_orden','asc');
+            ->orderBy('lst_orden','asc')
+            ->get();
 
+        $Num=lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->count();
+        $Max=lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->max('lst_orden');
         return view('livewire.web.lista-controller',[
-            'lista'=>$lista->get(),
+            'lista'=>$lista,
+            'Num'=>$Num,
+            'Max'=>$Max,
+
         ]);
     }
 

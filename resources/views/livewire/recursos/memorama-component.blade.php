@@ -1,0 +1,183 @@
+<div>
+
+
+    @if($NombreJuego=='0')
+        <h1>Juego de Memoria</h1>
+        <h3>Nombre de los jugadores</h3>
+        <div class="row">
+            <!-- Agrega jugadores -->
+            <div class="col-12 col-md-3 my-1 form-group">
+                <label for="NvoJugador" class="form-label">Nombre del jugador {{ count($nombres)+1 }}:<red></red></label>
+                <input wire:model="NvoJugador" id="NvoJugador" class="@error('NvoJugador') is-invalid @enderror form-control agregar" type="text">
+                <button type="button" wire:click="AgregaJugador" class="btn btn-primary agregar">+</button>
+                <div class="form-text"></div>
+                @error('NvoJugador')<error>{{ $message }}</error>@enderror
+            </div>
+
+            <!-- Gran Ayuda -->
+            @if($edit=='1')
+                <div class="col-12 col-md-3 my-1 form-group">
+                    <div class="form-check"><br>
+                        <input wire:model="granAyuda" id="granAyuda" value="" class="@error('granAyuda') is-invalid @enderror form-check-input" type="checkbox" >
+                        <label class="form-check-label" for="checkDefault">Gran Ayuda</label>
+                    </div>
+                </div>
+            @endif
+
+            <!-- muestra jugadores-->
+            <div class="col-12">
+                @foreach ($nombres as $n)
+                    <div class="elemento">{{ $n['name'] }}</div>
+                @endforeach
+            </div>
+        </div>
+
+
+        <br><br>
+        <h3>Selecciona el juego</h3>
+        <div class="row my-4">
+            @foreach ($NombreJuegos as $j)
+                <div wire:click="SeleccionaJuego('{{ $j->jue_name }}')" class="col-6 col-md-2 PaClick" style="height:200px; border:1px solid gray; border-radius: 15px; margin:15px; padding:10px;">
+                    {{ $j->jue_name }}<br>({{ $j->cartas->count()/2 }} pares)
+                </div>
+                @endforeach
+            </div>
+    @else
+        <!-- ------------------------------------------------------------------ -->
+        <!-- --------------  INICIA JUEGO ------------------------------------- -->
+        <!-- ------------------------------------------------------------------ -->
+        <a href="/juego">
+            <button class="btn btn-secondary">Reiniciar</button>
+        </a>
+
+        <h1>Jugando {{ $NombreJuego }}</h1>
+        <!-- marcador -->
+        <div class="row">
+            @foreach ($nombres as $n)
+                <div class="col-2" style="@if($nombres[$turno]['name'] == $n['name']) color:#CD7B34; font-size:200%; @else color:gray;  @endif vertical-align:middle;">
+                    {{ $n['name'] }}
+                    <b>
+                        {{ $n['pt'] }}
+                    </b>
+
+                </div>
+            @endforeach
+        </div>
+
+        {{-- <div class="alert alert-dark my-3" style="font-size:300%;">
+            Turno de {{ $nombres[$turno]['name'] }} {{ count($par) }}
+        </div> --}}
+
+        <!-- ------------- Inicia tablero -------------------- -->
+        <div class="row">
+            <div class="col-12" wire:ignore>
+                <!-- cada carta -->
+                @foreach ($baraja as $c)
+                    <!-- carta cerrada -->
+                    <div id="CartaCe{{ $c->mem_id }}" wire:click="TurnoDeJuego({{ $c->mem_id }})" class="cartaCerrada" style="display:block-inline;">
+                        @if($granAyuda==TRUE)<div style="color:red; float: right;">{{ $c->mem_par }}@if($c->mem_img !='')<b>*</b>@endif @if($c->mem_aud !='')<b>^</b>@endif</div>@endif
+                    </div>
+
+                    <!-- carta abierta-->
+                    <div id="CartaAb{{ $c->mem_id }}" wire:click="TurnoDeJuego({{ $c->mem_id }})" class="cartaAbierta" style="display:none; background-image: url('{{ $c->mem_img }}')">
+                        @if($granAyuda==TRUE)<div style="color:red; float: right;">{{ $c->mem_par }}@if($c->mem_img !='')<b>*</b>@endif @if($c->mem_aud !='')<b>^</b>@endif</div>@endif
+                        @if($c->mem_txt != '')
+                            <div id="Txt{{ $c->mem_id }}" style="background-color:#efebe8; width:100%; margin:0px; padding:4px; border-radius:7px;">
+                                {!!  $c->mem_txt !!}
+                            </div>
+                        @endif
+                        @if($c->mem_aud != '')
+                            <i class="bi bi-volume-up"></i>
+                            <audio id="SpAudio{{ $c->mem_id }}">
+                                <source src="{{ $c->mem_aud }}" type="audio/ogg" /> El navegador no soporta el audio
+                            </audio>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+    @endif
+
+
+
+
+
+
+
+<script>
+    Livewire.on('AbreCarta',()=>{
+        id=event.detail.id;
+        document.getElementById('CartaCe'+id).style.display ='none';
+        document.getElementById('CartaAb'+id).style.display ='inline-block';
+    })
+
+    Livewire.on('CierraCartas',()=>{
+        id1=event.detail.id1;
+        id2=event.detail.id2;
+        document.getElementById('CartaCe'+id1).style.display ='inline-block';
+        document.getElementById('CartaAb'+id1).style.display ='none';
+        document.getElementById('CartaCe'+id2).style.display ='inline-block';
+        document.getElementById('CartaAb'+id2).style.display ='none';
+
+    })
+
+    Livewire.on('GanaCartas',()=>{
+        id1=event.detail.id1;
+        id2=event.detail.id2;
+        document.getElementById('CartaCe'+id1).style.display ='inline-block';
+        document.getElementById('CartaAb'+id1).style.display ='none';
+        document.getElementById('CartaCe'+id2).style.display ='inline-block';
+        document.getElementById('CartaAb'+id2).style.display ='none';
+        document.getElementById('CartaCe'+id1).className= 'cartaGanada';
+        document.getElementById('CartaCe'+id2).className= 'cartaGanada';
+
+    })
+    Livewire.on('AvisaGana',()=>{
+        id1=event.detail.id1;
+        id2=event.detail.id2;
+        document.getElementById('CartaAb'+id1).className= 'avisoGanada';
+        document.getElementById('CartaAb'+id2).className= 'avisoGanada';
+    })
+
+    Livewire.on('EjecutaAudio',()=>{
+        id=event.detail.id;
+        var MyAudio = document.getElementById('SpAudio'+id);
+        MyAudio.currentTime = 0;
+        MyAudio.play();
+    })
+
+        // /* ### Script para abrir y cerrar Modal */
+        // Livewire.on('AbreModal', () => {
+        //     $('#ModalAlias_Especies').modal('show');
+        // });
+        // Livewire.on('CierraModal', () => {
+        //     $('#ModalAlias_Especies').modal('hide');
+        //     if(event.detail.reload == '1'){
+        //         window.location.reload();
+        //     }
+        // });
+
+        /* ### Script para abrir mensaje */
+        Livewire.on('AvisoExitoMemoria',()=>{
+            alert(event.detail.msj);
+        })
+
+        /* ### Script para mostrar botón personalizado de input=file */
+        //document.getElementById('MiBotonPersonalizado').addEventListener('click', function() {
+        //    document.getElementById('MiInputFile').click();
+        //});
+
+        /* #### Recibe variable desde un componente externo y lo manda a livewire */
+        //Livewire.on('RecibeVariables',() => {
+        //    @this.set('ModeloWire',event.detail.dato, live=true);
+        //});
+
+        /* #### Reiniciar la página */
+        // Livewire.on('RecargarPagina',() => {
+        //     location.reload();
+        //     // window.location.href;
+        // });
+    </script>
+
+</div>

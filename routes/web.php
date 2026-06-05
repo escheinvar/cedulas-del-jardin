@@ -12,6 +12,7 @@ use App\Livewire\Admin\Nuevousuario01Controller;
 use App\Livewire\Admin\NuevoUsuarioController;
 use App\Livewire\Login\RecuperaPasswd01Controller;
 use App\Livewire\Login\RecuperaPasswdController;
+use App\Livewire\Recursos\MemoramaComponent;
 use App\Livewire\Sistema\AdminAportesPublicoComponent;
 use App\Livewire\Sistema\AdminAutoresComponent;
 use App\Livewire\Sistema\AdminCedulasComponent;
@@ -116,5 +117,7 @@ Route::get('/lista/{jardin}', ListaController::class)->name('lista');
 // Route::get('/len/{url}/{jardin}/{lengua}', DistribuidorDeCedulasComponent::class)->name('distrilengua');
 
 
+/* ---------------------------- RECURSOS ------------------------------------- */
+Route::get('/juego', MemoramaComponent::class)->name('recursos');
 
 

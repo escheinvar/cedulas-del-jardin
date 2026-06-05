@@ -88,6 +88,7 @@ function VerNoVerPass(CampoPass,CampoIcono, iconoText, iconoPass){
 }
 
 function playAudio(IdAudio) {
+    console.log('hola')
     //busca si hay audios encendidos
     const AlgunoConPlay = document.querySelectorAll('[id*="SpAudio"]');
     // Si hay, los pausa todos

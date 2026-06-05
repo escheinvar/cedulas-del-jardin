@@ -21,7 +21,10 @@ return new class extends Migration
 
             $table->string('lst_reino')->nullable(); ##### Nombre científico de la especie
             $table->string('lst_familia')->nullable(); ##### Nombre científico de la especie
+            $table->string('lst_genero')->nullable(); ##### Nombre científico de la especie
             $table->string('lst_sp')->nullable(); ##### Nombre científico de la especie
+            $table->string('lst_ssp')->nullable(); ##### Nombre científico de la especie
+            $table->string('lst_scname')->nullable(); ##### Nombre científico de la especie
             $table->string('lst_var')->nullable(); ##### Nombre científico de la especie
 
             $table->string('lst_name')->nullable(); ##### Nombre común de la especie

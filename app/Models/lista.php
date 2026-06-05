@@ -23,7 +23,10 @@ class lista extends Model
 
         'lst_reino',
         'lst_familia',
+        'lst_genero',
         'lst_sp',
+        'lst_ssp',
+        'lst_scname',
         'lst_var',
 
         'lst_name',

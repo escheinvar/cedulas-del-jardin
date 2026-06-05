@@ -26,6 +26,15 @@
                 <i class="bi bi-plus-circle"></i> Agregar
             </button>
         </div>
+        @if($Num != $Max)
+            <div class="m-4" style="text-align:right;">
+                <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
+                    <i class="bi bi-plus-circle"></i> Renumerar
+                </button>
+                {{ $Num }}-{{ $Max }}
+            </div>
+        @endif
+
     @endif
 
     @if($lista->count() == 0)
@@ -39,18 +48,36 @@
                 <tr>
                     <th>No.</th>
                     <th>Especie</th>
-                    <th>Nombre(s)</th>
+                    <th>Nombre(s) comunes</th>
                     <th></th>
-                    <th> </th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($lista as $l)
                     <tr class="@if($l->lst_act == '0') inact @endif" >
-                        <td> @if($edit=='1') {{ $l->lst_orden }} @else {{ $num++ }} @endif </td>
-                        <td> {{ $l->lst_sp }} </td>
-                        <td> {{ $l->lst_name }}</td>
-                        <td> {{ $l->lst_notas }}</td>
+                        <!-- número orden -->
+                        <td>
+                            @if($edit=='1') {{ $l->lst_orden }} @else {{ $num++ }} @endif
+                        </td>
+                        <!-- Nombre científico -->
+                        <td>
+                            {{ $l->lst_scname }}
+                        </td>
+
+                        <!-- Nombre(s) común -->
+                        <td>
+                            @foreach (explode(';',$l->lst_name) as $n)
+                                <div class="elemento">{{ $n }}</div>
+                            @endforeach
+
+                        </td>
+
+                        <!-- Razón de incorporación -->
+                        <td>
+                            {{ $l->lst_notas }}
+                        </td>
+
                         <td style="text-align: right;">
                             @if($edit=='1')
                                 <!-- Editar -->

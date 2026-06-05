@@ -317,7 +317,7 @@ error, red {
 
 
 /*=== inact: formato para tablas cuando act=0
-(tacha y pone en gris el texto) ===*/
+(@ y pone en gris el texto) ===*/
 tr.inact, td.inact{
     text-decoration: line-through;
     color:gray;
@@ -745,4 +745,39 @@ button.EdoActual{
     display:inline-block;
     line-height: 1.0em;
 }
+
+
+/*============ Cartas de juego de memoria */
+.cartaCerrada, .cartaAbierta, .cartaImagen, .cartaGanada, .avisoGanada{
+    width:150px;
+    height:200px; display:inline-block;
+    margin:10px;
+    border-radius:7px;
+    cursor:pointer;
+    vertical-align: top;
+}
+
+.cartaCerrada{
+    background-image: url('/imagenes/logo-nav.png');
+    background-size: 60%;
+    opacity:0.6;
+    background-repeat: no-repeat;
+    background-position: center;
+    border:1px solid gray;
+}
+.cartaAbierta, .avisoGanada{
+    background-size:150px auto;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+.cartaGanada{
+    border:0px solid transparent;
+}
+.cartaAbierta{
+    border:1px solid gray;
+}
+.avisoGanada{
+    border:3px solid #CD7B34;
+}
+
 
