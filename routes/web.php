@@ -118,6 +118,6 @@ Route::get('/lista/{jardin}', ListaController::class)->name('lista');
 
 
 /* ---------------------------- RECURSOS ------------------------------------- */
-Route::get('/juego', MemoramaComponent::class)->name('recursos');
+Route::get('/memoria', MemoramaComponent::class)->name('recursos');
 
 
