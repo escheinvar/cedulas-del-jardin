@@ -35,7 +35,7 @@ return new class extends Migration
                 $table->string('msg_tel')->nullable(); ##### teléfono
                 $table->longText('msg_mensaje')->nullable(); ##### Texto del mensaje
                 $table->longText('msg_mensajeoriginal')->nullable();
-                $table->integer('msg_usr'); #### ID del usuario que envía la aportación
+                $table->integer('msg_usr')->nullable(); #### ID del usuario que envía la aportación
                 $table->date('msg_date');
                 $table->string('msg_nota')->nullable();  ##### Notas de razón de suspensión o cancelación
 

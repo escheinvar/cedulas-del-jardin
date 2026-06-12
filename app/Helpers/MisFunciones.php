@@ -116,12 +116,13 @@ if(! function_exists('MyRegistraVisita')){
 
 if(! function_exists('paLog')){
     function paLog($mensaje,$tabla,$tablaId){
+        if(Auth::user()){$usr=Auth::user()->id;}else{$usr='0';}
         historial::create([
             'log_log'=>$mensaje,
             'log_tabla'=>$tabla,
             'log_tablaid'=>$tablaId,
 
-            'log_usrid'=>Auth::user()->id,
+            'log_usrid'=>$usr,
             'log_fecha'=>date('Y-m-d'),
             'log_Hora'=>date('H:i:s'),
         ]);

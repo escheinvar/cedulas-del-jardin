@@ -2,12 +2,6 @@
 
 
     @if($NombreJuego=='0')
-
-        {{-- <div style="float:right;">
-            <div class="cartaCerrada" style="width:{{ session('MemAncho') }}px; height:{{ session('MemAlto') }}px">
-            </div><br>
-            {{ session('MemAlto') }} X {{ session('MemAncho') }}
-        </div> --}}
         <h1>Juego de Memoria</h1>
 
         <div class="row">
@@ -71,7 +65,6 @@
                     {{ $j->jue_name }}<br>({{ $j->cartas->count()/2 }} pares)
                 </div>
             </div>
-
             @endforeach
         </div>
     @else
@@ -80,7 +73,7 @@
         <!-- ------------------------------------------------------------------ -->
         <div class="row">
             <div class="col-6 col-md-2">
-                <a href="/memoria">
+                <a href="/memorama">
                     <button class="btn btn-secondary">Regresar</button>
                 </a>
 
