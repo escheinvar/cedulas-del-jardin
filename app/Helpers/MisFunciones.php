@@ -116,7 +116,8 @@ if(! function_exists('MyRegistraVisita')){
 
 if(! function_exists('paLog')){
     function paLog($mensaje,$tabla,$tablaId){
-        if(Auth::user()){$usr=Auth::user()->id;}else{$usr='0';}
+        if(Auth::user()->id > '0'){$usr=Auth::user()->id;}else{$usr='0';}
+
         historial::create([
             'log_log'=>$mensaje,
             'log_tabla'=>$tabla,
