@@ -101,6 +101,8 @@ Route::get('/sistema', SistInicioController::class)->name('inicio');
 Route::get('/jardiness',SistJardinesController::class)->name('jardines');
 Route::get('/autores',SistAutoresController::class)->name('autores');
 Route::get('/cedulasdeljardin', SistCedulasComponent::class)->name('cedulas');
+Route::get('/cedula', SistCedulasComponent::class)->name('cedulas');
+Route::get('/ver', SistCedulasComponent::class)->name('cedulas');
 Route::get('/noauth/{msj}', NoauthController::class)->name('cedulas');
 
 Route::get('/jardin/{jardin}/{pag?}/', JardinController::class)->name('enjardin');

@@ -8,6 +8,8 @@ use App\Models\ced_autores;
 use App\Models\cedulas_url;
 use App\Models\jardin_txt;
 use App\Models\jardin_url;
+use App\Models\ced_sp;
+use App\Models\ced_alias;
 use App\Models\UserRolesModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +26,9 @@ class JardinController extends Component
     ####### Vars de página:
     public $url; ##### Carga la info de jar_url de página activa
     public $traduccion;  #### jar_url de traducciones de la misma página
+
+    ##### Vars de cédulas:
+    public $buscaLengua, $buscaText, $ganonesText;
 
     #[Layout('plantillas.baseJardin')]
     public function mount($jardin,$pag=null){
@@ -59,6 +64,9 @@ class JardinController extends Component
 
         ##### define variables
         $this->traduccion='';
+        $this->buscaLengua='';
+        $this->buscaText='';
+        $this->ganonesText=[];
     }
 
     public function CambiaAunaTraduccion(){
@@ -91,6 +99,48 @@ class JardinController extends Component
             ];
             $this->dispatch('AbreModalDeParrafoWebJardin',$data);
         }
+    }
+
+
+    public function BuscaPorTexto(){
+        $this->ganonesText=[];
+        $this->validate([
+            'buscaText'=>'required|string|min:3',
+        ]);
+
+        ##### busca en título, resumen y cita
+        $ceds=cedulas_url::where('url_act','1')->where('url_del','0')
+            ->where(function($q){
+                return $q
+                ->where('url_titulo','ilike','%'.$this->buscaText.'%')
+                ->orWhere('url_tituloorig','ilike','%'.$this->buscaText.'%')
+                ->orWhere('url_resumen','ilike','%'.$this->buscaText.'%')
+                ->orWhere('url_resumenorig','ilike','%'.$this->buscaText.'%')
+                ->orWhere('url_cita','ilike','%'.$this->buscaText.'%');
+            })
+            ->pluck('url_id')
+            ->toArray();
+
+        ##### Busca por nombre científico
+        $nomsc=ced_sp::where('sp_scname','ilike','%'.$this->buscaText.'%')
+            ->leftJoin('cedula_url','sp_key','url_key')
+            ->where('sp_act','1')->where('sp_del','0')
+            ->pluck('url_id')
+            ->toArray();
+
+        ###### Busca por alias
+        $alias=ced_alias::where('ali_txt_tr','ilike','%'.$this->buscaText.'%')
+            ->where('ali_act','1')->where('ali_del','0')
+            ->pluck('ali_urlid')
+            ->toArray();
+
+        $todo=array_merge($ceds,$nomsc,$alias);
+        $this->ganonesText=array_unique($todo);
+    }
+
+    public function BorrarTexto(){
+        $this->buscaText='';
+        $this->ganonesText=[];
     }
 
     public function render(){
@@ -129,20 +179,33 @@ class JardinController extends Component
             ->orderBy('urlj_lencode')
             ->get();
 
-        ############## Carga cédulas (pag. cédulas)
-        $cedulas=cedulas_url::where('url_cjarsiglas',$this->url->urlj_cjarsiglas)
-            ->where('url_del','0')
+        $cedulas=cedulas_url::query();
+
+        $cedulas=$cedulas->where('url_cjarsiglas',$this->url->urlj_cjarsiglas)
             ->where('url_act','1')
+            ->where('url_del','0')
             ->where('url_ciclo','>','0')
-            ->with('lenguas')
+            ->with('jardin')
             ->with('objetos')
+            ->with('lenguas')
             ->with('ubicaciones')
-            ->with('especies')
             ->with('alias')
+            ->with('especies')
             ->with('usos')
             ->with('jardin')
-            ->inRandomOrder()
-            ->get();
+            ->with('autores')
+            ->with('traductores')
+            ->inRandomOrder();
+
+        ##### Busca por lengua
+        if($this->buscaLengua != ''){
+            $cedulas=$cedulas->where('url_lencode',$this->buscaLengua);
+        }
+
+        ##### Busca por nombres
+        if(count($this->ganonesText) > '0' or $this->buscaText != ''){
+            $cedulas=$cedulas->whereIn('url_id',$this->ganonesText);
+        }
 
         ############## Carga lista de autores únicos del jardín (recordar que se puede repetir un autor)
         $IdDeAutores=ced_autores::where('aut_cjarsiglas',$this->url->urlj_cjarsiglas)
@@ -161,12 +224,22 @@ class JardinController extends Component
             ->with('objetos')
             ->get();
 
+         ###### Genera listado de lenguas para formulario
+        $lenguas=cedulas_url::where('url_ciclo','>','0')
+            ->leftJoin('lenguas', 'url_lencode', '=', 'len_code')
+            ->where('url_act','1')
+            ->where('url_del','0')
+            ->distinct('url_lencode')
+            ->select('url_lencode','len_lengua','len_autonimias')
+            ->get();
+
 
         return view('livewire.web.jardin-controller',[
             'txt'=>$txt,
             'traducciones'=>$traducciones,
-            'cedulas'=>$cedulas,
+            'cedulas'=>$cedulas->get(),
             'autores'=>$autores,
+            'lenguas'=>$lenguas,
         ]);
     }
 }
