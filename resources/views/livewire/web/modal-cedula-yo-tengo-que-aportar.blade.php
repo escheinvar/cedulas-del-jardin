@@ -27,7 +27,7 @@
 
                         <!-- usuario -->
                         <div class="col-12 col-md-4 my-1 form-group">
-                            <label for="msg_alias" class="form-label">Nombre de usuario o pseudónimo<red>*</red></label>
+                            <label for="msg_alias" class="form-label">Alias<red>*</red></label>
                             <input wire:model="msg_alias" id="msg_alias" class="@error('msg_alias') is-invalid @enderror form-control" type="text">
                             <div class="form-text">Nombre que aparecerá en la página</div>
                             @error('msg_alias')<error>{{ $message }}</error>@enderror

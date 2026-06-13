@@ -6,6 +6,7 @@ use App\Models\CatEntidadesInegiModel;
 use App\Models\CatMunicipiosInegiModel;
 use App\Models\ced_aporteusrs;
 use App\Models\cedulas_url;
+use App\Models\ced_autores;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -90,7 +91,41 @@ class ModalCedulaYoTengoQueAportar extends Component
         ###### Guarda log
         paLog('Usuario envía msj','ced_aporteusrs',$nvo->id);
 
-        ###### Envía msj
+        ###### Construye variables para envíar mensaje a buzón
+        $asunto="Aportación de visitante a una cédula";
+        $msj="Un visitante (".$this->msg_nombre." ".$this->msg_alias." de ".$this->msg_mpio.", ".$this->msg_estado.
+            ") realizó una aportación a la cédula ".$ced->url_url.
+            " del jardín ".$ced->url_cjarsiglas." el día ".date('d')." del mes ".date('m')." de ".date('Y').
+            ".<br>".
+            "El mensaje es el siguiente:<br><br> <b>&quot;".$this->msg_txt."&quot;</b><br><br>".
+            " Sin embargo, este mensaje no se va a mostrar al público hasta ser revisado y aprobado por el editor de la cédula.";
+
+        $para=ced_autores::where('aut_urlid',$ced->url_id)
+            ->where('aut_act','1')
+            ->where('aut_del','0')
+            ->leftJoin('cat_autores','aut_cautid','caut_id')
+            ->where('caut_usrid','>','0')
+            ->pluck('caut_usrid')
+            ->toArray();
+        $para=array_unique($para);
+
+        ##### Envía mensaje
+        foreach($para as $p){
+            $a=EnviaMensajeAbuzon(
+                $p,      ### to: id usr del destinatario
+                '0',     ### from:  id usr del remitente o 0 para sistema
+                $asunto, ### asunto: texto del asunto
+                $msj,    ### mensaje: <html> del mensaje
+                null,    ### notas: <html> de las notas
+                '0'      ### ifReply: msj_id del mensaje al que se responde (o 0 para mensaje nuevo)
+            );
+            if($a > '0'){
+                $this->dispatch('AvisoExitoModalUsuarios', msj:'Error en el envío del mensaje');
+                return;
+            }
+        }
+
+        ###### Envía msj al usuario
         $msj='Tu mensaje se envió y guardó correctamente en el servidor. Será publicado en cuanto sea revisado por un editor.';
         $this->dispatch('AvisoExitoMensajeNvo', msj:$msj);
         $this->CancelaMensajeUsr();

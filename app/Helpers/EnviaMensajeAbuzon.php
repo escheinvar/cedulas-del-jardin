@@ -49,7 +49,11 @@ if(!function_exists('EnviaMensajeAbuzon')){
             $error++;
             return $error;
         }
-        if(User::where('id',$to)->count() != '1' or User::where('id',$from)->count() != '1'){
+        if(User::where('id',$to)->count() != '1'){
+            $error++;
+            return $error;
+        }
+        if($from > '0' AND User::where('id',$from)->count() != '1'){
             $error++;
             return $error;
         }
@@ -60,7 +64,11 @@ if(!function_exists('EnviaMensajeAbuzon')){
         $hora=date('H:i:s');
         $para=User::where('id',$to)->first();
 
-        $de=User::where('id',$from)->first();
+        if($from > '0'){
+            $de=User::where('id',$from)->first();
+        }else{
+            $de['usrname']="Mensaje de sistema";
+        }
 
         ###### Genera registro de BD de buzón
         $datos=[
