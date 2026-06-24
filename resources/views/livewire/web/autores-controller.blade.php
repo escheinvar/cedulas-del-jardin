@@ -95,12 +95,12 @@
 
                 <b>{{ $url->lengua->len_autonimias }}</b>  &nbsp; ({{ $url->lengua->len_lengua }})
 
-                @if(Auth::user())
+                @if(Auth::user() AND session('rol'))
                     @if($edit=='1' and $editMaster=='1')
                         <i wire:click="AbreModalAutores('{{ $url->autor->caut_id }}')" class="bi bi-pencil-square cedEdo{{ $url->aurl_edo }} PaClick"> Datos de autor </i>
                     @endif
-                    <!-- Indicador de edición y rol -->
 
+                    <!-- Indicador de edición y rol -->
                     <div class="cedEdoIcon{{ $url->aurl_edo }}">
                         @if($enEdit=='0') <b>No en edición</b> @endif
                        {{ implode(', ',session('rol')) }}
