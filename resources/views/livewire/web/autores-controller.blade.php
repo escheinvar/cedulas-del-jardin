@@ -120,13 +120,15 @@
                 @include('plantillas.texto')
             </div>
             <!-- muestra último párrafo -->
-            @if($edit=='1')
-                <div class="row my-4" style="background-color: #CDC6B9;">
-                    <div class="col-2">
-                        <i wire:click="AbreModalEditaParrafo('0','0', '', '', '', '1')" class="bi bi-plus-square PaClick" style="display:inline;"> Nuevo párrafo</i>
+            @if(Auth::user())
+                @if($edit=='1')
+                    <div class="row my-4" style="background-color: #CDC6B9;">
+                        <div class="col-2">
+                            <i wire:click="AbreModalEditaParrafo('0','0', '', '', '', '1')" class="bi bi-plus-square PaClick" style="display:inline;"> Nuevo párrafo</i>
+                        </div>
                     </div>
-                </div>
 
+                @endif
             @endif
         </div>
 
