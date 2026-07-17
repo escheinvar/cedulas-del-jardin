@@ -10,16 +10,28 @@
     <h1>Las cédulas del Jardín (<i>V. beta 1.0</i>)</h1>
 
     <div class="row justify-content-around py-5">
+        <p>Las Cédulas del Jardín es una plataforma de código abierto, gratuita, colaborativa, multilingüe,
+            diseñada, generada y mantenida por los
+            Investigadores por México del Jardín Etnobiológico de Oaxaca y que se pone a disposición
+            de comunidades, pueblos, Jardines Etnobiológicos o personas interesadas en  documentar
+            los saberes relacionados al patrimonio biocultural de los pueblos de México.</p>
+
+        <p>Si quieres participar, revisa nuestra sección de contribuciones.</p>
+
+        <p>Su objetivo principal es generar un punto de encuentro en el que se pueda valorar, conocer y reconocer estos saberes
+            en lenguas originarias o en español, presentados en forma de breves artículos, cédulas, monografías, audios, imágenes o videos
+            organizadas bajo el esquema de jardines virtuales que son generados y mantenidos por quienes lo conforman.</p>
+
+
         <div class="col-sm-auto col-md-4 text-end px-4 mb-4">
             <center>
-
                 <img  src="{{ asset('/imagenes/logo-nav.png') }}">
             </center>
         </div>
 
         <div class="col-sm-auto col-md-8 px-4 mb-4" style="text-align: justify;">
-            <p>El patrimonio biocultural se define como la trama viva que entrelaza la diversidad biológica con la diversidad cultural,
-                reconociendo que ambas coevolucionan en territorios específicos a lo largo del tiempo. No se
+            <p>El patrimonio biocultural se define como la trama viva que entrelaza la diversidad biológica con la diversidad cultural.
+                Ambas coevolucionan en territorios específicos a lo largo del tiempo. No se
                 limita a especies, ecosistemas, usos o artefactos materiales; abarca saberes, lenguas, rituales, sistemas productivos,
                 toponimias y cosmovisiones que los pueblos han desarrollado mediante la interacción continua con sus entornos.</p>
 
@@ -32,12 +44,21 @@
         </div>
 
         <div class="row justify-content-around py-5">
-            <p>Los Jardines Etnobiológicos tienen como objetivo la visibilización, resguardo, recuperación, intercambio y difusión del
-                conocimiento etnobiológico y de la riqueza biocultural del país, incluyendo sus lenguas originarias.  De ahí que se
-                requiere de la difusión de información en español y en lenguas sobre sus ejemplares. </p>
+            <p>La <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LGMHCTI.pdf" class="nolink" target="_blank">Ley General
+                en Materia de Humanidades, Ciencias, Tecnologías e Innovación</a> de México, en su artículo 53 establece: &quot;la constitución y consolidación de una
+                Red Nacional de Jardines Etnobiológicos que tendrá por objeto conservar la riqueza biocultural y promover el cuidado de
+                los territorios y bienes comunes. Asimismo, procurará que en cada entidad federativa se cuente al menos con uno de
+                estos espacios.&quot;</p>
 
-            <p> La colocación de cédulas informativas en  las comunidades o en los jardines, es compleja, debido a que se realiza en espacios al aire libre
-                y al recambio constante de ejemplares que eleva los costos de impresión.</p>
+            <p>Los Jardines Etnobiológicos tenemos que visibilizar, resguardar, difundir y sobre todo, reconocer y dar lugar
+                a los autores y poseedores del conocimiento etnobiológico que conforman la riqueza biocultural del país,
+                incluyendo las lenguas en las que son generados.  Nuestra
+                participación en la sistematización de información y en el impulso y acompañamiento de los procesos de
+                documentación por parte de las propias comunidades es importante.</p>
+
+            <p>Así mismo, la colocación de cédulas informativas en jardines comunitarios, escolares o etnobiológicos, es compleja,
+                debido a que se realiza en espacios al aire libre y al recambio constante de ejemplares que eleva los costos de impresión,
+                de ahí, que este sistema ofrece la posibilidad de ofrecer la información al público, mediante el acceso de un código QR.</p>
 
             <p>"Las cédulas del jardín" es una herramienta de código abierto diseñada para facilitar elaboración, traducción y
             publicación en línea de cédulas informativas en lenguas originarias.</p>
@@ -61,7 +82,7 @@
 
     <div class="row justify-content-around py-5">
         <div class="col-sm-auto col-md-12 px-4 mb-4" style="text-align:justify;">
-            <h3>Características principales</h3>
+            <h3>Características del sistema</h3>
             <ul>
             <li>Es colaborativa. Cuenta con diversos roles que facilitan la interacción para la creación, edición y publicación
                  de cédulas de información.</li>
@@ -101,8 +122,7 @@
                 ubicación del <a href="https://www.inegi.org.mx/" target="new">INEGI</a>, de
                 <a href="https://www.ethnologue.com/" target="new">lenguas del ethnologue</a> o de especies botánicas
                 <a href="https://powo.science.kew.org/" target="new"> Plants of the World</a> de Kew</li>
-        </div>
-    </div>
+        </div>    </div>
 
 
     <div class="row justify-content-around py-5">
