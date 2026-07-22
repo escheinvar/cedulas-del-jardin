@@ -274,10 +274,8 @@
             <!-- ---------------------------- pie del modal ----------------------------- -->
             <div class="modal-footer">
                 <button wire:click="CerrarModalProyecto()" class="btn btn-secondary">Cerrar</button>
-
                 {{-- <button wire:click="GuardaModal()" wire:loading.attr="disabled" class="btn btn-primary">Guardar</button> --}}
                 {{-- <span wire:loading style="display:none;"><red>pensando...</red> </span> --}}
-                <button wire:click='prueba()'>PRUEBA</button>
             </div>
         </div>
     </div>
