@@ -520,15 +520,6 @@ class ModalProyectoComponenet extends Component
         }
     }
 
-    public function prueba(){
-        $extra=[
-            'jardin'=>$this->proy->proy_jardin,
-            'titulo'=>'Gran título',
-        ];
-        $data=['idCed'=>'0', 'jardin'=>$this->proy->jardin, 'extra'=>$extra];
-        $this->dispatch('AbreModalDeCedula',$data);
-
-    }
     public function BorrarAutorProyecto($proyId,$tipoAutor){
         dd('en construcción');
     }
