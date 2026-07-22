@@ -42,6 +42,14 @@ class ModalAdminCedulaComponent extends Component
         // $this->LimpiaModal();
         $this->jardinSel=$datos['jardin'];
         $id=$datos['idCed'];
+        #############################################
+        ########## Código en caso de iniciar proyecto
+        ########## desde otra página (x ej. ModalProyectoComponente)
+        if(isset($datos['extra'])){
+            $this->jardinSel=$datos['extra']['jardin'];
+            $this->dispatch('RecibeVariablesDesdeProyectos',datoJar:$datos['extra']['jardin'],datoTit:$datos['extra']['titulo'],datoTipo:'original');
+        }
+        ############################### Termina código
 
         ##### Carga variables del usuario
         $this->cedulaId=$id;

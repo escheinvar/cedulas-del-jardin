@@ -12,6 +12,7 @@
 /public/img_basura/
 /public/jardines/
 /public/memoria/
+/public/proyectos/
 /storage/*.key
 /vendor
 .env
@@ -26,4 +27,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-BD_wcvp_taxon_kew.csv 
+BD_wcvp_taxon_kew.csv

@@ -780,4 +780,39 @@ button.EdoActual{
     border:3px solid #CD7B34;
 }
 
+/*============ Formato grande para textos de ayuda y manuales */
+.formato-grande {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 20px;
+    line-height: 2;
+}
 
+.formato-grande h1,h2,h3,h4,h5,h6{
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 800;
+    margin-top: 40px;
+    margin-bottom: 25px;
+}
+.formato-grande li{
+    margin-bottom: 15px;
+}
+
+.pegar-arriba {
+  position: sticky;
+  top: 0;          /* Punto exacto donde se congela al llegar arriba */
+  z-index: 1000;   /* Mantiene el elemento al frente al hacer scroll */
+}
+
+.card{
+    background-color: #CDC6B9;;
+}
+.card-title{
+    background-color: #64383E;
+    color:white;
+    padding:15px;
+}
+
+button:disabled.btn{
+    color:gray;
+    border-color:gray;
+}

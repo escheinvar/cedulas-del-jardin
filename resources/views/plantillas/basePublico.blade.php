@@ -96,6 +96,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
+
                         @hasSection('MenuPublico')
                             <ul class="navbar-nav justify-content-end flex-grow-1">
                                 <!-- -------------------------------------------------------------------------------- -->
@@ -121,22 +122,17 @@
                                     </a>
                                 </li>
 
-                                <!-- El sistema -->
-                                <li class="nav-item">
-                                    <a class="nav-link @if(request()->path() == 'sistema') active @endif" href="/sistema">
-                                        El sistema
-                                    </a>
-                                </li>
-
                                 <!-- Ayuda -->
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle @if(in_array(request()->path(),['api_manual','nosotros'])) active @endif" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Ayuda
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item @if(request()->path() == 'nosotros') active @endif" href="/nosotros">Sobre el Sistema</a></li>
-                                        <li><a class="dropdown-item @if(request()->path() == 'manual') active @endif" href="/manual">Manuales del sistema</a></li>
-                                        <li><a class="dropdown-item @if(request()->path() == 'api_manual') active @endif" href="/api_manual">Uso de API</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'sistema') active @endif" href="/sistema">Sistema</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'normaeditorial') active @endif" href="/normaeditorial">Norma editorial</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'comopublicar') active @endif" href="/comopublicar">Cómo publicar</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'manuales') active @endif" href="/manuales">Manuales</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'manualapi') active @endif" href="/manualapi">API</a></li>
                                     </ul>
                                 </li>
 
@@ -152,7 +148,7 @@
                                         <form action="{{route('logout')}}" method="post">
                                             @csrf
                                             <button type="submit" class="nolink btn" style="padding:0;margin:0;">
-                                                    Salir
+                                                    <a class="nav-link">Salir</a>
                                             </button>
                                         </form>
                                     </li>
@@ -173,17 +169,7 @@
                         <!-- ----------------- INICIA MENÚ PRIVADO --------------------------------------- -->
                         @hasSection('MenuPrivado')
                             <ul class="navbar-nav justify-content-end flex-grow-1">
-                                {{-- <li class="nav-item">
-                                    <a class="nav-link @if(request()->path() == '/') active @endif" href="/">
-                                        Inicio
-                                    </a>
-                                </li> --}}
                                 @if(Auth::user())
-                                    <li class="nav-item">
-                                        <a class="nav-link @if(request()->path() == 'home') active @endif" href="/home">
-                                            Home
-                                        </a>
-                                    </li>
                                     @if(array_intersect(['admin','editor','webmaster'],session('rol')))
                                         <!-- #################### Admin ###################### -->
                                         <li class="nav-item dropdown">
@@ -218,6 +204,20 @@
                                     @endif
 
                                     @if(count(session('rol')) > '0')
+                                        <!-- Cédulas públicas y de administración -->
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle
+                                                @if(in_array(request()->path(), ['homeConfig','buzon','manuales'] ))  active @endif"
+                                                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Cédulas
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item @if(request()->path() == 'admin_cedulas') active @endif" href="/admin_cedulas">Administrar</a></li>
+                                                <li><a class="dropdown-item @if(request()->path() == '/') active @endif" href="/cedulasdeljardin">Ir a públicas</a></li>
+                                            </ul>
+                                        </li>
+                                    @else
+                                        <!-- Cédulas públicas -->
                                         <li class="nav-item">
                                             <a class="nav-link  @if(request()->path() == 'admin_cedulas') active @endif" href="/admin_cedulas">
                                                 Cedulas
@@ -233,11 +233,31 @@
                                             Usuario
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item @if(request()->path() == 'home') active @endif" href="/home">My home</a></li>
+                                            <li><a class="dropdown-item @if(request()->path() == 'home') active @endif" href="/home">Mi home</a></li>
                                             <li><a class="dropdown-item @if(request()->path() == 'homeConfig') active @endif" href="/homeConfig">Mis datos</a></li>
                                             <li><a class="dropdown-item @if(request()->path() == 'buzon') active @endif" href="/buzon">Mi buzón</a></li>
                                             <li><a class="dropdown-item @if(request()->path() == 'manuales') active @endif" href="/manuales">Ver manuales</a></li>
                                         </ul>
+                                    </li>
+
+                                    <!-- Ayuda -->
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle @if(in_array(request()->path(),['api_manual','nosotros'])) active @endif" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Ayuda
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item @if(request()->path() == 'sistema') active @endif" href="/sistema">Sistema</a></li>
+                                            <li><a class="dropdown-item @if(request()->path() == 'normaeditorial') active @endif" href="/normaeditorial">Norma editorial</a></li>
+                                            <li><a class="dropdown-item @if(request()->path() == 'comopublicar') active @endif" href="/comopublicar">Como publicar</a></li>
+                                            <li><a class="dropdown-item @if(request()->path() == 'manuales') active @endif" href="/manuales">Manuales </a></li>
+                                            <li><a class="dropdown-item @if(request()->path() == 'manualapi') active @endif" href="/manualapi">API </a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link @if(request()->path() == 'home') active @endif" href="/home">
+                                            Home
+                                        </a>
                                     </li>
 
                                     <!-- Salir de sistema -->
@@ -245,11 +265,11 @@
                                         <form action="{{route('logout')}}" method="post">
                                             @csrf
                                             <li class="nav-item">
-                                                <a>
-                                                    <button type="submit" class="nav-link nolink btn" style="padding:0;margin:0;">
+                                                <button type="submit" class="nav-link nolink btn" style="padding:0;margin:0;">
+                                                    <a class="nav-link">
                                                         Salir
-                                                    </button>
-                                                </a>
+                                                    </a>
+                                                </button>
                                             </li>
                                         </form>
                                     </li>

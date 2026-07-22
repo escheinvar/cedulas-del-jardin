@@ -458,11 +458,16 @@
         /* ### Script para abrir mensaje */
         Livewire.on('AvisoExitoCedula',()=>{
             alert(event.detail.msj);
-        })
+        });
+
+        Livewire.on('RecibeVariablesDesdeProyectos',() => {
+            @this.set('titulo',event.detail.datoTit, live=true);
+            @this.set('jardinSel',event.detail.datoJar, live=true);
+            @this.set('origtrad','original', live=true);
+        });
 
         function QuitarCortaTexto(prefijo,id){
             document.getElementById(prefijo+id).classList.toggle('cortaTexto');
-
         }
 
         /* ### Script para mostrar botón personalizado de input=file */

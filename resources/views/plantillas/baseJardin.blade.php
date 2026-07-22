@@ -111,6 +111,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
+
                         @hasSection('MenuPublico')
                             <ul class="navbar-nav justify-content-end flex-grow-1">
                                 <!-- -------------------------------------------------------------------------------- -->
@@ -144,10 +145,6 @@
                                     </a>
                                 </li>
 
-
-
-
-
                                 <!-- Otros jardines -->
                                 <li class="nav-item">
                                     <a class="nav-link @if(request()->path() == 'cedulasdeljardin') active @endif" href="/jardiness">
@@ -155,19 +152,37 @@
                                     </a>
                                 </li>
 
-                                    @if(Auth::user())
-                                    <li class="nav-item">
-                                        <a class="nav-link @if(request()->path() == 'home') active @endif" href="/home">
-                                            Home
-                                        </a>
-                                    </li>
 
+                                <!-- Ayuda -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle @if(in_array(request()->path(),['api_manual','nosotros'])) active @endif" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Ayuda
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item @if(request()->path() == 'sistema') active @endif" href="/sistema">El Sistema</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'normaeditorial') active @endif" href="/normaeditorial">Norma editorial</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'comopublicar') active @endif" href="/comopublicar">Cómo publicar</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'manuales') active @endif" href="/manuales">Manuales</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'manualapi') active @endif" href="/manualapi">API</a></li>
+                                    </ul>
+                                </li>
+
+                                @if(Auth::user())
+                                <li class="nav-item">
+                                    <a class="nav-link @if(request()->path() == 'home') active @endif" href="/home">
+                                        Home
+                                    </a>
+                                </li>
+                                @endif
+
+
+                                @if(Auth::user())
                                     <!-- Salir de sistema -->
                                     <li class="nav-item">
                                         <form action="{{route('logout')}}" method="post">
                                             @csrf
                                             <button type="submit" class="nolink btn" style="padding:0;margin:0;">
-                                                    Salir
+                                                   <a class="nav-link"> Salir</a>
                                             </button>
                                         </form>
                                     </li>
@@ -183,10 +198,6 @@
                         @endif
                         <!-- -------------------- TERMINA MENÚ PÚBLICO --------------------------------------- -->
                         <!-- -------------------------------------------------------------------------------- -->
-
-
-
-
                     </div>
                 </div>
             </div>

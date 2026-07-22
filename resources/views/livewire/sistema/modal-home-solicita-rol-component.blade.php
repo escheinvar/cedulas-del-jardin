@@ -17,26 +17,28 @@
                 <div class="modal-body" wire:loading.attr="disabled">
                     <div class="row p-4">
                         <div class="col-12">
-                            Si vas a ser autor, traductor o editor de alguna cédula,
-                            indica el jardín en el que vas a trabajar y el rol que requieres tener.<br>
-                            El administrador del Jardín va a recibir tu solicitud y deberá aprobarla.
+                            Para poder enviar o traducir cualquier material,
+                            primero debes solicitar el rol de autor o de traductor.<br>
+                            El administrador del Jardín va a recibir tu solicitud y deberá aprobarla.<br>
+                            Si requieres cualquier otro rol, también puedes solicitarlo.
                         </div>
 
                         <!-- Jardín -->
-                        <div class="col-12 col-md-6 my-1 form-group">
-                            <label for="jardinRol" class="form-label">Jardín en el que va a trabajar<red>*</red></label>
+                        <div class="col-12 my-1 form-group">
+                            <label for="jardinRol" class="form-label">Jardín virtual<red>*</red></label>
                             <select wire:model="jardinRol" id="jardinRol" class="@error('jardinRol') is-invalid @enderror form-select">
                                 <option value="">Indica el Jardín.</option>
                                 @foreach($jardinesRol as $j)
                                     <option value="{{ $j->cjar_siglas }}">{{ $j->cjar_nombre }} ({{ $j->cjar_siglas }})</option>
                                 @endforeach
+                                <option value="Nuevo">Crear nuevo jardín virtual</option>
                             </select>
                             <div class="form-text"></div>
                             @error('jardinRol')<error>{{ $message }}</error>@enderror
                         </div>
 
                         <!-- Rol -->
-                        <div class="col-12 col-md-6 my-1 form-group">
+                        <div class="col-12 my-1 form-group">
                             <label for="rolRol" class="form-label">Rol solicitado<red>*</red></label>
                             <select wire:model.live="rolRol" id="rolRol" class="@error('rolRol') is-invalid @enderror form-select">
                                 <option value="">Indica el rol que solicitas.</option>

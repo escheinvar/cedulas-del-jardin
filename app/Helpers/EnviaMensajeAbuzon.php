@@ -22,12 +22,12 @@ if(!function_exists('EnviaMensajeAbuzon')){
     ###### to=id usr al que se envía el mensaje, from=Id usr del remitente
     /* ############################ Ejemplo (8 variables)
     EnviaMensajeAbuzon(
-      'to',         ### id usr del destinatario
-      'from',       ### id usr del remitente o 0 para sistema
-      'asunto',     ### texto del asunto
-      'mensaje,     ### <html> del mensaje
-      'notas',      ### <html> de las notas
-      'ifReply'     ### msj_id del mensaje al que se responde (o 0 para mensaje nuevo)
+      'to',      ### id usr del destinatario
+      'from',    ### id usr del remitente o 0 para sistema
+      'asunto',  ### texto del asunto
+      'mensaje', ### <html> del mensaje
+      'notas',   ### <html> de las notas
+      'ifReply'  ### msj_id del mensaje al que se responde (o 0 para mensaje nuevo)
     );
     */ ############################## Fin del ejemplo
 
