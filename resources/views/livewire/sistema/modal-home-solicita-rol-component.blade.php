@@ -9,20 +9,13 @@
                 <!-- ----------------------------  cabeza del modal ------------------------- -->
                 <div class="modal-header">
                     <h3 class="modal-title">
-                        Solicita nuevo Rol
+                        Solicita rol en el sistema
                     </h3>
                     <button wire:click="CerrarModalParaPedirNvoRol()" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
                 </div>
                 <!-- ----------------------------  cuerpo del modal ------------------------- -->
                 <div class="modal-body" wire:loading.attr="disabled">
                     <div class="row p-4">
-                        <div class="col-12">
-                            Para poder enviar o traducir cualquier material,
-                            primero debes solicitar el rol de autor o de traductor.<br>
-                            El administrador del Jardín va a recibir tu solicitud y deberá aprobarla.<br>
-                            Si requieres cualquier otro rol, también puedes solicitarlo.
-                        </div>
-
                         <!-- Jardín -->
                         <div class="col-12 my-1 form-group">
                             <label for="jardinRol" class="form-label">Jardín virtual<red>*</red></label>
@@ -55,8 +48,12 @@
                         <div class="col-12  my-1 form-group">
                             <label for="msjRol" class="form-label">Explica la razón de la solicitud<red>*</red></label>
                             <textarea wire:model="msjRol" id="msjRol" class="@error('msjRol') is-invalid @enderror form-control"></textarea>
-                            <div class="form-text"></div>
+                            <div class="form-text">Escribe un breve texto que será leído por el administrador al revisar tu cuenta.</div>
                             @error('msjRol')<error>{{ $message }}</error>@enderror
+                        </div>
+                        <div class="col-12  my-1 form-group">
+                            Luego de enviar tu solicitud, serás notificado en tu buzón del sistema cuando el administrador
+                            autorice el nuevo rol.
                         </div>
                     </div>
                 </div>
@@ -64,7 +61,7 @@
                 <!-- ---------------------------- pie del modal ----------------------------- -->
                 <div class="modal-footer">
                     <button wire:click="CerrarModalParaPedirNvoRol" class="btn btn-secondary">Cerrar</button>
-                    <button wire:click="SolicitarRol()" wire:loading.attr="disabled" class="btn btn-primary">Guardar</button>
+                    <button wire:click="SolicitarRol()" wire:loading.attr="disabled" class="btn btn-primary">Solicitar</button>
                     <span wire:loading style="display:none;"><red>pensando...</red> </span>
                 </div>
             </div>

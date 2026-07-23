@@ -119,14 +119,16 @@
                             </div>
                         @endif
 
-                        <!-- Archivos de revisión -->
-                        <div class="col-12 col-md-6 my-1 form-group">
-                            <label for="ArchRevision" class="form-label">Archivos del proceso: <red></red></label>
-                            <input wire:model="ArchRevision" id="ArchRevision" class="agregar @error('ArchRevision') is-invalid @enderror form-control" type="file" @if($edit=='0') disabled @endif>
-                            <button wire:click="SubirArchivo('Revision')" class="btn btn-sm btn-primary bi bi-plus"  @if($ArchRevision=='') disabled @endif></button>
-                            <div class="form-text">Cargar archivos y luego picar +</div>
-                            @error('ArchRevision')<error>{{ $message }}</error>@enderror
-                        </div>
+                        @if( $proy->estados->where('predo_act','1')->value('predo_edo') > '0.1')
+                            <!-- Archivos de revisión -->
+                            <div class="col-12 col-md-6 my-1 form-group">
+                                <label for="ArchRevision" class="form-label">Archivos del proceso: <red></red></label>
+                                <input wire:model="ArchRevision" id="ArchRevision" class="agregar @error('ArchRevision') is-invalid @enderror form-control" type="file" @if($edit=='0') disabled @endif>
+                                <button wire:click="SubirArchivo('Revision')" class="btn btn-sm btn-primary bi bi-plus"  @if($ArchRevision=='') disabled @endif></button>
+                                <div class="form-text">Cargar archivos y luego picar +</div>
+                                @error('ArchRevision')<error>{{ $message }}</error>@enderror
+                            </div>
+                        @endif
                     </div>
                 @endif
 
@@ -155,7 +157,7 @@
                 @if($proyId > '0')
                     <div class="row" >
                         <div class="col-12 my-1 form-group">
-                            <label for="NvoComents" class="form-label">Comentarios<red>*</red></label>
+                            <label for="NvoComents" class="form-label">Comentarios<red></red></label>
                             <textarea wire:model="NvoComents" id="NvoComents" class="@error('NvoComents') is-invalid @enderror form-control" rows="5" @if($edit=='0') disabled @endif></textarea>
                             <div class="form-text"></div>
                             @error('NvoComents')<error>{{ $message }}</error>@enderror

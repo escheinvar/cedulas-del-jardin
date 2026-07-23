@@ -816,3 +816,27 @@ button:disabled.btn{
     color:gray;
     border-color:gray;
 }
+
+/* ##### Formato de cédulas de manual de publicación */
+.Manual{
+    padding:25px;
+    margin:10px;
+    width:100%;
+}
+
+.Manual .cabezaManual{
+    /* background-color:#87796d; */
+    background-color: #CDC6B9;
+    padding:10px;
+    cursor:pointer;
+    width:100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+}
+.Manual .cuerpoManual{
+    display:none;
+    border:1px solid #CDC6B9;
+    width:100%;
+    padding:20px;
+}

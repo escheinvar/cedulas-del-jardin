@@ -146,10 +146,10 @@
     <h3>Proyectos de publicación</h3>
     <div style="display:flex;align-items:center">
         <div style="font-size:80%;">
-            <a href="/normaeditorial" target="_new" class="nolink">Ver normas editoriales.</a><br>
+            <a href="/normaeditorial" target="_new" class="nolink">Ver norma editorial.</a><br>
             <a href="/comopublicar" target="new" class="nolink">Ver manual de publicación</a><br>
-            <a href="" target="new" class="nolink">Descargar formato de envío</a><br>
-            <a href="" target="new" class="nolink">Descargar carta de solicitud de publicación</a><br>
+            <a href="/FormatoDeEnvíoV1.docx" class="nolink">Descargar formato de envío</a><br>
+            <a href="FormatoSolicitudDePublicacionV1.docx" class="nolink">Descargar carta de solicitud de publicación</a><br>
             <span onclick="VerNoVer('manual','Pasos')" class="PaClick">Ver pasos del proceso de revisión</span>
         </div>
         <div style="display:inline-block;vertical-align:middle;text-align:center;padding:35px;">
@@ -223,7 +223,7 @@
                         </div>
                     </div>
                     <!--------------- Cuerpo de proyecto ------------------- -->
-                    <div id="sale_proyecto{{ $p->proy_id }}" class="card-text" style="width:100%;display: block;">
+                    <div id="sale_proyecto{{ $p->proy_id }}" class="card-text" style="width:100%;display: none;">
                         <!-- Autor, admin y  editor -->
                         <div class="row">
                             <!-- Autores de correspondencia -->

@@ -82,7 +82,8 @@ class ModalProyectoComponenet extends Component
     public function LimpiarModal(){
         $this->resetErrorBag();
         $this->resetValidation();
-        $this->reset(['titulo','jardin','tituloId','proyEdo', 'proyArchs']);
+        $this->reset(['titulo','jardin','tituloId','proyEdo', 'proyArchs','NvoComents']);
+        // 'ArchFormato','ArchSol','ArchPpal','ArchMaterial','ArchRevision',]);
     }
 
     public function CerrarModalProyecto(){
@@ -162,34 +163,109 @@ class ModalProyectoComponenet extends Component
             ->where('rol_act','1')
             ->where('rol_del','0')
             ->count();
-        if($rolDeAutor < '1'){##############################################################################################################
-        ################################ Envía mensajes a buzón
-        #### Detecta administrdores:
-        $admins=UserRolesModel::where('rol_crolrol','admin')
-            ->where(function($q){
-                return $q
-                ->where('rol_cjarsiglas','todos')
-                ->orWhere('rol_cjarsiglas',$this->proy->proy_jardin);
-            })
-            ->where('rol_act','1')
-            ->where('rol_del','0')
-            ->select('rol_usrid')
-            ->distinct('rol_usrid')
-            ->pluck('rol_usrid')
-            ->toArray();
-
-        ###### Detecta si el usuario solicitante tiene rol de autor:
-        $rolDeAutor=UserRolesModel::where('rol_crolrol','autor')
-            ->where(function($q){
+        if($rolDeAutor < '1'){
+            ##############################################################################################################
+            ################################ Envía mensajes a buzón
+            #### Detecta administrdores:
+            $admins=UserRolesModel::where('rol_crolrol','admin')
+                ->where(function($q){
                     return $q
                     ->where('rol_cjarsiglas','todos')
                     ->orWhere('rol_cjarsiglas',$this->proy->proy_jardin);
                 })
-            ->where('rol_usrid',Auth::user()->id)
-            ->where('rol_act','1')
-            ->where('rol_del','0')
-            ->count();
-        if($rolDeAutor < '1'){
+                ->where('rol_act','1')
+                ->where('rol_del','0')
+                ->select('rol_usrid')
+                ->distinct('rol_usrid')
+                ->pluck('rol_usrid')
+                ->toArray();
+
+            ###### Detecta si el usuario solicitante tiene rol de autor:
+            $rolDeAutor=UserRolesModel::where('rol_crolrol','autor')
+                ->where(function($q){
+                        return $q
+                        ->where('rol_cjarsiglas','todos')
+                        ->orWhere('rol_cjarsiglas',$this->proy->proy_jardin);
+                    })
+                ->where('rol_usrid',Auth::user()->id)
+                ->where('rol_act','1')
+                ->where('rol_del','0')
+                ->count();
+            // if($rolDeAutor < '1'){
+            //     ##### Si el creador no cuenta con el rol de autor, envía aviso al admin.
+            //     $asunto='Creación de proyecto SIN ROL DE AUTOR';
+            //     $mensaje='El usuario <b style="color:red;"><u>SIN ROL DE AUTOR</u></b> "'.Auth::user()->usrname.'",'.
+            //         ' id "'.Auth::user()->id.'",'.
+            //         ' y correo "'.Auth::user()->email.'"'.
+            //         ' generó un nuevo proyecto en Las Cédulas del Jardín: <b>'.$this->tituloId.': '.$this->proy->proy_titulo.'</b>'.
+            //         ' pero no cuenta con el rol de autor en el jardín solicitado.<br>'.
+            //         ' No va a poder enviarte su proyecto hasta que le des el rol de <b>autor</b><br>'.
+            //         ' Haz clic aquí para <a href="'.url('/home').'#'.$this->tituloId.'">ver el proyecto</a>'.
+            //         ' y aquí para <a href="'.url('/admin_usuarios').'">otorgar el rol</a>.';
+
+            //     ##### Envía correos a administradores de creación
+            //     foreach($admins as $a){
+            //         EnviaMensajeAbuzon(
+            //             $a,  #'to'=>$a,         ### id usr del destinatario
+            //             '0', #'from'=>'0',       ### id usr del remitente o 0 para sistema
+            //             $asunto, #'asunto'=>$asunto,     ### texto del asunto
+            //             $mensaje, #'mensaje'=> ,     ### <html> del mensaje
+            //             '', #'notas'=>'',      ### <html> de las notas
+            //             '0' #'ifReply=>'''     ### msj_id del mensaje al que se responde (o 0 para mensaje nuevo)
+            //         );
+            //     }
+            // }
+            ################################ Envía mensajes a buzón
+            // #### Detecta administrdores:
+            // $admins=UserRolesModel::where('rol_crolrol','admin')
+            //     ->where(function($q){
+            //         return $q
+            //         ->where('rol_cjarsiglas','todos')
+            //         ->orWhere('rol_cjarsiglas',$this->proy->proy_jardin);
+            //     })
+            //     ->where('rol_act','1')
+            //     ->where('rol_del','0')
+            //     ->select('rol_usrid')
+            //     ->distinct('rol_usrid')
+            //     ->pluck('rol_usrid')
+            //     ->toArray();
+
+            // ###### Detecta si el usuario solicitante tiene rol de autor:
+            // $rolDeAutor=UserRolesModel::where('rol_crolrol','autor')
+            //     ->where(function($q){
+            //             return $q
+            //             ->where('rol_cjarsiglas','todos')
+            //             ->orWhere('rol_cjarsiglas',$this->proy->proy_jardin);
+            //         })
+            //     ->where('rol_usrid',Auth::user()->id)
+            //     ->where('rol_act','1')
+            //     ->where('rol_del','0')
+            //     ->count();
+
+            // ##### Si el creador no cuenta con el rol de autor, envía aviso al admin.
+            // $asunto='Creación de proyecto SIN ROL DE AUTOR';
+            // $mensaje='El usuario <b style="color:red;"><u>SIN ROL DE AUTOR</u></b> "'.Auth::user()->usrname.'",'.
+            //     ' id "'.Auth::user()->id.'",'.
+            //     ' y correo "'.Auth::user()->email.'"'.
+            //     ' generó un nuevo proyecto en Las Cédulas del Jardín: <b>'.$this->tituloId.': '.$this->proy->proy_titulo.'</b>'.
+            //     ' pero no cuenta con el rol de autor en el jardín solicitado.<br>'.
+            //     ' No va a poder enviarte su proyecto hasta que le des el rol de <b>autor</b><br>'.
+            //     ' Haz clic aquí para <a href="'.url('/home').'#'.$this->tituloId.'">ver el proyecto</a>'.
+            //     ' y aquí para <a href="'.url('/admin_usuarios').'">otorgar el rol</a>.';
+
+
+            // ##### Envía correos a administradores de creación
+            // foreach($admins as $a){
+            //     EnviaMensajeAbuzon(
+            //         $a,  #'to'=>$a,         ### id usr del destinatario
+            //         '0', #'from'=>'0',       ### id usr del remitente o 0 para sistema
+            //         $asunto, #'asunto'=>$asunto,     ### texto del asunto
+            //         $mensaje, #'mensaje'=> ,     ### <html> del mensaje
+            //         '', #'notas'=>'',      ### <html> de las notas
+            //         '0' #'ifReply=>'''     ### msj_id del mensaje al que se responde (o 0 para mensaje nuevo)
+            //     );
+            // }
+
             ##### Si el creador no cuenta con el rol de autor, envía aviso al admin.
             $asunto='Creación de proyecto SIN ROL DE AUTOR';
             $mensaje='El usuario <b style="color:red;"><u>SIN ROL DE AUTOR</u></b> "'.Auth::user()->usrname.'",'.
@@ -200,7 +276,6 @@ class ModalProyectoComponenet extends Component
                 ' No va a poder enviarte su proyecto hasta que le des el rol de <b>autor</b><br>'.
                 ' Haz clic aquí para <a href="'.url('/home').'#'.$this->tituloId.'">ver el proyecto</a>'.
                 ' y aquí para <a href="'.url('/admin_usuarios').'">otorgar el rol</a>.';
-
 
             ##### Envía correos a administradores de creación
             foreach($admins as $a){
@@ -214,80 +289,9 @@ class ModalProyectoComponenet extends Component
                 );
             }
         }
-        ################################ Envía mensajes a buzón
-        #### Detecta administrdores:
-        $admins=UserRolesModel::where('rol_crolrol','admin')
-            ->where(function($q){
-                return $q
-                ->where('rol_cjarsiglas','todos')
-                ->orWhere('rol_cjarsiglas',$this->proy->proy_jardin);
-            })
-            ->where('rol_act','1')
-            ->where('rol_del','0')
-            ->select('rol_usrid')
-            ->distinct('rol_usrid')
-            ->pluck('rol_usrid')
-            ->toArray();
 
-        ###### Detecta si el usuario solicitante tiene rol de autor:
-        $rolDeAutor=UserRolesModel::where('rol_crolrol','autor')
-            ->where(function($q){
-                    return $q
-                    ->where('rol_cjarsiglas','todos')
-                    ->orWhere('rol_cjarsiglas',$this->proy->proy_jardin);
-                })
-            ->where('rol_usrid',Auth::user()->id)
-            ->where('rol_act','1')
-            ->where('rol_del','0')
-            ->count();
-        if($rolDeAutor < '1'){
-            ##### Si el creador no cuenta con el rol de autor, envía aviso al admin.
-            $asunto='Creación de proyecto SIN ROL DE AUTOR';
-            $mensaje='El usuario <b style="color:red;"><u>SIN ROL DE AUTOR</u></b> "'.Auth::user()->usrname.'",'.
-                ' id "'.Auth::user()->id.'",'.
-                ' y correo "'.Auth::user()->email.'"'.
-                ' generó un nuevo proyecto en Las Cédulas del Jardín: <b>'.$this->tituloId.': '.$this->proy->proy_titulo.'</b>'.
-                ' pero no cuenta con el rol de autor en el jardín solicitado.<br>'.
-                ' No va a poder enviarte su proyecto hasta que le des el rol de <b>autor</b><br>'.
-                ' Haz clic aquí para <a href="'.url('/home').'#'.$this->tituloId.'">ver el proyecto</a>'.
-                ' y aquí para <a href="'.url('/admin_usuarios').'">otorgar el rol</a>.';
-
-
-            ##### Envía correos a administradores de creación
-            foreach($admins as $a){
-                EnviaMensajeAbuzon(
-                    $a,  #'to'=>$a,         ### id usr del destinatario
-                    '0', #'from'=>'0',       ### id usr del remitente o 0 para sistema
-                    $asunto, #'asunto'=>$asunto,     ### texto del asunto
-                    $mensaje, #'mensaje'=> ,     ### <html> del mensaje
-                    '', #'notas'=>'',      ### <html> de las notas
-                    '0' #'ifReply=>'''     ### msj_id del mensaje al que se responde (o 0 para mensaje nuevo)
-                );
-            }
-        }
-            ##### Si el creador no cuenta con el rol de autor, envía aviso al admin.
-            $asunto='Creación de proyecto SIN ROL DE AUTOR';
-            $mensaje='El usuario <b style="color:red;"><u>SIN ROL DE AUTOR</u></b> "'.Auth::user()->usrname.'",'.
-                ' id "'.Auth::user()->id.'",'.
-                ' y correo "'.Auth::user()->email.'"'.
-                ' generó un nuevo proyecto en Las Cédulas del Jardín: <b>'.$this->tituloId.': '.$this->proy->proy_titulo.'</b>'.
-                ' pero no cuenta con el rol de autor en el jardín solicitado.<br>'.
-                ' No va a poder enviarte su proyecto hasta que le des el rol de <b>autor</b><br>'.
-                ' Haz clic aquí para <a href="'.url('/home').'#'.$this->tituloId.'">ver el proyecto</a>'.
-                ' y aquí para <a href="'.url('/admin_usuarios').'">otorgar el rol</a>.';
-
-            ##### Envía correos a administradores de creación
-            foreach($admins as $a){
-                EnviaMensajeAbuzon(
-                    $a,  #'to'=>$a,         ### id usr del destinatario
-                    '0', #'from'=>'0',       ### id usr del remitente o 0 para sistema
-                    $asunto, #'asunto'=>$asunto,     ### texto del asunto
-                    $mensaje, #'mensaje'=> ,     ### <html> del mensaje
-                    '', #'notas'=>'',      ### <html> de las notas
-                    '0' #'ifReply=>'''     ### msj_id del mensaje al que se responde (o 0 para mensaje nuevo)
-                );
-            }
-        }
+        ############ Limpia modal
+        #$this->LimpiarModal();
     }
 
     public function SubirArchivo($tipo){
@@ -322,8 +326,6 @@ class ModalProyectoComponenet extends Component
             $this->ArchRevision='';
         }
 
-
-
         proy_archivos::create([
             'prmat_proyid'=>$this->proy->proy_id,
             'prmat_predoid'=>$this->proy->estados->where('predo_act','2')->where('predo_del','0')->value('predo_id'),
@@ -346,6 +348,24 @@ class ModalProyectoComponenet extends Component
     }
 
     public function CambiaEstado($NvoEdo){
+        $this->resetValidation();
+        ###### Detecta si hay archivos por enviar.
+        if($this->ArchFormato != ''){
+            $this->SubirArchivo('Formato');
+        }
+        if($this->ArchSol != ''){
+            $this->SubirArchivo('Solicitud');
+        }
+        if($this->ArchPpal != ''){
+            $this->SubirArchivo('Principal');
+        }
+        if($this->ArchMaterial != ''){
+            $this->SubirArchivo('Material');
+        }
+        if($this->ArchRevision != ''){
+            $this->SubirArchivo('Revision');
+        }
+
         ###### Carga el Texto de título de cada estado
         if($NvoEdo=='0.2'){
             $texto='En revisión por administrador';
@@ -363,7 +383,6 @@ class ModalProyectoComponenet extends Component
             $this->validate(['NuevoEditor'=>'required']); ### Valida al editor
             $texto='Editor asignando revisores';
             $ProxRol='editor';
-
         }elseif($NvoEdo=='1.1'){
             $texto='En revisión por el autor';
             $ProxRol='autor';
@@ -374,6 +393,28 @@ class ModalProyectoComponenet extends Component
             $texto='En proceso de publicación';
             $ProxRol='autor';
         }
+        ##### Verifica que en primer paso, se envíen documentos y comentarios
+        if($NvoEdo=='0.2'){
+            ##### obtiene archivos de BD
+            $archs=proy_archivos::where('prmat_predoid',$this->proyEdo->predo_id)
+                ->where('prmat_del','0')
+                ->get();
+            ##### Verifica Formato
+            if($this->ArchFormato == '' AND $archs->where('prmat_tipo','Formato')->count() < '1'){
+                $this->addError('ArchFormato','El archivo de formato es obligatorio');
+                return;
+            }
+            ##### Verifica Solicitud
+            if($this->ArchSol == '' AND $archs->where('prmat_tipo','Solicitud')->count() < '1'){
+                $this->addError('ArchSol','El archivo de solicitud es obligatorio');
+                return;
+            }
+            ##### Verifica Solicitud
+            if($this->ArchPpal == '' AND $archs->where('prmat_tipo','Principal')->count() < '1'){
+                $this->addError('ArchPpal','El archivo principal es obligatorio');
+                return;
+            }
+        }
 
         ##### Pasa estado actual a inactivo
         proy_estado::where('predo_del','0')
@@ -381,18 +422,17 @@ class ModalProyectoComponenet extends Component
             ->where('predo_act','1')
             ->update([
                 'predo_act'=>'0',
-            ])
-            ;
+            ]);
 
         ##### Pasa estado futuro a actual
         proy_estado::where('predo_del','0')
             ->where('predo_proyid',$this->proy->proy_id)
             ->where('predo_act','2')
             ->update([
-                'predo_act'=>'1',
-                'predo_edo'=>$NvoEdo,
-                'predo_estado'=>$texto,
-                'predo_comentario'=>$this->NvoComents,
+            'predo_act'=>'1',
+            'predo_edo'=>$NvoEdo,
+            'predo_estado'=>$texto,
+            'predo_comentario'=>$this->NvoComents,
             ]);
 
         ##### Crea nuevo estado futuro
@@ -492,7 +532,6 @@ class ModalProyectoComponenet extends Component
                 ' para que lo revises como <b>'.$ProxRol. '</b> de la plataforma '.
                 ' <a href="'.url('/').'">Las cédulas del Jardín</a>.<br>'.
                 ' Haz clic aquí para <a href="'.url('/home').'#'.$this->tituloId.'">ver el proyecto '.$this->tituloId.'</a>';
-
         }
 
         ##### Envía correos a administradores de creación
@@ -507,8 +546,10 @@ class ModalProyectoComponenet extends Component
             );
         }
 
+        ###### Cierra el modal
         $this->CerrarModalProyecto();
-        ##### Si se aprueba, abre modal
+
+        ##### Si pasa a publicación, abre modal para crear cédula
         if($NvoEdo=='2.0'){
             ##### Prepara y abre le Modal de crear cédula
             $extra=[
@@ -518,6 +559,7 @@ class ModalProyectoComponenet extends Component
             $data=['idCed'=>'0', 'jardin'=>$this->proy->jardin, 'extra'=>$extra];
             $this->dispatch('AbreModalDeCedula',$data);
         }
+        // $this->LimpiarModal();
     }
 
     public function BorrarAutorProyecto($proyId,$tipoAutor){
