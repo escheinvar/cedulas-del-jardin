@@ -786,6 +786,11 @@ button.EdoActual{
     font-size: 20px;
     line-height: 2;
 }
+.formato-grande a   {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 20px;
+    line-height: 2;
+}
 
 .formato-grande h1,h2,h3,h4,h5,h6{
     font-family: 'Roboto Condensed', sans-serif;
@@ -820,11 +825,19 @@ button:disabled.btn{
 /* ##### Formato de cédulas de manual de publicación */
 .Manual{
     padding:25px;
-    margin:10px;
+    margin:5px;
     width:100%;
 }
 
 .Manual .cabezaManual{
+    /* background-color:#87796d; */
+    background-color: #CDC6B9;
+    padding:10px;
+    cursor:pointer;
+    width:100%;
+    border-radius: 10px;
+}
+.Manual .cabezaManual2{
     /* background-color:#87796d; */
     background-color: #CDC6B9;
     padding:10px;
@@ -835,8 +848,12 @@ button:disabled.btn{
 
 }
 .Manual .cuerpoManual{
-    display:none;
+    /* display:none; */
     border:1px solid #CDC6B9;
     width:100%;
     padding:20px;
+
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
+

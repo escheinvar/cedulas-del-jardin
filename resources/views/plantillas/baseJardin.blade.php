@@ -161,6 +161,7 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item @if(request()->path() == 'sistema') active @endif" href="/sistema">El Sistema</a></li>
                                         <li><a class="dropdown-item @if(request()->path() == 'normaeditorial') active @endif" href="/normaeditorial">Norma editorial</a></li>
+                                        {{-- <li><a class="dropdown-item @if(request()->path() == 'normaeditorial') active @endif" href="/NormaEditorial_LasCedulasDelJardin.pdf" target="_blank">Norma editorial</a></li> --}}
                                         <li><a class="dropdown-item @if(request()->path() == 'comopublicar') active @endif" href="/comopublicar">Cómo publicar</a></li>
                                         <li><a class="dropdown-item @if(request()->path() == 'manuales') active @endif" href="/manuales">Manuales</a></li>
                                         <li><a class="dropdown-item @if(request()->path() == 'manualapi') active @endif" href="/manualapi">API</a></li>
