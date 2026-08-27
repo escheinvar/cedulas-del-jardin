@@ -90,7 +90,7 @@
                                 <label for="ArchFormato" class="form-label">Formato de envío<red>*</red></label>
                                 <input wire:model="ArchFormato" id="ArchFormato" class="agregar @error('ArchFormato') is-invalid @enderror form-control" type="file" @if($edit=='0') disabled @endif>
                                 <button wire:click="SubirArchivo('Formato')" class="btn btn-sm btn-primary bi bi-plus" @if($ArchFormato=='') disabled @endif></button>
-                                <div class="form-text"></div>
+                                <div class="form-text">Puedes descargar el formato <a hrefaquí</div>
                                 @error('ArchFormato')<error>{{ $message }}</error>@enderror
                             </div>
                             <!-- Carta solicitud -->

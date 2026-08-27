@@ -27,8 +27,8 @@ class AdminUsuariosComponent extends Component
 
     public function mount(){
         // $this->rolesUsr=[];
-        $this->orden='email';
-        $this->sentido='asc';
+        $this->orden='id';
+        $this->sentido='desc';
         $this->jardinSel=session('jardin');
 
         $this->rolSel='';
@@ -106,7 +106,7 @@ class AdminUsuariosComponent extends Component
                 ->orWhere('apellido','ilike', '%'.$this->nombreSel.'%')
                 ->orWhere('email','ilike', '%'.$this->nombreSel.'%');
         }
-        $usuarios=$usuarios->paginate('20');
+        $usuarios=$usuarios->paginate('50');
 
         return view('livewire.sistema.admin-usuarios-component',[
             'usuarios'=>$usuarios,
