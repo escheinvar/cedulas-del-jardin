@@ -14,8 +14,13 @@ class VisitasComponent extends Component
 {
     public $desde, $hasta;
     public function mount(){
+
+
+
+
         #$this->desde="2025-04-15";
-        $this->desde=date('Y-m-d');
+        // $this->desde=date('Y-m-d');
+        $this->desde=date('Y-m-d', strtotime('-1 month'));
         $this->hasta=date('Y-m-d');
     }
 
@@ -27,6 +32,7 @@ class VisitasComponent extends Component
             ->where('created_at', '<=', $this->hasta." 23:59:59.999")
             ->orderBy('cant','desc')
             ->get();
+            #dd($visitas);
 
         $Ips=sist_visitas::groupBy('vis_flag','vis_ip','vis_pais','vis_region','vis_ciudad','region')
             ->select('vis_flag', 'vis_ip', DB::raw('count (vis_ip) as cant'), 'vis_pais','vis_region',DB::raw("CONCAT(vis_pais,'-',vis_region) AS region"))
