@@ -1,8 +1,18 @@
 @section('MenuPublico')  @endsection
 @section('MenuPrivado') x @endsection
 <div>
-    <h1>Visitas</h1>
-    <div class="row">
+    <h1>Reporte de Visitas</h1>
+    <b>14 de septiembre de 2026</b>
+    <embed src="/estadisticas_pdf/Rep20260914_14Septiembre26.pdf" width="100%" height="700"
+    type="application/pdf"></embed>
+
+    <h3>Previos</h3>
+    <ul>
+        <li><a href="/estadisticas_pdf/Rep20260914_14Septiembre26.pdf" target="_new" class="nolink">14 de septiembre de 2026</a></li>
+    </ul>
+
+
+    {{-- <div class="row">
         <div class="col-3">
             <label class="form-label">Desde</label>
             <input wire:model.live="desde" type="date" class="form-control">
@@ -11,10 +21,11 @@
             <label class="form-label">Hasta</label>
             <input wire:model.live="hasta" type="date" class="form-control">
         </div>
-    </div>
+    </div> --}}
 
 
-    <table class="table table-striped">
+
+    {{-- <table class="table table-striped">
         <thead>
             <tr>
                 <th>
@@ -93,7 +104,7 @@
             @endforeach
 
         </tbody>
-    </table>
+    </table> --}}
 
 
 

@@ -210,8 +210,10 @@
                                 <error><b>No rol autor</b></error>
                             @endif
                             <!-- Indica si ya pasaron más de 15 días -->
-                            @if($tiempo->days >= '20')
-                                &nbsp; <error><b>¡ {{ $tiempo->format('%m mes y %d días') }} !</b></error>
+                            @if($tiempo)
+                                @if($tiempo->days >= '20')
+                                    &nbsp; <error><b>¡ {{ $tiempo->format('%m mes y %d días') }} !</b></error>
+                                @endif
                             @endif
 
                         </h5>

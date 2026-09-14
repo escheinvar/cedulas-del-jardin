@@ -17,7 +17,7 @@ if(! function_exists('MyRegistraVisita')){
     /*##### Cuando se ejecuta en mount(), registra en la base de datos
     ##### sist_visitas, el ingreso de cada visitante a una url.
     ##### Solo requiere que se invoque y que se indique:
-    ##### el $moduloVis = ['ced','aut','jar','otro'] indicando tabla cedula_url, autor_url o jardin_url
+    ##### el $moduloVis = ['ced','aut','jar','otro'] el cual indica la tabla cedula_url, autor_url o jardin_url
     ##### el $idVis con el id de la página: url_id, aurl_id o urlj_id (según tabla)
         MyRegistraVisita( ['ced','aut','jar','otro'][0],  $this->url_id,   'MyFlag');
     */
