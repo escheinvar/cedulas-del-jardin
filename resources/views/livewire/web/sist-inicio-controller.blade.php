@@ -21,7 +21,8 @@
             autores de un mismo lugar que genera los materiales.</p>
 
         <p>Si quieres participar, revisa nuestra <b><a href="/normaeditorial" class="nolink" target="_new">norma editorial</a></b>
-            y el paso a paso de <b><a href="/comopublicar" class="nolink" target="_new">cómo publicar.</a></b></p>
+            y el paso a paso de <b><a href="/comopublicar" class="nolink" target="_new">cómo publicar.</a></b><br>
+            Si quieres revisar los materiales publicados, dirígete a la sección de <b><a href="/cedulasdeljardin" class="nolink">Las cédulas</a></b>.</p>
 
         <div class="col-sm-auto col-md-4 text-end px-4 mb-4">
             <center>
