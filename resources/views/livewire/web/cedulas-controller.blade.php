@@ -620,8 +620,8 @@
                             {{ url('/') }}cedula/{{ $url->url_cjarsiglas }}/{{ $url->url_url }}
                         </a>
                     @endif
-                accesado el {{ date('i') }} de {{ $meses[date('n')] }} de {{ date('Y') }}
-                <span id="sale_citaCedula" style="display:none">{{ $url->url_cita }} accesado el {{ date('i') }} de {{ $meses[date('n')] }} de {{ date('Y') }} </span>
+                accesado el {{ date('d') }} de {{ $meses[date('n')] }} de {{ date('Y') }}
+                <span id="sale_citaCedula" style="display:none">{{ $url->url_cita }} accesado el {{ date('d') }} de {{ $meses[date('n')] }} de {{ date('Y') }} </span>
                 <i class="bi bi-clipboard PaClick" onclick="CopiarContenido('cita','Cedula')"></i>
             </div>
 
