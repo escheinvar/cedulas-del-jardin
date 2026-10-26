@@ -523,18 +523,6 @@ i.audioTodo:hover{
     padding:0;
 } */
 
-colores{
-    color: #64383E;
-    color: #efebe8;
-    color: #CDC6B9;
-
-    color: #87796d;
-    color: #CD7B34;
-    color: #919C1B;
-    color: #202d2d;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-family: 'Noto Serif JP', serif;
-}
 
 /*==== <div class="iconoWWW"><img class="iconoWWW">
     Íconos pequeños de logo de página para las  ligas
@@ -857,3 +845,15 @@ button:disabled.btn{
     border-bottom-right-radius: 10px;
 }
 
+colores{
+    color: #64383E;
+    color: #efebe8;
+    color: #CDC6B9;
+
+    color: #87796d;
+    color: #CD7B34;
+    color: #919C1B;
+    color: #202d2d;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Noto Serif JP', serif;
+}

@@ -26,15 +26,6 @@
                 <i class="bi bi-plus-circle"></i> Agregar
             </button>
         </div>
-        @if($Num != $Max)
-            <div class="m-4" style="text-align:right;">
-                <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
-                    <i class="bi bi-plus-circle"></i> Renumerar
-                </button>
-                {{ $Num }}-{{ $Max }}
-            </div>
-        @endif
-
     @endif
 
     @if($lista->count() == 0)
@@ -46,9 +37,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>No.</th>
-                    <th>Especie</th>
-                    <th>Nombre(s) comunes</th>
+                    <th>Id</th>
+                    <th></th>
+                    <th></th>
+                    <th>Nombre(s)</th>
+                    <th>Nombre científico</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -56,22 +49,57 @@
             <tbody>
                 @foreach ($lista as $l)
                     <tr class="@if($l->lst_act == '0') inact @endif" >
-                        <!-- número orden -->
+                        <!-- número orden  -->
                         <td>
                             @if($edit=='1') {{ $l->lst_orden }} @else {{ $num++ }} @endif
                         </td>
+
+                        <!-- imagen -->
+                        <td>
+                            <center>
+                                @if($l->lst_img != '')
+                                    <a href="{{ $l->lst_img }}" target="_blank">
+                                        <img src="{{ $l->lst_img }}" style="max-width:70px; max-height:90px;">
+                                    </a>
+                                @else
+                                    <img src="/imagenes/icono-hoja.png" style="max-width:50px; max-height:70px;">
+                                @endif
+                            </center>
+                        </td>
+
+                        <td>
+                            @if($l->lst_url != '')
+                                <a href="{{ $l->lst_url }}" target="new">
+                                    <i class="bi bi-arrow-up-right-circle-fill" style="font-size: 150%;color:#87796d"></i>
+                                </a>
+                            @endif
+                        </td>
+
+                        <!-- Nombre(s) -->
+                        <td>
+                            @foreach ($l->nombres as $n)
+                                <div class="elemento">
+                                    {!!   $n->lstn_name !!}
+
+                                    <!-- audio titulo -->
+                                    @if($n->lstn_audio != '' )
+                                        <audio id="SpAudio{{ $n->lstn_id }}Tit" style="display:inline-block;">
+                                            <source src="{{ $n->lstn_audio }}" type="audio/ogg" /> El navegador no soporta el audio
+                                        </audio>
+                                        <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Tit" onclick="playAudio('{{ $n->lstn_id }}Tit')"></i>
+                                        <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Tit" onclick="pauseAudio('{{ $n->lstn_id }}Tit')"></i>
+                                    @endif
+
+                                    <sub style="color: #CD7B34;" title="{{ $n->lstn_lengua }}">{{ $n->lstn_lencode }}</sub>
+                                </div>
+                            @endforeach
+                        </td>
+
                         <!-- Nombre científico -->
                         <td>
-                            {{ $l->lst_scname }}
+                            <i>{{ $l->lst_scname }}</i>
                         </td>
 
-                        <!-- Nombre(s) común -->
-                        <td>
-                            @foreach (explode(';',$l->lst_name) as $n)
-                                <div class="elemento">{{ $n }}</div>
-                            @endforeach
-
-                        </td>
 
                         <!-- Razón de incorporación -->
                         <td>
@@ -100,6 +128,15 @@
         </table>
     @endif
 
+
+    @if($edit=='1' AND $SumCant != $SumReal)
+        <div class="m-4" style="text-align:right;">
+            <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
+                <i class="bi bi-plus-circle"></i> Renumerar
+            </button>
+            {{ $SumReal }}-{{ $SumCant }}
+        </div>
+    @endif
 
     <livewire:sistema.modal-lista-especie-component />
 
