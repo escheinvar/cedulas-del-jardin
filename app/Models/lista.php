@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class lista extends Model
 {
@@ -29,7 +30,13 @@ class lista extends Model
         'lst_scname',
         'lst_var',
 
-        'lst_name',
+        'lst_img',
+        'lst_url',
         'lst_notas',
     ];
+     public function nombres():HasMany {
+        return $this->HasMany(lista_nombres::class,'lstn_lstid','lst_id')
+            ->where('lstn_act','1')
+            ->where('lstn_del','0');
+    }
 }

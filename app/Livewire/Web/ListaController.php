@@ -58,7 +58,20 @@ class ListaController extends Component
     }
 
     public function Renumerar(){
+        $ordenes=lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)
+            ->where('lst_del','0')
+            ->orderBy('lst_orden','asc')
+            ->pluck('lst_orden')
+            ->toArray();
 
+        $n=0;
+        foreach($ordenes as $orden){
+            $n++;
+            lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)
+                ->where('lst_orden',$orden)
+                ->where('lst_del','0')
+                ->update(['lst_orden'=>$n]);
+        }
     }
 
     public function render(){
@@ -77,15 +90,15 @@ class ListaController extends Component
         $lista=$lista->where('lst_cjarsiglas',$this->url->urlj_cjarsiglas)
             ->where('lst_del','0')
             ->orderBy('lst_orden','asc')
+            ->with('nombres')
             ->get();
 
-        $Num=lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->count();
-        $Max=lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->max('lst_orden');
+        $SumReal=lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->sum('lst_orden');
+        $SumCant=array_sum(range(  1, lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->count() ));
         return view('livewire.web.lista-controller',[
             'lista'=>$lista,
-            'Num'=>$Num,
-            'Max'=>$Max,
-
+            'SumReal'=> $SumReal,
+            'SumCant'=> $SumCant
         ]);
     }
 
