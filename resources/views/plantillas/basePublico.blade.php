@@ -172,7 +172,13 @@
                             <ul class="navbar-nav justify-content-end flex-grow-1">
                                 @if(Auth::user())
                                     @if(array_intersect(['admin','editor','webmaster'],session('rol')))
-                                        <!-- #################### Admin ###################### -->
+                                        <!-- #################### Web ###################### -->
+                                        <li class="nav-item">
+                                            <a class="nav-link @if(request()->path() == '') active @endif" href="/">
+                                                Web
+                                            </a>
+                                        </li>
+
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle
                                                 {{-- @if(in_array(request()->path(),['admin_'])) active @endif"  --}}
