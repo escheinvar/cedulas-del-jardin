@@ -139,7 +139,6 @@
             <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
                 <i class="bi bi-plus-circle"></i> Renumerar
             </button>
-            {{ $SumReal }}-{{ $SumCant }}
         </div>
     @endif
 

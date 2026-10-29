@@ -44,30 +44,17 @@ class ModalListaEspecieComponent extends Component
         $this->listasp_jardin=$datos['jardin'];
         $this->listasp_id=$datos['lstId'];
 
-        ##### Prepara variables de modal
-        // $this->listasp_ConCatalogo='0';
-        // $this->listasp_especies=collect();
         $this->listasp_nuevaLengua='spa';
 
         if($this->listasp_id != '0'){
             ##### Si es edición, carga datos
             $registro=lista::where('lst_id',$this->listasp_id)->first();
-            // $this->listasp_reino=$registro->lst_reino;
-            // $this->listasp_familia=$registro->lst_familia;
-            // $this->listasp_gen=$registro->lst_gen;
-            // $this->listasp_scname=$registro->lst_scname;
-            // $this->listasp_ssp=$registro->lst_ssp;
-            // $this->listasp_var=$registro->lst_var;
-            // // $this->listasp_nombre=$registro->lst_name;
-            // $this->listasp_orden=$registro->lst_orden;
-            // $this->listasp_razon=$registro->lst_notas;
+
             $this->listasp_img=$registro->lst_img;
             $this->listasp_url=$registro->lst_url;
+            $this->listasp_razon=$registro->lst_notas;
+            $this->listasp_orden=$registro->lst_orden;
 
-            ##### Determina si hay catálogo
-            // if($registro->lst_sp != '' and $registro->lst_reino=='planta'){
-            //     $this->listasp_ConCatalogo='1';
-            // }
         }else{
             $this->limpiarModalDeBuscarEspecie();
             $this->listasp_orden=lista::where('lst_cjarsiglas',$this->listasp_jardin)
@@ -182,13 +169,6 @@ class ModalListaEspecieComponent extends Component
         $datos=[
             'lst_cjarsiglas'=>$this->listasp_jardin,
             'lst_orden'=>$this->listasp_orden,
-            // 'lst_reino'=>$this->listasp_reino,
-            // 'lst_familia'=>strtoupper($this->listasp_familia),
-            // 'lst_genero'=>$this->listasp_gen,
-            // 'lst_sp'=>$this->listasp_sp,
-            // 'lst_ssp'=>$this->listasp_ssp,
-            // 'lst_scname'=>$this->listasp_scname,
-            // 'lst_var'=>$this->listasp_var,
             'lst_url'=>$this->listasp_url,
             'lst_notas'=>$this->listasp_razon,
         ];

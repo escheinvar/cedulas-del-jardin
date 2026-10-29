@@ -61,15 +61,13 @@ class ListaController extends Component
         $ordenes=lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)
             ->where('lst_del','0')
             ->orderBy('lst_orden','asc')
-            ->pluck('lst_orden')
+            ->pluck('lst_id')
             ->toArray();
 
         $n=0;
         foreach($ordenes as $orden){
             $n++;
-            lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)
-                ->where('lst_orden',$orden)
-                ->where('lst_del','0')
+            lista::where('lst_id',$orden)
                 ->update(['lst_orden'=>$n]);
         }
     }
