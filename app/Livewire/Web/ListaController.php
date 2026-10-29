@@ -91,6 +91,7 @@ class ListaController extends Component
             ->where('lst_del','0')
             ->orderBy('lst_orden','asc')
             ->with('nombres')
+            ->with('nombrescient')
             ->get();
 
         $SumReal=lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->sum('lst_orden');

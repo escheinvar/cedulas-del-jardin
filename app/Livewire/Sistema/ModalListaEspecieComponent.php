@@ -4,6 +4,7 @@ namespace App\Livewire\Sistema;
 
 use App\Models\CatKewModel;
 use App\Models\lista_nombres;
+use App\Models\lista_nombresc;
 use App\Models\lista;
 use App\Models\lenguas;
 use Livewire\Attributes\On;
@@ -86,10 +87,11 @@ class ModalListaEspecieComponent extends Component
     }
 
     public function CerrarModalDeBuscarEspecie($reload){
-        if(!isset($reload) or $reload==''){$reload='0';}
+        if(!isset($reload) or $reload==''){$reload='1';}
         $this->limpiarModalDeBuscarEspecie();
         // $this->listasp_reino='';
         $this->dispatch('CierraModalDeListaDeEspecies',reload:$reload);
+
     }
 
     // public function DeterminaReino(){
@@ -253,6 +255,13 @@ class ModalListaEspecieComponent extends Component
     public function BorrarNombre($id){
         lista_nombres::where('lstn_id',$id)->update(['lstn_del'=>'1']);
     }
+
+    public function DesactivarNombre($id){
+        $act=lista_nombres::where('lstn_id',$id)->value('lstn_act');
+        if($act=='1'){$nvo='0';}else{$nvo='1';}
+        lista_nombres::where('lstn_id',$id)->update(['lstn_act'=>$nvo]);
+    }
+
     public function BorrarAudioNuevo(){
         $this->listasp_nuevoAudio='';
     }
@@ -316,6 +325,20 @@ class ModalListaEspecieComponent extends Component
         $this->dispatch('AbreModalDeNombreCientEnlista',$datos);
     }
 
+    public function DesactivaNombreCient($id){
+        $act=lista_nombresc::where('lstsc_id',$id)->value('lstsc_act');
+        if($act=='1'){$nvo='0';}else{$nvo='1';}
+        lista_nombresc::where('lstsc_id',$id)->update(['lstsc_act'=>$nvo]);
+    }
+
+    public function BorrarNombreCient($id){
+        lista_nombresc::where('lstsc_id',$id)->update(['lstsc_del'=>'1']);
+    }
+
+
+
+
+
     public function render(){
         ###### Distingue catálogo vs no cat.
         // $conCatalogo=['planta'];
@@ -327,14 +350,19 @@ class ModalListaEspecieComponent extends Component
 
         ##### Carga lista de nombres
         $nombres= lista_nombres::where('lstn_lstid',$this->listasp_id)
-                ->where('lstn_act','1')
                 ->where('lstn_del','0')
+                ->orderBy('lstn_id')
+                ->get();
+         $nombresCient= lista_nombresc::where('lstsc_lstid',$this->listasp_id)
+                ->where('lstsc_del','0')
+                ->orderBy('lstsc_id')
                 ->get();
         $lenguas=lenguas::orderBy('len_lengua')->get();
 
         return view('livewire.sistema.modal-lista-especie-component',[
             'nombres'=>$nombres,
             'lenguas'=>$lenguas,
+            'nombresCient'=>$nombresCient,
         ]);
     }
 }

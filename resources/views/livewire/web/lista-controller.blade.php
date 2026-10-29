@@ -38,12 +38,12 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th></th>
-                    <th></th>
+                    <th> <!-- img --> </th>
+                    <th> <!-- url --> </th>
                     <th>Nombre(s)</th>
                     <th>Nombre científico</th>
-                    <th></th>
-                    <th></th>
+                    <th> <!-- notas --> </th>
+                    <th> <!-- acciones --> </th>
                 </tr>
             </thead>
             <tbody>
@@ -78,7 +78,7 @@
                         <!-- Nombre(s) -->
                         <td>
                             @foreach ($l->nombres as $n)
-                                <div class="elemento">
+                                <div class="@if($l->nombres->count() > 1)elemento @endif">
                                     {!!   $n->lstn_name !!}
 
                                     <!-- audio titulo -->
@@ -97,6 +97,11 @@
 
                         <!-- Nombre científico -->
                         <td>
+                            @foreach ($l->nombrescient as $sp)
+                                <div class="@if($l->nombrescient->count() > 1)elemento @endif">
+                                    <i title="Familia {{ $sp->lstsc_familia }}">{{   $sp->lstsc_scname }}</i>
+                                </div>
+                            @endforeach
                             <i>{{ $l->lst_scname }}</i>
                         </td>
 
@@ -139,6 +144,6 @@
     @endif
 
     <livewire:sistema.modal-lista-especie-component />
-    <livewire:sistema.modal-lista-especie-nombresc-component />
+
 
 </div>

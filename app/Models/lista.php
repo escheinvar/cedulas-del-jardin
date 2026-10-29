@@ -22,14 +22,6 @@ class lista extends Model
         'lst_edo',
         'lst_orden',
 
-        // 'lst_reino',
-        // 'lst_familia',
-        // 'lst_genero',
-        // 'lst_sp',
-        // 'lst_ssp',
-        // 'lst_scname',
-        // 'lst_var',
-
         'lst_img',
         'lst_url',
         'lst_notas',
@@ -40,9 +32,9 @@ class lista extends Model
             ->where('lstn_del','0');
     }
 
-    public function nombresc():HasMany {
+    public function nombrescient():HasMany {
         return $this->HasMany(lista_nombresc::class,'lstsc_lstid','lst_id')
-            ->where('lstn_act','1')
-            ->where('lstn_del','0');
+            ->where('lstsc_act','1')
+            ->where('lstsc_del','0');
     }
 }

@@ -9,7 +9,7 @@ class lista_nombresc extends Model
 {
     protected $connection='pgsql';
 	protected $table = 'lista_nombresc';
-	protected $primaryKey = 'lstn_id';
+	protected $primaryKey = 'lstsc_id';
 	public $incrementing = true;
 	#protected $keyType = 'string';
 

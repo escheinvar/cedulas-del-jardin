@@ -9,7 +9,7 @@
                     <h3 class="modal-title">
                         Listad de {{ $listasp_jardin }}
                     </h3>
-                    <button wire:click="CerrarModalDeBuscarEspecie('0')" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
+                    <button wire:click="CerrarModalDeBuscarEspecie('1')" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
                 </div>
                 <!-- ----------------------------  cuerpo del modal --------------------------->
                 <div class="modal-body" >
@@ -24,15 +24,16 @@
 
                         <!-- Nombre científico  -->
                         <div class="col-8  my-1 form-group">
-                                <label for="listasp_scname" class="form-label">Nombre cientìfico<red></red></label>
-                                <button class="btn btn-sm btn-primary" wire:click='AbrirModalDeNombreCientificoEnLista()'> + </button>
-                            {{-- @if($listasp_scname !='')
-                                <label for="listasp_scname" class="form-label">Nombre cientìfico<red></red></label>
-                                <input wire:model="listasp_scname" id="listasp_nombr" class="@error('listasp_scname') is-invalid @enderror form-control agregar" type="text">
-                                <i class="bi bi-trash agregar" wire:click='BorrarSp()' wire:confirm='Estas por eliminar el nombre científico de este ejemplar y quedará si nombre. ¿Seguro que quieres continuar?'></i>
-                                <div class="form-text"></div>
-                                @error('listasp_scname')<error>{{ $message }}</error>@enderror
-                            @endif --}}
+                            <label for="listasp_scname" class="form-label">Nombre científico<red></red></label>
+                            <button class="btn btn-sm btn-primary" wire:click='AbrirModalDeNombreCientificoEnLista()'> + </button>
+                            @foreach ($nombresCient as $sp)
+                                <div class="elemento @if($sp->lstsc_act=='0') tachar @endif">
+                                    <i>{{ $sp->lstsc_scname }}</i> [{{ $sp->lstsc_familia }}]
+                                    <i wire:click='DesactivaNombreCient({{ $sp->lstsc_id }})'class="bi @if($sp->lstsc_act=='1')bi-eye-slash @else bi-eye @endif agregar mx-1"></i>
+                                    <i wire:click='BorrarNombreCient({{ $sp->lstsc_id }})' wire:confirm='Estas por eliminar un nombre científico de la lista. ¿Quieres continuar?'class="bi bi-trash agregar mx-1"></i>
+                                </div>
+                            @endforeach
+
                         </div>
                     </div>
 
@@ -68,16 +69,16 @@
                             <table class="table table-striped" style="width:100%;">
                                 <thead>
                                     <tr>
-                                        <th style="width:60%;">Nombre(s)</th>
+                                        <th style="width:50%;">Nombre(s)</th>
                                         <th style="width:10%;">Audio</th>
-                                        <th style="width:25%;">Lengua</th>
+                                        <th style="width:20%;">Lengua</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($nombres as $n)
-                                        <tr>
+                                        <tr class="@if($n->lstn_act=='0')inact @endif">
                                             <!-- nombre -->
-                                            <td style="width:60%;">{{ $n->lstn_name }}</td>
+                                            <td style="width:50%;">{{ $n->lstn_name }}</td>
                                             <!-- audio -->
                                             <td style="width:10%;">
                                                 @if($n->lstn_audio != '' )
@@ -89,14 +90,15 @@
                                                 @endif
                                             </td>
                                             <!-- lengua -->
-                                            <td style="width:25%;">
+                                            <td style="width:10%;">
                                                 <span style="color: #CD7B34a;" title="{{ $n->lstn_lengua }}">
                                                     {{ $n->lstn_lencode }}
                                                 </span>
                                             </td>
 
                                             <td>
-                                                <i class="bi bi-trash agregar"  title="Eliminar nombre" wire:click="BorrarNombre({{ $n->lstn_id }})" wire:confirm='Vas a eliminar este nombre de la lista. ¿Quieres continuar?'></i>
+                                                <i wire:click="DesactivarNombre({{ $n->lstn_id }})" class="bi @if( $n->lstn_act=='1' ) bi-eye-slash @else bi-eye @endif agregar mx-1"></i>
+                                                <i wire:click="BorrarNombre({{ $n->lstn_id }})" class="bi bi-trash agregar" style="display:inline" title="Eliminar nombre"  wire:confirm='Vas a eliminar este nombre de la lista. ¿Quieres continuar?'></i>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -155,7 +157,7 @@
 
                         <!-- Explicación o razón  -->
                         <div class="col-12  my-1 form-group">
-                            <label for="listasp_url" class="form-label">URL:<red></red></label>
+                            <label for="listasp_url" class="form-label">URL:<red></red></label><br>
                             <input wire:model="listasp_url" id="listasp_url" class="@error('listasp_url') is-invalid @enderror form-control agregar" type="text">
                             <i class="bi bi-trash agregar" wire:click='BorrarURL()'></i>
                             <div class="form-text"></div>
@@ -166,7 +168,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button wire:click="CerrarModalDeBuscarEspecie('0')" class="btn btn-secondary">
+                    <button wire:click="CerrarModalDeBuscarEspecie('1')" class="btn btn-secondary">
                         Cerrar
                     </button>
 
@@ -206,11 +208,15 @@
             }
         });
 
+        /* #### Recibe variable desde un componente externo y lo manda a livewire */
+        Livewire.on('VariableDesdeNombreCientificoANombre',() => {
+           @this.set('listasp_id',event.detail.dato, live=true);
+        });
 
-        /* ### Script para abrir mensaje */
-        Livewire.on('AvisoExitoAliasCedula',()=>{
-            alert(event.detail.msj);
-        })
+        // /* ### Script para abrir mensaje */
+        // Livewire.on('AvisoExitoAliasCedula',()=>{
+        //     alert(event.detail.msj);
+        // })
 
         /* ### Script para mostrar botón personalizado de input=file */
         // document.getElementById('MiBotonPersonalizado').addEventListener('click', function() {

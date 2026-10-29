@@ -318,7 +318,7 @@ error, red {
 
 /*=== inact: formato para tablas cuando act=0
 (@ y pone en gris el texto) ===*/
-tr.inact, td.inact{
+tr.inact, td.inact, .tachar{
     text-decoration: line-through;
     color:gray;
     font-weight: 50;
