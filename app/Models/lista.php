@@ -22,20 +22,26 @@ class lista extends Model
         'lst_edo',
         'lst_orden',
 
-        'lst_reino',
-        'lst_familia',
-        'lst_genero',
-        'lst_sp',
-        'lst_ssp',
-        'lst_scname',
-        'lst_var',
+        // 'lst_reino',
+        // 'lst_familia',
+        // 'lst_genero',
+        // 'lst_sp',
+        // 'lst_ssp',
+        // 'lst_scname',
+        // 'lst_var',
 
         'lst_img',
         'lst_url',
         'lst_notas',
     ];
-     public function nombres():HasMany {
+    public function nombres():HasMany {
         return $this->HasMany(lista_nombres::class,'lstn_lstid','lst_id')
+            ->where('lstn_act','1')
+            ->where('lstn_del','0');
+    }
+
+    public function nombresc():HasMany {
+        return $this->HasMany(lista_nombresc::class,'lstsc_lstid','lst_id')
             ->where('lstn_act','1')
             ->where('lstn_del','0');
     }

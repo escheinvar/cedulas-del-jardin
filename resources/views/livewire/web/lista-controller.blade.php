@@ -139,5 +139,6 @@
     @endif
 
     <livewire:sistema.modal-lista-especie-component />
+    <livewire:sistema.modal-lista-especie-nombresc-component />
 
 </div>

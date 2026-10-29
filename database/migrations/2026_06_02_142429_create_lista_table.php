@@ -19,13 +19,13 @@ return new class extends Migration
             $table->integer('lst_edo')->default(0); ##### Estado del ejemplar (0=planeado, 1=en proceso, 2=finalizado)
             $table->decimal('lst_orden', 10, 1)->nullable(); ##### Orden de aparición en la lista
 
-            $table->string('lst_reino')->nullable(); ##### Nombre científico de la especie
-            $table->string('lst_familia')->nullable(); ##### Nombre científico de la especie
-            $table->string('lst_genero')->nullable(); ##### Nombre científico de la especie
-            $table->string('lst_sp')->nullable(); ##### Nombre científico de la especie
-            $table->string('lst_ssp')->nullable(); ##### Nombre científico de la especie
-            $table->string('lst_scname')->nullable(); ##### Nombre científico de la especie
-            $table->string('lst_var')->nullable(); ##### Nombre científico de la especie
+            // $table->string('lst_reino')->nullable(); ##### Nombre científico de la especie
+            // $table->string('lst_familia')->nullable(); ##### Nombre científico de la especie
+            // $table->string('lst_genero')->nullable(); ##### Nombre científico de la especie
+            // $table->string('lst_sp')->nullable(); ##### Nombre científico de la especie
+            // $table->string('lst_ssp')->nullable(); ##### Nombre científico de la especie
+            // $table->string('lst_scname')->nullable(); ##### Nombre científico de la especie
+            // $table->string('lst_var')->nullable(); ##### Nombre científico de la especie
 
             $table->string('lst_img')->nullable(); ##### array separado por comas de nombres comúnes de la especie
             $table->string('lst_url')->nullable(); ##### array separado por comas de nombres comúnes de la especie

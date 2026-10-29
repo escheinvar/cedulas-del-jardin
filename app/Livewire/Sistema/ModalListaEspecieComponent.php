@@ -31,9 +31,9 @@ class ModalListaEspecieComponent extends Component
 
     public $listasp_jardin, $listasp_id;  ##### Vars. grales.
 
-    public $listasp_ConCatalogo; #### Indica si hay o no catálogo de sp.
-    public $listasp_reino, $listasp_familia, $listasp_buscaGen, $listasp_gen;
-    public $listasp_sp, $listasp_scname, $listasp_scnamePre, $listasp_ssp, $listasp_var, $listasp_especies; ##### Variables de formaulario
+    // public $listasp_ConCatalogo; #### Indica si hay o no catálogo de sp.
+    // public $listasp_reino, $listasp_familia, $listasp_buscaGen, $listasp_gen;
+    // public $listasp_sp, $listasp_scname, $listasp_scnamePre, $listasp_ssp, $listasp_var, $listasp_especies; ##### Variables de formaulario
     public $listasp_nombre, $listasp_orden, $listasp_razon, $listasp_img, $listasp_url; ##### Variables de formaulario
     public $listasp_nuevoNombre, $listasp_nuevoAudio, $listasp_nuevaLengua, $listasp_nuevaImagen; ##### Variables de nombres comunes
 
@@ -44,29 +44,29 @@ class ModalListaEspecieComponent extends Component
         $this->listasp_id=$datos['lstId'];
 
         ##### Prepara variables de modal
-        $this->listasp_ConCatalogo='0';
-        $this->listasp_especies=collect();
+        // $this->listasp_ConCatalogo='0';
+        // $this->listasp_especies=collect();
         $this->listasp_nuevaLengua='spa';
 
         if($this->listasp_id != '0'){
             ##### Si es edición, carga datos
             $registro=lista::where('lst_id',$this->listasp_id)->first();
-            $this->listasp_reino=$registro->lst_reino;
-            $this->listasp_familia=$registro->lst_familia;
-            $this->listasp_gen=$registro->lst_gen;
-            $this->listasp_scname=$registro->lst_scname;
-            $this->listasp_ssp=$registro->lst_ssp;
-            $this->listasp_var=$registro->lst_var;
-            // $this->listasp_nombre=$registro->lst_name;
-            $this->listasp_orden=$registro->lst_orden;
-            $this->listasp_razon=$registro->lst_notas;
+            // $this->listasp_reino=$registro->lst_reino;
+            // $this->listasp_familia=$registro->lst_familia;
+            // $this->listasp_gen=$registro->lst_gen;
+            // $this->listasp_scname=$registro->lst_scname;
+            // $this->listasp_ssp=$registro->lst_ssp;
+            // $this->listasp_var=$registro->lst_var;
+            // // $this->listasp_nombre=$registro->lst_name;
+            // $this->listasp_orden=$registro->lst_orden;
+            // $this->listasp_razon=$registro->lst_notas;
             $this->listasp_img=$registro->lst_img;
             $this->listasp_url=$registro->lst_url;
 
             ##### Determina si hay catálogo
-            if($registro->lst_sp != '' and $registro->lst_reino=='planta'){
-                $this->listasp_ConCatalogo='1';
-            }
+            // if($registro->lst_sp != '' and $registro->lst_reino=='planta'){
+            //     $this->listasp_ConCatalogo='1';
+            // }
         }else{
             $this->limpiarModalDeBuscarEspecie();
             $this->listasp_orden=lista::where('lst_cjarsiglas',$this->listasp_jardin)
@@ -77,11 +77,10 @@ class ModalListaEspecieComponent extends Component
     }
 
     public function limpiarModalDeBuscarEspecie(){
-        $this->reset('listasp_familia','listasp_buscaGen','listasp_especies','listasp_scname',
-            'listasp_gen','listasp_ssp','listasp_var','listasp_scnamePre');
+        // $this->reset('listasp_familia','listasp_buscaGen','listasp_especies','listasp_scname', 'listasp_gen','listasp_ssp','listasp_var','listasp_scnamePre');
         $this->reset('listasp_nombre','listasp_orden','listasp_razon','listasp_img','listasp_url','listasp_nuevaImagen');
 
-        $this->listasp_especies=collect();
+        // $this->listasp_especies=collect();
         $this->resetValidation();
         $this->resetErrorBag();
     }
@@ -89,90 +88,90 @@ class ModalListaEspecieComponent extends Component
     public function CerrarModalDeBuscarEspecie($reload){
         if(!isset($reload) or $reload==''){$reload='0';}
         $this->limpiarModalDeBuscarEspecie();
-        $this->listasp_reino='';
+        // $this->listasp_reino='';
         $this->dispatch('CierraModalDeListaDeEspecies',reload:$reload);
     }
 
-    public function DeterminaReino(){
-        // ###### Reinos con catálogo
-        // $conCatalogo=['planta'];
-        // ###### Distingue catálogo vs no cat.
-        // if(in_array($this->listasp_reino, $conCatalogo)){
-        //     $this->listasp_ConCatalogo='1';
-        // }else{
-        //     $this->listasp_ConCatalogo='0';
-        // }
-        ##### Limpia:
-        $this->reset('listasp_familia','listasp_buscaGen','listasp_especies','listasp_scname',
-            'listasp_gen','listasp_sp','listasp_ssp','listasp_var');
-        $this->listasp_especies=collect();
-        #$this->limpiarModalDeBuscarEspecie();
-    }
+    // public function DeterminaReino(){
+    //     // ###### Reinos con catálogo
+    //     // $conCatalogo=['planta'];
+    //     // ###### Distingue catálogo vs no cat.
+    //     // if(in_array($this->listasp_reino, $conCatalogo)){
+    //     //     $this->listasp_ConCatalogo='1';
+    //     // }else{
+    //     //     $this->listasp_ConCatalogo='0';
+    //     // }
+    //     ##### Limpia:
+    //     $this->reset('listasp_familia','listasp_buscaGen','listasp_especies','listasp_scname',
+    //         'listasp_gen','listasp_sp','listasp_ssp','listasp_var');
+    //     $this->listasp_especies=collect();
+    //     #$this->limpiarModalDeBuscarEspecie();
+    // }
 
-    public function BuscaCatalogoDeSp(){
-        ##### Valida cuestionario
-        $this->validate([
-            'listasp_buscaGen'=>'required|min:3' /* ######ojo: en Orchidaceae existe el género Aa (42sp); Asteraceae género lo (1sp) */
-        ],[
-            'listasp_buscaGen'=>'Debes escribir un mínimo de 3 caracteres'
-        ]);
+    // public function BuscaCatalogoDeSp(){
+    //     ##### Valida cuestionario
+    //     $this->validate([
+    //         'listasp_buscaGen'=>'required|min:3' /* ######ojo: en Orchidaceae existe el género Aa (42sp); Asteraceae género lo (1sp) */
+    //     ],[
+    //         'listasp_buscaGen'=>'Debes escribir un mínimo de 3 caracteres'
+    //     ]);
 
-        ###### Busca en catálogo de plantas
-        if($this->listasp_reino=='planta'){
-            ##### Busca género o especie
-            if($this->listasp_buscaGen != ''){
-                $this->listasp_especies=CatKewModel::where('ckew_scientfiicname','ilike','%'.$this->listasp_buscaGen.'%')
-                    ->orderBy('ckew_scientfiicname')
-                    ->get();
-            }
-        }
-    }
+    //     ###### Busca en catálogo de plantas
+    //     if($this->listasp_reino=='planta'){
+    //         ##### Busca género o especie
+    //         if($this->listasp_buscaGen != ''){
+    //             $this->listasp_especies=CatKewModel::where('ckew_scientfiicname','ilike','%'.$this->listasp_buscaGen.'%')
+    //                 ->orderBy('ckew_scientfiicname')
+    //                 ->get();
+    //         }
+    //     }
+    // }
 
-    public function PreSeleccionaSp(){
-        #dd($this->all());
-        ######### Verifica estructura jerarquica de nombre científico
-        if($this->listasp_gen =='' AND ($this->listasp_scname!='') and $this->listasp_ConCatalogo=='0'){
-            $this->addError('listasp_gen','Error de anidamiento (Falta indicar el género)');
-            return;
-        }
-        if($this->listasp_sp =='' AND ($this->listasp_ssp!='' ) ){
-            $this->addError('listasp_sp','Error de anidamiento (Falta indicar la especie)');
-            return;
-        }
+    // public function PreSeleccionaSp(){
+    //     #dd($this->all());
+    //     ######### Verifica estructura jerarquica de nombre científico
+    //     if($this->listasp_gen =='' AND ($this->listasp_scname!='') and $this->listasp_ConCatalogo=='0'){
+    //         $this->addError('listasp_gen','Error de anidamiento (Falta indicar el género)');
+    //         return;
+    //     }
+    //     if($this->listasp_sp =='' AND ($this->listasp_ssp!='' ) ){
+    //         $this->addError('listasp_sp','Error de anidamiento (Falta indicar la especie)');
+    //         return;
+    //     }
 
-        ###### Verifica que exista la familia en catálogo cuando solo se mete familia en plantas
-        if($this->listasp_reino=='planta' AND  $this->listasp_scnamePre == '' AND $this->listasp_familia != ''){
-            ##### Verifica que exista la familia
-            if(CatKewModel::where('ckew_family','ilike',$this->listasp_familia)->count() =='0'){
-                $this->addError('listasp_familia','No hay registro de esta familia');
-                return;
-            }
-            $this->listasp_familia=strtoupper($this->listasp_familia);
-            $this->listasp_gen= '';
-            $this->listasp_sp= '';
-            $this->listasp_ssp= '';
-            $this->listasp_scname= '';
-        }
-        if($this->listasp_reino=='planta' AND  $this->listasp_scnamePre != ''){
-            ##### Obtiene datos del catálogo
-            $kew=CatKewModel::where('ckew_taxonid',$this->listasp_scnamePre)->first();
-            $this->listasp_familia=strtoupper($kew->ckew_family);
-            $this->listasp_gen= $kew->ckew_genus;
-            $this->listasp_sp= $kew->ckew_specificepithet;
-            $this->listasp_ssp= $kew->ckew_infraspecificepithet;
-            $this->listasp_scname= $kew->ckew_scientfiicname;
-        }
+    //     ###### Verifica que exista la familia en catálogo cuando solo se mete familia en plantas
+    //     if($this->listasp_reino=='planta' AND  $this->listasp_scnamePre == '' AND $this->listasp_familia != ''){
+    //         ##### Verifica que exista la familia
+    //         if(CatKewModel::where('ckew_family','ilike',$this->listasp_familia)->count() =='0'){
+    //             $this->addError('listasp_familia','No hay registro de esta familia');
+    //             return;
+    //         }
+    //         $this->listasp_familia=strtoupper($this->listasp_familia);
+    //         $this->listasp_gen= '';
+    //         $this->listasp_sp= '';
+    //         $this->listasp_ssp= '';
+    //         $this->listasp_scname= '';
+    //     }
+    //     if($this->listasp_reino=='planta' AND  $this->listasp_scnamePre != ''){
+    //         ##### Obtiene datos del catálogo
+    //         $kew=CatKewModel::where('ckew_taxonid',$this->listasp_scnamePre)->first();
+    //         $this->listasp_familia=strtoupper($kew->ckew_family);
+    //         $this->listasp_gen= $kew->ckew_genus;
+    //         $this->listasp_sp= $kew->ckew_specificepithet;
+    //         $this->listasp_ssp= $kew->ckew_infraspecificepithet;
+    //         $this->listasp_scname= $kew->ckew_scientfiicname;
+    //     }
 
-        if($this->listasp_reino != 'planta'){
-            $this->listasp_scname = $this->listasp_gen." ".$this->listasp_sp;
-            if($this->listasp_ssp != ''){
-                $this->listasp_scname=$this->listasp_scname." ".$this->listasp_ssp;
-            }
-        }
+    //     if($this->listasp_reino != 'planta'){
+    //         $this->listasp_scname = $this->listasp_gen." ".$this->listasp_sp;
+    //         if($this->listasp_ssp != ''){
+    //             $this->listasp_scname=$this->listasp_scname." ".$this->listasp_ssp;
+    //         }
+    //     }
 
-        $this->GuardaRegistro('0');
+    //     $this->GuardaRegistro('0');
 
-    }
+    // }
 
     public function GuardaRegistro($cierra){
 
@@ -181,13 +180,13 @@ class ModalListaEspecieComponent extends Component
         $datos=[
             'lst_cjarsiglas'=>$this->listasp_jardin,
             'lst_orden'=>$this->listasp_orden,
-            'lst_reino'=>$this->listasp_reino,
-            'lst_familia'=>strtoupper($this->listasp_familia),
-            'lst_genero'=>$this->listasp_gen,
-            'lst_sp'=>$this->listasp_sp,
-            'lst_ssp'=>$this->listasp_ssp,
-            'lst_scname'=>$this->listasp_scname,
-            'lst_var'=>$this->listasp_var,
+            // 'lst_reino'=>$this->listasp_reino,
+            // 'lst_familia'=>strtoupper($this->listasp_familia),
+            // 'lst_genero'=>$this->listasp_gen,
+            // 'lst_sp'=>$this->listasp_sp,
+            // 'lst_ssp'=>$this->listasp_ssp,
+            // 'lst_scname'=>$this->listasp_scname,
+            // 'lst_var'=>$this->listasp_var,
             'lst_url'=>$this->listasp_url,
             'lst_notas'=>$this->listasp_razon,
         ];
@@ -227,7 +226,7 @@ class ModalListaEspecieComponent extends Component
         if($cierra=='1'){
             #### Limpia
             $this->limpiarModalDeBuscarEspecie();
-            $this->listasp_reino='';
+            // $this->listasp_reino='';
 
             ##### Cierra
             $this->dispatch('CierraModalDeListaDeEspecies',reload:'1');
@@ -235,9 +234,10 @@ class ModalListaEspecieComponent extends Component
     }
 
     public function BorrarSp(){
-        $this->reset('listasp_familia','listasp_buscaGen','listasp_especies','listasp_scname',
-            'listasp_gen','listasp_sp','listasp_ssp','listasp_var');
-        $this->listasp_especies=collect();
+        dd('Cambiar por nueva tabla');
+        // $this->reset('listasp_familia','listasp_buscaGen','listasp_especies','listasp_scname',
+        //     'listasp_gen','listasp_sp','listasp_ssp','listasp_var');
+        // $this->listasp_especies=collect();
         lista::where('lst_id',$this->listasp_id)->update([
             'lst_reino'=>'',
             'lst_familia'=>'',
@@ -308,14 +308,22 @@ class ModalListaEspecieComponent extends Component
         $this->listasp_url='';
     }
 
+    public function AbrirModalDeNombreCientificoEnLista(){
+        $datos=[
+            'jardin'=>$this->listasp_jardin,
+            'lstId'=>$this->listasp_id
+        ];
+        $this->dispatch('AbreModalDeNombreCientEnlista',$datos);
+    }
+
     public function render(){
         ###### Distingue catálogo vs no cat.
-        $conCatalogo=['planta'];
-        if(in_array($this->listasp_reino, $conCatalogo)){
-            $this->listasp_ConCatalogo='1';
-        }else{
-            $this->listasp_ConCatalogo='0';
-        }
+        // $conCatalogo=['planta'];
+        // if(in_array($this->listasp_reino, $conCatalogo)){
+        //     $this->listasp_ConCatalogo='1';
+        // }else{
+        //     $this->listasp_ConCatalogo='0';
+        // }
 
         ##### Carga lista de nombres
         $nombres= lista_nombres::where('lstn_lstid',$this->listasp_id)
