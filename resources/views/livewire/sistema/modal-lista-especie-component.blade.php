@@ -87,6 +87,9 @@
                                                     </audio>
                                                     <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Titu" onclick="playAudio('{{ $n->lstn_id }}Titu')"></i>
                                                     <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Titu" onclick="pauseAudio('{{ $n->lstn_id }}Titu')"></i>
+                                                {{-- @else
+                                                    <input  wire:model.live="listasp_nuevoAudio2" wire:click.renderless='SubirNuevoAudio({{ $n->lstn_id }})' id="subirAudioNuevo2" accept="audio/*" style="display:none" type="file" >
+                                                    <i class="bi bi-cloud-upload-fill agregar" onclick="document.getElementById('subirAudioNuevo2').click();"></i> --}}
                                                 @endif
                                             </td>
                                             <!-- lengua -->

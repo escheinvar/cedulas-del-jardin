@@ -14,7 +14,6 @@ use Livewire\WithFileUploads;
 
 class ModalListaEspecieComponent extends Component
 {
-
     /*############################################## ModalLista_Especies
     ###################################################################
     ##### Este modal, requiere dos varables, url_cjarsiglas y url_urltxt
@@ -31,12 +30,8 @@ class ModalListaEspecieComponent extends Component
     Use WithFileUploads;
 
     public $listasp_jardin, $listasp_id;  ##### Vars. grales.
-
-    // public $listasp_ConCatalogo; #### Indica si hay o no catálogo de sp.
-    // public $listasp_reino, $listasp_familia, $listasp_buscaGen, $listasp_gen;
-    // public $listasp_sp, $listasp_scname, $listasp_scnamePre, $listasp_ssp, $listasp_var, $listasp_especies; ##### Variables de formaulario
     public $listasp_nombre, $listasp_orden, $listasp_razon, $listasp_img, $listasp_url; ##### Variables de formaulario
-    public $listasp_nuevoNombre, $listasp_nuevoAudio, $listasp_nuevaLengua, $listasp_nuevaImagen; ##### Variables de nombres comunes
+    public $listasp_nuevoNombre, $listasp_nuevoAudio, $listasp_nuevoAudio2, $listasp_nuevaLengua, $listasp_nuevaImagen; ##### Variables de nombres comunes
 
     #[On('AbrirModalDeListaDeEspecies')]
     public function montarAbrirModalDeBuscarEspecie($datos){
@@ -60,15 +55,11 @@ class ModalListaEspecieComponent extends Component
             $this->listasp_orden=lista::where('lst_cjarsiglas',$this->listasp_jardin)
                 ->where('lst_del','0')
                 ->max('lst_orden') + 1;
-            // $this->listasp_orden=round(lista::max('lst_orden') + 1);
         }
     }
 
     public function limpiarModalDeBuscarEspecie(){
-        // $this->reset('listasp_familia','listasp_buscaGen','listasp_especies','listasp_scname', 'listasp_gen','listasp_ssp','listasp_var','listasp_scnamePre');
         $this->reset('listasp_nombre','listasp_orden','listasp_razon','listasp_img','listasp_url','listasp_nuevaImagen');
-
-        // $this->listasp_especies=collect();
         $this->resetValidation();
         $this->resetErrorBag();
     }
@@ -76,94 +67,11 @@ class ModalListaEspecieComponent extends Component
     public function CerrarModalDeBuscarEspecie($reload){
         if(!isset($reload) or $reload==''){$reload='1';}
         $this->limpiarModalDeBuscarEspecie();
-        // $this->listasp_reino='';
         $this->dispatch('CierraModalDeListaDeEspecies',reload:$reload);
-
     }
 
-    // public function DeterminaReino(){
-    //     // ###### Reinos con catálogo
-    //     // $conCatalogo=['planta'];
-    //     // ###### Distingue catálogo vs no cat.
-    //     // if(in_array($this->listasp_reino, $conCatalogo)){
-    //     //     $this->listasp_ConCatalogo='1';
-    //     // }else{
-    //     //     $this->listasp_ConCatalogo='0';
-    //     // }
-    //     ##### Limpia:
-    //     $this->reset('listasp_familia','listasp_buscaGen','listasp_especies','listasp_scname',
-    //         'listasp_gen','listasp_sp','listasp_ssp','listasp_var');
-    //     $this->listasp_especies=collect();
-    //     #$this->limpiarModalDeBuscarEspecie();
-    // }
-
-    // public function BuscaCatalogoDeSp(){
-    //     ##### Valida cuestionario
-    //     $this->validate([
-    //         'listasp_buscaGen'=>'required|min:3' /* ######ojo: en Orchidaceae existe el género Aa (42sp); Asteraceae género lo (1sp) */
-    //     ],[
-    //         'listasp_buscaGen'=>'Debes escribir un mínimo de 3 caracteres'
-    //     ]);
-
-    //     ###### Busca en catálogo de plantas
-    //     if($this->listasp_reino=='planta'){
-    //         ##### Busca género o especie
-    //         if($this->listasp_buscaGen != ''){
-    //             $this->listasp_especies=CatKewModel::where('ckew_scientfiicname','ilike','%'.$this->listasp_buscaGen.'%')
-    //                 ->orderBy('ckew_scientfiicname')
-    //                 ->get();
-    //         }
-    //     }
-    // }
-
-    // public function PreSeleccionaSp(){
-    //     #dd($this->all());
-    //     ######### Verifica estructura jerarquica de nombre científico
-    //     if($this->listasp_gen =='' AND ($this->listasp_scname!='') and $this->listasp_ConCatalogo=='0'){
-    //         $this->addError('listasp_gen','Error de anidamiento (Falta indicar el género)');
-    //         return;
-    //     }
-    //     if($this->listasp_sp =='' AND ($this->listasp_ssp!='' ) ){
-    //         $this->addError('listasp_sp','Error de anidamiento (Falta indicar la especie)');
-    //         return;
-    //     }
-
-    //     ###### Verifica que exista la familia en catálogo cuando solo se mete familia en plantas
-    //     if($this->listasp_reino=='planta' AND  $this->listasp_scnamePre == '' AND $this->listasp_familia != ''){
-    //         ##### Verifica que exista la familia
-    //         if(CatKewModel::where('ckew_family','ilike',$this->listasp_familia)->count() =='0'){
-    //             $this->addError('listasp_familia','No hay registro de esta familia');
-    //             return;
-    //         }
-    //         $this->listasp_familia=strtoupper($this->listasp_familia);
-    //         $this->listasp_gen= '';
-    //         $this->listasp_sp= '';
-    //         $this->listasp_ssp= '';
-    //         $this->listasp_scname= '';
-    //     }
-    //     if($this->listasp_reino=='planta' AND  $this->listasp_scnamePre != ''){
-    //         ##### Obtiene datos del catálogo
-    //         $kew=CatKewModel::where('ckew_taxonid',$this->listasp_scnamePre)->first();
-    //         $this->listasp_familia=strtoupper($kew->ckew_family);
-    //         $this->listasp_gen= $kew->ckew_genus;
-    //         $this->listasp_sp= $kew->ckew_specificepithet;
-    //         $this->listasp_ssp= $kew->ckew_infraspecificepithet;
-    //         $this->listasp_scname= $kew->ckew_scientfiicname;
-    //     }
-
-    //     if($this->listasp_reino != 'planta'){
-    //         $this->listasp_scname = $this->listasp_gen." ".$this->listasp_sp;
-    //         if($this->listasp_ssp != ''){
-    //             $this->listasp_scname=$this->listasp_scname." ".$this->listasp_ssp;
-    //         }
-    //     }
-
-    //     $this->GuardaRegistro('0');
-
-    // }
 
     public function GuardaRegistro($cierra){
-
         ######### Nota: if $cierra==1, cierra modal y limpia variables;
         #########       if $cierra==0, solo guarda y deja modal abierto;
         $datos=[
@@ -175,9 +83,10 @@ class ModalListaEspecieComponent extends Component
 
         ##### Verifica si hay imagen nueva
         if($this->listasp_nuevaImagen != ''){
-            $nombreImagen='listaImg-'.$this->listasp_jardin.'_'.
-                str_replace(' ','',ucwords($this->listasp_id)).'.'.
+            $nombreImagen=$this->listasp_jardin.'-'.$this->listasp_id."_".
+                'img.'. #str_replace(' ','',ucwords($this->listasp_id)).'.'.
                 $this->listasp_nuevaImagen->getClientOriginalExtension();
+
             $this->listasp_nuevaImagen->storeAs('public/listas',$nombreImagen);
             $datos['lst_img']='/listas/'.$nombreImagen;
         }else{
@@ -198,7 +107,6 @@ class ModalListaEspecieComponent extends Component
             paLog('Se genera nuevo elemento de lista al listado de '.$this->listasp_jardin, 'lista',$this->listasp_id);
 
         }else{
-            #$original=lista::where('lst_id',$this->listasp_id)->first();
             ##### Edita registro
             lista::where('lst_id',$this->listasp_id)->update($datos);
             #### Crea log
@@ -215,23 +123,6 @@ class ModalListaEspecieComponent extends Component
         }
     }
 
-    public function BorrarSp(){
-        dd('Cambiar por nueva tabla');
-        // $this->reset('listasp_familia','listasp_buscaGen','listasp_especies','listasp_scname',
-        //     'listasp_gen','listasp_sp','listasp_ssp','listasp_var');
-        // $this->listasp_especies=collect();
-        lista::where('lst_id',$this->listasp_id)->update([
-            'lst_reino'=>'',
-            'lst_familia'=>'',
-            'lst_genero'=>'',
-            'lst_sp'=>'',
-            'lst_ssp'=>'',
-            'lst_scname'=>'',
-            'lst_var'=>''
-        ]);
-
-    }
-
     public function BorrarNombre($id){
         lista_nombres::where('lstn_id',$id)->update(['lstn_del'=>'1']);
     }
@@ -246,8 +137,20 @@ class ModalListaEspecieComponent extends Component
         $this->listasp_nuevoAudio='';
     }
 
+    public function SubirNuevoAudio($id){
+        #dd($this->listasp_nuevoAudio2);
+        $datos=lista_nombres::where('lstn_id',$id)->first();
+        #dd($id, $datos);
+        $nombreAudio=$this->listasp_jardin.'-'.$datos->lstn_lstid."_".
+                str_replace(' ','',ucwords($datos->lstn_name)).'_'.
+                $datos->lstn_lencode.'.'.
+                $this->listasp_nuevoAudio2->getClientOriginalExtension();
+
+        $this->listasp_nuevoAudio2->storeAs('public/listas',$nombreAudio);
+        $datos['lstn_audio']='/listas/'.$nombreAudio;
+    }
+
     public function AgregrarNuevoNombre(){
-        #dd($this->listasp_id);
         ##### Valida
         $this->validate([
             'listasp_nuevoNombre'=>'required',
@@ -269,7 +172,7 @@ class ModalListaEspecieComponent extends Component
             'lstn_lencode'=>$this->listasp_nuevaLengua,
         ];
         if($this->listasp_nuevoAudio != ''){
-            $nombreAudio='lista-'.$this->listasp_jardin.'_'.
+            $nombreAudio=$this->listasp_jardin.'-'.$this->listasp_id."_".
                 str_replace(' ','',ucwords($this->listasp_nuevoNombre)).'_'.
                 $this->listasp_nuevaLengua.'.'.
                 $this->listasp_nuevoAudio->getClientOriginalExtension();
@@ -315,19 +218,7 @@ class ModalListaEspecieComponent extends Component
         lista_nombresc::where('lstsc_id',$id)->update(['lstsc_del'=>'1']);
     }
 
-
-
-
-
     public function render(){
-        ###### Distingue catálogo vs no cat.
-        // $conCatalogo=['planta'];
-        // if(in_array($this->listasp_reino, $conCatalogo)){
-        //     $this->listasp_ConCatalogo='1';
-        // }else{
-        //     $this->listasp_ConCatalogo='0';
-        // }
-
         ##### Carga lista de nombres
         $nombres= lista_nombres::where('lstn_lstid',$this->listasp_id)
                 ->where('lstn_del','0')

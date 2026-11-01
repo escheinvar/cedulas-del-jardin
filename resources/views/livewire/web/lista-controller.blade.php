@@ -29,11 +29,89 @@
     @endif
 
     @if($lista->count() == 0)
+
         <div class="" style="text-align: center; padding: 50px; ">
             {{ $url->urlj_cjarsiglas }}     aún no genera su  listado.
         </div>
     @else
-        @php $num='1'; @endphp
+        <!-- -------------------------------------------------------------------- -->
+        <!-- ------------------ INICIA NUEVO DISERÑO ---------------------------- -->
+        <div class="row">
+            @foreach ($lista  as $l)
+                <div class="col-md-5 col-12 m-2" style="@if($l->lst_act=='1')background-color:#CDC6B9; border:1px solid #202d2d; @else border:1px solid black;color:gray; @endif border-radius:15px;">
+
+                    <!-- NOMBRES -->
+                    <div class=""  style="">
+                        @foreach ($l->nombres as $n)
+                            <div class="@if($l->nombres->count() > 1)elemento2 @endif" style="font-weight:900; font-size: 120%;text-align:center; vertical-align:bottom;">
+                                {!!   $n->lstn_name !!}
+                                <!-- audio titulo -->
+                                @if($n->lstn_audio != '' )
+                                    <audio id="SpAudio{{ $n->lstn_id }}Tit" style="display:inline-block;">
+                                        <source src="{{ $n->lstn_audio }}" type="audio/ogg" /> El navegador no soporta el audio
+                                    </audio>
+                                    <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Tit" onclick="playAudio('{{ $n->lstn_id }}Tit')" style="vertical-align:bottom;"></i>
+                                    <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Tit" onclick="pauseAudio('{{ $n->lstn_id }}Tit')"></i>
+                                @endif
+                                <sub style="color: #87796d;" title="{{ $n->lstn_lengua }}">{{ $n->lstn_lencode }}</sub>
+
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- IMÁGEN -->
+                    <div class="m-2" style="">
+                        <center>
+                            @if($l->lst_img != '')
+                                <a href="{{ $l->lst_img }}" target="_blank">
+                                    <img src="{{ $l->lst_img }}" style="max-width:100%; max-height: 200px;border-radius:5px;">
+                                </a>
+                            @else
+                                <img src="/imagenes/icono-hoja.png" style="height:200px; ">
+                            @endif
+                        </center>
+                    </div>
+
+                    <!-- NOMBRE CIENTÍFICO -->
+                    <div class="" style="">
+                        @foreach ($l->nombrescient as $sp)
+                            <div class="@if($l->nombrescient->count() > '1')elemento2 @endif" style="@if($l->lst_act=='0') color:gray; @endif font-weight:700; font-size:110%;text-align:center;">
+                                <i title="Familia {{ $sp->lstsc_familia }}">{{   $sp->lstsc_scname }}</i>
+                            </div>
+                        @endforeach
+                        <i>{{ $l->lst_scname }}</i>
+                    </div>
+
+                    <!-- EXPLICACIÓN -->
+                    <div class="my-2" style="font-family:'Roboto Condensed', sans-serif; @if($l->lst_act=='0') color:gray; @endif">
+                        {{ $l->lst_notas }}
+                    </div>
+
+                    <!-- ACCIONES -->
+                    <div class="" style="">
+                        @if($edit=='1')
+                            <!-- Editar -->
+                            <i class="bi bi-pencil-square mx-1" style="cursor: pointer;" title="Editar" wire:click="AbrirModalDeListaEspecie({{ $l->lst_id }})"></i>
+
+                            <!-- Ocultar -->
+                            @if($l->lst_act == '0')
+                                <i class="bi bi-eye mx-1" style="cursor: pointer;" title="Mostrar" wire:click="ActivarInactivar({{ $l->lst_id }})"></i>
+                            @else
+                                <i class="bi bi-eye-slash mx-1" style="cursor: pointer;" title="Ocultar" wire:click="ActivarInactivar({{ $l->lst_id }})"></i>
+                            @endif
+
+                            <!-- Eliminar -->
+                            <i class="bi bi-trash mx-1" style="cursor: pointer;" title="Eliminar" wire:click="Eliminar({{ $l->lst_id }})" wire:confirm='Vas a eliminar este registro de la lista. ¿Quieres continuar?'></i>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+
+        <!-- -------------------------------------------------------------------- -->
+        <!-- ------------------ INICIA LA TABLA --------------------------------- -->
+        {{-- @php $num='1'; @endphp
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -130,7 +208,7 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table> --}}
     @endif
 
 
