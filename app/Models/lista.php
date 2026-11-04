@@ -37,4 +37,10 @@ class lista extends Model
             ->where('lstsc_act','1')
             ->where('lstsc_del','0');
     }
+
+    public function imagenes():HasMany {
+        return $this->HasMany(lista_img::class,'lstimg_lstid','lst_id')
+            ->where('lstimg_act','1')
+            ->where('lstimg_del','0');
+    }
 }

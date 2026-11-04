@@ -147,6 +147,7 @@ class JardinController extends Component
         $this->edit='0';
         ##### Revisa permisos del usuario
         $auts=['webmaster'];
+
         if(Auth::user()){
             $this->editjar = UserRolesModel::where('rol_usrid',Auth::user()->id)
                 ->whereIn('rol_crolrol',$auts)

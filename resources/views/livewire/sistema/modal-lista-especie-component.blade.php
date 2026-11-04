@@ -7,7 +7,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title">
-                        Listad de {{ $listasp_jardin }}
+                        Listado de {{ $listasp_jardin }}
                     </h3>
                     <button wire:click="CerrarModalDeBuscarEspecie('1')" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
                 </div>
@@ -42,21 +42,16 @@
                         <div class="col-12 form-group center">
                             <label for="" class="form-label">Imagen<red></red></label>
                             <center>
-                            @if($listasp_img != '')
-                                <img src="{{ $listasp_img }}" style="max-width:200px; max-height:400px;">
-                                <i class="bi bi-trash agregar"  title="Eliminar imagen" wire:click="BorrarImagen('bd')" wire:confirm='Estás por eliminar una imágen de la base de datos. ¿Seguro quieres continuar?'></i>
-                            @else
-                                @if($listasp_nuevaImagen == '')
-                                    <input wire:model="listasp_nuevaImagen" id="listasp_nuevaImagen" accept="image/*"  class="@error('listasp_nuevaImagen') is-invalid @enderror form-control" type="file">
-                                    <div class="form-text"></div>
-                                    @error('listasp_nuevaImagen')<error>{{ $message }}</error>@enderror
+                                @if($img->count() > '0')
+                                    @foreach($img as $i)
+                                        <img src="{{ $i->lstimg_img }}" wire:click="AbrirModalDeListaImagen('{{ $i->lstimg_id }}')" style="max-width:200px; max-height:400px;" class="PaClick">
+                                        {{ $i->lstimg_orden }}
+                                        {{-- <i class="bi bi-pencil-square agregar"  title="Eliminar imagen" wire:click="AbrirModalDeListaImagen('{{ $i->lstimg_id }}')" wire:confirm='Estás por eliminar una imágen de la base de datos. ¿Seguro quieres continuar?'></i> --}}
+                                        {{-- <i class="bi bi-trash agregar"  title="Eliminar imagen" wire:click="BorrarImagen('{{ $i->lstimg_id }}')"></i> --}}
+                                    @endforeach
                                 @endif
-                            @endif
-
-                            @if($listasp_nuevaImagen != '' )
-                                <img src="{{ $listasp_nuevaImagen->temporaryUrl() }}" style="max-width:200px; max-height:400px;">
-                                <i class="bi bi-trash agregar"  title="Eliminar imagen" wire:click="BorrarImagen('tmp')"></i>
-                            @endif
+                                <!-- nueva img -->
+                                <button wire:click="AbrirModalDeListaImagen('0')" class="bi bi-card-image btn btn-sm btn-primary"> Agregar </button>
                             </center>
                         </div>
 
@@ -188,6 +183,7 @@
     <!-- -------------------------------------------------------------------------------------- -->
 
 <livewire:sistema.modal-lista-especie-nombresc-component />
+<livewire:sistema.modal-lista-especie-imagen-component />
 
     <script>
         /* ### Script para abrir y cerrar Modal de ejemplar */
@@ -215,6 +211,10 @@
         Livewire.on('VariableDesdeNombreCientificoANombre',() => {
            @this.set('listasp_id',event.detail.dato, live=true);
         });
+
+        // Livewire.on('ImagenNuevaALista',() => {
+        //    @this.set('listasp_id',event.detail.dato1, live=true);
+        // });
 
         // /* ### Script para abrir mensaje */
         // Livewire.on('AvisoExitoAliasCedula',()=>{

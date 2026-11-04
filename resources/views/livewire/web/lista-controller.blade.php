@@ -62,14 +62,58 @@
                     <!-- IMÁGEN -->
                     <div class="m-2" style="">
                         <center>
-                            @if($l->lst_img != '')
-                                <a href="{{ $l->lst_img }}" target="_blank">
-                                    <img src="{{ $l->lst_img }}" style="max-width:100%; max-height: 200px;border-radius:5px;">
-                                </a>
+                            @if($l->imagenes->count() > 0)
+                                @foreach ($l->imagenes as $i)
+                                    <a href="{{ $i->lstimg_img }}" target="_blank">
+                                        <img src="{{ $i->lstimg_img }}" style="max-width:100%; max-height: 200px;border-radius:5px;">
+                                    </a>
+                                @endforeach
+
                             @else
                                 <img src="/imagenes/icono-hoja.png" style="height:200px; ">
                             @endif
                         </center>
+                        {{-- <!-- ----------------------------------------------------- -->
+                        <div id="miCarrusel" class="carousel slide" data-bs-ride="carousel">
+                                <!-- Indicadores (opcional) -->
+                            <div class="carousel-indicators">
+                                @foreach($l->lst_img as $index => $chunk)
+                                    <button type="button"
+                                            data-bs-target="#miCarrusel"
+                                            data-bs-slide-to="{{ $index }}"
+                                            class="{{ $index == 0 ? 'active' : '' }}"
+                                            aria-current="{{ $index == 0 ? 'true' : 'false' }}">
+                                    </button>
+                                @endforeach
+                            </div>
+
+                            <!-- Contenedor de las diapositivas -->
+                            <div class="carousel-inner">
+                                @foreach($l->lst_img as $index => $chunk)
+                                    <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                                        <div class="row">
+                                            @foreach($chunk as $img)
+                                                <div class="col-md-3">
+                                                    <!-- Ajusta la ruta de la imagen según cómo guardes tus archivos -->
+                                                    <img class="d-block w-100 img-fluid" src="{{ asset('storage/' . $img->url) }}" alt="Imagen">
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Botones de siguiente y anterior -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#miCarrusel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Anterior</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#miCarrusel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Siguiente</span>
+                            </button>
+                        </div> --}}
+
                     </div>
 
                     <!-- NOMBRE CIENTÍFICO -->

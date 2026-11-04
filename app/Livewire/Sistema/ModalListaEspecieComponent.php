@@ -5,6 +5,7 @@ namespace App\Livewire\Sistema;
 use App\Models\CatKewModel;
 use App\Models\lista_nombres;
 use App\Models\lista_nombresc;
+use App\Models\lista_img;
 use App\Models\lista;
 use App\Models\lenguas;
 use Livewire\Attributes\On;
@@ -31,7 +32,7 @@ class ModalListaEspecieComponent extends Component
 
     public $listasp_jardin, $listasp_id;  ##### Vars. grales.
     public $listasp_nombre, $listasp_orden, $listasp_razon, $listasp_img, $listasp_url; ##### Variables de formaulario
-    public $listasp_nuevoNombre, $listasp_nuevoAudio, $listasp_nuevoAudio2, $listasp_nuevaLengua, $listasp_nuevaImagen; ##### Variables de nombres comunes
+    public $listasp_nuevoNombre, $listasp_nuevoAudio, $listasp_nuevoAudio2, $listasp_nuevaLengua; ##### Variables de nombres comunes
 
     #[On('AbrirModalDeListaDeEspecies')]
     public function montarAbrirModalDeBuscarEspecie($datos){
@@ -59,7 +60,7 @@ class ModalListaEspecieComponent extends Component
     }
 
     public function limpiarModalDeBuscarEspecie(){
-        $this->reset('listasp_nombre','listasp_orden','listasp_razon','listasp_img','listasp_url','listasp_nuevaImagen');
+        $this->reset('listasp_nombre','listasp_orden','listasp_razon','listasp_img','listasp_url');
         $this->resetValidation();
         $this->resetErrorBag();
     }
@@ -82,16 +83,16 @@ class ModalListaEspecieComponent extends Component
         ];
 
         ##### Verifica si hay imagen nueva
-        if($this->listasp_nuevaImagen != ''){
-            $nombreImagen=$this->listasp_jardin.'-'.$this->listasp_id."_".
-                'img.'. #str_replace(' ','',ucwords($this->listasp_id)).'.'.
-                $this->listasp_nuevaImagen->getClientOriginalExtension();
+        // if($this->listasp_nuevaImagen != ''){
+        //     $nombreImagen=$this->listasp_jardin.'-'.$this->listasp_id."_".
+        //         'img.'.
+        //         $this->listasp_nuevaImagen->getClientOriginalExtension();
 
-            $this->listasp_nuevaImagen->storeAs('public/listas',$nombreImagen);
-            $datos['lst_img']='/listas/'.$nombreImagen;
-        }else{
-            $datos['lst_img']=$this->listasp_img;
-        }
+        //     $this->listasp_nuevaImagen->storeAs('public/listas',$nombreImagen);
+        //     $datos['lst_img']='/listas/'.$nombreImagen;
+        // }else{
+        //     $datos['lst_img']=$this->listasp_img;
+        // }
 
         if($this->listasp_id=='0'){
             ###### valida que no exista otro registro con el mismo número de orden
@@ -185,16 +186,16 @@ class ModalListaEspecieComponent extends Component
         $this->reset('listasp_nuevoNombre','listasp_nuevaLengua','listasp_nuevoAudio');
     }
 
-    public function BorrarImagen($tipo){
-        if($tipo=='bd'){
-            lista::where('lst_id',$this->listasp_id)->update(['lst_img'=>'']);
-            $this->listasp_img='';
-            $this->listasp_nuevaImagen='';
-        }elseif($tipo=='tmp'){
-            $this->listasp_nuevaImagen='';
-        }
+    // public function BorrarImagen($tipo){
+    //     if($tipo=='bd'){
+    //         lista::where('lst_id',$this->listasp_id)->update(['lst_img'=>'']);
+    //         $this->listasp_img='';
+    //         $this->listasp_nuevaImagen='';
+    //     }elseif($tipo=='tmp'){
+    //         $this->listasp_nuevaImagen='';
+    //     }
 
-    }
+    // }
 
     public function BorrarURL(){
         $this->listasp_url='';
@@ -206,6 +207,15 @@ class ModalListaEspecieComponent extends Component
             'lstId'=>$this->listasp_id
         ];
         $this->dispatch('AbreModalDeNombreCientEnlista',$datos);
+    }
+
+     public function AbrirModalDeListaImagen($id){
+        $datos=[
+            'jardin'=>$this->listasp_jardin,
+            'lstId'=>$this->listasp_id,
+            'lstimgId'=>$id,
+        ];
+        $this->dispatch('AbreModalDeListaImagen',$datos);
     }
 
     public function DesactivaNombreCient($id){
@@ -224,16 +234,22 @@ class ModalListaEspecieComponent extends Component
                 ->where('lstn_del','0')
                 ->orderBy('lstn_id')
                 ->get();
-         $nombresCient= lista_nombresc::where('lstsc_lstid',$this->listasp_id)
+        $nombresCient= lista_nombresc::where('lstsc_lstid',$this->listasp_id)
                 ->where('lstsc_del','0')
                 ->orderBy('lstsc_id')
                 ->get();
+        $img= lista_img::where('lstimg_lstid',$this->listasp_id)
+            ->where('lstimg_del','0')
+            ->orderBy('lstimg_orden')
+            ->get();
+
         $lenguas=lenguas::orderBy('len_lengua')->get();
 
         return view('livewire.sistema.modal-lista-especie-component',[
             'nombres'=>$nombres,
             'lenguas'=>$lenguas,
             'nombresCient'=>$nombresCient,
+            'img'=>$img,
         ]);
     }
 }
