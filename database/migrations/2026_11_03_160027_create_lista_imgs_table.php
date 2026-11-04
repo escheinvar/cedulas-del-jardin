@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('lstimg_img');
 
             $table->string('lstimg_titulo')->nullable();
-            $table->string('lstmig_autor')->nullable();
-            $table->string('lstmig_explica')->nullable();
+            $table->string('lstimg_autor')->nullable();
+            $table->string('lstimg_explica')->nullable();
             $table->timestamps();
         });
     }

@@ -40,18 +40,16 @@
                     <!-- Imagen -->
                     <div class="row" wire:loading.attr="disabled">
                         <div class="col-12 form-group center">
-                            <label for="" class="form-label">Imagen<red></red></label>
+                            <label for="" class="form-label">
+                                Imagen<red></red>
+                                <button wire:click="AbrirModalDeListaImagen('0')" class="btn btn-sm btn-primary"> + </button>
+                            </label>
                             <center>
                                 @if($img->count() > '0')
                                     @foreach($img as $i)
-                                        <img src="{{ $i->lstimg_img }}" wire:click="AbrirModalDeListaImagen('{{ $i->lstimg_id }}')" style="max-width:200px; max-height:400px;" class="PaClick">
-                                        {{ $i->lstimg_orden }}
-                                        {{-- <i class="bi bi-pencil-square agregar"  title="Eliminar imagen" wire:click="AbrirModalDeListaImagen('{{ $i->lstimg_id }}')" wire:confirm='Estás por eliminar una imágen de la base de datos. ¿Seguro quieres continuar?'></i> --}}
-                                        {{-- <i class="bi bi-trash agregar"  title="Eliminar imagen" wire:click="BorrarImagen('{{ $i->lstimg_id }}')"></i> --}}
+                                        <img src="{{ $i->lstimg_img }}" wire:click="AbrirModalDeListaImagen('{{ $i->lstimg_id }}')" style="max-width:150px; max-height:150px; @if( $i->lstimg_act=='0' ) border:1px solid gray; opacity:0.4; @endif" class="PaClick">
                                     @endforeach
                                 @endif
-                                <!-- nueva img -->
-                                <button wire:click="AbrirModalDeListaImagen('0')" class="bi bi-card-image btn btn-sm btn-primary"> Agregar </button>
                             </center>
                         </div>
 
@@ -210,6 +208,10 @@
         /* #### Recibe variable desde un componente externo y lo manda a livewire */
         Livewire.on('VariableDesdeNombreCientificoANombre',() => {
            @this.set('listasp_id',event.detail.dato, live=true);
+        });
+        Livewire.on('VariableDesdeImagen',() => {
+           @this.set('img',event.detail.dato, live=true);
+           @this.set('listasp_id',event.detail.dato2, live=true);
         });
 
         // Livewire.on('ImagenNuevaALista',() => {

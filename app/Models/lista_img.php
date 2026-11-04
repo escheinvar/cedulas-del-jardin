@@ -24,8 +24,8 @@ class lista_img extends Model
         'lstimg_img',
 
         'lstimg_titulo',
-        'lstmig_autor',
-        'lstmig_explica',
+        'lstimg_autor',
+        'lstimg_explica',
     ];
 
     public function ejemplar(): BelongsTo {

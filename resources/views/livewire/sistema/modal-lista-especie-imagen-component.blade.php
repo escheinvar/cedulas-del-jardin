@@ -26,6 +26,7 @@
                             @error('lstimg_nvaImg')<error>{{ $message }}</error>@enderror
                         </div>
                     @else
+                        <!-- muestra nueva imagen temporal -->
                         <div class="col-12 my-1 form-group center" >
                             <center>
                                 <img src="{{ $lstimg_nvaImg->temporaryUrl() }}" style="max-width:300px; max-height: 300px;">
@@ -33,6 +34,7 @@
                         </div>
                     @endif
                 @else
+                    <!-- muestra imagen -->
                     <img src="{{ $lstimg_img }}" style="max-width:300px; max-height: 300px;">
                 @endif
             </div>
@@ -69,6 +71,20 @@
                         <textarea wire:model="lstimg_explica" id="lstimg_explica" class="@error('lstimg_explica') is-invalid @enderror form-control"></textarea>
                         <div class="form-text"></div>
                         @error('lstimg_explica')<error>{{ $message }}</error>@enderror
+                    </div>
+
+                    <!-- Activar / Desactivar-->
+                    <div class="col-6 col-md-2 my-1 form-group">
+                        {{-- <label for="lstimg_act" class="form-label">Activo<red></red></label> --}}
+                        <div class="form-check">
+                            <input wire:model="lstimg_act" id="lstimg_act" value="lstimg_act" class="@error('NvoJugador') is-invalid @enderror form-check-input" @if($lstimg_act=='1') checked @endif type="checkbox">
+                            <label class="form-check-label" for="checkDefault"> Activo</label>
+                        </div>
+                    </div>
+
+                    <!-- Activar / Desactivar-->
+                    <div class="col-6 col-md-10 my-1 form-group" style="text-align:right;">
+                        <i class="bi bi-trash agregar" wire:click='EliminarImagen()' wire:confirm='Estas por elminar definitivamente esta imagen. ¿Seguro quieres continuar?'> Elimnar</i>
                     </div>
                 </div>
             @endif

@@ -3,6 +3,8 @@
 namespace App\Livewire\Sistema;
 
 use App\Models\lista_img;
+use App\Models\lista;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -46,9 +48,8 @@ class ModalListaEspecieImagenComponent extends Component
             $this->lstimg_autor=$dato->lstimg_autor;
             $this->lstimg_explica=$dato->lstimg_explica;
         }else{
-            $ja=lista_img::where('lstimg_lstid',$this->lstimg_lstid)->max('lstimg_orden');
+            $ja=lista_img::where('lstimg_lstid',$this->lstimg_lstid)->where('lstimg_del','0')->max('lstimg_orden');
             if(is_null($ja)){$ja='0';}
-            #dd('va el maximo:',$this->lstimg_lstid,$ja);
             $this->lstimg_orden=$ja + 1;
             $this->lstimg_act='1';
         }
@@ -61,6 +62,14 @@ class ModalListaEspecieImagenComponent extends Component
             $this->validate([
                 'lstimg_nvaImg'=>'required',
             ],['lstimg_nvaImg'=>'Se requiere una imagen']);
+            ##### En caso de que aún no exista id de lista, genera la lista
+            if($this->lstimg_lstid=='0'){
+                $nvo=lista::create([
+                    'lst_cjarsiglas'=>$this->lstimg_jardin,
+                    'lst_orden'=>lista::where('lst_cjarsiglas',$this->lstimg_jardin)->where('lst_del','0')->max('lst_orden') + 1,
+                ]);
+                $this->lstimg_lstid=$nvo->lst_id;
+            }
         }else{
             $this->validate([
                 'lstimg_img'=>'required',
@@ -99,13 +108,36 @@ class ModalListaEspecieImagenComponent extends Component
         $this->CerrarModalDeListaImagen();
     }
 
+    public function EliminarImagen(){
+        ##### obtiene nombre y borra en BD
+        $nombre=lista_img::where('lstimg_id',$this->lstimg_imgid)->first();
+        lista_img::where('lstimg_id',$this->lstimg_imgid)->update(['lstimg_del'=>'1']);
+        ##### Borra fisicamente
+        $arch="/public".$nombre->lstimg_img;
+        if(Storage::exists($arch)){
+            Storage::delete($arch);
+        }
+        ##### CierraModal
+        $this->CerrarModalDeListaImagen();
+    }
+
     public function LimpiarModal(){
         $this->resetValidation();
         $this->resetErrorBag();
         $this->reset(['lstimg_nvaImg','lstimg_nvaImg', 'lstimg_img', 'lstimg_orden', 'lstimg_titulo', 'lstimg_autor', 'lstimg_explica']);
     }
 
+    public function ActualizarDatosEnModalDeListaEspecie(){
+        $img= lista_img::where('lstimg_lstid',$this->lstimg_imgid)
+            ->where('lstimg_del','0')
+            ->orderBy('lstimg_orden')
+            ->get();
+        $NvoId=$this->lstimg_lstid;
+        $this->dispatch('VariableDesdeImagen',dato:$img, dato2:$NvoId);
+    }
+
     public function CerrarModalDeListaImagen(){
+        $this->ActualizarDatosEnModalDeListaEspecie();
         $this->LimpiarModal();
         $this->dispatch('CierraModalDeListaImagen',reload:0);
     }

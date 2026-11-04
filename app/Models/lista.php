@@ -22,7 +22,7 @@ class lista extends Model
         'lst_edo',
         'lst_orden',
 
-        'lst_img',
+        // 'lst_img',
         'lst_url',
         'lst_notas',
     ];
@@ -40,7 +40,7 @@ class lista extends Model
 
     public function imagenes():HasMany {
         return $this->HasMany(lista_img::class,'lstimg_lstid','lst_id')
-            ->where('lstimg_act','1')
+            // ->where('lstimg_act','1')
             ->where('lstimg_del','0');
     }
 }
