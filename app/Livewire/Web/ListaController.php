@@ -12,6 +12,7 @@ class ListaController extends Component
 
     public $edit;
     public $url;
+    public $tipoVer;
 
 
     #[Layout('plantillas.baseJardin')]
@@ -24,7 +25,6 @@ class ListaController extends Component
             ->with('lenguas')
             ->first();
 
-
         if($this->url == null){
             redirect('/error La url que ingresaste es incorrecta');
             return;
@@ -35,6 +35,7 @@ class ListaController extends Component
         if($this->url->urlj_bannerimg==''){
             $this->url->urlj_bannerimg=$default;
         }
+        $this->tipoVer='cuadro';
 
     }
 
@@ -70,6 +71,17 @@ class ListaController extends Component
             lista::where('lst_id',$orden)
                 ->update(['lst_orden'=>$n]);
         }
+    }
+
+    ##########################################################
+    ################## Modal externo Yo tengo algo que aportar
+    public function AbrirModalYoTengoAlgoQueAportar($id){
+        ##### <livewire:web.modal-cedula-yo-tengo-que-aportar />
+        $dato=[
+            'urlId'=>$id,
+            'tipoGeneral'=>'lista',
+        ];
+        $this->dispatch('AbreModalYoTengoQueAportar',$dato);
     }
 
     public function render(){

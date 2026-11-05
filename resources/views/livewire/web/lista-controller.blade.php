@@ -34,214 +34,113 @@
             {{ $url->urlj_cjarsiglas }}     aún no genera su  listado.
         </div>
     @else
-        <!-- -------------------------------------------------------------------- -->
-        <!-- ------------------ INICIA NUEVO DISERÑO ---------------------------- -->
-        <div class="row">
-            @foreach ($lista  as $l)
-                <div class="col-md-5 col-12 m-2" style="@if($l->lst_act=='1')background-color:#CDC6B9; border:1px solid #202d2d; @else border:1px solid black;color:gray; @endif border-radius:15px;">
+        @if($tipoVer=='cuadro')
+            <!-- -------------------------------------------------------------------- -->
+            <!-- ------------------ INICIA ELEMENTO DE LISTA ------------------------ -->
+            <div class="row">
+                @foreach ($lista  as $l)
+                    <div class="col-md-5 col-12 m-2" style="@if($l->lst_act=='1')background-color:#CDC6B9; border:1px solid #202d2d; @else border:1px solid black;color:gray; @endif border-radius:15px;">
 
-                    <!-- NOMBRES -->
-                    <div class=""  style="">
-                        @foreach ($l->nombres as $n)
-                            <div class="@if($l->nombres->count() > 1)elemento2 @endif" style="font-weight:900; font-size: 120%;text-align:center; vertical-align:bottom;">
-                                {!!   $n->lstn_name !!}
-                                <!-- audio titulo -->
-                                @if($n->lstn_audio != '' )
-                                    <audio id="SpAudio{{ $n->lstn_id }}Tit" style="display:inline-block;">
-                                        <source src="{{ $n->lstn_audio }}" type="audio/ogg" /> El navegador no soporta el audio
-                                    </audio>
-                                    <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Tit" onclick="playAudio('{{ $n->lstn_id }}Tit')" style="vertical-align:bottom;"></i>
-                                    <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Tit" onclick="pauseAudio('{{ $n->lstn_id }}Tit')"></i>
-                                @endif
-                                <sub style="color: #87796d;" title="{{ $n->lstn_lengua }}">{{ $n->lstn_lencode }}</sub>
-
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <!-- IMÁGEN -->
-                    <div class="m-2" style="">
-                        <center>
-                            @if($l->imagenes->where('lstimg_act','1')->count() > 0)
-                                {{--
-                                @foreach ($l->imagenes->where('lstimg_act','1') as $i)
-                                    <a href="{{ $i->lstimg_img }}" target="_blank">
-                                        <img src="{{ $i->lstimg_img }}" style="max-width:100%; max-height: 200px;border-radius:5px;">
-                                    </a>
-                                @endforeach
-                                --}}
-
-
-                                <!-- -------------------------Inicia carrusel de img---------------------------- -->
-                                <div id="miCarrusel" class="carousel slide" data-bs-ride="carousel">
-                                    <!-- Indicadores (opcional) -->
-                                    {{--
-                                    <div class="carousel-indicators">
-                                        @foreach($l->imagenes->chunk(1) as $index => $chunk)
-                                            <button type="button"
-                                                    data-bs-target="#miCarrusel"
-                                                    data-bs-slide-to="{{ $index }}"
-                                                    class="{{ $index == 0 ? 'active' : '' }}"
-                                                    aria-current="{{ $index == 0 ? 'true' : 'false' }}">
-                                            </button>
-                                        @endforeach
-                                    </div>
-                                    --}}
-
-                                    <!-- Contenedor de las diapositivas -->
-                                    <div class="carousel-inner">
-                                        @foreach($l->imagenes->chunk(1) as $index => $chunk)
-                                            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                                <div class="row">
-                                                    @foreach($chunk as $img)
-                                                        <a href="{{ $img->lstimg_img }}" target="_blank">
-                                                            <img src="{{ $img->lstimg_img }}" style="max-width:100%; max-height: 200px;border-radius:5px; @if($l->lst_act=='0') opacity:0.4; @endif">
-                                                        </a>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-
-                                    <!-- Botones de siguiente y anterior -->
-                                    @if($l->imagenes->where('lstimg_act','1')->count() > 1)
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#miCarrusel" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Anterior</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#miCarrusel" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Siguiente</span>
-                                        </button>
-                                    @endif
-                                </div>
-                                <!-- -------------------------Termina carrusel de img---------------------------- -->
-
-                            @else
-                                <img src="/imagenes/icono-hoja.png" style="height:200px; ">
-                            @endif
-                        </center>
-
-                    </div>
-
-                    <!-- NOMBRE CIENTÍFICO -->
-                    <div class="" style="">
-                        @foreach ($l->nombrescient as $sp)
-                            <div class="@if($l->nombrescient->count() > '1')elemento2 @endif" style="@if($l->lst_act=='0') color:gray; @endif font-weight:700; font-size:110%;text-align:center;">
-                                <i title="Familia {{ $sp->lstsc_familia }}">{{   $sp->lstsc_scname }}</i>
-                            </div>
-                        @endforeach
-                        <i>{{ $l->lst_scname }}</i>
-                    </div>
-
-                    <!-- EXPLICACIÓN -->
-                    <div class="my-2" style="font-family:'Roboto Condensed', sans-serif; @if($l->lst_act=='0') color:gray; @endif">
-                        {{ $l->lst_notas }}
-                    </div>
-
-                    <!-- ACCIONES -->
-                    <div class="" style="">
-                        @if($edit=='1')
-                            <!-- Editar -->
-                            <i class="bi bi-pencil-square mx-1" style="cursor: pointer;" title="Editar" wire:click="AbrirModalDeListaEspecie({{ $l->lst_id }})"></i>
-
-                            <!-- Ocultar -->
-                            @if($l->lst_act == '0')
-                                <i class="bi bi-eye mx-1" style="cursor: pointer;" title="Mostrar" wire:click="ActivarInactivar({{ $l->lst_id }})"></i>
-                            @else
-                                <i class="bi bi-eye-slash mx-1" style="cursor: pointer;" title="Ocultar" wire:click="ActivarInactivar({{ $l->lst_id }})"></i>
-                            @endif
-
-                            <!-- Eliminar -->
-                            <i class="bi bi-trash mx-1" style="cursor: pointer;" title="Eliminar" wire:click="Eliminar({{ $l->lst_id }})" wire:confirm='Vas a eliminar este registro de la lista. ¿Quieres continuar?'></i>
-                        @endif
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-
-        <!-- -------------------------------------------------------------------- -->
-        <!-- ------------------ INICIA LA TABLA --------------------------------- -->
-        {{-- @php $num='1'; @endphp
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th> <!-- img --> </th>
-                    <th> <!-- url --> </th>
-                    <th>Nombre(s)</th>
-                    <th>Nombre científico</th>
-                    <th> <!-- notas --> </th>
-                    <th> <!-- acciones --> </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($lista as $l)
-                    <tr class="@if($l->lst_act == '0') inact @endif" >
-                        <!-- número orden  -->
-                        <td>
-                            @if($edit=='1') {{ $l->lst_orden }} @else {{ $num++ }} @endif
-                        </td>
-
-                        <!-- imagen -->
-                        <td>
-                            <center>
-                                @if($l->lst_img != '')
-                                    <a href="{{ $l->lst_img }}" target="_blank">
-                                        <img src="{{ $l->lst_img }}" style="max-width:70px; max-height:90px;">
-                                    </a>
-                                @else
-                                    <img src="/imagenes/icono-hoja.png" style="max-width:50px; max-height:70px;">
-                                @endif
-                            </center>
-                        </td>
-
-                        <td>
-                            @if($l->lst_url != '')
-                                <a href="{{ $l->lst_url }}" target="new">
-                                    <i class="bi bi-arrow-up-right-circle-fill" style="font-size: 150%;color:#87796d"></i>
-                                </a>
-                            @endif
-                        </td>
-
-                        <!-- Nombre(s) -->
-                        <td>
+                        <!-- NOMBRES -->
+                        <div class=""  style="">
                             @foreach ($l->nombres as $n)
-                                <div class="@if($l->nombres->count() > 1)elemento @endif">
+                                <div class="@if($l->nombres->count() > 1)elemento2 @endif" style="font-weight:900; font-size: 120%;text-align:center; vertical-align:bottom;">
+                                    <!-- nombre -->
                                     {!!   $n->lstn_name !!}
-
-                                    <!-- audio titulo -->
+                                    <!-- audio -->
                                     @if($n->lstn_audio != '' )
                                         <audio id="SpAudio{{ $n->lstn_id }}Tit" style="display:inline-block;">
                                             <source src="{{ $n->lstn_audio }}" type="audio/ogg" /> El navegador no soporta el audio
                                         </audio>
-                                        <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Tit" onclick="playAudio('{{ $n->lstn_id }}Tit')"></i>
+                                        <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Tit" onclick="playAudio('{{ $n->lstn_id }}Tit')" style="vertical-align:bottom;"></i>
                                         <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Tit" onclick="pauseAudio('{{ $n->lstn_id }}Tit')"></i>
                                     @endif
+                                    <!-- lengua -->
+                                    <sub class="PaClick" style="color: #87796d;" title="{{ $n->lstn_lengua }}" data-toggle="tooltip" >
+                                        {{ $n->lstn_lencode }}
+                                    </sub>
 
-                                    <sub style="color: #CD7B34;" title="{{ $n->lstn_lengua }}">{{ $n->lstn_lencode }}</sub>
                                 </div>
                             @endforeach
-                        </td>
+                        </div>
 
-                        <!-- Nombre científico -->
-                        <td>
+                        <!-- IMÁGEN -->
+                        <div class="m-2" style="">
+                            <center>
+                                @if($l->imagenes->where('lstimg_act','1')->count() > 0)
+                                    <!-- -------------------------Inicia carrusel de img---------------------------- -->
+                                    <div id="miCarrusel" class="carousel slide" data-bs-ride="carousel">
+                                        <!-- Indicadores (opcional) -->
+                                        {{--
+                                        <div class="carousel-indicators">
+                                            @foreach($l->imagenes->chunk(1) as $index => $chunk)
+                                                <button type="button"
+                                                        data-bs-target="#miCarrusel"
+                                                        data-bs-slide-to="{{ $index }}"
+                                                        class="{{ $index == 0 ? 'active' : '' }}"
+                                                        aria-current="{{ $index == 0 ? 'true' : 'false' }}">
+                                                </button>
+                                            @endforeach
+                                        </div>
+                                        --}}
+
+                                        <!-- Contenedor de las diapositivas -->
+                                        <div class="carousel-inner">
+                                            @foreach($l->imagenes->chunk(1) as $index => $chunk)
+                                                <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                                                    <div class="row">
+                                                        @foreach($chunk as $img)
+                                                            <a href="{{ $img->lstimg_img }}" target="_blank">
+                                                                <img src="{{ $img->lstimg_img }}" style="max-width:100%; max-height: 200px;border-radius:5px; @if($l->lst_act=='0') opacity:0.4; @endif">
+                                                            </a>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+
+                                        <!-- Botones de siguiente y anterior -->
+                                        @if($l->imagenes->where('lstimg_act','1')->count() > 1)
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#miCarrusel" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Anterior</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#miCarrusel" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Siguiente</span>
+                                            </button>
+                                        @endif
+                                    </div>
+                                    <!-- -------------------------Termina carrusel de img---------------------------- -->
+                                @else
+                                    <img src="/imagenes/icono-hoja.png" style="height:200px; ">
+                                @endif
+                            </center>
+
+                        </div>
+
+                        <!-- NOMBRE CIENTÍFICO -->
+                        <div class="" style="">
                             @foreach ($l->nombrescient as $sp)
-                                <div class="@if($l->nombrescient->count() > 1)elemento @endif">
+                                <div class="@if($l->nombrescient->count() > '1')elemento2 @endif" style="@if($l->lst_act=='0') color:gray; @endif font-weight:700; font-size:110%;text-align:center;">
                                     <i title="Familia {{ $sp->lstsc_familia }}">{{   $sp->lstsc_scname }}</i>
                                 </div>
                             @endforeach
                             <i>{{ $l->lst_scname }}</i>
-                        </td>
+                        </div>
 
-
-                        <!-- Razón de incorporación -->
-                        <td>
+                        <!-- EXPLICACIÓN -->
+                        <div class="my-2" style="font-family:'Roboto Condensed', sans-serif; @if($l->lst_act=='0') color:gray; @endif">
                             {{ $l->lst_notas }}
-                        </td>
+                        </div>
 
-                        <td style="text-align: right;">
+                        <!-- Yo tengo algo que aportar -->
+                        <div wire:click="AbrirModalYoTengoAlgoQueAportar('{{ $l->lst_id }}')" style="margin-left:20px; float: right;" >
+                            <img src="/imagenes/BotonAportar.png" class="PaClick my-2" style="height:40px;border:2px solid rgb(61, 41, 33);border-radius:15px; opacity: 0.6;">
+                        </div>
+
+                        <!-- ACCIONES -->
+                        <div class="" style="">
                             @if($edit=='1')
                                 <!-- Editar -->
                                 <i class="bi bi-pencil-square mx-1" style="cursor: pointer;" title="Editar" wire:click="AbrirModalDeListaEspecie({{ $l->lst_id }})"></i>
@@ -256,11 +155,113 @@
                                 <!-- Eliminar -->
                                 <i class="bi bi-trash mx-1" style="cursor: pointer;" title="Eliminar" wire:click="Eliminar({{ $l->lst_id }})" wire:confirm='Vas a eliminar este registro de la lista. ¿Quieres continuar?'></i>
                             @endif
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                 @endforeach
-            </tbody>
-        </table> --}}
+            </div>
+
+        @elseif($tipoVer=='tabla')
+            <!-- -------------------------------------------------------------------- -->
+            <!-- ------------------ INICIA LA TABLA --------------------------------- -->
+            @php $num='1'; @endphp
+            <table class="table table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th> <!-- img --> </th>
+                        <th> <!-- url --> </th>
+                        <th>Nombre(s)</th>
+                        <th>Nombre científico</th>
+                        <th> <!-- notas --> </th>
+                        <th> <!-- acciones --> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($lista as $l)
+                        <tr class="@if($l->lst_act == '0') inact @endif" >
+                            <!-- número orden  -->
+                            <td>
+                                @if($edit=='1') {{ $l->lst_orden }} @else {{ $num++ }} @endif
+                            </td>
+
+                            <!-- imagen -->
+                            <td>
+                                <center>
+                                    @if($l->lst_img != '')
+                                        <a href="{{ $l->lst_img }}" target="_blank">
+                                            <img src="{{ $l->lst_img }}" style="max-width:70px; max-height:90px;">
+                                        </a>
+                                    @else
+                                        <img src="/imagenes/icono-hoja.png" style="max-width:50px; max-height:70px;">
+                                    @endif
+                                </center>
+                            </td>
+
+                            <td>
+                                @if($l->lst_url != '')
+                                    <a href="{{ $l->lst_url }}" target="new">
+                                        <i class="bi bi-arrow-up-right-circle-fill" style="font-size: 150%;color:#87796d"></i>
+                                    </a>
+                                @endif
+                            </td>
+
+                            <!-- Nombre(s) -->
+                            <td>
+                                @foreach ($l->nombres as $n)
+                                    <div class="@if($l->nombres->count() > 1)elemento @endif">
+                                        {!!   $n->lstn_name !!}
+
+                                        <!-- audio titulo -->
+                                        @if($n->lstn_audio != '' )
+                                            <audio id="SpAudio{{ $n->lstn_id }}Tit" style="display:inline-block;">
+                                                <source src="{{ $n->lstn_audio }}" type="audio/ogg" /> El navegador no soporta el audio
+                                            </audio>
+                                            <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Tit" onclick="playAudio('{{ $n->lstn_id }}Tit')"></i>
+                                            <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Tit" onclick="pauseAudio('{{ $n->lstn_id }}Tit')"></i>
+                                        @endif
+
+                                        <sub style="color: #CD7B34;" title="{{ $n->lstn_lengua }}">{{ $n->lstn_lencode }}</sub>
+                                    </div>
+                                @endforeach
+                            </td>
+
+                            <!-- Nombre científico -->
+                            <td>
+                                @foreach ($l->nombrescient as $sp)
+                                    <div class="@if($l->nombrescient->count() > 1)elemento @endif">
+                                        <i title="Familia {{ $sp->lstsc_familia }}">{{   $sp->lstsc_scname }}</i>
+                                    </div>
+                                @endforeach
+                                <i>{{ $l->lst_scname }}</i>
+                            </td>
+
+
+                            <!-- Razón de incorporación -->
+                            <td>
+                                {{ $l->lst_notas }}
+                            </td>
+
+                            <td style="text-align: right;">
+                                @if($edit=='1')
+                                    <!-- Editar -->
+                                    <i class="bi bi-pencil-square mx-1" style="cursor: pointer;" title="Editar" wire:click="AbrirModalDeListaEspecie({{ $l->lst_id }})"></i>
+
+                                    <!-- Ocultar -->
+                                    @if($l->lst_act == '0')
+                                        <i class="bi bi-eye mx-1" style="cursor: pointer;" title="Mostrar" wire:click="ActivarInactivar({{ $l->lst_id }})"></i>
+                                    @else
+                                        <i class="bi bi-eye-slash mx-1" style="cursor: pointer;" title="Ocultar" wire:click="ActivarInactivar({{ $l->lst_id }})"></i>
+                                    @endif
+
+                                    <!-- Eliminar -->
+                                    <i class="bi bi-trash mx-1" style="cursor: pointer;" title="Eliminar" wire:click="Eliminar({{ $l->lst_id }})" wire:confirm='Vas a eliminar este registro de la lista. ¿Quieres continuar?'></i>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
     @endif
 
 
@@ -273,6 +274,11 @@
     @endif
 
     <livewire:sistema.modal-lista-especie-component />
+    <livewire:web.modal-cedula-yo-tengo-que-aportar />
 
-
+    <script >
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 </div>

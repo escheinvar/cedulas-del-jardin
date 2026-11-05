@@ -5,8 +5,11 @@ namespace App\Livewire\Web;
 use App\Models\CatEntidadesInegiModel;
 use App\Models\CatMunicipiosInegiModel;
 use App\Models\ced_aporteusrs;
-use App\Models\cedulas_url;
 use App\Models\ced_autores;
+use App\Models\cedulas_url;
+use App\Models\lista;
+use App\Models\lista_nombres;
+use App\Models\UserRolesModel;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -18,7 +21,10 @@ class ModalCedulaYoTengoQueAportar extends Component
     ##### Este modal, requiere se ejecute esta función
     ##### desde el controlador disparador:
     public function AbrirModalYoTengoAlgoQueAportar(){
-        $dato=url_id;
+        $dato=[
+            url_id=>'',  ### url_id (if cedula), lst_id (if lista)
+            'tipoGeneral'=>'cedula',  ##'cedula','lista'
+        ];
         $this->dispatch('AbreModalYoTengoQueAportar',dato:$dato);
     }
     #################################################*/
@@ -27,12 +33,14 @@ class ModalCedulaYoTengoQueAportar extends Component
     ###### variables:
     public $msg_nombre, $msg_alias, $msg_estado, $msg_mpio, $msg_comunidad;
     public $msg_lengua, $msg_edad, $msg_correo, $msg_tel, $msg_txt;
+    public $msg_TipoGeneral; #### Determina módulo que invoca al modl : 'cedula', 'lista'
 
 
 
     #[On('AbreModalYoTengoQueAportar')]
     public function montaModal($dato) {
         $this->url_id=$dato['urlId'];
+        $this->msg_TipoGeneral=$dato['tipoGeneral'];
         $this->BorrarModal();
     }
 
@@ -52,62 +60,121 @@ class ModalCedulaYoTengoQueAportar extends Component
     }
 
     public function GuardarNuevoMensaje(){
-        ###### valida
+        ###### valida datos
         $this->validate([
             'msg_alias'=>'required',
-            'msg_estado'=>'required',
-            'msg_mpio'=>'required',
-            'msg_comunidad'=>'required',
-            'msg_lengua'=>'required',
+            // 'msg_estado'=>'required',
+            // 'msg_mpio'=>'required',
+            // 'msg_comunidad'=>'required',
+            // 'msg_lengua'=>'required',
             'msg_txt'=>'required|string|min:10',
         ]);
-        ###### Genera set de datos
-        $ced=cedulas_url::where('url_id',$this->url_id)->first();
+
+        ##### Deteta tipo de usuario
         if(Auth::user()){$usr=Auth::user()->id;}else{$usr=null;}
-        $dato=[
-            'msg_edo'=>'0',
-            'msg_cjarsiglas'=>$ced->url_cjarsiglas,
-            'msg_urlid'=>$ced->url_id,
-            'msg_url'=>$ced->url_url,
-            'msg_urltxt'=>$ced->url_urltxt,
-            'msg_nombre'=>$this->msg_nombre,
-            'msg_usuario'=>$this->msg_alias,
-            'msg_estado'=>$this->msg_estado,
-            'msg_mpio'=>$this->msg_mpio,
-            'msg_comunidad'=>$this->msg_comunidad,
-            'msg_lengua'=>$this->msg_lengua,
-            'msg_edad'=>$this->msg_edad,
-            'msg_correo'=>$this->msg_correo,
-            'msg_tel'=>$this->msg_tel,
-            'msg_mensaje'=>$this->msg_txt,
-            'msg_mensajeoriginal'=>$this->msg_txt,
-            'msg_usr'=>$usr,
-            'msg_date'=>date('Y-m-d'),
-        ];
 
-        ##### Guarda en BD
-        $nvo=ced_aporteusrs::create($dato);
+        ###### Genera set de datos según módulo de origen Cédula
+        if($this->msg_TipoGeneral=='cedula'){
+            $ced=cedulas_url::where('url_id',$this->url_id)->first();
+            $dato=[
+                'msg_tipo'=>'cedula',
+                'msg_cjarsiglas'=>$ced->url_cjarsiglas,
+                'msg_urlid'=>$ced->url_id,
+                'msg_url'=>$ced->url_url,
+                'msg_urltxt'=>$ced->url_urltxt,
 
-        ###### Guarda log
-        paLog('Usuario envía msj','ced_aporteusrs',$nvo->id);
+                'msg_edo'=>'0   ',
+                'msg_nombre'=>$this->msg_nombre,
+                'msg_usuario'=>$this->msg_alias,
+                'msg_estado'=>$this->msg_estado,
+                'msg_mpio'=>$this->msg_mpio,
+                'msg_comunidad'=>$this->msg_comunidad,
+                'msg_lengua'=>$this->msg_lengua,
+                'msg_edad'=>$this->msg_edad,
+                'msg_correo'=>$this->msg_correo,
+                'msg_tel'=>$this->msg_tel,
+                'msg_mensaje'=>$this->msg_txt,
+                'msg_mensajeoriginal'=>$this->msg_txt,
+                'msg_usr'=>$usr,
+                'msg_date'=>date('Y-m-d'),
+            ];
+            ##### Guarda en BD
+            $nvo=ced_aporteusrs::create($dato);
 
-        ###### Construye variables para envíar mensaje a buzón
-        $asunto="Aportación de visitante a una cédula";
-        $msj="Un visitante (".$this->msg_nombre." ".$this->msg_alias." de ".$this->msg_mpio.", ".$this->msg_estado.
-            ") realizó una aportación a la cédula ".$ced->url_url.
-            " del jardín ".$ced->url_cjarsiglas." el día ".date('d')." del mes ".date('m')." de ".date('Y').
-            ".<br>".
-            "El mensaje es el siguiente:<br><br> <b>&quot;".$this->msg_txt."&quot;</b><br><br>".
-            " Sin embargo, este mensaje no se va a mostrar al público hasta ser revisado y aprobado por el editor de la cédula.";
+            ###### Guarda log
+            paLog('Usuario envía msj cedula','ced_aporteusrs',$nvo->id);
 
-        $para=ced_autores::where('aut_urlid',$ced->url_id)
-            ->where('aut_act','1')
-            ->where('aut_del','0')
-            ->leftJoin('cat_autores','aut_cautid','caut_id')
-            ->where('caut_usrid','>','0')
-            ->pluck('caut_usrid')
-            ->toArray();
-        $para=array_unique($para);
+            ###### Construye variables para envíar mensaje a buzón para cédulas
+            $asunto="Aportación de visitante a una cédula";
+            $msj="Un visitante (".$this->msg_nombre." ".$this->msg_alias." de ".$this->msg_mpio.", ".$this->msg_estado.
+                ") realizó una aportación a la cédula ".$ced->url_url.
+                " del jardín ".$ced->url_cjarsiglas." el día ".date('d')." del mes ".date('m')." de ".date('Y').
+                ".<br>".
+                "El mensaje es el siguiente:<br><br> <b>&quot;".$this->msg_txt."&quot;</b><br><br>".
+                " Sin embargo, este mensaje no se va a mostrar al público hasta ser revisado y aprobado por el editor de la cédula.";
+
+                $para=ced_autores::where('aut_urlid',$ced->url_id)
+                    ->where('aut_act','1')
+                    ->where('aut_del','0')
+                    ->leftJoin('cat_autores','aut_cautid','caut_id')
+                    ->where('caut_usrid','>','0')
+                    ->pluck('caut_usrid')
+                    ->toArray();
+                $para=array_unique($para);
+
+
+        ###### Genera set de datos según módulo de origen Lista
+        }elseif($this->msg_TipoGeneral=='lista'){
+            $lis=lista::where('lst_id',$this->url_id)->with('nombres')->first();
+            #dd($lis, $lis->lst_cjarsiglas, );
+            $dato=[
+                'msg_tipo'=>'lista',
+                'msg_cjarsiglas'=> $lis->lst_cjarsiglas,
+                'msg_urlid'=>$this->url_id,
+                'msg_url'=>$lis->nombres->first()->lstn_name,
+                'msg_urltxt'=>$lis->nombres->first()->lstn_name,
+
+                'msg_edo'=>'0   ',
+                'msg_nombre'=>$this->msg_nombre,
+                'msg_usuario'=>$this->msg_alias,
+                'msg_estado'=>$this->msg_estado,
+                'msg_mpio'=>$this->msg_mpio,
+                'msg_comunidad'=>$this->msg_comunidad,
+                'msg_lengua'=>$this->msg_lengua,
+                'msg_edad'=>$this->msg_edad,
+                'msg_correo'=>$this->msg_correo,
+                'msg_tel'=>$this->msg_tel,
+                'msg_mensaje'=>$this->msg_txt,
+                'msg_mensajeoriginal'=>$this->msg_txt,
+                'msg_usr'=>$usr,
+                'msg_date'=>date('Y-m-d'),
+            ];
+
+            ##### Guarda en BD
+            $nvo=ced_aporteusrs::create($dato);
+
+            ###### Guarda log
+            paLog('Usuario envía msj lista','ced_aporteusrs',$nvo->id);
+
+            ###### Construye variables para envíar mensaje a buzón para listas
+            $asunto="Aportación pública a un listado";
+            $msj="Un visitante (".$this->msg_nombre." ".$this->msg_alias." de ".$this->msg_mpio.", ".$this->msg_estado.
+                ") realizó una aportación al elemento ".$lis->nombres->first()->lstn_name.
+                " de la lista del jardín ".$lis->lst_cjarsiglas." el día ".date('d')." del mes ".date('m')." de ".date('Y').
+                ".<br>".
+                "El mensaje es el siguiente:<br><br> <b>&quot;".$this->msg_txt."&quot;</b><br><br>";
+
+            $para=UserRolesModel::where('rol_crolrol','admin')
+                ->where(function($q)use ($lis){
+                    return $q
+                    ->where('rol_cjarsiglas','todos')
+                    ->orWhere('rol_cjarsiglas',$lis->url_cjarsiglas);
+                })
+                ->pluck('rol_usrid')
+                ->toArray();
+            $para=array_unique($para);
+        }
+
 
         ##### Envía mensaje
         foreach($para as $p){

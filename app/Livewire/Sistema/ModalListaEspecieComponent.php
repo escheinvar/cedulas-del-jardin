@@ -127,18 +127,18 @@ class ModalListaEspecieComponent extends Component
         $this->listasp_nuevoAudio='';
     }
 
-    public function SubirNuevoAudio($id){
-        #dd($this->listasp_nuevoAudio2);
-        $datos=lista_nombres::where('lstn_id',$id)->first();
-        #dd($id, $datos);
-        $nombreAudio=$this->listasp_jardin.'-'.$datos->lstn_lstid."_".
-                str_replace(' ','',ucwords($datos->lstn_name)).'_'.
-                $datos->lstn_lencode.'.'.
-                $this->listasp_nuevoAudio2->getClientOriginalExtension();
+    // public function SubirNuevoAudio($id){
+    //     #dd($this->listasp_nuevoAudio2);
+    //     $datos=lista_nombres::where('lstn_id',$id)->first();
+    //     #dd($id, $datos);
+    //     $nombreAudio=$this->listasp_jardin.'-'.$datos->lstn_lstid."_".
+    //             str_replace(' ','',ucwords($datos->lstn_name)).'_'.
+    //             $datos->lstn_lencode.'.'.
+    //             $this->listasp_nuevoAudio2->getClientOriginalExtension();
 
-        $this->listasp_nuevoAudio2->storeAs('public/listas',$nombreAudio);
-        $datos['lstn_audio']='/listas/'.$nombreAudio;
-    }
+    //     $this->listasp_nuevoAudio2->storeAs('public/listas',$nombreAudio);
+    //     $datos['lstn_audio']='/listas/'.$nombreAudio;
+    // }
 
     public function AgregrarNuevoNombre(){
         ##### Valida
@@ -167,7 +167,7 @@ class ModalListaEspecieComponent extends Component
                 $this->listasp_nuevaLengua.'.'.
                 $this->listasp_nuevoAudio->getClientOriginalExtension();
 
-            $this->listasp_nuevoAudio->storeAs('public/listas',$nombreAudio);
+            $this->listasp_nuevoAudio->storeAs('/public/listas',$nombreAudio);
             $datos['lstn_audio']='/listas/'.$nombreAudio;
         }
         lista_nombres::create($datos);

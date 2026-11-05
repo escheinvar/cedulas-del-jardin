@@ -543,6 +543,7 @@ class CedulasController extends Component
         ##### <livewire:web.modal-cedula-yo-tengo-que-aportar />
         $dato=[
             'urlId'=>$this->url->url_id,
+            'tipoGeneral'=>'cedula', ##### Indica al modal, el origen de aportación.
         ];
         $this->dispatch('AbreModalYoTengoQueAportar',$dato);
     }

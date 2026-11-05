@@ -18,6 +18,7 @@ return new class extends Migration
                 $table->enum('msg_del',['0','1'])->default('0');
 
                 $table->integer('msg_edo')->default('0'); ##0:enviado x usr 1:pausado x admin, 2:canceladox admin, 3:publico
+                $table->enum('msg_tipo',['cedula','lista'])->default('cedula'); ### módulo de origen
                 $table->string('msg_cjarsiglas');  ##### Jardin
                 $table->integer('msg_urlid');   #### Idde cedula a la que pertenece la aportación
                 $table->string('msg_url'); ##### url de página

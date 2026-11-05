@@ -20,6 +20,7 @@ class ced_aporteusrs extends Model
         'msg_del',
 
         'msg_estado',
+        'msg_tipo',
         'msg_cjarsiglas',
         'msg_urlid',
         'msg_url',
