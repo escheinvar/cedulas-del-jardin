@@ -46,19 +46,20 @@
             @endif
         </div>
     @endif
-
+<br>
     @if($lista->count() == 0)
-
-        <div class="" style="text-align: center; padding: 50px; ">
-            {{ $url->urlj_cjarsiglas }}     aún no genera su  listado.
+        <div class="row">
+            <div class="" style="text-align: center; padding: 50px; ">
+                {{ $url->urlj_cjarsiglas }}     aún no genera su  listado.
+            </div>
         </div>
     @else
         @if($tipoVer=='cuadro')
             <!-- -------------------------------------------------------------------- -->
             <!-- ------------------ INICIA ELEMENTO DE LISTA ------------------------ -->
-            <div class="row">
+            <div class="row" style="width:100%;">
                 @foreach ($lista  as $l)
-                    <div class="col-md-5 col-12 m-2" style="@if($l->lst_act=='1')background-color:#CDC6B9; border:1px solid #202d2d; @else border:1px solid black;color:gray; @endif border-radius:15px;">
+                    <div class="col-md-5 col-sm-12 m-2" style="@if($l->lst_act=='1')background-color:#CDC6B9; border:1px solid #202d2d; @else border:1px solid black;color:gray; @endif border-radius:15px;">
                         <!-- NOMBRES -->
                         <div class=""  style="">
                             @foreach ($l->nombres as $n)
