@@ -87,13 +87,13 @@
                             <center>
                                 @if($l->imagenes->where('lstimg_act','1')->count() > 0)
                                     <!-- -------------------------Inicia carrusel de img---------------------------- -->
-                                    <div id="miCarrusel" class="carousel slide" data-bs-ride="carousel">
+                                    <div id="miCarrusel{{ $l->lst_id }}" class="carousel slide" data-bs-ride="carousel">
                                         <!-- Indicadores (opcional) -->
                                         {{--
                                         <div class="carousel-indicators">
                                             @foreach($l->imagenes->chunk(1) as $index => $chunk)
                                                 <button type="button"
-                                                        data-bs-target="#miCarrusel"
+                                                        data-bs-target="#miCarrusel{{ $l->lst_id }}"
                                                         data-bs-slide-to="{{ $index }}"
                                                         class="{{ $index == 0 ? 'active' : '' }}"
                                                         aria-current="{{ $index == 0 ? 'true' : 'false' }}">
@@ -119,11 +119,11 @@
 
                                         <!-- Botones de siguiente y anterior -->
                                         @if($l->imagenes->where('lstimg_act','1')->count() > 1)
-                                            <button class="carousel-control-prev" type="button" data-bs-target="#miCarrusel" data-bs-slide="prev">
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#miCarrusel{{ $l->lst_id }}" data-bs-slide="prev">
                                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                                 <span class="visually-hidden">Anterior</span>
                                             </button>
-                                            <button class="carousel-control-next" type="button" data-bs-target="#miCarrusel" data-bs-slide="next">
+                                            <button class="carousel-control-next" type="button" data-bs-target="#miCarrusel{{ $l->lst_id }}" data-bs-slide="next">
                                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                                 <span class="visually-hidden">Siguiente</span>
                                             </button>
@@ -148,7 +148,7 @@
                         </div>
 
                         <!-- EXPLICACIÓN -->
-                        <div id="textin" onclick="CortarOmostrarTexto()" class="my-2 multilinea cortaTresLineas" style="font-family:'Roboto Condensed', sans-serif; @if($l->lst_act=='0') color:gray; @endif">
+                        <div id="textin{{ $l->lst_id }}" onclick="CortarOmostrarTexto('{{ $l->lst_id }}')" class="my-2 multilinea cortaTresLineas" style="font-family:'Roboto Condensed', sans-serif; @if($l->lst_act=='0') color:gray; @endif">
                             {{ $l->lst_notas }}
                         </div>
 
@@ -220,7 +220,7 @@
                                 <center>
                                     @if($l->imagenes->where('lstimg_act','1')->count() > 0)
                                         <!-- -------------------------Inicia carrusel de img---------------------------- -->
-                                        <div id="miCarrusel" class="carousel slide" data-bs-ride="carousel">
+                                        <div id="miCarrusel{{ $l->lst_id }}B" class="carousel slide" data-bs-ride="carousel">
                                             <!-- Contenedor de las diapositivas -->
                                             <div class="carousel-inner">
                                                 @foreach($l->imagenes->chunk(1) as $index => $chunk)
@@ -235,7 +235,19 @@
                                                     </div>
                                                 @endforeach
                                             </div>
+                                             <!-- Botones de siguiente y anterior -->
+                                            @if($l->imagenes->where('lstimg_act','1')->count() > 1)
+                                                <button class="carousel-control-prev" type="button" data-bs-target="#miCarrusel{{ $l->lst_id }}B" data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Anterior</span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button" data-bs-target="#miCarrusel{{ $l->lst_id }}B" data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Siguiente</span>
+                                                </button>
+                                            @endif
                                         </div>
+
                                         <!-- -------------------------Termina carrusel de img---------------------------- -->
 
                                     @else
@@ -289,7 +301,7 @@
 
                             <!-- Razón de incorporación -->
                             <td>
-                                <div id="textin" onclick="CortarOmostrarTexto()" class="multilinea cortaTresLineas" style="max-width:200px;font-size:80%;">
+                                <div id="textin{{ $l->lst_id }}" onclick="CortarOmostrarTexto('{{ $l->lst_id }}')" class="multilinea cortaTresLineas" style="max-width:200px;font-size:80%;">
                                     {{ $l->lst_notas }}
                                 </div>
                             </td>
@@ -354,8 +366,9 @@
         });
 
 
-        function CortarOmostrarTexto() {
-            var element = document.getElementById("textin");
+        function CortarOmostrarTexto(id) {
+            // var identifica="textin"+id
+            var element = document.getElementById("textin"+id);
             element.classList.toggle("cortaTresLineas");
 
         }
