@@ -20,11 +20,30 @@
 <div>
     <h2>Listado del {{ $url->urlj_cjarsiglas }}</h2>
 
+    <!-- Tipo de visualización -->
+    <div style="clear:both;">
+        @if($tipoVer=='cuadro')
+            <button wire:click='CambiarModoVista()' class="btn btn-secondary bi bi-table" style="float: right;"> Ver modo tabla </button>
+        @else
+            <button wire:click='CambiarModoVista()' class="btn btn-secondary bi bi-ui-radios-grid" style="float: right;"> Ver modo cuadros </button>
+        @endif
+    </div>
+
+    {{-- <!-- Botón de edición superior --> --}}
     @if($edit=='1')
-        <div class="m-4" style="text-align:right;">
-            <button class="btn btn-sm btn-primary" wire:click="AbrirModalDeListaEspecie('0')">
-                <i class="bi bi-plus-circle"></i> Agregar
-            </button>
+        <div class="row" style="clear: both;">
+            <div class="m-4" style="text-align:right;">
+                <button class="btn btn-sm btn-primary" wire:click="AbrirModalDeListaEspecie('0')">
+                    <i class="bi bi-plus-circle"></i> Agregar
+                </button>
+            </div>
+            @if($SumCant != $SumReal)
+                <div class="m-4" style="text-align:right;">
+                    <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
+                        <i class="bi bi-plus-circle"></i> Renumerar
+                    </button>
+                </div>
+            @endif
         </div>
     @endif
 
@@ -64,7 +83,7 @@
                             @endforeach
                         </div>
 
-                        <!-- IMÁGEN -->
+                        <!-- IMAGEN -->
                         <div class="m-2" style="">
                             <center>
                                 @if($l->imagenes->where('lstimg_act','1')->count() > 0)
@@ -134,7 +153,16 @@
                             {{ $l->lst_notas }}
                         </div>
 
-                        <!-- Yo tengo algo que aportar -->
+                        <!-- Liga -->
+                        <div style="margin-left:20px; float: left;" >
+                            @if($l->lst_url != '')
+                                <a href="{{ $l->lst_url }}">
+                                    <i class="bi bi-sign-turn-slight-right" style="font-size: 250%;color:gray;"></i>
+                                </a>
+                            @endif
+                        </div>
+
+                        <!-- Aportar -->
                         <div wire:click="AbrirModalYoTengoAlgoQueAportar('{{ $l->lst_id }}')" style="margin-left:20px; float: right;" >
                             <img src="/imagenes/BotonAportar.png" class="PaClick my-2" style="height:40px;border:2px solid rgb(61, 41, 33);border-radius:15px; opacity: 0.6;">
                         </div>
@@ -142,18 +170,20 @@
                         <!-- ACCIONES -->
                         <div class="" style="">
                             @if($edit=='1')
-                                <!-- Editar -->
-                                <i class="bi bi-pencil-square mx-1" style="cursor: pointer;" title="Editar" wire:click="AbrirModalDeListaEspecie({{ $l->lst_id }})"></i>
+                                <center>
+                                    <!-- Editar -->
+                                    <i class="bi bi-pencil-square mx-1" style="cursor: pointer;" title="Editar" wire:click="AbrirModalDeListaEspecie({{ $l->lst_id }})"></i>
 
-                                <!-- Ocultar -->
-                                @if($l->lst_act == '0')
-                                    <i class="bi bi-eye mx-1" style="cursor: pointer;" title="Mostrar" wire:click="ActivarInactivar({{ $l->lst_id }})"></i>
-                                @else
-                                    <i class="bi bi-eye-slash mx-1" style="cursor: pointer;" title="Ocultar" wire:click="ActivarInactivar({{ $l->lst_id }})"></i>
-                                @endif
+                                    <!-- Ocultar -->
+                                    @if($l->lst_act == '0')
+                                        <i class="bi bi-eye mx-1" style="cursor: pointer;" title="Mostrar" wire:click="ActivarInactivar({{ $l->lst_id }})"></i>
+                                    @else
+                                        <i class="bi bi-eye-slash mx-1" style="cursor: pointer;" title="Ocultar" wire:click="ActivarInactivar({{ $l->lst_id }})"></i>
+                                    @endif
 
-                                <!-- Eliminar -->
-                                <i class="bi bi-trash mx-1" style="cursor: pointer;" title="Eliminar" wire:click="Eliminar({{ $l->lst_id }})" wire:confirm='Vas a eliminar este registro de la lista. ¿Quieres continuar?'></i>
+                                    <!-- Eliminar -->
+                                    <i class="bi bi-trash mx-1" style="cursor: pointer;" title="Eliminar" wire:click="Eliminar({{ $l->lst_id }})" wire:confirm='Vas a eliminar este registro de la lista. ¿Quieres continuar?'></i>
+                                </center>
                             @endif
                         </div>
                     </div>
@@ -173,6 +203,7 @@
                         <th>Nombre(s)</th>
                         <th>Nombre científico</th>
                         <th> <!-- notas --> </th>
+                        <th> <!-- aportar --> </th>
                         <th> <!-- acciones --> </th>
                     </tr>
                 </thead>
@@ -187,21 +218,38 @@
                             <!-- imagen -->
                             <td>
                                 <center>
-                                    @if($l->lst_img != '')
-                                        <a href="{{ $l->lst_img }}" target="_blank">
-                                            <img src="{{ $l->lst_img }}" style="max-width:70px; max-height:90px;">
-                                        </a>
+                                    @if($l->imagenes->where('lstimg_act','1')->count() > 0)
+                                        <!-- -------------------------Inicia carrusel de img---------------------------- -->
+                                        <div id="miCarrusel" class="carousel slide" data-bs-ride="carousel">
+                                            <!-- Contenedor de las diapositivas -->
+                                            <div class="carousel-inner">
+                                                @foreach($l->imagenes->chunk(1) as $index => $chunk)
+                                                    <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                                                        <div class="row">
+                                                            @foreach($chunk as $img)
+                                                                <a href="{{ $img->lstimg_img }}" target="_blank">
+                                                                    <img src="{{ $img->lstimg_img }}" style="max-width:70px; max-height: 90px;border-radius:5px; @if($l->lst_act=='0') opacity:0.4; @endif">
+                                                                </a>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <!-- -------------------------Termina carrusel de img---------------------------- -->
+
                                     @else
                                         <img src="/imagenes/icono-hoja.png" style="max-width:50px; max-height:70px;">
                                     @endif
                                 </center>
                             </td>
 
+                            <!-- URL -->
                             <td>
                                 @if($l->lst_url != '')
-                                    <a href="{{ $l->lst_url }}" target="new">
-                                        <i class="bi bi-arrow-up-right-circle-fill" style="font-size: 150%;color:#87796d"></i>
-                                    </a>
+                                    <a href="{{ $l->lst_url }}">
+                                    <i class="bi bi-sign-turn-slight-right" style="font-size: 250%;color:gray;"></i>
+                                </a>
                                 @endif
                             </td>
 
@@ -209,6 +257,7 @@
                             <td>
                                 @foreach ($l->nombres as $n)
                                     <div class="@if($l->nombres->count() > 1)elemento @endif">
+                                        <!-- nombre -->
                                         {!!   $n->lstn_name !!}
 
                                         <!-- audio titulo -->
@@ -219,8 +268,10 @@
                                             <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Tit" onclick="playAudio('{{ $n->lstn_id }}Tit')"></i>
                                             <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Tit" onclick="pauseAudio('{{ $n->lstn_id }}Tit')"></i>
                                         @endif
-
-                                        <sub style="color: #CD7B34;" title="{{ $n->lstn_lengua }}">{{ $n->lstn_lencode }}</sub>
+                                        <!-- lengua -->
+                                        <sub class="PaClick" style="color: #87796d;" title="{{ $n->lstn_lengua }}" data-toggle="tooltip" >
+                                            {{ $n->lstn_lencode }}
+                                        </sub>
                                     </div>
                                 @endforeach
                             </td>
@@ -238,9 +289,19 @@
 
                             <!-- Razón de incorporación -->
                             <td>
-                                {{ $l->lst_notas }}
+                                <div class="multilinea cortaTresLineas" style="max-width:200px;font-size:80%;">
+                                    {{ $l->lst_notas }}
+                                </div>
                             </td>
 
+                            <!-- Yo puedo aportar -->
+                            <td>
+                                <div wire:click="AbrirModalYoTengoAlgoQueAportar('{{ $l->lst_id }}')" style="margin-left:20px; float: right;" >
+                                    <img src="/imagenes/BotonAportar.png" class="PaClick my-2" style="height:40px;border:2px solid rgb(61, 41, 33);border-radius:15px; opacity: 0.6;">
+                                </div>
+                            </td>
+
+                            <!-- Edit -->
                             <td style="text-align: right;">
                                 @if($edit=='1')
                                     <!-- Editar -->
@@ -265,13 +326,22 @@
     @endif
 
 
-    @if($edit=='1' AND $SumCant != $SumReal)
+    {{-- <!-- Botón de edición inferior --> --}}
+    @if($edit=='1')
         <div class="m-4" style="text-align:right;">
-            <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
-                <i class="bi bi-plus-circle"></i> Renumerar
+            <button class="btn btn-sm btn-primary" wire:click="AbrirModalDeListaEspecie('0')">
+                <i class="bi bi-plus-circle"></i> Agregar
             </button>
         </div>
+        @if($SumCant != $SumReal)
+            <div class="m-4" style="text-align:right;">
+                <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
+                    <i class="bi bi-plus-circle"></i> Renumerar
+                </button>
+            </div>
+        @endif
     @endif
+
 
     <livewire:sistema.modal-lista-especie-component />
     <livewire:web.modal-cedula-yo-tengo-que-aportar />

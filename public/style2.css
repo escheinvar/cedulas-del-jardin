@@ -361,9 +361,20 @@ nota{
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.cortaTresLineas {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit the text to 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 /* ------------  Corta texto a las 3 líneas ------------- */
 /* .cortaLineas { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;} */
 
+.multilinea {
+  overflow-wrap: break-word; /* Rompe palabras largas si es necesario */
+  word-wrap: break-word;     /* Compatibilidad antigua */
+}
 
 
 /* -----------map: LEAFLET MAPS -------------- --*/
@@ -694,9 +705,6 @@ button.EdoActual{
     font-family: 'Roboto', sans-serif;
     font-size: 100%;
 }
-
-
-
 /*========== Termina estilos de cédulas*/
 
 .parpadeo {

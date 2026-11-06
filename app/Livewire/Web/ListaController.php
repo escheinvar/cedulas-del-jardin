@@ -12,7 +12,7 @@ class ListaController extends Component
 
     public $edit;
     public $url;
-    public $tipoVer;
+    public $tipoVer;#### Var para visualizar: 'cuadro','tabla'
 
 
     #[Layout('plantillas.baseJardin')]
@@ -35,10 +35,27 @@ class ListaController extends Component
         if($this->url->urlj_bannerimg==''){
             $this->url->urlj_bannerimg=$default;
         }
-        $this->tipoVer='cuadro';
 
+
+        if( session()->has('tipoVerLista')) {
+            $this->tipoVer=session('tipoVerLista');
+
+
+        }else{
+            // session(['tipoVerLista'=>'cuadro']);
+            session()->put('tipoVerLista','cuadro');
+            $this->tipoVer='cuadro';
+        }
+       #dd(session()->all());
     }
 
+    public function CambiarModoVista(){
+        if($this->tipoVer=='cuadro'){
+            $this->tipoVer='tabla';
+        }else{
+            $this->tipoVer='cuadro';
+        }
+    }
     public function AbrirModalDeListaEspecie($id){
         $datos=[
             'jardin'=>$this->url->urlj_cjarsiglas,
