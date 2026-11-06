@@ -59,7 +59,6 @@
             <div class="row">
                 @foreach ($lista  as $l)
                     <div class="col-md-5 col-12 m-2" style="@if($l->lst_act=='1')background-color:#CDC6B9; border:1px solid #202d2d; @else border:1px solid black;color:gray; @endif border-radius:15px;">
-
                         <!-- NOMBRES -->
                         <div class=""  style="">
                             @foreach ($l->nombres as $n)
@@ -78,7 +77,6 @@
                                     <sub class="PaClick" style="color: #87796d;" title="{{ $n->lstn_lengua }}" data-toggle="tooltip" >
                                         {{ $n->lstn_lencode }}
                                     </sub>
-
                                 </div>
                             @endforeach
                         </div>
@@ -149,7 +147,7 @@
                         </div>
 
                         <!-- EXPLICACIÓN -->
-                        <div class="my-2" style="font-family:'Roboto Condensed', sans-serif; @if($l->lst_act=='0') color:gray; @endif">
+                        <div id="textin" onclick="CortarOmostrarTexto()" class="my-2 multilinea cortaTresLineas" style="font-family:'Roboto Condensed', sans-serif; @if($l->lst_act=='0') color:gray; @endif">
                             {{ $l->lst_notas }}
                         </div>
 
@@ -187,6 +185,7 @@
                             @endif
                         </div>
                     </div>
+
                 @endforeach
             </div>
 
@@ -197,7 +196,7 @@
             <table class="table table-striped table-responsive">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        {{-- <th>Id</th> --}}
                         <th> <!-- img --> </th>
                         <th> <!-- url --> </th>
                         <th>Nombre(s)</th>
@@ -211,9 +210,9 @@
                     @foreach ($lista as $l)
                         <tr class="@if($l->lst_act == '0') inact @endif" >
                             <!-- número orden  -->
-                            <td>
+                            {{-- <td>
                                 @if($edit=='1') {{ $l->lst_orden }} @else {{ $num++ }} @endif
-                            </td>
+                            </td> --}}
 
                             <!-- imagen -->
                             <td>
@@ -289,7 +288,7 @@
 
                             <!-- Razón de incorporación -->
                             <td>
-                                <div class="multilinea cortaTresLineas" style="max-width:200px;font-size:80%;">
+                                <div id="textin" onclick="CortarOmostrarTexto()" class="multilinea cortaTresLineas" style="max-width:200px;font-size:80%;">
                                     {{ $l->lst_notas }}
                                 </div>
                             </td>
@@ -328,18 +327,20 @@
 
     {{-- <!-- Botón de edición inferior --> --}}
     @if($edit=='1')
-        <div class="m-4" style="text-align:right;">
-            <button class="btn btn-sm btn-primary" wire:click="AbrirModalDeListaEspecie('0')">
-                <i class="bi bi-plus-circle"></i> Agregar
-            </button>
-        </div>
-        @if($SumCant != $SumReal)
+        <div class="row" style="clear: both;">
             <div class="m-4" style="text-align:right;">
-                <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
-                    <i class="bi bi-plus-circle"></i> Renumerar
+                <button class="btn btn-sm btn-primary" wire:click="AbrirModalDeListaEspecie('0')">
+                    <i class="bi bi-plus-circle"></i> Agregar
                 </button>
             </div>
-        @endif
+            @if($SumCant != $SumReal)
+                <div class="m-4" style="text-align:right;">
+                    <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
+                        <i class="bi bi-plus-circle"></i> Renumerar
+                    </button>
+                </div>
+            @endif
+        </div>
     @endif
 
 
@@ -350,5 +351,12 @@
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+
+        function CortarOmostrarTexto() {
+            var element = document.getElementById("textin");
+            element.classList.toggle("cortaTresLineas");
+
+        }
     </script>
 </div>

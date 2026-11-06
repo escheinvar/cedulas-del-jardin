@@ -25,6 +25,14 @@
                             @error('msg_alias')<error>{{ $message }}</error>@enderror
                         </div>
 
+                        <!-- Mensaje -->
+                        <div class="col-12 my-1 form-group">
+                            <label for="msg_txt" class="form-label">Sobre este tema, quiero aportar lo siguiente:<red>* <small>(obligatorio)</small></red></label>
+                            <textarea wire:model="msg_txt" id="msg_txt" class="@error('msg_txt') is-invalid @enderror form-control" rows='4'  placeholder="En mi comunidad, esta planta se conoce como... y se utiliza para ..."></textarea>
+                            <div class="form-text">Tu aporte debe ser revisado por los editores antes de ser publicado.</div>
+                            @error('msg_txt')<error>{{ $message }}</error>@enderror
+                        </div>
+
                         <!-- Nombre -->
                         <div class="col-12 col-md-4 my-1 form-group">
                             <label for="msg_nombre" class="form-label">Nombre y apellidos<red></red></label>
@@ -99,13 +107,13 @@
                             @error('msg_tel')<error>{{ $message }}</error>@enderror
                         </div>
 
-                        <!-- Mensaje -->
+                        {{-- <!-- Mensaje -->
                         <div class="col-12 my-1 form-group">
                             <label for="msg_txt" class="form-label">Sobre este tema, quiero aportar lo siguiente:<red>* <small>(obligatorio)</small></red></label>
                             <textarea wire:model="msg_txt" id="msg_txt" class="@error('msg_txt') is-invalid @enderror form-control" rows='4'  placeholder="En mi comunidad, esta planta se conoce como... y se utiliza para ..."></textarea>
                             <div class="form-text">Tu aporte debe ser revisado por los editores antes de ser publicado.</div>
                             @error('msg_txt')<error>{{ $message }}</error>@enderror
-                        </div>
+                        </div> --}}
 
 
                     </div>

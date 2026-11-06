@@ -36,24 +36,22 @@ class ListaController extends Component
             $this->url->urlj_bannerimg=$default;
         }
 
-
         if( session()->has('tipoVerLista')) {
-            $this->tipoVer=session('tipoVerLista');
-
+            $this->tipoVer= session('tipoVerLista');
 
         }else{
-            // session(['tipoVerLista'=>'cuadro']);
             session()->put('tipoVerLista','cuadro');
             $this->tipoVer='cuadro';
         }
-       #dd(session()->all());
     }
 
     public function CambiarModoVista(){
         if($this->tipoVer=='cuadro'){
             $this->tipoVer='tabla';
+            session()->put('tipoVerLista','tabla');
         }else{
             $this->tipoVer='cuadro';
+            session()->put('tipoVerLista','cuadro');
         }
     }
     public function AbrirModalDeListaEspecie($id){
