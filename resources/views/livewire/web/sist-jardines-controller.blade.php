@@ -16,15 +16,24 @@
                     </a>
                 </div>
                 <div class="col-8">
-                    <a href="/jardin/{{ $j->cjar_siglas }}" target="jardin" class="nolink"></a>
+                    <a href="/jardin/{{ $j->cjar_siglas }}" target="jardin" class="nolink">
                         {{ $j->cjar_nombre }} ({{ $j->cjar_siglas }})
                     </a>
+
+
+
+
+
+
+
+
+
                     <div class="m-2">
                         <!-- cedulas -->
                         <div style="display:inline;" class="mx-2">
                             @if($j->cedulas->count() > '0')
                                 <a href="/jardin/{{ $j->cjar_siglas }}/cedulas/" class="nolink">
-                                    <i class="">Cedulas</i>
+                                    <i class=""></i>Cedulas
                                 </a>
                             @endif
                         </div>
@@ -33,7 +42,7 @@
                         <div style="display:inline;" class="mx-2" >
                             @if($j->lista->count() > '0')
                                 <a href="/jardin/{{ $j->cjar_siglas }}/listado/" class="nolink">
-                                    <i class="">Listado</i>
+                                    <i class=""></i>Listado
                                 </a>
                             @endif
                         </div>
@@ -43,7 +52,7 @@
                         <div style="display:inline;" class="mx-2" >
                             @if($j->autores->count() > '0')
                                 <a href="/jardin/{{ $j->cjar_siglas }}/autores/" class="nolink">
-                                    <i class="">Autores</i>
+                                    <i class=""></i>Autores
                                 </a>
                             @endif
                         </div>

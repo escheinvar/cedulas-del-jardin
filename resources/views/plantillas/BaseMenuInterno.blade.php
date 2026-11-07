@@ -1,5 +1,5 @@
 <div>
-    <div class="offcanvas-body m-1" style="background-color: #CDC6B9">
+    <div class="offcanvas-body m-1" style="border-top:1px solid #CDC6B9;border-bottom:1px solid #CDC6B9;">
         <a class="nav-link @if(preg_match("/jardin(?!.*cedulas$)(?!.*autores$)(?!.*listado$)/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')" style="display:inline-block;">
             El Jardín
         </a>

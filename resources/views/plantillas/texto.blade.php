@@ -10,6 +10,7 @@
     </div>
 @else
     @foreach($TablaDeTexto as $t)
+
         @if($modulo=='cedula')
             <?php
                 $txt_id = $t->txt_id;
@@ -32,6 +33,18 @@
                 $txt_orden = $t->autxt_orden;
                 $edo= $t->url->aurl_edo;
                 $trad=$t->url->aurl_tradid;
+            ?>
+
+        @elseif($modulo=='lista')
+            <?php
+                $txt_id = $t->lstxt_id;
+                $txt_tipo = $t->lstxt_tipo;
+                $txt_txt = $t->lstxt_txt;
+                $txt_txtoriginal = $t->lstxt_txtoriginal;
+                $txt_audio = $t->lstxt_audio;
+                $txt_orden = $t->lstxt_orden;
+                $edo= '1';
+                $trad='esp';
             ?>
 
         @else

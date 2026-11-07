@@ -9,6 +9,8 @@ use App\Models\cedulas_txt;
 use App\Models\cedulas_url;
 use App\Models\jardin_txt;
 use App\Models\jardin_url;
+use App\Models\lista;
+use App\Models\lista_txt;
 use HTMLPurifier;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
@@ -55,6 +57,7 @@ class ModalEditaParrafoComponent extends Component
         $this->modJar_cjarsiglas=$data['jardin'];
         $this->modJar_reload=$data['reload'];
 
+        ##########################################
         ############# Carga variables cuando id=0
         if($this->modJar_id=='0'){
             $this->modJar_txt='';
@@ -76,8 +79,13 @@ class ModalEditaParrafoComponent extends Component
                     ->where('autxt_del','0')
                     ->max('autxt_orden');
 
+            }elseif($this->modJar_modulo=='lista'){
+                $ord=lista_txt::where('lstxt_cjarsiglas',$this->modJar_cjarsiglas)
+                    ->where('lstxt_act','1')
+                    ->where('lstxt_del','0')
+                    ->max('lstxt_orden');
+
             }else{
-            // }elseif(in_array($this->modJar_modulo,['inicio','autores','cedulas']) ){
                 $ord=jardin_txt::where('jar_cjarsiglas',$this->modJar_cjarsiglas)
                     ->where('jar_urljurl', $this->modJar_url)
                     ->where('jar_act','1')
@@ -89,7 +97,7 @@ class ModalEditaParrafoComponent extends Component
         ############# Carga variables cuando id > 0
         }else{
             #######################################################
-            ################ Carga variables de cedula (cedulas_txt)
+            ################ Carga variables de lista (lista_txt)
             if($this->modJar_modulo=='cedula'){
                 $dato=cedulas_txt::where('txt_id',$this->modJar_id)
                     ->with('url')
@@ -120,6 +128,15 @@ class ModalEditaParrafoComponent extends Component
             ############################ Carga variables de inicio,
             ############################ autores, cedulas y otros (jardin_txt)
             // }elseif(in_array($this->modJar_modulo,['inicio','autores','cedulas']) ){
+            }elseif($this->modJar_modulo=='lista'){
+                $dato=lista_txt::where('lstxt_id',$this->modJar_id)
+                    ->first();
+                $this->modJar_txt=$dato->lstxt_txt;
+                $this->modJar_Audio=$dato->lstxt_audio;
+                $this->modJar_tipo=$dato->lstxt_tipo;
+                $this->modJar_orden=$dato->lstxt_orden;
+                // $copiaUorig= $this->modJar_id;
+                $copiaUorig= '0';
             }else{
                 $dato=jardin_txt::where('jar_id',$this->modJar_id)
                     ->with('url')
@@ -221,7 +238,6 @@ class ModalEditaParrafoComponent extends Component
         ######################################################
         ############### Guarda en caso de autor (autor_txt)
         }elseif($this->modJar_modulo=='autor'){
-
             ##### Genera arreglo de datos
             $autURl=autor_url::where('aurl_cjarsiglas',$this->modJar_cjarsiglas)
                 ->where('aurl_url',$this->modJar_url)
@@ -267,7 +283,87 @@ class ModalEditaParrafoComponent extends Component
         ######################################################
         ############### Guarda en caso de inicio, autores,
         ############### cedulas u otros (cedulas_txt)
-        // }elseif(in_array($this->modJar_modulo,['inicio','autores','cedulas']) ){
+        // }elseif}elseif($this->modJar_modulo=='autor'){
+            ##### Genera arreglo de datos
+            $autURl=autor_url::where('aurl_cjarsiglas',$this->modJar_cjarsiglas)
+                ->where('aurl_url',$this->modJar_url)
+                ->where('aurl_act','1')->where('aurl_del','0')
+                ->first();
+
+            $dato=[
+                // 'url_id'=>$this->modJar_id,
+                'autxt_cjarsiglas'=>$this->modJar_cjarsiglas,
+                'autxt_aurlid'=>$autURl->aurl_id,
+                'autxt_aurlurltxt'=>$this->modJar_url,
+                'autxt_aurlurl'=>$autURl->aurl_url,
+                'autxt_tipo'=>$this->modJar_tipo,
+                'autxt_orden'=>$this->modJar_orden,
+                'autxt_txt'=>$this->modJar_txt,
+            ];
+
+            ##### Guarda BD
+            if($this->modJar_id == '0'){
+                // $dato['txt_id']=$this->modJar_id;
+                $dato['autxt_txtoriginal']=$this->modJar_txt;
+                $bla=autor_txt::create($dato);
+                $id=$bla->autxt_id;
+            }else{
+                autor_txt::where('autxt_id', $this->modJar_id)->update($dato);
+                $id=$this->modJar_id;
+            }
+            ##### Guarda archivo de audio
+            if($this->modJar_NvoAudio != ''){
+                ##### Construye nombre
+                $nombre=$this->modJar_cjarsiglas . "_" . $this->modJar_url . str_pad($this->modJar_orden,3,"0",STR_PAD_LEFT) . "." . $this->modJar_NvoAudio->getClientOriginalExtension();
+                $ruta="/audios/";
+                ##### Guarda archivo
+                $this->modJar_NvoAudio->storeAs(path:'/public/'.$ruta, name:$nombre);
+                ##### Guarda en BD
+                autor_txt::where('autxt_id',$id)->update([
+                    'autxt_audio'=>$ruta.$nombre
+                ]);
+                ##### hace log
+                paLog('Se agrega nuevo audio','cedula_txt',$id);
+            }
+
+        ######################################################
+        ############### Guarda en caso de inicio, autores,
+        ############### cedulas u otros (cedulas_txt)
+        }elseif($this->modJar_modulo=='lista'){
+            $dato=[
+                // 'url_id'=>$this->modJar_id,
+                'lstxt_cjarsiglas'=>$this->modJar_cjarsiglas,
+                'lstxt_tipo'=>$this->modJar_tipo,
+                'lstxt_orden'=>$this->modJar_orden,
+                'lstxt_txt'=>$this->modJar_txt,
+                'lstxt_txtoriginal'=>$this->modJar_txt,
+                // 'lstxt_audio'=>'',
+            ];
+
+            ##### Guarda BD
+            if($this->modJar_id == '0'){
+                $dato['lstxt_txtoriginal']=$this->modJar_txt;
+                $bla=lista_txt::create($dato);
+                $id=$bla->lstxt_id;
+            }else{
+                lista_txt::where('lstxt_id', $this->modJar_id)->update($dato);
+                $id=$this->modJar_id;
+            }
+            ##### Guarda archivo de audio
+            if($this->modJar_NvoAudio != ''){
+                ##### Construye nombre
+                $nombre=$this->modJar_cjarsiglas . "_lista" . str_pad($this->modJar_orden,3,"0",STR_PAD_LEFT) . "." . $this->modJar_NvoAudio->getClientOriginalExtension();
+                $ruta="/audios/";
+                ##### Guarda archivo
+                $this->modJar_NvoAudio->storeAs(path:'/public/'.$ruta, name:$nombre);
+                ##### Guarda en BD
+                lista_txt::where('lstxt_id',$id)->update([
+                    'lstxt_audio'=>$ruta.$nombre
+                ]);
+                ##### hace log
+                paLog('Se agrega nuevo audio','lista_txt',$id);
+            }
+
         }else{
             $urljId=jardin_url::where('urlj_cjarsiglas',$this->modJar_cjarsiglas)
                 ->where('urlj_url',$this->modJar_url)
@@ -365,8 +461,19 @@ class ModalEditaParrafoComponent extends Component
             paLog('Se eliminó el audio','autor_txt',$this->modJar_id);
 
         ########################################
+        ############### Borra en caso de autor
+        }elseif($this->modJar_modulo=='lista'){
+            lista_txt::where('lstxt_id',$this->modJar_id)->update([
+                'lstxt_audio'=>null,
+            ]);
+            $this->modJar_NvoAudio='';
+            $this->modJar_Audio='';
+            ##### log
+            paLog('Se eliminó el audio','lista_txt',$this->modJar_id);
+
+        ########################################
         ############### Borra en caso de jardín
-        // }elseif($this->modJar_modulo=='jardin'){
+
         }else{
             jardin_txt::where('jar_id',$this->modJar_id)->update([
                 'jar_audio'=>null,
@@ -394,8 +501,14 @@ class ModalEditaParrafoComponent extends Component
             ]);
 
         ########################################
+        ############### Guarda en caso de autor
+        }elseif($this->modJar_modulo=='lista'){
+            lista_txt::where('lstxt_id',$this->modJar_id)->update([
+                'lstxt_del'=>'1',
+            ]);
+
+        ########################################
         ############### Guarda en caso de jardin
-        // }elseif($this->modJar_modulo=='jardin' OR $this->modJar_modulo=='autores'){
         }else{
             jardin_txt::where('jar_id',$this->modJar_id)->update([
                 'jar_del'=>'1',
@@ -405,105 +518,6 @@ class ModalEditaParrafoComponent extends Component
         $this->dispatch('CierraModalDeParrafoWebJardin',reload:'1');
     }
 
-
-
-    #################################################################
-    ######################################## Verificador de tags html
-    // public $ValidadorDeTag;
-    /*
-    public function validarHtml() {
-        ######################################################
-        ######## Código obtenido por Qwen para revisar. Se debe
-        ######## indicar $variable (nombre de variable $this que
-        ######## contiene el código html que se va a revisar
-        ######## y donde se va a mostrar el @error: $this->variable.
-        ######## También utiliza la variable $this->ValidadorDeTag='0';
-        ######## como flag de existencia(1) de error o no (0);
-        $variable='modJar_txt';
-
-        ##### Limpia
-        $this->resetErrorBag();
-        $this->resetValidation();
-        $this->ValidadorDeTag='0';
-        $html = trim($this->$variable);
-
-        if($html == '') {
-            $this->ValidadorDeTag='1';
-            $this->addError($variable, 'El campo HTML no puede estar vacío.');
-            return;
-        }
-
-        // 1️⃣ Análisis con DOMDocument + libxml
-        libxml_use_internal_errors(true);
-        $dom = new \DOMDocument();
-
-        // Convertimos a HTML-ENTITIES para evitar problemas con UTF-8 en DOMDocument
-        $encodedHtml = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
-
-        // Cargamos sin auto-agregar <html>/<body> y en modo compacto
-        @$dom->loadHTML($encodedHtml, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_COMPACT);
-
-        $xmlErrors = libxml_get_errors();
-        libxml_clear_errors();
-
-        $severeErrors = [];
-        foreach ($xmlErrors as $error) {
-            // Nivel 3 = Error, Nivel 4 = Fatal
-            if ($error->level >= LIBXML_ERR_ERROR) {
-                $severeErrors[] = sprintf(
-                    'Línea %d, Col %d: %s',
-                    $error->line,
-                    $error->column,
-                    trim($error->message)
-                );
-            }
-        }
-
-        if (!empty($severeErrors)) {
-            $this->ValidadorDeTag='1';
-            $this->addError($variable, 'Errores de sintaxis detectados:<br>' . implode('<br>', $severeErrors));
-            return;
-        }
-
-        ################### inicia tags no cerrados
-        // Etiquetas void (no requieren cierre) según HTML5
-        $voidTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
-
-        // Extrae todas las etiquetas (apertura, cierre o self-closing)
-        preg_match_all('/<(\/?)([a-zA-Z0-9]+)(?:\s[^>]*)?\/?>/', $html, $matches, PREG_SET_ORDER);
-
-        $stack = [];
-        foreach ($matches as $match) {
-            $isClosing  = $match[1] === '/';
-            $tagName    = strtolower($match[2]);
-
-            // Ignoramos etiquetas que no necesitan cierre
-            if (in_array($tagName, $voidTags)) continue;
-
-            if ($isClosing) {
-                if (empty($stack) || end($stack) !== $tagName) {
-                    $this->ValidadorDeTag='1';
-                    $this->addError($variable, "Etiqueta de cierre inesperada o desbalanceada: </$tagName>");
-                    return;
-                }
-                array_pop($stack);
-            } else {
-                $stack[] = $tagName;
-            }
-        }
-
-        if (!empty($stack)) {
-            $unclosed = array_unique($stack);
-            $this->ValidadorDeTag='1';
-            $this->addError($variable, 'Etiquetas abiertas sin cerrar: ' . implode(', ', $unclosed));
-        }
-        ##################### Cierra tags no cerrados
-        // if (!$this->hasErrors()) {
-        //     $this->isValid = true;
-        //     $this->dispatch('html-validated');
-        // }
-    }
-    */
 
     #################################################################
     ######################################## Verificador de tags html
@@ -783,7 +797,6 @@ class ModalEditaParrafoComponent extends Component
         return view('livewire.sistema.modal-edita-parrafo-component');
     }
 
-
     #################################################################
     ######################################## Verificador de tags html
     public function AbreModalVerObjetos($tipoDato){
@@ -812,8 +825,5 @@ class ModalEditaParrafoComponent extends Component
 
         $this->dispatch('AbreModalDeVerObjetos',$data);
     }
-
-
-
 
 }

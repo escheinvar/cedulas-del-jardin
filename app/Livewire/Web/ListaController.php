@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Web;
 
+use App\Models\jardin_txt;
 use App\Models\jardin_url;
 use App\Models\lista;
+use App\Models\lista_txt;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -99,6 +101,27 @@ class ListaController extends Component
         $this->dispatch('AbreModalYoTengoQueAportar',$dato);
     }
 
+    public function AbreModalEditaParrafo($id, $orden){
+
+        if($this->edit=='1'){
+            ###### Si es nuevo, calcula el orden
+            if($id=='0'){
+                $orden=jardin_txt::where('jar_urljid',$this->url->urlj_id)
+                    ->where('jar_act','1')->where('jar_del','0')
+                    ->max('jar_orden') + 1;
+            }
+            ##### Abre modal
+            $data=[
+                'id'=>$id,
+                'orden'=>$orden,
+                'modulo'=>'lista',
+                'url'=>'lista',
+                'jardin'=>$this->url->urlj_cjarsiglas,
+                'reload'=>'0',
+            ];
+            $this->dispatch('AbreModalDeParrafoWebJardin',$data);
+        }
+    }
     public function render(){
         ###### Determina permisos
         $this->edit='0';
@@ -122,10 +145,19 @@ class ListaController extends Component
 
         $SumReal=lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->sum('lst_orden');
         $SumCant=array_sum(range(  1, lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->count() ));
+
+
+        $TablaDeTexto=lista_txt::where('lstxt_cjarsiglas',$this->url->urlj_cjarsiglas)
+            ->where('lstxt_del','0')
+            ->get();
+
+
+
         return view('livewire.web.lista-controller',[
             'lista'=>$lista,
             'SumReal'=> $SumReal,
-            'SumCant'=> $SumCant
+            'SumCant'=> $SumCant,
+            'txt'=>$TablaDeTexto,
         ]);
     }
 

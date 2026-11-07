@@ -22,6 +22,25 @@
     <h1>Listado del {{ $url->urlj_cjarsiglas }}</h1>
     @include('plantillas.BaseMenuInterno')
 
+
+
+    <!-- ------------------------------------------------------ -->
+    <!-- ------------- Muestra texto de cada listado --------- -->
+
+    <?php $TablaDeTexto=$txt; $modulo='lista'?>
+    @include('plantillas.texto')
+
+    <!-- --------------------- INICIA BOTÓN AGREGAR NUEVO PÁRRAFO ------------------------- -->
+    @if($edit=='1')
+        <div class="row my-4" style="background-color: #CDC6B9;">
+            <div class="col-2">
+                <i wire:click="AbreModalEditaParrafo('0','')" class="bi bi-plus-square PaClick" style="display:inline;"> Nuevo párrafo</i>
+            </div>
+        </div>
+    @endif
+
+
+
     <!-- Tipo de visualización -->
     <div style="clear:both;">
         @if($tipoVer=='cuadro')
@@ -361,6 +380,10 @@
 
     <livewire:sistema.modal-lista-especie-component />
     <livewire:web.modal-cedula-yo-tengo-que-aportar />
+
+    <livewire:sistema.modal-edita-parrafo-component />
+
+
 
     <script >
         $(document).ready(function(){
