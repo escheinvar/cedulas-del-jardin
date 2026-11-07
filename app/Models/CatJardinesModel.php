@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CatJardinesModel extends Model
 {
@@ -36,4 +37,26 @@ class CatJardinesModel extends Model
         'cjar_red3',
         'cjar_ubica',
     ];
+    //  public function url():BelongsTo {
+    //     return $this->belongsTo(jardin_url::class,'jar_urljid','urlj_id');
+    // }
+    ##### Vincula a cédulas
+    public function cedulas():HasMany{
+        return $this->HasMany(cedulas_url::class, 'url_cjarsiglas','cjar_siglas')
+            ->where('url_act','1')
+            ->where('url_del','0');
+    }
+
+    ##### Vincula a autores
+    public function autores():HasMany{
+        return $this->HasMany(ced_autores::class, 'aut_cjarsiglas','cjar_siglas')
+            ->where('aut_act','1')
+            ->where('aut_del','0');
+    }
+
+    public function lista():HasMany{
+        return $this->HasMany(lista::class, 'lst_cjarsiglas','cjar_siglas')
+            ->where('lst_act','1')
+            ->where('lst_del','0');
+    }
 }

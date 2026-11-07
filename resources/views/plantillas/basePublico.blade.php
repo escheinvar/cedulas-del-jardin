@@ -101,17 +101,17 @@
                             <ul class="navbar-nav justify-content-end flex-grow-1">
                                 <!-- -------------------------------------------------------------------------------- -->
                                 <!-- -------------------- INICIA MENÚ PÚBLICO --------------------------------------- -->
-                                <!-- Las cédulas -->
-                                <li class="nav-item">
-                                    <a class="nav-link @if(request()->path() == 'cedulasdeljardin' OR request()->path() == '/') active @endif" href="/cedulasdeljardin">
-                                        Las cédulas
-                                    </a>
-                                </li>
-
                                 <!-- Los jardines-->
                                 <li class="nav-item">
                                     <a class="nav-link @if(request()->path() == 'jardiness') active @endif" href="/jardiness">
                                         Los Jardines
+                                    </a>
+                                </li>
+
+                                <!-- Las cédulas -->
+                                <li class="nav-item">
+                                    <a class="nav-link @if(request()->path() == 'cedulasdeljardin' OR request()->path() == '/') active @endif" href="/cedulasdeljardin">
+                                        Las cédulas
                                     </a>
                                 </li>
 

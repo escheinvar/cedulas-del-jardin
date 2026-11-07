@@ -18,7 +18,6 @@
 @section('web') {{ $url->jardin->cjar_www }} @endsection
 
 <div class="container">
-
     <!-- --------------------- Menú de traducciones ------------------------------ -->
     @if($traducciones->count() > 0)
         <div class="row">
@@ -49,7 +48,7 @@
 
     <!-- -------------------- Muestra página ----------------------------- -->
     @else
-        <!-- muestra título -->
+            <!-- muestra título -->
         <h1>
             @if($edit=='1')
                 <error><i class="bi bi-record-circle" style="font-size:150%;"></i></error>
@@ -66,6 +65,7 @@
                 {{ $url->urlj_titulo }}
             @endif
         </h1>
+        @include('plantillas.BaseMenuInterno')
 
 
         <!-- ---------------------------------------------------------------------- -->
@@ -122,6 +122,7 @@
 
 
 
+
         <!-- ------------------------------------------------------------------------ -->
        <!-- --------------------- INICIA PAGINA DE CÉDULAS ------------------------- -->
         <!-- ------------------------------------------------------------------------ -->
@@ -156,9 +157,13 @@
 
         @endif
 
+        {{-- <!-- OJO: ------ LA PAGINA DE LISTADO está en otro controlador: lista-controller -------  --> --}}
+
+
 
         <livewire:sistema.modal-edita-parrafo-component />
         <livewire:sistema.modal-inserta-objeto-component />
+
 
     @endif
 

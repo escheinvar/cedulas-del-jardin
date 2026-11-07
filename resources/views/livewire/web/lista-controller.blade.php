@@ -18,7 +18,9 @@
 @section('web') {{ $url->jardin->cjar_www }} @endsection
 
 <div>
-    <h2>Listado del {{ $url->urlj_cjarsiglas }}</h2>
+
+    <h1>Listado del {{ $url->urlj_cjarsiglas }}</h1>
+    @include('plantillas.BaseMenuInterno')
 
     <!-- Tipo de visualización -->
     <div style="clear:both;">

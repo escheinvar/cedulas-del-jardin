@@ -112,14 +112,83 @@
                     </div>
                     <div class="offcanvas-body">
 
+
                         @hasSection('MenuPublico')
+                            <ul class="navbar-nav justify-content-end flex-grow-1">
+                                <!-- -------------------------------------------------------------------------------- -->
+                                <!-- -------------------- INICIA MENÚ PÚBLICO --------------------------------------- -->
+                                <!-- Las cédulas -->
+                                <!-- Los jardines-->
+                                <li class="nav-item">
+                                    <a class="nav-link @if(request()->path() == 'jardiness') active @endif" href="/jardiness">
+                                        Los Jardines
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link @if(request()->path() == 'cedulasdeljardin' OR request()->path() == '/') active @endif" href="/cedulasdeljardin">
+                                        Las cédulas
+                                    </a>
+                                </li>
+
+                                <!-- Los autores -->
+                                <li class="nav-item">
+                                    <a class="nav-link @if(request()->path() == 'autores') active @endif" href="/autores">
+                                        Los Autores
+                                    </a>
+                                </li>
+
+                                <!-- Ayuda -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle @if(in_array(request()->path(),['api_manual','nosotros'])) active @endif" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Ayuda
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item @if(request()->path() == 'sistema') active @endif" href="/sistema">Sistema</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'normaeditorial') active @endif" href="/normaeditorial">Norma editorial</a></li>
+                                        {{-- <li><a class="dropdown-item @if(request()->path() == 'normaeditorial') active @endif" href="/NormaEditorial_LasCedulasDelJardin.pdf" target="_blank">Norma editorial</a></li> --}}
+                                        <li><a class="dropdown-item @if(request()->path() == 'comopublicar') active @endif" href="/comopublicar">Cómo publicar</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'manuales') active @endif" href="/manuales">Manuales</a></li>
+                                        <li><a class="dropdown-item @if(request()->path() == 'manualapi') active @endif" href="/manualapi">API</a></li>
+                                    </ul>
+                                </li>
+
+                                @if(Auth::user())
+                                    <li class="nav-item">
+                                        <a class="nav-link @if(request()->path() == 'home') active @endif" href="/home">
+                                            Home
+                                        </a>
+                                    </li>
+
+                                    <!-- Salir de sistema -->
+                                    <li class="nav-item">
+                                        <form action="{{route('logout')}}" method="post">
+                                            @csrf
+                                            <button type="submit" class="nolink btn" style="padding:0;margin:0;">
+                                                    <a class="nav-link">Salir</a>
+                                            </button>
+                                        </form>
+                                    </li>
+                                @else
+                                    <!-- Ingresar al sistema -->
+                                    <li class="nav-item">
+                                        <a class="nav-link @if(request()->path() == 'ingreso') active @endif" href="/ingreso">
+                                            Ingresar
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        @endif
+
+
+                        {{-- @hasSection('MenuPublico')
                             <ul class="navbar-nav justify-content-end flex-grow-1">
                                 <!-- -------------------------------------------------------------------------------- -->
                                 <!-- -------------------- INICIA MENÚ PÚBLICO --------------------------------------- -->
                                 <!-- El jardín (inicio) -->
                                 <li class="nav-item">
 
-                                    <a class="nav-link @if(preg_match("/jardin(?!.*cedulas$)/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')">
+                                    <a class="nav-link @if(preg_match("/jardin(?!.*cedulas$)(?!.*autores$)(?!.*listado$)/", request()->path()) ) active @endif" href="/jardin/@yield('siglasMin')">
                                         El Jardín
                                     </a>
                                 </li>
@@ -133,7 +202,7 @@
 
                                 <!-- La lista -->
                                 <li class="nav-item">
-                                    <a class="nav-link @if(preg_match("/lista.*/", request()->path())) active @endif" href="/lista/@yield('siglasMin')">
+                                    <a class="nav-link @if(preg_match("/lista.*/", request()->path())) active @endif" href="/jardin/@yield('siglasMin')/listado">
                                         Listado
                                     </a>
                                 </li>
@@ -161,7 +230,6 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item @if(request()->path() == 'sistema') active @endif" href="/sistema">El Sistema</a></li>
                                         <li><a class="dropdown-item @if(request()->path() == 'normaeditorial') active @endif" href="/normaeditorial">Norma editorial</a></li>
-                                        {{-- <li><a class="dropdown-item @if(request()->path() == 'normaeditorial') active @endif" href="/NormaEditorial_LasCedulasDelJardin.pdf" target="_blank">Norma editorial</a></li> --}}
                                         <li><a class="dropdown-item @if(request()->path() == 'comopublicar') active @endif" href="/comopublicar">Cómo publicar</a></li>
                                         <li><a class="dropdown-item @if(request()->path() == 'manuales') active @endif" href="/manuales">Manuales</a></li>
                                         <li><a class="dropdown-item @if(request()->path() == 'manualapi') active @endif" href="/manualapi">API</a></li>
@@ -196,7 +264,7 @@
                                     </li>
                                 @endif
                             </ul>
-                        @endif
+                        @endif --}}
                         <!-- -------------------- TERMINA MENÚ PÚBLICO --------------------------------------- -->
                         <!-- -------------------------------------------------------------------------------- -->
                     </div>

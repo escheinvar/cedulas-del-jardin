@@ -9,7 +9,10 @@ use Livewire\Component;
 class SistJardinesController extends Component
 {
     public function render(){
-        $jardines=CatJardinesModel::get();
+        $jardines=CatJardinesModel::with('cedulas')
+            ->with('autores')
+            ->with('lista')
+            ->get();
 
         return view('livewire.web.sist-jardines-controller',[
             'jardines'=>$jardines,

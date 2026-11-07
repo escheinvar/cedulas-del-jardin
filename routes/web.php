@@ -114,12 +114,15 @@ Route::get('/cedula', SistCedulasComponent::class)->name('cedulas');
 Route::get('/ver', SistCedulasComponent::class)->name('cedulas');
 Route::get('/noauth/{msj}', NoauthController::class)->name('cedulas');
 
+
+Route::get('/jardin/{jardin}/listado/', ListaController::class)->name('lista'); ###OJO: debe setar antes que JardinController
 Route::get('/jardin/{jardin}/{pag?}/', JardinController::class)->name('enjardin');
+
 Route::middleware([VerificaUrlCedula::class])->group(function(){
     Route::get('/cedula/{jardin}/{url}', CedulasController::class)->name('cedula');
 });
 Route::get('/autor/{jardin}/{url}', AutoresController::class)->name('autor');
-Route::get('/lista/{jardin}', ListaController::class)->name('lista');
+
 /* --------------------------- SECCION CÉDULAS -------------------------------- */
 /* ---------------------------------------------------------------------------- */
 // Route::get('/sp/{url}/{jardin}', EspeciesComponent::class)->name('cedula');
