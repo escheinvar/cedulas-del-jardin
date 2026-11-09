@@ -4,10 +4,15 @@ namespace App\Livewire\Web;
 
 use App\Models\jardin_txt;
 use App\Models\jardin_url;
-use App\Models\lista;
+use App\Models\lista_nombres;
+use App\Models\lista_nombresc;
 use App\Models\lista_txt;
+use App\Models\lista_img;
+use App\Models\lista;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ListaController extends Component
 {
@@ -15,7 +20,10 @@ class ListaController extends Component
     public $edit;
     public $url;
     public $tipoVer;#### Var para visualizar: 'cuadro','tabla'
+    public $lst_orden, $lst_sent, $lst_numero, $lst_numeroFront; ### oreden y sentido sde la tabla y cantidad de paginación
+    public $lst_buscar;
 
+    use WithPagination;
 
     #[Layout('plantillas.baseJardin')]
     public function mount($jardin){
@@ -45,6 +53,20 @@ class ListaController extends Component
             session()->put('tipoVerLista','cuadro');
             $this->tipoVer='cuadro';
         }
+        ###### prepara variables
+        $this->lst_orden='lst_id';
+        $this->lst_sent='asc';
+
+        // $numero=20;
+        $numero=3;
+        if( session()->has('paginarLista')) {
+            $this->lst_numero= session('paginarLista');
+
+        }else{
+            session()->put('paginarLista',$numero);
+            $this->lst_numero=$numero;
+        }
+        $this->lst_buscar='';
     }
 
     public function CambiarModoVista(){
@@ -56,6 +78,7 @@ class ListaController extends Component
             session()->put('tipoVerLista','cuadro');
         }
     }
+
     public function AbrirModalDeListaEspecie($id){
         $datos=[
             'jardin'=>$this->url->urlj_cjarsiglas,
@@ -90,6 +113,13 @@ class ListaController extends Component
         }
     }
 
+    public function cambiaPaginacion(){
+        $this->lst_numero=$this->lst_numeroFront;
+        session()->put('paginarLista',$this->lst_numeroFront);
+        redirect('/jardin/'.$this->url->urlj_cjarsiglas.'/listado?page=1');
+    }
+
+
     ##########################################################
     ################## Modal externo Yo tengo algo que aportar
     public function AbrirModalYoTengoAlgoQueAportar($id){
@@ -122,6 +152,11 @@ class ListaController extends Component
             $this->dispatch('AbreModalDeParrafoWebJardin',$data);
         }
     }
+
+    public function LimpiarBusqueda(){
+        $this->lst_buscar='';
+    }
+
     public function render(){
         ###### Determina permisos
         $this->edit='0';
@@ -141,8 +176,23 @@ class ListaController extends Component
             ->with('nombres')
             ->with('nombrescient')
             ->with('imagenes')
-            ->get();
+            ->orderBy($this->lst_orden,$this->lst_sent);
 
+        ##### Búsqueda de nombres y nombres científicos
+        if(strlen($this->lst_buscar) >= 3){
+            $lista=$lista->whereHas('nombres', function ($query) {
+                return $query
+                ->where('lstn_name','ILIKE', "%$this->lst_buscar%");
+            })
+            ->orWhereHas('nombrescient', function ($query) {
+                return $query
+                ->where('lstsc_scname','ILIKE', "%$this->lst_buscar%");
+            });
+            $this->setPage('1');
+        }
+        $lista=$lista->paginate($this->lst_numero);
+
+        ##### Calcula SumReal ySumCant para detectar si hay que renumerar el listado
         $SumReal=lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->sum('lst_orden');
         $SumCant=array_sum(range(  1, lista::where('lst_cjarsiglas', $this->url->urlj_cjarsiglas)->where('lst_del','0')->count() ));
 
@@ -151,13 +201,51 @@ class ListaController extends Component
             ->where('lstxt_del','0')
             ->get();
 
+        $lenguas=lista_nombres::join('lista','lst_id','=','lstn_lstid')
+            ->where('lstn_del','0')->where('lstn_act','1')
+            ->where('lst_del','0')->where('lst_act','1')
+            ->where('lst_cjarsiglas',$this->url->urlj_cjarsiglas)
+            ->select(DB::raw('count(DISTINCT lstn_lstid) as num'),DB::raw('count(lstn_audio) as audio'), 'lstn_lencode')
+            ->groupBy(['lstn_lencode'])
+            ->get();
 
+        $audios=lista_nombres::join('lista','lst_id','=','lstn_lstid')
+            ->where('lstn_del','0')->where('lstn_act','1')
+            ->where('lst_del','0')->where('lst_act','1')
+            ->where('lst_cjarsiglas',$this->url->urlj_cjarsiglas)
+            ->where('lstn_audio','!=','')
+            ->select(DB::raw('count(DISTINCT lstn_lstid) as num'), 'lstn_lencode')
+            ->groupBy(['lstn_lencode'])
+            ->get();
+
+        $nombrescient=lista_nombresc::join('lista','lst_id','=','lstsc_lstid')
+            ->where('lstsc_del','0')->where('lstsc_act','1')
+            ->where('lst_del','0')->where('lst_act','1')
+            ->where('lst_cjarsiglas',$this->url->urlj_cjarsiglas)
+            ->select(DB::raw('count(lstsc_lstid) as numsp'),'lstsc_lstid')
+            ->groupBy('lstsc_lstid')
+            ->get();
+
+        ##### Cuenta # de imags por cada elemento (para luego contar los que tienen 1 o más imágenes)
+        $imags=lista_img::join('lista','lst_id','=','lstimg_lstid')
+            ->where('lstimg_del','0')->where('lstimg_act','1')
+            ->where('lst_del','0')->where('lst_act','1')
+            ->where('lst_cjarsiglas',$this->url->urlj_cjarsiglas)
+            ->select(DB::raw('count(lstimg_lstid) as numimg'),'lstimg_lstid')
+            ->groupBy('lstimg_lstid')
+            ->get();
 
         return view('livewire.web.lista-controller',[
             'lista'=>$lista,
             'SumReal'=> $SumReal,
             'SumCant'=> $SumCant,
             'txt'=>$TablaDeTexto,
+            'estadisticas'=>[
+                'lenguas'=>$lenguas,
+                'audios'=>$audios,
+                'nomcient'=>$nombrescient->where('numsp','>=','1')->count(),
+                'img'=>$imags->where('numimg','>=','1')->count(),
+            ],
         ]);
     }
 

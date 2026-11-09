@@ -43,6 +43,8 @@ extensiones:
     y luego sudo service apache2 restart
 
 
+5 Ejecutar: (para publicar boostrap en paginación)
+php artisan livewire:publish --pagination
 
 
 ------------------------------ Notas de carpetas:

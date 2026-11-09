@@ -25,49 +25,104 @@
 
 
     <!-- ------------------------------------------------------ -->
-    <!-- ------------- Muestra texto de cada listado --------- -->
-
+    <!-- ------------- Muestra texto libre del listado --------- -->
     <?php $TablaDeTexto=$txt; $modulo='lista'?>
     @include('plantillas.texto')
-
-    <!-- --------------------- INICIA BOTÓN AGREGAR NUEVO PÁRRAFO ------------------------- -->
+    <!-- ---------- Agregar nuevo párrafo de texto librre ------------ -->
     @if($edit=='1')
-        <div class="row my-4" style="background-color: #CDC6B9;">
-            <div class="col-2">
+        <div class="row my-4" >
+            <div class="col-5 col-md-3" style="background-color: #CDC6B9;">
                 <i wire:click="AbreModalEditaParrafo('0','')" class="bi bi-plus-square PaClick" style="display:inline;"> Nuevo párrafo</i>
             </div>
         </div>
     @endif
 
 
+    <!-- Navegador del paginador superior --->
 
-    <!-- Tipo de visualización -->
-    <div style="clear:both;">
-        @if($tipoVer=='cuadro')
-            <button wire:click='CambiarModoVista()' class="btn btn-secondary bi bi-table" style="float: right;"> Ver modo tabla </button>
-        @else
-            <button wire:click='CambiarModoVista()' class="btn btn-secondary bi bi-ui-radios-grid" style="float: right;"> Ver modo cuadros </button>
+    <div class="" style="text-align:right;">
+        @if($lista->hasPages())
+            <div class="my-1  paginador" style="display: inline-block;">
+                <h6>Página {{ $lista->currentPage() }}</h6>
+
+                <a href="/{{ $lista->previousPageUrl() }}">
+                    <button class="boton" style="display:inline-block" @if($lista->onFirstPage()) disabled @endif>&laquo;</button>
+                </a>
+
+
+                @foreach(range(1,$lista->lastPage()) as $i)
+                <a href="/{{ $lista->url($i) }}" style="">
+                    <button class="boton @if($i==$lista->currentPage()) paginaActiva @else pagina @endif" style="display:inline-block" @if($i==$lista->currentPage()) disabled @endif >{{ $i }}</button>
+                </a>
+                @endforeach
+
+                <a href="/{{ $lista->nextPageUrl() }}">
+                    <button class="boton" style="display:inline-block"  @if($lista->onLastPage()) disabled @endif>&raquo;</button>
+                </a>
+            </div>
         @endif
+        <div class="my-3 form-group" style="width:100px; display: inline-block;" >
+            <label for="lst_numeroFront" class="form-label"> <red></red></label>
+            <select wire:change='cambiaPaginacion()' wire:model="lst_numeroFront" id="lst_numeroFront" class="@error('lst_numeroFront') is-invalid @enderror form-select">
+                <option value="{{ $lst_numero }}">{{ $lst_numero }}</option>
+                <option value="2">2</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+            </select>
+            <div class="form-text"></div>
+            @error('lst_numeroFront')<error>{{ $message }}</error>@enderror
+        </div>
     </div>
 
-    {{-- <!-- Botón de edición superior --> --}}
-    @if($edit=='1')
-        <div class="row" style="clear: both;">
-            <div class="m-4" style="text-align:right;">
-                <button class="btn btn-sm btn-primary" wire:click="AbrirModalDeListaEspecie('0')">
-                    <i class="bi bi-plus-circle"></i> Agregar
-                </button>
-            </div>
-            @if($SumCant != $SumReal)
-                <div class="m-4" style="text-align:right;">
-                    <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
-                        <i class="bi bi-plus-circle"></i> Renumerar
-                    </button>
-                </div>
+
+    <!-- ------------- BArra de buscar,  ver modo tabla/cuadro, y agregar ------------------ -->
+    <div class="row">
+        <div class="col-12 col-md-4 my-1 form-group">
+            <label for="lst_buscar" class="form-label">Buscar<red></red></label><br>
+            <input wire:model.live="lst_buscar" id="lst_buscar" class="agregar @error('lst_buscar') is-invalid @enderror form-control" type="text">
+            <i wire:click='LimpiarBusqueda()'class="bi bi-x-square agregar"></i>
+            <div class="form-text">Mínimo 3 caracteres.</div>
+            @error('lst_buscar')<error>{{ $message }}</error>@enderror
+        </div>
+
+        <!-- Tipo de visualización Tabla o Cuadros-->
+        <div class="col-6 col-md-3 my-1 form-group" >
+            <br>
+            @if($tipoVer=='cuadro')
+                <button wire:click='CambiarModoVista()' class="btn btn-secondary bi bi-table"> Ver modo tabla </button>
+            @else
+                <button wire:click='CambiarModoVista()' class="btn btn-secondary bi bi-ui-radios-grid"> Ver modo cuadros </button>
             @endif
         </div>
-    @endif
-<br>
+
+        <!-- Botón de agregar nuevo elemento y Renumerar  superior-->
+        <div class="col-5 col-md-4 my-1 form-group" >
+            @if($edit=='1')
+                <br>
+                <button class="btn btn-primary" wire:click="AbrirModalDeListaEspecie('0')">
+                    <i class="bi bi-plus-circle"></i> Agregar
+                </button>
+
+                @if($SumCant != $SumReal)
+                    <button class="btn btn-primary my-1" wire:click="Renumerar()">
+                        <i class="bi bi-sort-numeric-down"></i> Renumerar
+                    </button>
+                @endif
+            @endif
+        </div>
+    </div>
+
+
+
+
+
+    <!------------------------------------------------------------------------------ -->
+    <!------------------------------------------------------------------------------ -->
+    <!---------------- INICIA EL LISTADO ------------------------------------------- -->
+    <!------------------------------------------------------------------------------ -->
     @if($lista->count() == 0)
         <div class="row">
             <div class="" style="text-align: center; padding: 50px; ">
@@ -83,7 +138,7 @@
                     <div class="col-md-5 col-sm-12 m-2" style="@if($l->lst_act=='1')background-color:#CDC6B9; border:1px solid #202d2d; @else border:1px solid black;color:gray; @endif border-radius:15px;">
                         <!-- NOMBRES -->
                         <div class=""  style="">
-                            @foreach ($l->nombres as $n)
+                            @foreach ($l->nombres as $n) {{ $l->lst_id }}
                                 <div class="@if($l->nombres->count() > 1)elemento2 @endif" style="font-weight:900; font-size: 120%;text-align:center; vertical-align:bottom;">
                                     <!-- nombre -->
                                     {!!   $n->lstn_name !!}
@@ -359,35 +414,102 @@
     @endif
 
 
-    {{-- <!-- Botón de edición inferior --> --}}
-    @if($edit=='1')
-        <div class="row" style="clear: both;">
-            <div class="m-4" style="text-align:right;">
-                <button class="btn btn-sm btn-primary" wire:click="AbrirModalDeListaEspecie('0')">
-                    <i class="bi bi-plus-circle"></i> Agregar
-                </button>
-            </div>
-            @if($SumCant != $SumReal)
-                <div class="m-4" style="text-align:right;">
-                    <button class="btn btn-sm btn-primary" wire:click="Renumerar()">
-                        <i class="bi bi-plus-circle"></i> Renumerar
-                    </button>
+    <!-- ----------------------------------------------------------- -->
+    <!-- ----------------- Menú de paginación inferrior ------------ -->
+    <div class="">
+        <div style="">
+            @if($lista->hasPages())
+                <div class="my-1  paginador" style="display: inline-block;">
+                    <h6>Página {{ $lista->currentPage() }}</h6>
+
+                    <a href="/{{ $lista->previousPageUrl() }}">
+                        <button class="boton" style="display:inline-block" @if($lista->onFirstPage()) disabled @endif>&laquo;</button>
+                    </a>
+
+
+                    @foreach(range(1,$lista->lastPage()) as $i)
+                    <a href="/{{ $lista->url($i) }}" style="">
+                        <button class="boton @if($i==$lista->currentPage()) paginaActiva @else pagina @endif" style="display:inline-block" @if($i==$lista->currentPage()) disabled @endif >{{ $i }}</button>
+                    </a>
+                    @endforeach
+
+                    <a href="/{{ $lista->nextPageUrl() }}">
+                        <button class="boton" style="display:inline-block"  @if($lista->onLastPage()) disabled @endif>&raquo;</button>
+                    </a>
+
+
                 </div>
             @endif
+            <div class="my-3 form-group" style="width:100px; display: inline-block;" >
+                <label for="lst_numeroFront" class="form-label"> <red></red></label>
+                <select wire:change='cambiaPaginacion()' wire:model="lst_numeroFront" id="lst_numeroFront" class="@error('lst_numeroFront') is-invalid @enderror form-select">
+                    <option value="{{ $lst_numero }}">{{ $lst_numero }}</option>
+                    <option value="2">2</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="150">150</option>
+                    <option value="200">200</option>
+                </select>
+                <div class="form-text"></div>
+                @error('lst_numeroFront')<error>{{ $message }}</error>@enderror
+            </div>
         </div>
-    @endif
+    </div>
+
+    <!-- Botón de agregar nuevo elemento y Renumerar  superior-->
+    <div class="my-1 form-group" style="float:right;">
+        @if($edit=='1')
+            <br>
+            <button class="btn btn-primary" wire:click="AbrirModalDeListaEspecie('0')">
+                <i class="bi bi-plus-circle"></i> Agregar
+            </button>
+
+            @if($SumCant != $SumReal)
+                <button class="btn btn-primary my-1" wire:click="Renumerar()">
+                    <i class="bi bi-sort-numeric-down"></i> Renumerar
+                </button>
+            @endif
+        @endif
+    </div>
+
+
+    <!-- ----------------------------------------------------------- -->
+    <!-- -----------------Estadísticas del sitio ------------------- -->
+    <br>
+    <div style="text-align: left;">
+        <div style="border:1px solid black; display:inline-block; margin:5px;padding:3px;font-size:80%;border-radius:5px;">
+            Número de elementos: {{ $lista->count() }}<br>
+            Número de lenguas: {{ $estadisticas['lenguas']->count() }} {{ implode(", ", $estadisticas['lenguas']->pluck('lstn_lencode')->toArray()) }}<br>
+            Con nombre científico: {{ $estadisticas['nomcient'] }}<br>
+            Con imagen: {{ $estadisticas['img'] }}<br>
+            Con nombre en:
+            @foreach ($estadisticas['lenguas'] as $l)
+                {{ $l->lstn_lencode }} {{ $l->num }}; &nbsp; &nbsp;
+            @endforeach <br>
+            Con audio en:
+            @foreach ($estadisticas['audios'] as $l)
+                {{ $l->lstn_lencode }} {{ $l->num }}; &nbsp; &nbsp;
+            @endforeach <br>
+        </div>
+    </div>
+
 
 
     <livewire:sistema.modal-lista-especie-component />
     <livewire:web.modal-cedula-yo-tengo-que-aportar />
-
     <livewire:sistema.modal-edita-parrafo-component />
-
 
 
     <script >
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        /* #### Reiniciar la página */
+        Livewire.on('RecargarPagina',() => {
+            location.reload();
+            // window.location.href;
         });
 
 
