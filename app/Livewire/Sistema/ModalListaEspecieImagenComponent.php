@@ -142,6 +142,7 @@ class ModalListaEspecieImagenComponent extends Component
         $this->dispatch('CierraModalDeListaImagen',reload:0);
     }
 
+
     public function render() {
         return view('livewire.sistema.modal-lista-especie-imagen-component');
     }

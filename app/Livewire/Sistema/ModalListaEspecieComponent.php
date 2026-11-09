@@ -6,6 +6,7 @@ use App\Models\CatKewModel;
 use App\Models\lista_nombres;
 use App\Models\lista_nombresc;
 use App\Models\lista_img;
+use App\Models\lista_usos;
 use App\Models\lista;
 use App\Models\lenguas;
 use Livewire\Attributes\On;
@@ -58,6 +59,11 @@ class ModalListaEspecieComponent extends Component
                 ->where('lst_del','0')
                 ->max('lst_orden') + 1;
         }
+    }
+
+    #[On('VariableDesdeUsos')]
+    public function RecargaVariableDesdeUsos(){
+
     }
 
     public function limpiarModalDeBuscarEspecie(){
@@ -194,6 +200,16 @@ class ModalListaEspecieComponent extends Component
         lista_nombresc::where('lstsc_id',$id)->update(['lstsc_del'=>'1']);
     }
 
+    public function AbrirModalDeAsignaUsoEnLista($id){
+        $datos=[
+            'jardin'=>$this->listasp_jardin,
+            'lstId'=>$this->listasp_id,
+            'lsusoId'=>$id,
+        ];
+        $this->dispatch('AbreModalDeUsoEnLista',$datos);
+    }
+
+
     public function render(){
         ##### Carga lista de nombres
         $nombres= lista_nombres::where('lstn_lstid',$this->listasp_id)
@@ -212,11 +228,16 @@ class ModalListaEspecieComponent extends Component
 
         $lenguas=lenguas::orderBy('len_lengua')->get();
 
+        $usos=lista_usos::where('lsuso_lstid',$this->listasp_id)
+            ->where('lsuso_del','0')
+            ->orderBy('lsuso_id')
+            ->get();
 
         return view('livewire.sistema.modal-lista-especie-component',[
             'nombres'=>$nombres,
             'lenguas'=>$lenguas,
             'nombresCient'=>$nombresCient,
+            'usos'=>$usos,
             // 'img'=>$img,
         ]);
     }

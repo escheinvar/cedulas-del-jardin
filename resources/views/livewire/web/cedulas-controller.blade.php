@@ -754,12 +754,12 @@
             <!-- muestra APORTES DE VISITANTES -->
             @if($aportes->count() > '0')
                 @foreach ($aportes as $a)
-                    <div class="col-12 col-md-6 my-2" style="padding:15px;">
+                    <div class="col-11 col-md-5 my-2" style="margin:10px; padding:15px; border:1px solid black; border-radius:8px;">
                         <div class="truncarTexto PaClick" style="width:100%;" onclick="Destruncar('mensaje','{{ $a->msg_id }}')" id="sale_mensaje{{ $a->msg_id }}">
                             {{ $a->msg_mensaje }}
                         </div>
                         <span class="form-text">
-                            <b>{{ $a->msg_usuario }}</b> &nbsp; {{ $a->msg_estado }} {{ $a->msg_mpio }}, {{ $a->msg_comunidad }} ({{ $a->msg_lengua }})
+                            <b>{{ $a->msg_usuario }}</b> &nbsp; {{ $a->msg_estado }}, {{ $a->msg_mpio }}
                         </span>
                         @if($editMaster=='1') <i class="bi bi-pencil-square PaClick cedEdo{{ $url->url_edo }}" wire:click="AbrirModalParaEditarAporteDeVisitante('{{ $a->msg_id }}')"> <sup>edo{{ $a->msg_edo }}</sup></i>@endif
                     </div>

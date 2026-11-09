@@ -5,12 +5,12 @@
     <div wire:ignore.self class="modal fade" id="Modal_ListaEspecies" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                {{-- <div class="modal-header">
                     <h3 class="modal-title">
                         Listado de {{ $listasp_jardin }}
                     </h3>
                     <button wire:click="CerrarModalDeBuscarEspecie('1')" type="button" class="btn-close" data-bs-dismiss="modal"> </button>
-                </div>
+                </div> --}}
                 <!-- ----------------------------  cuerpo del modal --------------------------->
                 <div class="modal-body" >
                     <div class="row"  wire:loading.attr="disabled">
@@ -24,8 +24,8 @@
 
                         <!-- Nombre científico  -->
                         <div class="col-8  my-1 form-group">
-                            <label for="listasp_scname" class="form-label">Nombre científico<red></red></label>
                             <button class="btn btn-sm btn-primary" wire:click='AbrirModalDeNombreCientificoEnLista()'> + </button>
+                            <label for="listasp_scname" class="form-label">Nombre científico<red></red></label>
                             @foreach ($nombresCient as $sp)
                                 <div class="elemento @if($sp->lstsc_act=='0') tachar @endif">
                                     <i>{{ $sp->lstsc_scname }}</i> [{{ $sp->lstsc_familia }}]
@@ -41,8 +41,8 @@
                     <div class="row" wire:loading.attr="disabled">
                         <div class="col-12 form-group center">
                             <label for="" class="form-label">
-                                Imagen<red></red>
                                 <button wire:click="AbrirModalDeListaImagen('0')" class="btn btn-sm btn-primary"> + </button>
+                                Imagen<red></red>
                             </label>
                             <center>
                                 @if($img->count() > '0')
@@ -59,7 +59,7 @@
                     <div class="row"  wire:loading.attr="disabled">
                         <!-- Nombres comunes -->
                         <div class="col-12 my-1 form-group">
-                            <table class="table table-striped" style="width:100%;">
+                            <table class="table table-striped table-sm" style="width:100%;">
                                 <thead>
                                     <tr>
                                         <th style="width:50%;">Nombre(s)</th>
@@ -80,9 +80,6 @@
                                                     </audio>
                                                     <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Titu" onclick="playAudio('{{ $n->lstn_id }}Titu')"></i>
                                                     <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Titu" onclick="pauseAudio('{{ $n->lstn_id }}Titu')"></i>
-                                                {{-- @else
-                                                    <input  wire:model.live="listasp_nuevoAudio2" wire:click.renderless='SubirNuevoAudio({{ $n->lstn_id }})' id="subirAudioNuevo2" accept="audio/*" style="display:none" type="file" >
-                                                    <i class="bi bi-cloud-upload-fill agregar" onclick="document.getElementById('subirAudioNuevo2').click();"></i> --}}
                                                 @endif
                                             </td>
                                             <!-- lengua -->
@@ -141,7 +138,7 @@
                         </div>
                     </div>
 
-                    <!-- Explicación y URL -->
+
                     <div class="row"  wire:loading.attr="disabled">
                         <!-- Explicación o razón  -->
                         <div class="col-12  my-1 form-group">
@@ -151,7 +148,18 @@
                             @error('listasp_razon')<error>{{ $message }}</error>@enderror
                         </div>
 
-                        <!-- Explicación o razón  -->
+                        <!-- listado de Usos -->
+                        <div class="col-12 my-1 form-group">
+                            <button wire:click="AbrirModalDeAsignaUsoEnLista('0')" class="btn btn-sm btn-primary"> + </button>
+                            <label for="" class="form-label">Usos<red></red></label>
+                            @foreach($usos as $u)
+                                <div wire:click='AbrirModalDeAsignaUsoEnLista({{ $u->lsuso_id }})'class="elemento PaClick" style="font-size:80%;">
+                                    {{ $u->lsuso_uso }}
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- URl  -->
                         <div class="col-12  my-1 form-group">
                             <label for="listasp_url" class="form-label">URL:<red></red></label><br>
                             <input wire:model="listasp_url" id="listasp_url" class="@error('listasp_url') is-invalid @enderror form-control agregar" type="text">
@@ -182,6 +190,7 @@
 
 <livewire:sistema.modal-lista-especie-nombresc-component />
 <livewire:sistema.modal-lista-especie-imagen-component />
+<livewire:sistema.modal-lista-especie-usos-component />
 
     <script>
         /* ### Script para abrir y cerrar Modal de ejemplar */
@@ -212,6 +221,10 @@
         Livewire.on('VariableDesdeImagen',() => {
            @this.set('img',event.detail.dato, live=true);
            @this.set('listasp_id',event.detail.dato2, live=true);
+        });
+         Livewire.on('VariableDesdeUsos',() => {
+            console.log('a',event.detail.dato)
+           @this.set('usos',event.detail.dato, live=true);
         });
 
         // Livewire.on('ImagenNuevaALista',() => {

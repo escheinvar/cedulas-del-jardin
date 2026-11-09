@@ -124,7 +124,7 @@
 
                                 <!-- Ayuda -->
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle @if(in_array(request()->path(),['api_manual','nosotros'])) active @endif" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle @if(in_array(request()->path(),['sistema','normaeditorial','comopublicar','manuales','maualapi'])) active @endif" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Ayuda
                                     </a>
                                     <ul class="dropdown-menu">
@@ -214,7 +214,7 @@
                                         <!-- Cédulas públicas y de administración -->
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle
-                                                @if(in_array(request()->path(), ['homeConfig','buzon','manuales'] ))  active @endif"
+                                                @if(in_array(request()->path(), ['admin_cedulas','manuales'] ))  active @endif"
                                                 href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Cédulas
                                             </a>

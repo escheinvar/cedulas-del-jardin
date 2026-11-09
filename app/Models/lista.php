@@ -43,4 +43,10 @@ class lista extends Model
             // ->where('lstimg_act','1')
             ->where('lstimg_del','0');
     }
+
+    public function usos():HasMany {
+        return $this->HasMany(lista_usos::class,'lstuso_lstid','lst_id')
+            // ->where('lstimg_act','1')
+            ->where('lstuso_del','0');
+    }
 }
