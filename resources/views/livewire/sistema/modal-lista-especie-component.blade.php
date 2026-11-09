@@ -47,7 +47,7 @@
                             <center>
                                 @if($img->count() > '0')
                                     @foreach($img as $i)
-                                        <img src="{{ $i->lstimg_img }}" wire:click="AbrirModalDeListaImagen('{{ $i->lstimg_id }}')" style="max-width:150px; max-height:150px; @if( $i->lstimg_act=='0' ) border:1px solid gray; opacity:0.4; @endif" class="PaClick">
+                                        <img src="{{ $i->lstimg_img }}" wire:click="AbrirModalDeListaImagen('{{ $i->lstimg_id }}')" style="max-width:100px; max-height:100px; @if( $i->lstimg_act=='0' ) border:1px solid gray; opacity:0.4; @endif" class="PaClick">
                                     @endforeach
                                 @endif
                             </center>

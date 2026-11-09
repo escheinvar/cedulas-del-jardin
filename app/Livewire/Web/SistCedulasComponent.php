@@ -123,7 +123,7 @@ class SistCedulasComponent extends Component
             ->where('url_act','1')
             ->where('url_del','0')
             ->distinct('cjar_siglas')
-            ->select('cjar_siglas','cjar_nombre','cjar_name')
+            ->select('cjar_siglas','cjar_nombre','cjar_name','cjar_logo')
             ->get();
 
 

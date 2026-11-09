@@ -7,6 +7,19 @@
     @section('MenuPublico') x @endsection
     @section('MenuPrivado')  @endsection
 
+    <div class="row">
+        <div class="col-12">
+            <center>
+                @foreach ($jardines as $i)
+                    <a href="/jardin/{{ $i->cjar_siglas }}/autores/">
+                        <img src="{{ $i->cjar_logo }}" style="max-height:80px; max-width: 80px;">
+                    </a>
+                @endforeach
+            </center>
+        </div>
+    </div>
+
+
     <h2>Los autores y traductores</h2>
 
     <!-- ------------ Formulario de búsqueda -------------------------- -->
@@ -17,7 +30,7 @@
             @error('buscaText')<error>{{ $message }}</error>@enderror
         </div>
 
-        <div class="col-sm-12 col-md-3 form-group">
+        {{-- <div class="col-sm-12 col-md-3 form-group">
             <label class="form-label">Jardín:</label>
             <select wire:model.live="buscaJardin" class="form-select">
                 <option value="%"> Todos</option>
@@ -35,7 +48,7 @@
                     <option value="{{ $i->len_code }}"> {{ $i->len_autonimias }} ({{ $i->len_lengua }})</option>
                 @endforeach
             </select>
-        </div>
+        </div> --}}
     </div>
 
 
@@ -44,8 +57,8 @@
 
     <div class="row my-5">
         @foreach ($autores as $a)
-            <div class="col-12 col-md-3" style="text-align: center;">
-                <div style="">
+            <div class="col-12 col-md-3 my-4" style="text-align: center;">
+                <div class="">
                     <div>
                         @if($a->objetos->count() > '0')
                             <img src="{{ $a->objetos->value('img_file') }}" style="height:200px;">
@@ -57,10 +70,6 @@
                     <b>{{ $a->caut_nombre }} {{ $a->caut_apellido1 }} {{ $a->caut_apellido2 }}</b>
 
                     {{-- <div>
-                        {{ $a->cedulas->count() }} @if($a->cedulas->count() > '1') cédulas @else cedula @endif
-                    </div> --}}
-
-                    <div>
                         @foreach ($a->urlautor as $u)
                             <div style="font-size:70%;">
                                 <span id="sale_autor{{ $u->aurl_id }}" style="display:none">{{ url('/autor') }}/{{ $u->aurl_cjarsiglas }}/{{ $a->caut_url }}</span>
@@ -70,7 +79,7 @@
                                 <i onclick="CopiarContenido('autor',{{ $u->aurl_id }})" class="bi bi-clipboard PaClick mx-1"> </i>
                             </div>
                         @endforeach
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         @endforeach

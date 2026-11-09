@@ -65,7 +65,7 @@
             <label for="lst_numeroFront" class="form-label"> <red></red></label>
             <select wire:change='cambiaPaginacion()' wire:model="lst_numeroFront" id="lst_numeroFront" class="@error('lst_numeroFront') is-invalid @enderror form-select">
                 <option value="{{ $lst_numero }}">{{ $lst_numero }}</option>
-                <option value="2">2</option>
+                {{-- <option value="2">2</option> --}}
                 <option value="20">20</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
@@ -444,7 +444,7 @@
                 <label for="lst_numeroFront" class="form-label"> <red></red></label>
                 <select wire:change='cambiaPaginacion()' wire:model="lst_numeroFront" id="lst_numeroFront" class="@error('lst_numeroFront') is-invalid @enderror form-select">
                     <option value="{{ $lst_numero }}">{{ $lst_numero }}</option>
-                    <option value="2">2</option>
+                    {{-- <option value="2">2</option> --}}
                     <option value="20">20</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
@@ -479,7 +479,7 @@
     <br>
     <div style="text-align: left;">
         <div style="border:1px solid black; display:inline-block; margin:5px;padding:3px;font-size:80%;border-radius:5px;">
-            Número de elementos: {{ $lista->count() }}<br>
+            Número de elementos: {{ $lista->total() }}<br>
             Número de lenguas: {{ $estadisticas['lenguas']->count() }} {{ implode(", ", $estadisticas['lenguas']->pluck('lstn_lencode')->toArray()) }}<br>
             Con nombre científico: {{ $estadisticas['nomcient'] }}<br>
             Con imagen: {{ $estadisticas['img'] }}<br>

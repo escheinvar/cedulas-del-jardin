@@ -57,8 +57,8 @@ class ListaController extends Component
         $this->lst_orden='lst_id';
         $this->lst_sent='asc';
 
-        // $numero=20;
-        $numero=3;
+        $numero=20;
+        // $numero=3;
         if( session()->has('paginarLista')) {
             $this->lst_numero= session('paginarLista');
 
@@ -188,6 +188,7 @@ class ListaController extends Component
                 return $query
                 ->where('lstsc_scname','ILIKE', "%$this->lst_buscar%");
             });
+            ##### Manda a page1 para evitar errores de mostrar fuera de page
             $this->setPage('1');
         }
         $lista=$lista->paginate($this->lst_numero);

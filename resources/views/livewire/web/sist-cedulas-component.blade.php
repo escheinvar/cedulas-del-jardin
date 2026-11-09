@@ -8,10 +8,22 @@
 
 
 <div>
+    <div class="row">
+        <div class="col-12">
+            <center>
+                @foreach ($jardines as $i)
+                    <a href="/jardin/{{ $i->cjar_siglas }}/cedulas/">
+                        <img src="{{ $i->cjar_logo }}" style="max-height:80px; max-width: 80px;">
+                    </a>
+                @endforeach
+            </center>
+        </div>
+    </div>
+
     <h2 class="subtitulo">Las cédulas</h2>
 
     <!-- ------------ Formulario de búsqueda -------------------------- -->
-    <div class="row my-4">
+    <div class="row">
         <div class="col-sm-12 col-md-3 form-group">
             <label class="form-label">Jardín:</label>
             <select wire:model.live="buscaJardin" class="form-select">

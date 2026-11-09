@@ -101,14 +101,16 @@ if(!function_exists('EnviaMensajeAbuzon')){
                 'buz_mailed'=>$para->email,
             ]);
 
-            ##### Actualiza datos de sesión:
-            $buzon= buzon::where('buz_del','0')
-                ->where('buz_act','1')
-                ->where('buz_to',Auth::user()->id)
-                ->count();
-            session([
-                'buzon'=>$buzon,
-            ]);
+            if(Auth::user()){
+                ##### Actualiza datos de sesión:
+                $buzon= buzon::where('buz_del','0')
+                    ->where('buz_act','1')
+                    ->where('buz_to',Auth::user()->id)
+                    ->count();
+                session([
+                    'buzon'=>$buzon,
+                ]);
+            }
         }
 
         ###### Si todo fue ok, manda mensaje $error='0'
