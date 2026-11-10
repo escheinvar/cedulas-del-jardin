@@ -200,6 +200,7 @@ class ListaController extends Component
 
         $TablaDeTexto=lista_txt::where('lstxt_cjarsiglas',$this->url->urlj_cjarsiglas)
             ->where('lstxt_del','0')
+            ->orderBy('lstxt_orden','asc')
             ->get();
 
         $lenguas=lista_nombres::join('lista','lst_id','=','lstn_lstid')

@@ -146,7 +146,7 @@ class ModalListaEspecieUsosComponent extends Component
             ->get();
 
         $this->dispatch('VariableDesdeUsos',dato:$dato);
-        $this->usos=$dato;
+        // $this->usos=$dato;
     }
 
     public function EliminarUso(){
