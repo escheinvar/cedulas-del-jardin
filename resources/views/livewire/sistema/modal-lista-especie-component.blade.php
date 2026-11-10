@@ -62,9 +62,9 @@
                             <table class="table table-striped table-sm" style="width:100%;">
                                 <thead>
                                     <tr>
-                                        <th style="width:50%;">Nombre(s)</th>
-                                        <th style="width:10%;">Audio</th>
-                                        <th style="width:20%;">Lengua</th>
+                                        <th style="width:40%;">Nombre(s)</th>
+                                        <th style="width:20%;">Audio</th>
+                                        <th style="width:15%;">Lengua</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -80,11 +80,12 @@
                                                     </audio>
                                                     <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Titu" onclick="playAudio('{{ $n->lstn_id }}Titu')"></i>
                                                     <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Titu" onclick="pauseAudio('{{ $n->lstn_id }}Titu')"></i>
+                                                    <a href="{{ $n->lstn_audio }}" class="nolink " download><i class="bi bi-cloud-download-fill mx-1 agregar2"></i></a>
                                                 @endif
                                             </td>
                                             <!-- lengua -->
                                             <td style="width:10%;">
-                                                <span style="color: #CD7B34a;" title="{{ $n->lstn_lengua }}">
+                                                <span style="color: #CD7B34a;" title="{{ $n->lstn_lengua }} @if($n->lstn_audio !=''). Autor del audio: {{ $n->lstn_audio_autor }}@if($n->lstn_audio_lugar), {{ $n->lstn_audio_lugar }} @endif {{ $n->lstn_audio_fecha }} @endif">
                                                     {{ $n->lstn_lencode }}
                                                 </span>
                                             </td>
@@ -132,6 +133,36 @@
                                         <td class="my-1 form-group">
                                             <button class="btn btn-sm btn-primary"  title="Agregar nombre" wire:click="AgregrarNuevoNombre()"> + </button>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        @if($listasp_nuevoAudio !='')
+                                            <td colspan="4">
+                                                <div class="row">
+                                                    <!-- Autor del audio -->
+                                                    <div class="col-4  my-1 form-group">
+                                                        <label for="lstasp_AudioAutor" class="form-label">Autor del audio<red></red></label>
+                                                        <input wire:model="lstasp_AudioAutor" id="lstasp_AudioAutor" class="@error('lstasp_AudioAutor') is-invalid @enderror form-control" type="text">
+                                                        <div class="form-text"></div>
+                                                        @error('lstasp_AudioAutor')<error>{{ $message }}</error>@enderror
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="col-4  my-1 form-group">
+                                                        <label for="lstasp_AudioLugar" class="form-label">Lugar del audio<red></red></label>
+                                                        <input wire:model="lstasp_AudioLugar" id="lstasp_AudioLugar" class="@error('lstasp_AudioLugar') is-invalid @enderror form-control" type="text">
+                                                        <div class="form-text"></div>
+                                                        @error('lstasp_AudioLugar')<error>{{ $message }}</error>@enderror
+                                                    </div>
+                                                    <!--  -->
+                                                    <div class="col-4  my-1 form-group">
+                                                        <label for="lstasp_AudioFecha" class="form-label">Fecha del audio<red></red></label>
+                                                        <input wire:model="lstasp_AudioFecha" id="lstasp_AudioFecha" class="@error('lstasp_AudioFecha') is-invalid @enderror form-control" type="date">
+                                                        <div class="form-text"></div>
+                                                        @error('lstasp_AudioFecha')<error>{{ $message }}</error>@enderror
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        @endif
+                                    <tr>
                                     </tr>
                                 </tbody>
                             </table>
@@ -221,10 +252,6 @@
         Livewire.on('VariableDesdeImagen',() => {
            @this.set('img',event.detail.dato, live=true);
            @this.set('listasp_id',event.detail.dato2, live=true);
-        });
-         Livewire.on('VariableDesdeUsos',() => {
-            console.log('a',event.detail.dato)
-           @this.set('usos',event.detail.dato, live=true);
         });
 
         // Livewire.on('ImagenNuevaALista',() => {

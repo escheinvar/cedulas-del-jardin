@@ -136,9 +136,13 @@
             <div class="row" style="width:100%;">
                 @foreach ($lista  as $l)
                     <div class="col-md-5 col-sm-12 m-2" style="@if($l->lst_act=='1')background-color:#CDC6B9; border:1px solid #202d2d; @else border:1px solid black;color:gray; @endif border-radius:15px;">
+                        <!-- ID -->
+                        <span style="float:right;font-size:80%;color:#efebe8;font-style:italic;">{{ $l->lst_id }}</span>
+
                         <!-- NOMBRES -->
                         <div class=""  style="">
-                            @foreach ($l->nombres as $n) {{ $l->lst_id }}
+
+                            @foreach ($l->nombres as $n)
                                 <div class="@if($l->nombres->count() > 1)elemento2 @endif" style="font-weight:900; font-size: 120%;text-align:center; vertical-align:bottom;">
                                     <!-- nombre -->
                                     {!!   $n->lstn_name !!}
@@ -151,7 +155,7 @@
                                         <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Tit" onclick="pauseAudio('{{ $n->lstn_id }}Tit')"></i>
                                     @endif
                                     <!-- lengua -->
-                                    <sub class="PaClick" style="color: #87796d;" title="{{ $n->lstn_lengua }}" data-toggle="tooltip" >
+                                    <sub class="PaClick" style="color: #87796d;" title="{{ $n->lstn_lengua }}  @if($n->lstn_audio !=''). Autor del audio:{{ $n->lstn_audio_autor }}@if($n->lstn_audio_lugar), {{ $n->lstn_audio_lugar }}@endif {{ $n->lstn_audio_fecha }} @endif" data-toggle="tooltip" >
                                         {{ $n->lstn_lencode }}
                                     </sub>
                                 </div>
@@ -479,19 +483,22 @@
     <br>
     <div style="text-align: left;">
         <div style="border:1px solid black; display:inline-block; margin:5px;padding:3px;font-size:80%;border-radius:5px;">
-            Número de elementos: {{ $lista->total() }}<br>
-            Número de lenguas: {{ $estadisticas['lenguas']->count() }} {{ implode(", ", $estadisticas['lenguas']->pluck('lstn_lencode')->toArray()) }}<br>
-            Con nombre científico: {{ $estadisticas['nomcient'] }}<br>
-            Con imagen: {{ $estadisticas['img'] }}<br>
-            Con nombre en:
+            <table>
+            <tr><td>Total de elementos:</td><td> <b>{{ $lista->total() }}</b></td></tr>
+            <tr><td>No. de lenguas:</td><td> {{ $estadisticas['lenguas']->count() }} ({{ implode(", ", $estadisticas['lenguas']->pluck('lstn_lencode')->toArray()) }})</td></tr>
+            <tr><td>Con n. cient.:</td><td> {{ $estadisticas['nomcient'] }}</td></tr>
+            <tr><td>Con imagen:</td><td> {{ $estadisticas['img'] }}</td></tr>
+            <tr><td style="vertical-align: top;">Con nombre en:</td><td>
             @foreach ($estadisticas['lenguas'] as $l)
-                {{ $l->lstn_lencode }} {{ $l->num }}; &nbsp; &nbsp;
-            @endforeach <br>
-            Con audio en:
+                {{ $l->lstn_lencode }} {{ $l->num }}<br>
+            @endforeach</td></tr>
+            <tr><td style="vertical-align: top;">Con audio en:</td><td>
             @foreach ($estadisticas['audios'] as $l)
-                {{ $l->lstn_lencode }} {{ $l->num }}; &nbsp; &nbsp;
-            @endforeach <br>
+                {{ $l->lstn_lencode }} {{ $l->num }}<br>
+            @endforeach </td></tr>
+            </table>
         </div>
+
     </div>
 
 

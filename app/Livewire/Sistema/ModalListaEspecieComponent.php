@@ -35,6 +35,7 @@ class ModalListaEspecieComponent extends Component
     public $listasp_nombre, $listasp_orden, $listasp_razon, $listasp_img, $listasp_url; ##### Variables de formaulario
     public $listasp_nuevoNombre, $listasp_nuevoAudio, $listasp_nuevoAudio2, $listasp_nuevaLengua; ##### Variables de nombres comunes
     public $img;
+    public $lstasp_AudioLugar, $lstasp_AudioAutor,$lstasp_AudioFecha;
 
     #[On('AbrirModalDeListaDeEspecies')]
     public function montarAbrirModalDeBuscarEspecie($datos){
@@ -63,7 +64,11 @@ class ModalListaEspecieComponent extends Component
 
     #[On('VariableDesdeUsos')]
     public function RecargaVariableDesdeUsos(){
-
+        $usos=lista_usos::where('lsuso_lstid',$this->listasp_id)
+            ->where('lsuso_del','0')
+            ->orderBy('lsuso_id')
+            ->get();
+        $this->usos=$usos;
     }
 
     public function limpiarModalDeBuscarEspecie(){
@@ -80,6 +85,9 @@ class ModalListaEspecieComponent extends Component
 
 
     public function GuardaRegistro($cierra){
+        if($this->listasp_nuevoNombre != '' OR $this->listasp_nuevoAudio != ''){
+            $this->AgregrarNuevoNombre();
+        }
         ######### Nota: if $cierra==1, cierra modal y limpia variables;
         #########       if $cierra==0, solo guarda y deja modal abierto;
         $datos=[
@@ -154,6 +162,10 @@ class ModalListaEspecieComponent extends Component
             'lstn_name'=>$this->listasp_nuevoNombre,
             'lstn_lengua'=>$len->len_autonimias.' ('.$len->len_lengua.')',
             'lstn_lencode'=>$this->listasp_nuevaLengua,
+
+            // 'lstn_audio_autor'=>$this->lstasp_AudioAutor,
+            // 'lstn_audio_fecha'=>$this->lstasp_AudioFecha,
+            // 'lstn_audio_lugar'=>$this->lstasp_AudioLugar,
         ];
         if($this->listasp_nuevoAudio != ''){
             $nombreAudio=$this->listasp_jardin.'-'.$this->listasp_id."_".
@@ -163,6 +175,9 @@ class ModalListaEspecieComponent extends Component
 
             $this->listasp_nuevoAudio->storeAs('/public/listas',$nombreAudio);
             $datos['lstn_audio']='/listas/'.$nombreAudio;
+            $datos['lstn_audio_autor']=$this->lstasp_AudioAutor;
+            $datos['lstn_audio_fecha']=$this->lstasp_AudioFecha;
+            $datos['lstn_audio_lugar']=$this->lstasp_AudioLugar;
         }
         lista_nombres::create($datos);
 
@@ -232,13 +247,14 @@ class ModalListaEspecieComponent extends Component
             ->where('lsuso_del','0')
             ->orderBy('lsuso_id')
             ->get();
-
+        $this->usos=$usos;
         return view('livewire.sistema.modal-lista-especie-component',[
             'nombres'=>$nombres,
             'lenguas'=>$lenguas,
             'nombresCient'=>$nombresCient,
-            'usos'=>$usos,
+            // 'usos'=>$usos,
             // 'img'=>$img,
         ]);
     }
+    public $usos;
 }

@@ -20,6 +20,9 @@ class lista_nombres extends Model
         'lstn_lstid',
         'lstn_name',
         'lstn_audio',
+        'lstn_audio_autor',
+        'lstn_audio_fecha',
+        'lstn_audio_lugar',
         'lstn_lengua',
         'lstn_lencode',
     ];

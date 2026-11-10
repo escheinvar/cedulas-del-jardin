@@ -19,6 +19,10 @@ return new class extends Migration
 
             $table->string('lstn_name'); ##### Nombre común de la especie
             $table->string('lstn_audio')->nullable(); ##### Nombre del archivo de audio del nombre común
+            $table->string('lstn_audio_autor')->nullable(); ##### Nombre del archivo de audio del nombre común
+            $table->date('lstn_audio_fecha')->nullable(); ##### Nombre del archivo de audio del nombre común
+            $table->string('lstn_audio_lugar')->nullable(); ##### Nombre del archivo de audio del nombre común
+
             $table->string('lstn_lengua')->nullable(); ##### Lengua del nombre común
             $table->string('lstn_lencode')->nullable(); ##### Còdigo de Lengua del nombre común
             $table->timestamps();

@@ -12,7 +12,7 @@ use Livewire\Component;
 class ModalListaEspecieUsosComponent extends Component
 {
 
-/*############################################## ModalLista_Imagenes
+    /*############################################## ModalLista_Imagenes
     ###################################################################
     ##### Este modal, requiere dos varables, url_cjarsiglas y url_urltxt
     ##### Copiar AbrirModalDeBuscarEspecie en controller disparador
@@ -31,6 +31,7 @@ class ModalListaEspecieUsosComponent extends Component
     public $modUso_catego, $modUso_uso, $modUso_uso2, $modUso_parte, $modUso_parte2, $modUso_explica;
     public $modPartes;
 
+
     #[On('AbreModalDeUsoEnLista')]
     public function montarAbrirModalDeBuscarEspecie($datos){
         ##### recibe variables externas
@@ -47,7 +48,6 @@ class ModalListaEspecieUsosComponent extends Component
             $this->modUso_uso=$valor->lsuso_uso;
             // if($this->modUso_uso=='Otro/NA'){$this->modUso_uso2='':}
             $this->modUso_explica=$valor->lsuso_describe;
-// dd($this->modUso_uso);
 
             ##### Recupera partes
             if($valor->lsuso_parte != ''){
@@ -149,8 +149,11 @@ class ModalListaEspecieUsosComponent extends Component
         $this->usos=$dato;
     }
 
-
-
+    public function EliminarUso(){
+        lista_usos::where('lsuso_id',$this->lstusoId)->update(['lsuso_del'=>'1']);
+        $this->EnviarDatosAModalDeListaEspecie();
+        $this->CerrarModalDeAsignaUsoEnLista();
+    }
     public function render(){
 
         if($this->modUso_catego != ''){
