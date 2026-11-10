@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-12">
             <center>
-                @foreach ($jardines as $i)
+                @foreach ($logos as $i)
                     <a href="/jardin/{{ $i->cjar_siglas }}/cedulas/">
                         <img src="{{ $i->cjar_logo }}" style="max-height:80px; max-width: 80px;">
                     </a>

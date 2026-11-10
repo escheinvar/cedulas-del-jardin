@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Web;
 
+use App\Models\CatJardinesModel;
 use App\Models\SpUrlCedulaModel;
 use App\Models\cedulas_url;
 use App\Models\SpUrlModel;
@@ -126,11 +127,13 @@ class SistCedulasComponent extends Component
             ->select('cjar_siglas','cjar_nombre','cjar_name','cjar_logo')
             ->get();
 
+        $logos=CatJardinesModel::all();
 
         return view('livewire.web.sist-cedulas-component',[
             'cedulas'=>$cedulas->get(),
             'jardines'=>$jardines,
             'lenguas'=>$lenguas,
+            'logos'=>$logos,
         ]);
     }
 }
