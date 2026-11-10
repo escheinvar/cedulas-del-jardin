@@ -136,6 +136,7 @@
             <div class="row" style="width:100%;">
                 @foreach ($lista  as $l)
                     <div class="col-md-5 col-sm-12 m-2" style="@if($l->lst_act=='1')background-color:#CDC6B9; border:1px solid #202d2d; @else border:1px solid black;color:gray; @endif border-radius:15px;">
+                        <a name="{{ $l->lst_id }}"></a>
                         <!-- ID -->
                         <span style="float:right;font-size:80%;color:#efebe8;font-style:italic;">{{ $l->lst_id }}</span>
 
@@ -151,8 +152,8 @@
                                         <audio id="SpAudio{{ $n->lstn_id }}Tit" style="display:inline-block;">
                                             <source src="{{ $n->lstn_audio }}" type="audio/ogg" /> El navegador no soporta el audio
                                         </audio>
-                                        <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Tit" onclick="playAudio('{{ $n->lstn_id }}Tit')" style="vertical-align:bottom;"></i>
-                                        <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Tit" onclick="pauseAudio('{{ $n->lstn_id }}Tit')"></i>
+                                        <i class="audioTxtPlay" id="IconPlay{{ $n->lstn_id }}Tit" onclick="playAudio ('{{ $n->lstn_id }}Tit')" title="{{ $n->lstn_lengua }}. Autor del audio:{{ $n->lstn_audio_autor }}, {{ $n->lstn_audio_lugar }} {{ $n->lstn_audio_fecha }}" data-toggle="tooltipBAC" style="vertical-align:bottom;"></i>
+                                        <i class="audioTxtStop" id="IconStop{{ $n->lstn_id }}Tit" onclick="pauseAudio('{{ $n->lstn_id }}Tit')" title="{{ $n->lstn_lengua }}. Autor del audio:{{ $n->lstn_audio_autor }}, {{ $n->lstn_audio_lugar }} {{ $n->lstn_audio_fecha }}" data-toggle="tooltip"></i>
                                     @endif
                                     <!-- lengua -->
                                     <sub class="PaClick" style="color: #87796d;" title="{{ $n->lstn_lengua }}  @if($n->lstn_audio !=''). Autor del audio:{{ $n->lstn_audio_autor }}@if($n->lstn_audio_lugar), {{ $n->lstn_audio_lugar }}@endif {{ $n->lstn_audio_fecha }} @endif" data-toggle="tooltip" >

@@ -126,13 +126,17 @@ class ModalCedulaYoTengoQueAportar extends Component
         ###### Genera set de datos según módulo de origen Lista
         }elseif($this->msg_TipoGeneral=='lista'){
             $lis=lista::where('lst_id',$this->url_id)->with('nombres')->first();
-            #dd($lis, $lis->lst_cjarsiglas, );
+            if($lis->nombres->count() > 0){
+                $nombre=$lis->nombres->first()->lstn_name;
+            }else{
+                $nombre='';
+            }
             $dato=[
                 'msg_tipo'=>'lista',
                 'msg_cjarsiglas'=> $lis->lst_cjarsiglas,
                 'msg_urlid'=>$this->url_id,
-                'msg_url'=>$lis->nombres->first()->lstn_name,
-                'msg_urltxt'=>$lis->nombres->first()->lstn_name,
+                'msg_url'=>$nombre,
+                'msg_urltxt'=>$nombre,
 
                 'msg_edo'=>'0   ',
                 'msg_nombre'=>$this->msg_nombre,
@@ -159,7 +163,7 @@ class ModalCedulaYoTengoQueAportar extends Component
             ###### Construye variables para envíar mensaje a buzón para listas
             $asunto="Aportación pública a un listado";
             $msj="Un visitante (".$this->msg_nombre." ".$this->msg_alias." de ".$this->msg_mpio.", ".$this->msg_estado.
-                ") realizó una aportación al elemento ".$lis->nombres->first()->lstn_name.
+                ") realizó una aportación al elemento <a href='/jardin/".$lis->lst_cjarsiglas."/listado#".$lis->lst_id."' target='new'>- ".$nombre.' (id '.$lis->lst_id.')</a>'.
                 " de la lista del jardín ".$lis->lst_cjarsiglas." el día ".date('d')." del mes ".date('m')." de ".date('Y').
                 ".<br>".
                 "El mensaje es el siguiente:<br><br> <b>&quot;".$this->msg_txt."&quot;</b><br><br>";
