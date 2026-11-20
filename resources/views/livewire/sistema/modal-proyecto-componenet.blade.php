@@ -90,14 +90,14 @@
                                 <label for="ArchFormato" class="form-label">Formato de envío<red>*</red></label>
                                 <input wire:model="ArchFormato" id="ArchFormato" class="agregar @error('ArchFormato') is-invalid @enderror form-control" type="file" @if($edit=='0') disabled @endif>
                                 <button wire:click="SubirArchivo('Formato')" class="btn btn-sm btn-primary bi bi-plus" @if($ArchFormato=='') disabled @endif></button>
-                                <div class="form-text">Puedes descargar el formato <a hrefaquí</div>
+                                <div class="form-text">Puedes descargar el formato <a href="">aquí</a></div>
                                 @error('ArchFormato')<error>{{ $message }}</error>@enderror
                             </div>
                             <!-- Carta solicitud -->
-                            <div class="col-12 col-md-6 my-1 form-group">
+                            <div class="col-12 col-md-6  my-1 form-group">
                                 <label for="ArchSol" class="form-label">Carta Solicitud de publicación<red>*</red></label>
                                 <input wire:model="ArchSol" id="ArchSol" class="agregar @error('ArchSol') is-invalid @enderror form-control" type="file" @if($edit=='0') disabled @endif>
-                                <button wire:click="SubirArchivo('Solicitud')" class="btn btn-sm btn-primary bi bi-plus" @if($ArchSol=='') disabled @endif></button>
+                                <button wire:click="SubirArchivo('Solicitud')" class="agregar btn btn-sm btn-primary bi bi-plus" @if($ArchSol=='') disabled @endif></button>
                                 <div class="form-text"></div>
                                 @error('ArchSol')<error>{{ $message }}</error>@enderror
                             </div>
@@ -171,16 +171,18 @@
                     @if($proy->estados->where('predo_act','1')->value('predo_edo') == '0.2' OR
                         $proy->estados->where('predo_act','1')->value('predo_edo') == '0.5' )
                         <!-- Selecciona Editor -->
-                        <div class="col-12 col-md-6 my-1 form-group">
-                            <label for="NuevoEditor" class="form-label">Indica al editor<red></red></label>
-                            <select wire:model="NuevoEditor" id="NuevoEditor" class="@error('NuevoEditor') is-invalid @enderror form-select" @if($edit=='0') disabled @endif>
-                                <option value="">Indicar...</option>
-                                @foreach($editores as $e)
-                                    <option value="{{ $e->rol_usrid }}">{{ $e->nombre }} {{ $e->apellido }} ({{ $e->rol_cjarsiglas }})</option>
-                                @endforeach
-                            </select>
-                            <div class="form-text"></div>
-                            @error('NuevoEditor')<error>{{ $message }}</error>@enderror
+                        <div class="row">
+                            <div class="col-12 col-md-6 my-1 form-group">
+                                <label for="NuevoEditor" class="form-label">Indica al editor<red></red></label>
+                                <select wire:model="NuevoEditor" id="NuevoEditor" class="@error('NuevoEditor') is-invalid @enderror form-select" @if($edit=='0') disabled @endif>
+                                    <option value="">Indicar...</option>
+                                    @foreach($editores as $e)
+                                        <option value="{{ $e->rol_usrid }}">{{ $e->nombre }} {{ $e->apellido }} ({{ $e->rol_cjarsiglas }})</option>
+                                    @endforeach
+                                </select>
+                                <div class="form-text"></div>
+                                @error('NuevoEditor')<error>{{ $message }}</error>@enderror
+                            </div>
                         </div>
                     @endif
                 @endif
@@ -195,20 +197,44 @@
                 @endif
 
                 @if(in_array('admin',session('rol')))
-                    <div style="margin:15px;">
-                        <!-- Botones de Acciones del Administrador -->
-                        <button wire:click="CambiaEstado('0.3')" class="btn btn-sm btn-primary bi bi-slash-circle"
-                            style="margin:7px;display:{{ $Arechaza }};">
-                            Rechazar Proyecto
-                        </button>
-                        <button wire:click="CambiaEstado('0.4')" class="btn btn-sm btn-primary bi bi-pencil-square"
-                            style="margin:7px;display:{{ $Amodif }};">
-                            Revisión por autor
-                        </button>
-                        <button wire:click="CambiaEstado('1.0')" class="btn btn-sm btn-primary bi bi-person-fill-check"
-                            style="margin:7px;display:{{ $Aeditor }};">
-                            Asignar editor
-                        </button>
+                    <div class="row">
+                        <div style="margin:15px;">
+                            <!-- Botones de Acciones del Administrador -->
+                            <button wire:click="CambiaEstado('0.3')" class="btn btn-sm btn-primary bi bi-slash-circle"
+                                style="margin:7px;display:{{ $Arechaza }};">
+                                Rechazar Proyecto
+                            </button>
+                            <button wire:click="CambiaEstado('0.4')" class="btn btn-sm btn-primary bi bi-pencil-square"
+                                style="margin:7px;display:{{ $Amodif }};">
+                                Revisión por autor
+                            </button>
+                            <button wire:click="CambiaEstado('1.0')" class="btn btn-sm btn-primary bi bi-person-fill-check"
+                                style="margin:7px;display:{{ $Aeditor }};">
+                                Asignar editor
+                            </button>
+
+                            <i wire:click="VerCambiaJardin()"  class="bi bi-house-x agregar PaClick"> Cambiar jardín</i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @if($VerCambioJardin=='1')
+                            <!-- Lista de jardines para cambio -->
+                            <div class="col-8 col-md-5 my-1 form-group">
+                                <label for="NuevoJArdin" class="form-label">Indica el nuevo jardín<red></red></label>
+                                <select wire:model="NuevoJArdin" id="NuevoJArdin" class="@error('NuevoJArdin') is-invalid @enderror form-select">
+                                    <option value="">Indicar...</option>
+                                    @foreach($jardines->where('cjar_siglas','!=',$proy->proy_jardin) as $j)
+                                        <option value="{{ $j->cjar_siglas }}">{{ $j->cjar_siglas }} {{ $j->cjar_name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="form-text"></div>
+                                @error('NuevoJArdin')<error>{{ $message }}</error>@enderror
+                            </div>
+                            <div class="col-4 col-md-5 my-1 form-group">
+                                <br><br>
+                                <button wire:click='CambiaJardin()'class="btn btn-primary">Cambiar</button>
+                            </div>
+                        @endif
                     </div>
                 @endif
                 @if(in_array('editor',session('rol')))

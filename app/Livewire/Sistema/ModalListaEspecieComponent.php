@@ -76,13 +76,11 @@ class ModalListaEspecieComponent extends Component
         $this->resetValidation();
         $this->resetErrorBag();
     }
-
     public function CerrarModalDeBuscarEspecie($reload){
         if(!isset($reload) or $reload==''){$reload='1';}
         $this->limpiarModalDeBuscarEspecie();
         $this->dispatch('CierraModalDeListaDeEspecies',reload:$reload);
     }
-
 
     public function GuardaRegistro($cierra){
         if($this->listasp_nuevoNombre != '' OR $this->listasp_nuevoAudio != ''){
@@ -253,7 +251,6 @@ class ModalListaEspecieComponent extends Component
             'lenguas'=>$lenguas,
             'nombresCient'=>$nombresCient,
             // 'usos'=>$usos,
-            // 'img'=>$img,
         ]);
     }
     public $usos;

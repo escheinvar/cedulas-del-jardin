@@ -38,6 +38,7 @@ class ModalProyectoComponenet extends Component
     public $proyArchs; #### guarda todos los renglones de archivos de próximo estado
     public $ArchFormato,$ArchSol,$ArchPpal,$ArchMaterial,$NvoComents,$ArchRevision; ### formulario
     public $NuevoEditor; ##### forumlario
+    public $VerCambioJardin, $NuevoJardin; ##### Flag para ver cambio de jardín y variable de nuevo jardin
     /*####################################################
     ###### Para ejecutarse, requiere de la función:
     public function AbrirModalProyecto($proyid){
@@ -55,6 +56,8 @@ class ModalProyectoComponenet extends Component
         $this->proyArchs=collect();
         $this->cancha='';
         $this->NuevoEditor ='';
+        $this->VerCambioJardin='0';
+        $this->NuevoJardin='';
     }
 
     #[On('AbreModalProyecto')]
@@ -77,6 +80,9 @@ class ModalProyectoComponenet extends Component
             #### Carga título en texto
             $this->tituloId=$this->proy->proy_jardin.'_'.str_pad($this->proy->proy_id, 4,"0",STR_PAD_LEFT);
         }
+        $this->VerCambioJardin='0';
+        $this->NuevoJardin='';
+        #dd($this->proy);
     }
 
     public function LimpiarModal(){
@@ -585,6 +591,35 @@ class ModalProyectoComponenet extends Component
         ]);
         $this->dispatch('AvisoExitoProyecto',msj:'El proyecto fue archivado. Puedes desarchivarlo cuando gustes');
         redirect('/home');
+    }
+
+    public function VerCambiaJardin(){
+        if($this->VerCambioJardin=='1'){
+            $this->VerCambioJardin='0';
+        }else{
+            $this->VerCambioJardin='1';
+        }
+
+    }
+
+    public function CambiaJardin(){
+dd('0');
+        ##### Valida
+        $this->validate([
+            'NuevoJardin'=>'required',
+        ]);
+dd('1');
+        if($this->NuevoJardin == ''){
+            dd('vacio',$this->NuevoJardin);
+        }else{
+            dd('lleno',$this->NuevoJardin);
+        }
+dd('2');
+        ##### Ejecuta
+        if($this->NuevoJardin != '' AND $this->NuevoJardin != $this->proy->proy_jardin){
+            dd('ja');
+        }
+        dd('fin');
     }
 
     public function render(){

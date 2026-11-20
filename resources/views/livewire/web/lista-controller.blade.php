@@ -142,7 +142,6 @@
 
                         <!-- NOMBRES -->
                         <div class=""  style="">
-
                             @foreach ($l->nombres as $n)
                                 <div class="@if($l->nombres->count() > 1)elemento2 @endif" style="font-weight:900; font-size: 120%;text-align:center; vertical-align:bottom;">
                                     <!-- nombre -->
@@ -298,6 +297,7 @@
 
                             <!-- imagen -->
                             <td>
+                                <a name="{{ $l->lst_id }}"></a>
                                 <center>
                                     @if($l->imagenes->where('lstimg_act','1')->count() > 0)
                                         <!-- -------------------------Inicia carrusel de img---------------------------- -->
@@ -410,6 +410,7 @@
                                     <!-- Eliminar -->
                                     <i class="bi bi-trash mx-1" style="cursor: pointer;" title="Eliminar" wire:click="Eliminar({{ $l->lst_id }})" wire:confirm='Vas a eliminar este registro de la lista. ¿Quieres continuar?'></i>
                                 @endif
+                                <span style="float:right;font-size:80%;color:gray;font-style:italic;">{{ $l->lst_id }}</span>
                             </td>
                         </tr>
                     @endforeach
