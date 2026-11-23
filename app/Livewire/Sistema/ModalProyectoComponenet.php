@@ -603,23 +603,20 @@ class ModalProyectoComponenet extends Component
     }
 
     public function CambiaJardin(){
-dd('0');
+
         ##### Valida
         $this->validate([
             'NuevoJardin'=>'required',
         ]);
-dd('1');
-        if($this->NuevoJardin == ''){
-            dd('vacio',$this->NuevoJardin);
-        }else{
-            dd('lleno',$this->NuevoJardin);
-        }
-dd('2');
+
         ##### Ejecuta
         if($this->NuevoJardin != '' AND $this->NuevoJardin != $this->proy->proy_jardin){
-            dd('ja');
+            proy_proyectos::where('proy_id',$this->proy->proy_id)->update(['proy_jardin'=>$this->NuevoJardin]);
         }
-        dd('fin');
+        $this->NuevoJardin='';
+        $this->VerCambioJardin='0';
+        $this->CerrarModalProyecto();
+        redirect('/home');
     }
 
     public function render(){

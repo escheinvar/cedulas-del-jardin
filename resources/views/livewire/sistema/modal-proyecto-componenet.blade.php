@@ -220,15 +220,15 @@
                         @if($VerCambioJardin=='1')
                             <!-- Lista de jardines para cambio -->
                             <div class="col-8 col-md-5 my-1 form-group">
-                                <label for="NuevoJArdin" class="form-label">Indica el nuevo jardín<red></red></label>
-                                <select wire:model="NuevoJArdin" id="NuevoJArdin" class="@error('NuevoJArdin') is-invalid @enderror form-select">
+                                <label for="NuevoJardin" class="form-label">Indica el nuevo jardín<red></red></label>
+                                <select wire:model="NuevoJardin" id="NuevoJardin" class="@error('NuevoJardin') is-invalid @enderror form-select">
                                     <option value="">Indicar...</option>
                                     @foreach($jardines->where('cjar_siglas','!=',$proy->proy_jardin) as $j)
-                                        <option value="{{ $j->cjar_siglas }}">{{ $j->cjar_siglas }} {{ $j->cjar_name }}</option>
+                                        <option value="{{ $j->cjar_siglas }}">({{ $j->cjar_siglas }}) {{ $j->cjar_name }}</option>
                                     @endforeach
                                 </select>
                                 <div class="form-text"></div>
-                                @error('NuevoJArdin')<error>{{ $message }}</error>@enderror
+                                @error('NuevoJardin')<error>{{ $message }}</error>@enderror
                             </div>
                             <div class="col-4 col-md-5 my-1 form-group">
                                 <br><br>
