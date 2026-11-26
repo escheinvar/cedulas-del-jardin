@@ -83,11 +83,11 @@ class ModalListaEspecieComponent extends Component
     }
 
     public function GuardaRegistro($cierra){
-        if($this->listasp_nuevoNombre != '' OR $this->listasp_nuevoAudio != ''){
-            $this->AgregrarNuevoNombre();
-        }
         ######### Nota: if $cierra==1, cierra modal y limpia variables;
         #########       if $cierra==0, solo guarda y deja modal abierto;
+
+
+        #dd('jelista',$this->listasp_id);
         $datos=[
             'lst_cjarsiglas'=>$this->listasp_jardin,
             'lst_orden'=>$this->listasp_orden,
@@ -113,6 +113,10 @@ class ModalListaEspecieComponent extends Component
             lista::where('lst_id',$this->listasp_id)->update($datos);
             #### Crea log
             paLog('Se edita elemento de lista en el listado de '.$this->listasp_jardin, 'lista',$this->listasp_id);
+        }
+
+        if($this->listasp_nuevoNombre != '' OR $this->listasp_nuevoAudio != ''){
+            $this->AgregrarNuevoNombre();
         }
 
         if($cierra=='1'){
@@ -141,6 +145,7 @@ class ModalListaEspecieComponent extends Component
 
 
     public function AgregrarNuevoNombre(){
+
         ##### Valida
         $this->validate([
             'listasp_nuevoNombre'=>'required',
@@ -151,8 +156,27 @@ class ModalListaEspecieComponent extends Component
         ]);
 
         if($this->listasp_id=='0' OR $this->listasp_id==''){
-         $this->GuardaRegistro('0');
+            #$this->GuardaRegistro('0');
+            $datos=[
+                'lst_cjarsiglas'=>$this->listasp_jardin,
+                'lst_orden'=>$this->listasp_orden,
+                'lst_url'=>$this->listasp_url,
+                'lst_notas'=>$this->listasp_razon,
+            ];
+            ###### valida que no exista otro registro con el mismo número de orden
+            if(in_array($this->listasp_orden, lista::where('lst_cjarsiglas',$this->listasp_jardin)->where('lst_id','!=',$this->listasp_id)->where('lst_del','0')->pluck('lst_orden')->toArray())){
+                $this->addError('listasp_orden','Ya existe un registro con este número de orden. Por favor elige otro.');
+                return;
+            }
+
+            ##### Crea registro
+            $bla=lista::create($datos);
+            $this->listasp_id=$bla->lst_id;
+            #### Crea log
+            paLog('Se genera nuevo elemento de lista al listado de '.$this->listasp_jardin, 'lista',$this->listasp_id);
+
         }
+        #dd('ja',$this->listasp_id);
         ##### Guarda en BD
         $len=lenguas::where('len_code',$this->listasp_nuevaLengua)->first();
         $datos=[

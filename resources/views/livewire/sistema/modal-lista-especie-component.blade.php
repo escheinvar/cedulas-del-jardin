@@ -131,7 +131,7 @@
                                         </td>
                                         <!-- Botón Agregar -->
                                         <td class="my-1 form-group">
-                                            <button class="btn btn-sm btn-primary"  title="Agregar nombre" wire:click="AgregrarNuevoNombre()"> + </button>
+                                            <button class="btn btn-sm btn-primary"  title="Agregar nombree" wire:click="AgregrarNuevoNombre()"> + </button>
                                         </td>
                                     </tr>
                                     <tr>
